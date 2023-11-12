@@ -4,9 +4,11 @@ import java.util.List;
 
 import com.devrezaur.main.repository.ResultRepo;
 import lombok.RequiredArgsConstructor;
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -44,7 +46,8 @@ public class MainController {
     @PostMapping("/submit")
     public String submit(@ModelAttribute QuestionForm qForm, Model m) {
         Result result = new Result();
-        result.setUsername(m.getAttribute("username").toString());
+        Object username = m.getAttribute("username");
+        result.setUsername(username == null ? "" : username.toString());
         result.setTotalCorrect(qService.getResult(qForm));
         qService.saveScore(result);
 
