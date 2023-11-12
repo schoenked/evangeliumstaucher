@@ -7,20 +7,19 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import org.springframework.stereotype.Component;
 
-@Component
 @Entity
 @Table(name = "questions")
 public class Question {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int quesId;
+	private Integer quesId;
 	private String title;
 	private String optionA;
 	private String optionB;
 	private String optionC;
-	private int ans;
-	private int chose;
+	private Integer ans;
+	private Integer chose;
 
 	public Question() {
 		super();

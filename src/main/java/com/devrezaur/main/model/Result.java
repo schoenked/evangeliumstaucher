@@ -7,16 +7,15 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import org.springframework.stereotype.Component;
 
-@Component
 @Entity
 @Table(name = "results")
 public class Result {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
 	private String username;
-	private int totalCorrect = 0;
+	private Integer totalCorrect = 0;
 
 	public Result() {
 		super();

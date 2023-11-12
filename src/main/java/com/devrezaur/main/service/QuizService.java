@@ -13,15 +13,11 @@ import com.devrezaur.main.repository.ResultRepo;
 
 @Service
 public class QuizService {
-	
-	@Autowired
-	Question question;
+
 	@Autowired
 	QuestionForm qForm;
 	@Autowired
 	QuestionRepo qRepo;
-	@Autowired
-	Result result;
 	@Autowired
 	ResultRepo rRepo;
 	
