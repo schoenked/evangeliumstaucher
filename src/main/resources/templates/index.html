@@ -21,9 +21,12 @@
 			<img th:src="@{/images/exam.svg}" alt="image">
 		</div>
 		<div class="text-box">
-			<h1 class="mb-5 text-center">Spring Boot Quiz App</h1>
+			<h1 class="mb-5 text-center">Klippensprung in die Tiefen in die Bibel</h1>
+			<p>
+				Bist du bereit dein Wissen der Bibel zu prüfen und zu erweitern. Stell dich der Herausforderung und generiere den eigenes Quiz.
+			</p>
 			<form class="card bg-dark py-5 px-4" action="/quiz" method="POST">
-				<p>Enter Your Name</p>
+				<p>Gib zuerst deinen Namen ein</p>
 				<input type="text" name="username" />
 				<p class="text-danger warning" th:if="${warning}" th:text="${warning}"></p>
 				<button type="submit" class="btn btn-warning">Start Quiz</button>
