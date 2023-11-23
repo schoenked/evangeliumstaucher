@@ -5,16 +5,16 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.4.3</version>
+		<version>2.7.14</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.devrezaur</groupId>
+	<groupId>de.evangeliumstaucher</groupId>
 	<artifactId>SpringBootQuizApp</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>SpringBootQuizApp</name>
 	<description>Simple quiz application using Spring Boot &amp; MySQL</description>
 	<properties>
-		<java.version>15</java.version>
+		<java.version>17</java.version>
 	</properties>
 	<dependencies>
 <!--		<dependency>-->
@@ -54,6 +54,11 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>de.evangeliumstaucher</groupId>
+			<artifactId>spring-openapi-bible-api-client</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -61,6 +66,31 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.openapitools</groupId>
+				<artifactId>openapi-generator-maven-plugin</artifactId>
+				<version>5.3.0</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<inputSpec>https://api.scripture.api.bible/v1/swagger.json</inputSpec>
+							<generatorName>java</generatorName>
+							<configOptions>
+								<dateLibrary>java8</dateLibrary>
+							</configOptions>
+							<apiPackage>${project.groupId}</apiPackage>
+							<modelPackage>${project.groupId}.model</modelPackage>
+							<invokerPackage>${project.groupId}.invoker</invokerPackage>
+							<groupId>${project.groupId}</groupId>
+							<artifactId>spring-openapi-bible-api-client</artifactId>
+							<artifactVersion>0.0.1-SNAPSHOT</artifactVersion>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
