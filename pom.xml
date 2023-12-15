@@ -74,7 +74,7 @@
 				<executions>
 					<execution>
 						<goals>
-							<goal>generate</goal>
+							<!--<goal>generate</goal>-->
 						</goals>
 						<configuration>
 							<inputSpec>https://api.scripture.api.bible/v1/swagger.json</inputSpec>

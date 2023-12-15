@@ -15,16 +15,16 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
-@Controller("bible")
+@Controller("/bible")
 @RequiredArgsConstructor
 public class BibleController {
 
-    @GetMapping("/")
-    public String bible() {
+    @GetMapping()
+    public String getBible() {
         return "bible.html";
     }
 
-    @PostMapping("/quiz")
+  //  @PostMapping("quiz")
     public String quiz(@RequestParam String username, Model m, RedirectAttributes ra) {
      /*   if (username.equals("")) {
             ra.addFlashAttribute("warning", "You must enter your name");
@@ -38,7 +38,7 @@ public class BibleController {
         return "quiz.html";
     }
 
-    @PostMapping("/submit")
+    //@PostMapping("submit")
     public String submit(@ModelAttribute QuestionForm qForm, Model m) {
     /*    Result result = new Result();
         Object username = m.getAttribute("username");
@@ -49,7 +49,7 @@ public class BibleController {
         return "result.html";
     }
 
-    @GetMapping("/score")
+  ////  @GetMapping("/score")
     public String score(Model m) {
      /*   List<Result> sList = qService.getTopScore();
         m.addAttribute("sList", sList);
