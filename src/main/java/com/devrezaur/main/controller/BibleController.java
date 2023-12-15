@@ -3,7 +3,10 @@ package com.devrezaur.main.controller;
 import com.devrezaur.main.model.QuestionForm;
 import com.devrezaur.main.model.Result;
 import com.devrezaur.main.repository.ResultRepo;
+import com.devrezaur.main.service.BibleService;
 import com.devrezaur.main.service.QuizService;
+import de.evangeliumstaucher.invoker.ApiException;
+import de.evangeliumstaucher.model.BibleSummary;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,16 +18,28 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
-@Controller("/bible")
+@Controller()
 @RequiredArgsConstructor
 public class BibleController {
+    private final BibleService bibleService;
 
-    @GetMapping()
-    public String getBible() {
-        return "bible.html";
+    @GetMapping("/bible")
+    public String getBible(Model m) {
+        try {
+            List<BibleSummary> bibles = bibleService.getBibles();
+
+            m.addAttribute("bibles", bibles);
+        } catch (ApiException e) {
+           addWarning(m);
+        }
+        return "bible/bible.html";
     }
 
-  //  @PostMapping("quiz")
+    private void addWarning(Model m) {
+        m.addAttribute("warning","so sorry");
+    }
+
+    //  @PostMapping("quiz")
     public String quiz(@RequestParam String username, Model m, RedirectAttributes ra) {
      /*   if (username.equals("")) {
             ra.addFlashAttribute("warning", "You must enter your name");
@@ -49,7 +64,7 @@ public class BibleController {
         return "result.html";
     }
 
-  ////  @GetMapping("/score")
+    ////  @GetMapping("/score")
     public String score(Model m) {
      /*   List<Result> sList = qService.getTopScore();
         m.addAttribute("sList", sList);
