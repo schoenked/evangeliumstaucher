@@ -19,9 +19,9 @@
 <div class="main-container container py-5 px-4" th:object="${bibles}">
     Übersetzung wählen
 
-    <!--/*@thymesVar id="languages" type="java.util.List<java.util.Map.Entry<de.evangeliumstaucher.model.Language, java.util.List<de.evangeliumstaucher.model.BibleSummary>>>"*/-->
+    <!--/*@thymesVar id="languages" type="java.util.List<java.util.Map.Entry<String, java.util.List<de.evangeliumstaucher.model.BibleSummary>>>"*/-->
     <div th:each="langSet : ${languages}">
-        <div th:text="${langSet.key.nameLocal}">
+        <div th:text="${langSet.key}">
         </div>
         <div th:each="bible : ${langSet.value}">
         <div th:href="|${bible.abbreviationLocal}/|"

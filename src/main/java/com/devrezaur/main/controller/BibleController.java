@@ -36,13 +36,13 @@ public class BibleController {
         try {
             List<BibleSummary> bibles = bibleService.getBibles();
 
-            List<Map.Entry<Language, List<BibleSummary>>> groups = bibles.stream()
-                    .collect(groupingBy(BibleSummary::getLanguage))
+            List<Map.Entry<String, List<BibleSummary>>> groups = bibles.stream()
+                    .collect(groupingBy(bibleSummary -> bibleSummary.getLanguage().getNameLocal()))
                     .entrySet().stream()
                     .sorted((o1, o2) -> {
-                        if (o1.getKey().getNameLocal().equals("Deutsch")) return -1;
-                        if (o2.getKey().getNameLocal().equals("Deutsch")) return 1;
-                        return o1.getKey().getName().compareTo(o2.getKey().getName());
+                        if (o1.getKey().equals("Deutsch")) return -1;
+                        if (o2.getKey().equals("Deutsch")) return 1;
+                        return o1.getKey().compareTo(o2.getKey());
                     })
                     .collect(Collectors.toList());
 
