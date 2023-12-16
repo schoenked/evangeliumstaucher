@@ -19,13 +19,16 @@
 <div class="main-container container py-5 px-4" th:object="${bibles}">
     Übersetzung wählen
 
-
-    <!--/*@thymesVar id="bibles" type="java.util.List<de.evangeliumstaucher.model.BibleSummary>"*/-->
-    <div th:each="bible : ${bibles}">
-        <div th:text="|${bible.abbreviation} - ${bible.name} - ${bible.description}|"></div>
-        <a th:href="|${bible.abbreviation}/|"></a>
+    <!--/*@thymesVar id="languages" type="java.util.List<java.util.Map.Entry<de.evangeliumstaucher.model.Language, java.util.List<de.evangeliumstaucher.model.BibleSummary>>>"*/-->
+    <div th:each="langSet : ${languages}">
+        <div th:text="${langSet.key.nameLocal}">
+        </div>
+        <div th:each="bible : ${langSet.value}">
+        <div th:href="|${bible.abbreviationLocal}/|"
+             th:text="|${bible.abbreviationLocal} - ${bible.nameLocal} - ${bible.descriptionLocal}|">
+        </div>
     </div>
-
+    </div>
 </div>
 
 <!-- Importing Footer -->

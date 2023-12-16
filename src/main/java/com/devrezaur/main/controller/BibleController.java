@@ -7,6 +7,7 @@ import com.devrezaur.main.service.BibleService;
 import com.devrezaur.main.service.QuizService;
 import de.evangeliumstaucher.invoker.ApiException;
 import de.evangeliumstaucher.model.BibleSummary;
+import de.evangeliumstaucher.model.Language;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +18,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
+import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.toMap;
 
 @Controller()
 @RequiredArgsConstructor
@@ -28,15 +36,25 @@ public class BibleController {
         try {
             List<BibleSummary> bibles = bibleService.getBibles();
 
-            m.addAttribute("bibles", bibles);
+            List<Map.Entry<Language, List<BibleSummary>>> groups = bibles.stream()
+                    .collect(groupingBy(BibleSummary::getLanguage))
+                    .entrySet().stream()
+                    .sorted((o1, o2) -> {
+                        if (o1.getKey().getNameLocal().equals("Deutsch")) return -1;
+                        if (o2.getKey().getNameLocal().equals("Deutsch")) return 1;
+                        return o1.getKey().getName().compareTo(o2.getKey().getName());
+                    })
+                    .collect(Collectors.toList());
+
+            m.addAttribute("languages", groups);
         } catch (ApiException e) {
-           addWarning(m);
+            addWarning(m);
         }
         return "bible/bible.html";
     }
 
     private void addWarning(Model m) {
-        m.addAttribute("warning","so sorry");
+        m.addAttribute("warning", "so sorry");
     }
 
     //  @PostMapping("quiz")
