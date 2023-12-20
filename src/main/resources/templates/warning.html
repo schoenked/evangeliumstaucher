@@ -1,4 +1,15 @@
-
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="headerfiles">
+    <meta charset="UTF-8">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
 
 <!--show warning-->
-<div class="alert alert-danger" role="alert" th:text="${warning}"></div>
+<div class="alert alert-danger"
+     role="alert" th:if="${warning != null}" th:text="${warning}"></div>
+
+</body>
