@@ -21,16 +21,16 @@ public class BibleService {
         InlineResponse200 response = biblesApi.getBibles(null, null, null, null, true);
         List<BibleSummary> list = response.getData();
 
-        Map<String, String> abbreviationIdMap = list.stream()
-                .collect(Collectors.toMap(BibleSummary::getAbbreviationLocal,
+      /*  Map<String, String> abbreviationIdMap = list.stream()
+                .collect(Collectors.toMap(bibleSummary -> bibleSummary.getLanguage().getId() + "/"+ bibleSummary.getAbbreviationLocal(),
                         BibleSummary::getId));
-
+*/
         return list;
 
     }
+/*
 
-
-    public String getIdByAbbreviation(String abbreviation) throws ApiException {
+    public String getIdByAbbreviation(String languageId, String abbreviation) throws ApiException {
         if (abbreviationIdMap == null) {
             getBibles();
         }
@@ -38,5 +38,5 @@ public class BibleService {
             return abbreviationIdMap.get(abbreviation);
         }
         return null;
-    }
+    }*/
 }

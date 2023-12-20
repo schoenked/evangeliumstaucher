@@ -1,29 +1,25 @@
 package com.devrezaur.main.controller;
 
 import com.devrezaur.main.model.QuestionForm;
-import com.devrezaur.main.model.Result;
-import com.devrezaur.main.repository.ResultRepo;
 import com.devrezaur.main.service.BibleService;
 import com.devrezaur.main.service.BookService;
-import com.devrezaur.main.service.QuizService;
 import de.evangeliumstaucher.invoker.ApiException;
 import de.evangeliumstaucher.model.BibleSummary;
 import de.evangeliumstaucher.model.Book;
-import de.evangeliumstaucher.model.Language;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.Map;
-import java.util.SortedMap;
-import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.groupingBy;
-import static java.util.stream.Collectors.toMap;
 
 @Controller()
 @RequiredArgsConstructor
@@ -53,10 +49,10 @@ public class BibleController {
         return "bible/bible.html";
     }
 
-    @GetMapping("/bible/{abbreviation}")
-    public String getBooks(@PathVariable String abbreviation, Model m) {
+    @GetMapping("/bible/{language}/{abbreviation}")
+    public String getBooks(@PathVariable String language, @PathVariable String abbreviation, Model m) {
         try {
-            String id = bibleService.getIdByAbbreviation(abbreviation);
+            String id = bibleService.getIdByAbbreviation(language, abbreviation);
             List<Book> books = bookService.getBibleBooks(id);
 
             m.addAttribute("books", books);
