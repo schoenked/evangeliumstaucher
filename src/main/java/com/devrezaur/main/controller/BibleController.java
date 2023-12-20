@@ -3,6 +3,10 @@ package com.devrezaur.main.controller;
 import com.devrezaur.main.model.QuestionForm;
 import com.devrezaur.main.service.BibleService;
 import com.devrezaur.main.service.BookService;
+import com.devrezaur.main.service.ChaptersService;
+import com.devrezaur.main.service.VersesService;
+import de.evangeliumstaucher.ChaptersApi;
+import de.evangeliumstaucher.VersesApi;
 import de.evangeliumstaucher.invoker.ApiException;
 import de.evangeliumstaucher.model.BibleSummary;
 import de.evangeliumstaucher.model.Book;
@@ -26,6 +30,8 @@ import static java.util.stream.Collectors.groupingBy;
 public class BibleController {
     private final BibleService bibleService;
     private final BookService bookService;
+    private final ChaptersService chaptersService;
+private final VersesService versesApi;
 
     @GetMapping("/bible")
     public String getBible(Model m) {
