@@ -24,7 +24,7 @@
         <div th:text="${langSet.key}">
         </div>
         <div th:each="bible : ${langSet.value}">
-        <a th:href="|${bible.language.id}/${bible.abbreviationLocal}/|"
+        <a th:href="|${bible.id}/|"
              th:text="|${bible.abbreviationLocal} - ${bible.nameLocal} - ${bible.descriptionLocal}|">
         </a>
     </div>

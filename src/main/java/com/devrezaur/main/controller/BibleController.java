@@ -49,11 +49,10 @@ public class BibleController {
         return "bible/bible.html";
     }
 
-    @GetMapping("/bible/{language}/{abbreviation}")
-    public String getBooks(@PathVariable String language, @PathVariable String abbreviation, Model m) {
+    @GetMapping("/bible/{bibleId}")
+    public String getBooks(@PathVariable String bibleId, Model m) {
         try {
-            String id = bibleService.getIdByAbbreviation(language, abbreviation);
-            List<Book> books = bookService.getBibleBooks(id);
+            List<Book> books = bookService.getBibleBooks(bibleId);
 
             m.addAttribute("books", books);
         } catch (ApiException e) {
