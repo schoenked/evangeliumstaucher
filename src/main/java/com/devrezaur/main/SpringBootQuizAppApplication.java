@@ -1,6 +1,7 @@
 package com.devrezaur.main;
 
 import de.evangeliumstaucher.BiblesApi;
+import de.evangeliumstaucher.BooksApi;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -17,6 +18,13 @@ public class SpringBootQuizAppApplication {
     @Bean
     public BiblesApi biblesApi() {
         BiblesApi api = new BiblesApi();
+        api.getApiClient().setApiKey(token);
+        return api;
+    }
+
+    @Bean
+    public BooksApi booksApi() {
+        BooksApi api = new BooksApi();
         api.getApiClient().setApiKey(token);
         return api;
     }

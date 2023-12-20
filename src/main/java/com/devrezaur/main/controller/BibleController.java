@@ -4,17 +4,16 @@ import com.devrezaur.main.model.QuestionForm;
 import com.devrezaur.main.model.Result;
 import com.devrezaur.main.repository.ResultRepo;
 import com.devrezaur.main.service.BibleService;
+import com.devrezaur.main.service.BookService;
 import com.devrezaur.main.service.QuizService;
 import de.evangeliumstaucher.invoker.ApiException;
 import de.evangeliumstaucher.model.BibleSummary;
+import de.evangeliumstaucher.model.Book;
 import de.evangeliumstaucher.model.Language;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
@@ -30,6 +29,7 @@ import static java.util.stream.Collectors.toMap;
 @RequiredArgsConstructor
 public class BibleController {
     private final BibleService bibleService;
+    private final BookService bookService;
 
     @GetMapping("/bible")
     public String getBible(Model m) {
@@ -51,6 +51,19 @@ public class BibleController {
             addWarning(m);
         }
         return "bible/bible.html";
+    }
+
+    @GetMapping("/bible/{abbreviation}")
+    public String getBooks(@PathVariable String abbreviation, Model m) {
+        try {
+            String id = bibleService.getIdByAbbreviation(abbreviation);
+            List<Book> books = bookService.getBibleBooks(id);
+
+            m.addAttribute("books", books);
+        } catch (ApiException e) {
+            addWarning(m);
+        }
+        return "bible/books.html";
     }
 
     private void addWarning(Model m) {

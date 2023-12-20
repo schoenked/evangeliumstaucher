@@ -14,21 +14,18 @@
 
 <!-- Importing NavBar -->
 <div th:insert="navbar.html :: navbar"></div>
+<!--show warning-->
+<div th:insert="warning.html"></div>
 
 <!-- Main Container Start -->
 <div class="main-container container py-5 px-4" th:object="${bibles}">
-    Übersetzung wählen
 
-    <!--/*@thymesVar id="languages" type="java.util.List<java.util.Map.Entry<String, java.util.List<de.evangeliumstaucher.model.BibleSummary>>>"*/-->
-    <div th:each="langSet : ${languages}">
-        <div th:text="${langSet.key}">
+    <!--/*@thymesVar id="books" type="java.util.List<de.evangeliumstaucher.model.Book>"*/-->
+    <div th:each="book : ${books}">
+        <div th:text="${book.abbreviation}">
         </div>
-        <div th:each="bible : ${langSet.value}">
-        <a th:href="|./${bible.abbreviationLocal}/|"
-             th:text="|${bible.abbreviationLocal} - ${bible.nameLocal} - ${bible.descriptionLocal}|">
-        </a>
     </div>
-    </div>
+</div>
 </div>
 
 <!-- Importing Footer -->
