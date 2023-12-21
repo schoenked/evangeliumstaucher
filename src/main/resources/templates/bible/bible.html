@@ -14,9 +14,11 @@
 
 <!-- Importing NavBar -->
 <div th:insert="navbar.html :: navbar"></div>
+<!--show warning-->
+<div th:insert="warning.html"></div>
 
 <!-- Main Container Start -->
-<div class="main-container container py-5 px-4" th:object="${bibles}">
+<div class="main-container container py-5 px-4"">
     Übersetzung wählen
 
     <!--/*@thymesVar id="languages" type="java.util.List<java.util.Map.Entry<String, java.util.List<de.evangeliumstaucher.model.BibleSummary>>>"*/-->

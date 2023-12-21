@@ -5,8 +5,7 @@ import com.devrezaur.main.service.BibleService;
 import com.devrezaur.main.service.BookService;
 import com.devrezaur.main.service.ChaptersService;
 import com.devrezaur.main.service.VersesService;
-import de.evangeliumstaucher.ChaptersApi;
-import de.evangeliumstaucher.VersesApi;
+import com.devrezaur.main.viewmodel.BookModel;
 import de.evangeliumstaucher.invoker.ApiException;
 import de.evangeliumstaucher.model.BibleSummary;
 import de.evangeliumstaucher.model.Book;
@@ -31,7 +30,7 @@ public class BibleController {
     private final BibleService bibleService;
     private final BookService bookService;
     private final ChaptersService chaptersService;
-private final VersesService versesApi;
+    private final VersesService versesApi;
 
     @GetMapping("/bible")
     public String getBible(Model m) {
@@ -59,8 +58,8 @@ private final VersesService versesApi;
     public String getBooks(@PathVariable String bibleId, Model m) {
         try {
             List<Book> books = bookService.getBibleBooks(bibleId);
-
-            m.addAttribute("books", books);
+            List<BookModel> bookModels = BookModel.from(books);
+            m.addAttribute("books", bookModels);
         } catch (ApiException e) {
             addWarning(m);
         }

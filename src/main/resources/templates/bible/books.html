@@ -18,14 +18,35 @@
 <div th:insert="warning.html"></div>
 
 <!-- Main Container Start -->
-<div class="main-container container py-5 px-4" th:object="${bibles}">
+<div class="main-container container py-5 px-4">
 
-    <!--/*@thymesVar id="books" type="java.util.List<de.evangeliumstaucher.model.Book>"*/-->
+    <!--/*@thymesVar id="books" type="java.util.List<com.devrezaur.main.viewmodel.BookModel>"*/-->
     <div th:each="book : ${books}">
-        <div th:text="${book.abbreviation}">
+        <button aria-expanded="false"
+                class="btn btn-secondary"
+                data-bs-toggle="collapse"
+                th:aria-controls="|${book.id}|"
+                th:data-bs-target="|#${book.id}|"
+                th:text="${book.abbreviation}"
+                type="button">
+        </button>
+
+        <div class="collapse"
+             th:id="|${book.id}|">
+            <div class="btn-group d-flex flex-wrap">
+                <div th:each="chapter : ${book.chapters}">
+                    <button aria-controls="collapseExample"
+                            aria-expanded="false"
+                            class="btn btn-secondary"
+                            data-bs-target="#collapseExample"
+                            data-bs-toggle="collapse"
+                            th:text="${chapter.label}"
+                            type="button">
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
-</div>
 </div>
 
 <!-- Importing Footer -->
