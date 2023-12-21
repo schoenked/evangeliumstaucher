@@ -19,33 +19,39 @@
 
 <!-- Main Container Start -->
 <div class="main-container container py-5 px-4">
+    <div class="btn-group row d-flex flex-wrap">
+        <!--/*@thymesVar id="books" type="java.util.List<com.devrezaur.main.viewmodel.BookModel>"*/-->
+        <th:block th:each="book : ${books}">
+            <div class="col text-nowrap">
+                <button aria-expanded="false"
+                        class="btn btn-secondary"
+                        data-bs-toggle="collapse"
+                        th:aria-controls="|${book.id}|"
+                        th:data-bs-target="|#${book.id}|"
+                        th:text="${book.abbreviation}"
+                        type="button">
+                </button>
+            </div>
+            <div class="collapse"
+                 th:id="${book.id}">
+                <div class="btn-group d-flex flex-wrap">
+                    <div th:each="chapter : ${book.chapters}">
+                        <button aria-expanded="false"
+                                class="btn btn-secondary"
+                                data-bs-toggle="collapse"
+                                th:aria-controls="|${book.id}.${chapter.label}|"
+                                th:data-bs-target="|#${book.id}.${chapter.label}|"
+                                th:text="${chapter.label}"
+                                type="button">
+                        </button>
+                        <div class="collapse"
+                             th:id="|${book.id}.${chapter.label}|">
 
-    <!--/*@thymesVar id="books" type="java.util.List<com.devrezaur.main.viewmodel.BookModel>"*/-->
-    <div th:each="book : ${books}">
-        <button aria-expanded="false"
-                class="btn btn-secondary"
-                data-bs-toggle="collapse"
-                th:aria-controls="|${book.id}|"
-                th:data-bs-target="|#${book.id}|"
-                th:text="${book.abbreviation}"
-                type="button">
-        </button>
-
-        <div class="collapse"
-             th:id="|${book.id}|">
-            <div class="btn-group d-flex flex-wrap">
-                <div th:each="chapter : ${book.chapters}">
-                    <button aria-controls="collapseExample"
-                            aria-expanded="false"
-                            class="btn btn-secondary"
-                            data-bs-target="#collapseExample"
-                            data-bs-toggle="collapse"
-                            th:text="${chapter.label}"
-                            type="button">
-                    </button>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
+        </th:block>
     </div>
 </div>
 
