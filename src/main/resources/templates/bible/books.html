@@ -22,30 +22,30 @@
     <div class="btn-group row d-flex flex-wrap">
         <!--/*@thymesVar id="books" type="java.util.List<com.devrezaur.main.viewmodel.BookModel>"*/-->
         <th:block th:each="book : ${books}">
-            <div class="col-2 p-0 text-nowrap">
+            <div class="col-3 p-0 text-nowrap">
                 <button aria-expanded="false"
                         class="btn btn-secondary container"
                         data-bs-toggle="collapse"
-                        th:aria-controls="|${book.id}|"
-                        th:data-bs-target="|#${book.id}|"
+                        th:aria-controls="|${book.htmlId}|"
+                        th:data-bs-target="|#${book.htmlId}|"
                         th:text="${book.abbreviation}"
                         type="button">
                 </button>
             </div>
             <div class="collapse"
-                 th:id="${book.id}">
+                 th:id="${book.htmlId}">
                 <div class="btn-group d-flex flex-wrap">
                     <div th:each="chapter : ${book.chapters}">
                         <button aria-expanded="false"
                                 class="btn btn-secondary"
                                 data-bs-toggle="collapse"
-                                th:aria-controls="|${book.id}.${chapter.label}|"
-                                th:data-bs-target="|#${book.id}.${chapter.label}|"
+                                th:aria-controls="|${book.htmlId}.${chapter.label}|"
+                                th:data-bs-target="|#${book.htmlId}.${chapter.label}|"
                                 th:text="${chapter.label}"
                                 type="button">
                         </button>
                         <div class="collapse"
-                             th:id="|${book.id}.${chapter.label}|">
+                             th:id="|${book.htmlId}.${chapter.label}|">
 
                         </div>
                     </div>

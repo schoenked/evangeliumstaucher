@@ -30,4 +30,15 @@ public class BookModel {
                 .withAbbreviation(book.getAbbreviation())
                 .withId(book.getId());
     }
+
+    public String getHtmlId() {
+        String outreturn = id
+                .replace("1", "first")
+                .replace("2", "second")
+                .replace("3", "third")
+                .replace("4", "fourth")
+                .replace("5", "fifth");
+
+        return outreturn;
+    }
 }
