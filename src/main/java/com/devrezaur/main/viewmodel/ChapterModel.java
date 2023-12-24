@@ -25,22 +25,12 @@ public class ChapterModel {
         List<ChapterModel> list = new ArrayList<>();
         for (ChapterSummary chapter : chapters) {
             ChapterModel model = from(chapter, versesService);
-            try {
-                Thread.sleep(1);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
             list.add(model);
         }
         return list;
     }
 
     public static ChapterModel from(ChapterSummary chapter, VersesService versesService) throws ApiException {
-        try {
-            Thread.sleep(1);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
         List<VerseSummary> loadedVerses = versesService.getVerses(chapter.getBibleId(), chapter.getId());
         List<VerseModel> versesMapped = loadedVerses.stream()
                 .map(VerseModel::from)

@@ -16,11 +16,6 @@ public class VerseModel {
     }
 
     public static VerseModel from(VerseSummary verseSummary) {
-        try {
-            Thread.sleep(1);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
         return new VerseModel()
                 .withId(verseSummary.getId());
     }
