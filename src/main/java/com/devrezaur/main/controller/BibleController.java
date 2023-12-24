@@ -58,7 +58,7 @@ public class BibleController {
     public String getBooks(@PathVariable String bibleId, Model m) {
         try {
             List<Book> books = bookService.getBibleBooks(bibleId);
-            List<BookModel> bookModels = BookModel.from(books);
+            List<BookModel> bookModels = BookModel.from(books, versesApi);
             m.addAttribute("books", bookModels);
         } catch (ApiException e) {
             addWarning(m);

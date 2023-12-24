@@ -1,8 +1,11 @@
 package com.devrezaur.main.viewmodel;
 
+import com.devrezaur.main.service.VersesService;
+import de.evangeliumstaucher.invoker.ApiException;
 import de.evangeliumstaucher.model.Book;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,16 +20,19 @@ public class BookModel {
     private String id;
     private String abbreviation;
 
-    public static List<BookModel> from(List<Book> books) {
+    public static List<BookModel> from(List<Book> books, VersesService versesService) throws ApiException {
 
-        return books.stream()
-                .map(BookModel::from)
-                .collect(Collectors.toList());
+        List<BookModel> list = new ArrayList<>();
+        for (Book book : books) {
+            BookModel from = from(book, versesService);
+            list.add(from);
+        }
+        return list;
     }
 
-    public static BookModel from(Book book) {
+    public static BookModel from(Book book, VersesService versesService) throws ApiException {
         return new BookModel()
-                .withChapters(ChapterModel.from(book.getChapters()))
+                .withChapters(ChapterModel.from(book.getChapters(), versesService))
                 .withAbbreviation(book.getAbbreviation())
                 .withId(book.getId());
     }

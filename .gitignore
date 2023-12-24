@@ -33,5 +33,5 @@ build/
 .vscode/
 
 
-
+cache/
 **/application-creds.properties

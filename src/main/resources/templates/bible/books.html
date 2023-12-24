@@ -46,7 +46,14 @@
                         </button>
                         <div class="collapse"
                              th:id="|${book.htmlId}.${chapter.label}|">
-
+                            <div th:each="verse : ${chapter.verses}">
+                                <button aria-expanded="false"
+                                        class="btn btn-secondary rounded-0 m-1"
+                                        th:href="${verse.url}"
+                                        th:text="${verse.label}"
+                                        type="button">
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>

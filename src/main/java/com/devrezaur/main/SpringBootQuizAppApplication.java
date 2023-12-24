@@ -4,10 +4,14 @@ import de.evangeliumstaucher.BiblesApi;
 import de.evangeliumstaucher.BooksApi;
 import de.evangeliumstaucher.ChaptersApi;
 import de.evangeliumstaucher.VersesApi;
+import okhttp3.Cache;
+import okhttp3.OkHttpClient;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+
+import java.io.File;
 
 @SpringBootApplication
 public class SpringBootQuizAppApplication {
@@ -20,29 +24,43 @@ public class SpringBootQuizAppApplication {
     }
 
     @Bean
-    public BiblesApi biblesApi() {
+    public OkHttpClient httpClient() {
+        Cache cache = new Cache(new File("cache/"), 1024 * 1024 * 1024);
+
+        OkHttpClient client = new OkHttpClient.Builder()
+                .cache(cache)
+                .build();
+        return client;
+    }
+
+    @Bean
+    public BiblesApi biblesApi(OkHttpClient httpClient) {
         BiblesApi api = new BiblesApi();
+        api.getApiClient().setHttpClient(httpClient);
         api.getApiClient().setApiKey(token);
         return api;
     }
 
     @Bean
-    public BooksApi booksApi() {
+    public BooksApi booksApi(OkHttpClient httpClient) {
         BooksApi api = new BooksApi();
+        api.getApiClient().setHttpClient(httpClient);
         api.getApiClient().setApiKey(token);
         return api;
     }
 
     @Bean
-    public ChaptersApi chaptersApi() {
+    public ChaptersApi chaptersApi(OkHttpClient httpClient) {
         ChaptersApi api = new ChaptersApi();
+        api.getApiClient().setHttpClient(httpClient);
         api.getApiClient().setApiKey(token);
         return api;
     }
 
     @Bean
-    public VersesApi versesApi() {
+    public VersesApi versesApi(OkHttpClient httpClient) {
         VersesApi api = new VersesApi();
+        api.getApiClient().setHttpClient(httpClient);
         api.getApiClient().setApiKey(token);
         return api;
     }
