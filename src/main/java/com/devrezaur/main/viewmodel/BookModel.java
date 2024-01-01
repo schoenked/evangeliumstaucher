@@ -10,14 +10,19 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@With
 @Data
-@With(AccessLevel.PRIVATE)
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class BookModel {
+public class BookModel extends BaseModel {
+
+    @Override
+    public String getId() {
+        return super.getId();
+    }
 
     private Collection<ChapterModel> chapters;
-    private String id;
     private String abbreviation;
 
     public static List<BookModel> from(List<Book> books, VersesService versesService) throws ApiException {
@@ -30,21 +35,18 @@ public class BookModel {
         return list;
     }
 
+    @Override
+    public void setId(String id) {
+        super.setId(id);
+    }
+
     public static BookModel from(Book book, VersesService versesService) throws ApiException {
-        return new BookModel()
-                .withChapters(ChapterModel.from(book.getChapters(), versesService))
-                .withAbbreviation(book.getAbbreviation())
-                .withId(book.getId());
+        BookModel bookModel = BookModel.builder()
+                .chapters(ChapterModel.from(book.getChapters(), versesService))
+                .abbreviation(book.getAbbreviation())
+                .build();
+        bookModel.setId(book.getId());
+        return bookModel;
     }
 
-    public String getHtmlId() {
-        String outreturn = id
-                .replace("1", "first")
-                .replace("2", "second")
-                .replace("3", "third")
-                .replace("4", "fourth")
-                .replace("5", "fifth");
-
-        return outreturn;
-    }
 }

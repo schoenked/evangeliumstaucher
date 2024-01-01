@@ -2,12 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta content="IE=edge" http-equiv="X-UA-Compatible">
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" th:href="@{/css/index.css}">
+    <head th:insert="head.html :: head"/>
     <title>Lies die Bibel</title>
 </head>
 <body>
@@ -39,20 +34,18 @@
                         <button aria-expanded="false"
                                 class="btn btn-secondary rounded-0 m-1"
                                 data-bs-toggle="collapse"
-                                th:aria-controls="|${book.htmlId}.${chapter.label}|"
-                                th:data-bs-target="|#${book.htmlId}.${chapter.label}|"
+                                onclick="loadVersesAjax(this.getAttribute('data-btnid'),this.getAttribute('data-verseurl'))"
+                                th:aria-controls="|${chapter.htmlId}|"
+                                th:data-bs-target="|#${chapter.htmlIdEscaped}|"
+                                th:data-btnid="|${chapter.htmlId}-btn|"
+                                th:data-verseurl="|${chapter.id}|"
+                                th:id="|${chapter.htmlId}-btn|"
                                 th:text="${chapter.label}"
                                 type="button">
                         </button>
                         <div class="collapse"
-                             th:id="|${book.htmlId}.${chapter.label}|">
-                            <div th:each="verse : ${chapter.verses}">
-                                <button aria-expanded="false"
-                                        class="btn btn-secondary rounded-0 m-1"
-                                        th:href="${verse.url}"
-                                        th:text="${verse.label}"
-                                        type="button">
-                                </button>
+                             th:id="|${chapter.htmlId}|">
+                            <div class="spinner-grow" role="status">
                             </div>
                         </div>
                     </div>
@@ -61,11 +54,17 @@
         </th:block>
     </div>
 </div>
-
+<script type="text/javascript">
+    function loadVersesAjax(chapterId, versesUrl) {
+        $.ajax({
+            url: versesUrl,
+            success: function (data) {
+                $('#' + chapterId).html(data);
+            }
+        });
+    }
+</script>
 <!-- Importing Footer -->
 <div th:insert="footer.html :: footer"></div>
-
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

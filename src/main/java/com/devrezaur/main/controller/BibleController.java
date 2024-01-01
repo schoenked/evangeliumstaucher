@@ -6,10 +6,13 @@ import com.devrezaur.main.service.BookService;
 import com.devrezaur.main.service.ChaptersService;
 import com.devrezaur.main.service.VersesService;
 import com.devrezaur.main.viewmodel.BookModel;
+import com.devrezaur.main.viewmodel.VerseModel;
 import de.evangeliumstaucher.invoker.ApiException;
 import de.evangeliumstaucher.model.BibleSummary;
 import de.evangeliumstaucher.model.Book;
+import de.evangeliumstaucher.model.VerseSummary;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,12 +28,13 @@ import java.util.stream.Collectors;
 import static java.util.stream.Collectors.groupingBy;
 
 @Controller()
+@Slf4j
 @RequiredArgsConstructor
 public class BibleController {
     private final BibleService bibleService;
     private final BookService bookService;
     private final ChaptersService chaptersService;
-    private final VersesService versesApi;
+    private final VersesService versesService;
 
     @GetMapping("/bible")
     public String getBible(Model m) {
@@ -49,21 +53,38 @@ public class BibleController {
 
             m.addAttribute("languages", groups);
         } catch (ApiException e) {
+            log.error("failed", e);
             addWarning(m);
         }
-        return "bible/bible.html";
+        return "bible.html";
+    }
+
+    @GetMapping("/bible/{bibleId}/{chapterId}")
+    public String getVerses(@PathVariable String bibleId, @PathVariable String chapterId, Model m) {
+        try {
+            List<VerseSummary> verses = versesService.getVerses(bibleId, chapterId);
+            List<VerseModel> veseeModels = verses.stream()
+                    .map(v -> VerseModel.from(v))
+                    .collect(Collectors.toList());
+            m.addAttribute("verses", veseeModels);
+        } catch (ApiException e) {
+            log.error("failed", e);
+            addWarning(m);
+        }
+        return "verses.html";
     }
 
     @GetMapping("/bible/{bibleId}")
     public String getBooks(@PathVariable String bibleId, Model m) {
         try {
             List<Book> books = bookService.getBibleBooks(bibleId);
-            List<BookModel> bookModels = BookModel.from(books, versesApi);
+            List<BookModel> bookModels = BookModel.from(books, versesService);
             m.addAttribute("books", bookModels);
         } catch (ApiException e) {
+            log.error("failed", e);
             addWarning(m);
         }
-        return "bible/books.html";
+        return "books.html";
     }
 
     private void addWarning(Model m) {
