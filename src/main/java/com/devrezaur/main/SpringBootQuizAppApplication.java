@@ -12,6 +12,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 import java.io.File;
+import java.util.concurrent.TimeUnit;
 
 @SpringBootApplication
 public class SpringBootQuizAppApplication {
@@ -29,6 +30,7 @@ public class SpringBootQuizAppApplication {
 
         OkHttpClient client = new OkHttpClient.Builder()
                 .cache(cache)
+                .callTimeout(60, TimeUnit.SECONDS)
                 .build();
         return client;
     }

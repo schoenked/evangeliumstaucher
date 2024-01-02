@@ -34,10 +34,10 @@
                         <button aria-expanded="false"
                                 class="btn btn-secondary rounded-0 m-1"
                                 data-bs-toggle="collapse"
-                                onclick="loadVersesAjax(this.getAttribute('data-btnid'),this.getAttribute('data-verseurl'))"
+                                onclick="loadVersesAjax(this.getAttribute('data-loaderid'),this.getAttribute('data-verseurl'))"
                                 th:aria-controls="|${chapter.htmlId}|"
                                 th:data-bs-target="|#${chapter.htmlIdEscaped}|"
-                                th:data-btnid="|${chapter.htmlId}-btn|"
+                                th:data-loaderid="|${chapter.htmlIdEscaped}-loader|"
                                 th:data-verseurl="|${chapter.id}|"
                                 th:id="|${chapter.htmlId}-btn|"
                                 th:text="${chapter.label}"
@@ -45,7 +45,9 @@
                         </button>
                         <div class="collapse"
                              th:id="|${chapter.htmlId}|">
-                            <div class="spinner-grow" role="status">
+                            <div th:id="|${chapter.htmlId}-loader|">
+                                <div class="spinner-grow" role="status">
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -55,11 +57,11 @@
     </div>
 </div>
 <script type="text/javascript">
-    function loadVersesAjax(chapterId, versesUrl) {
+    function loadVersesAjax(loaderid, versesUrl) {
         $.ajax({
             url: versesUrl,
             success: function (data) {
-                $('#' + chapterId).html(data);
+                $('#' + loaderid).html(data);
             }
         });
     }

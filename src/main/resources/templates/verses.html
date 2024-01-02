@@ -1,16 +1,11 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
 
-<body>
 <!--/*@thymesVar id="verses" type="java.util.List<com.devrezaur.main.viewmodel.VerseModel>"*/-->
 <div class="btn-group d-flex flex-wrap">
     <div th:each="verse : ${verses}">
         <button aria-expanded="false"
                 class="btn btn-secondary rounded-0 m-1"
+                th:text="${verse.label}"
                 type="button">
         </button>
     </div>
 </div>
-</body>
-</html>
