@@ -1,15 +1,14 @@
 package com.devrezaur.main.controller;
 
 import com.devrezaur.main.model.QuestionForm;
-import com.devrezaur.main.service.BibleService;
-import com.devrezaur.main.service.BookService;
-import com.devrezaur.main.service.ChaptersService;
-import com.devrezaur.main.service.VersesService;
+import com.devrezaur.main.service.*;
 import com.devrezaur.main.viewmodel.BookModel;
+import com.devrezaur.main.viewmodel.PassageModel;
 import com.devrezaur.main.viewmodel.VerseModel;
 import de.evangeliumstaucher.invoker.ApiException;
 import de.evangeliumstaucher.model.BibleSummary;
 import de.evangeliumstaucher.model.Book;
+import de.evangeliumstaucher.model.Passage;
 import de.evangeliumstaucher.model.VerseSummary;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +34,7 @@ public class BibleController {
     private final BookService bookService;
     private final ChaptersService chaptersService;
     private final VersesService versesService;
+    private final PassageService passageService;
 
     @GetMapping("/bible")
     public String getBible(Model m) {
@@ -59,8 +59,32 @@ public class BibleController {
         return "bible.html";
     }
 
+    @GetMapping("/bible/{bibleId}/passage/{passageId}")
+    public String getPassageView(@PathVariable String bibleId, @PathVariable String passageId, Model m) {
+        try {
+            Passage passage = passageService.getPassage(
+                    bibleId,
+                    passageId,
+                    null,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    null,
+                    false
+            );
+            PassageModel passageModel = PassageModel.from(passage);
+            m.addAttribute("passage", passageModel);
+        } catch (ApiException e) {
+            log.error("failed", e);
+            addWarning(m);
+        }
+        return "passage.html";
+    }
+
     @GetMapping("/bible/{bibleId}/{chapterId}")
-    public String getVerses(@PathVariable String bibleId, @PathVariable String chapterId, Model m) {
+    public String getVersesView(@PathVariable String bibleId, @PathVariable String chapterId, Model m) {
         try {
             List<VerseSummary> verses = versesService.getVerses(bibleId, chapterId);
             List<VerseModel> veseeModels = verses.stream()

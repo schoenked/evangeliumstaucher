@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <head th:insert="head.html :: head"/>
+    <title>Lies die Bibel</title>
+</head>
+<body>
+
+<!-- Importing NavBar -->
+<div th:insert="navbar.html :: navbar"></div>
+<!--show warning-->
+<div th:insert="warning.html"></div>
+
+<!-- Main Container Start -->
+<div class="main-container container py-5 px-4">
+    [(${passage.content})]
+</div>
+
+<!-- Importing Footer -->
+<div th:insert="footer.html :: footer"></div>
+</body>
+</html>

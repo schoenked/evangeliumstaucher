@@ -1,9 +1,6 @@
 package com.devrezaur.main;
 
-import de.evangeliumstaucher.BiblesApi;
-import de.evangeliumstaucher.BooksApi;
-import de.evangeliumstaucher.ChaptersApi;
-import de.evangeliumstaucher.VersesApi;
+import de.evangeliumstaucher.*;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,6 +30,14 @@ public class SpringBootQuizAppApplication {
                 .callTimeout(60, TimeUnit.SECONDS)
                 .build();
         return client;
+    }
+
+    @Bean
+    public PassagesApi passagesApi(OkHttpClient httpClient) {
+        PassagesApi api = new PassagesApi();
+        api.getApiClient().setHttpClient(httpClient);
+        api.getApiClient().setApiKey(token);
+        return api;
     }
 
     @Bean
