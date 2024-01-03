@@ -29,7 +29,7 @@ import static java.util.stream.Collectors.groupingBy;
 @Controller()
 @Slf4j
 @RequiredArgsConstructor
-public class BibleController {
+public class BibleController extends BaseController {
     private final BibleService bibleService;
     private final BookService bookService;
     private final ChaptersService chaptersService;
@@ -109,10 +109,6 @@ public class BibleController {
             addWarning(m);
         }
         return "books.html";
-    }
-
-    private void addWarning(Model m) {
-        m.addAttribute("warning", "so sorry");
     }
 
     //  @PostMapping("quiz")

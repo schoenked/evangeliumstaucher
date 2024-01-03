@@ -13,7 +13,7 @@ import java.util.List;
 public class BookService {
     private final BooksApi booksApi;
 
-    public List<Book> getBibleBooks(String bible) throws ApiException {
-        return booksApi.getBooks(bible, true, false).getData();
+    public List<Book> getBibleBooks(String bibleId) throws ApiException {
+        return booksApi.getBooks(bibleId, true, false).getData();
     }
 }
