@@ -1,11 +1,11 @@
-
 <!--/*@thymesVar id="verses" type="java.util.List<com.devrezaur.main.viewmodel.VerseModel>"*/-->
 <div class="btn-group d-flex flex-wrap">
     <div th:each="verse : ${verses}">
-        <button aria-expanded="false"
-                class="btn btn-secondary rounded-0 m-1"
-                th:text="${verse.label}"
-                type="button">
-        </button>
+        <a aria-expanded="false"
+           class="btn btn-dark rounded-0 m-1"
+           th:href="${verse.url}"
+           th:text="${verse.label}"
+           role="button">
+        </a>
     </div>
 </div>

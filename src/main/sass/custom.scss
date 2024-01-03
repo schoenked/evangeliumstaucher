@@ -1,0 +1,22 @@
+// Import Bootstrap functions and variables
+@import "bootstrap-5.3.2/scss/functions";
+@import "bootstrap-5.3.2/scss/variables";
+@import "bootstrap-5.3.2/scss/mixins";
+
+$primary: #FFFFD9; // set the $primary variable
+$secondary: #708E62;
+
+// merge with existing $theme-colors map
+$theme-colors: (
+        "primary": $primary,
+        "secondary": $secondary,
+        "success": $success,
+        "info": $info,
+        "warning": $warning,
+        "danger": $danger,
+        "light": $light,
+        "dark": $dark
+);
+
+// Import Bootstrap
+@import "bootstrap-5.3.2/scss/bootstrap";

@@ -19,12 +19,12 @@
         <th:block th:each="book : ${books}">
             <div class="col-3 p-0 text-nowrap">
                 <button aria-expanded="false"
-                        class="btn btn-secondary container rounded-0 m-1"
+                        class="btn btn-outline-secondary container rounded-0 m-1"
                         data-bs-toggle="collapse"
                         th:aria-controls="|${book.htmlId}|"
                         th:data-bs-target="|#${book.htmlId}|"
                         th:text="${book.abbreviation}"
-                        type="button">
+                        role="button">
                 </button>
             </div>
             <div class="collapse"
@@ -41,7 +41,7 @@
                                 th:data-verseurl="|${chapter.id}|"
                                 th:id="|${chapter.htmlId}-btn|"
                                 th:text="${chapter.label}"
-                                type="button">
+                                role="button">
                         </button>
                         <div class="collapse"
                              th:id="|${chapter.htmlId}|">
@@ -66,6 +66,7 @@
         });
     }
 </script>
+
 <!-- Importing Footer -->
 <div th:insert="footer.html :: footer"></div>
 </body>
