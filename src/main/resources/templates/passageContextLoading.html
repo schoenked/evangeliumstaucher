@@ -1,3 +1,9 @@
-<div th:fragment="passageContextLoading (pre)">
-  asdf
+<div th:fragment="passageContextLoading (path)">
+
+    <div th:id="|#waiting${path}|">
+        asdf
+    </div>
+    <script type="text/javascript">
+        setInterval(loadPassageAjax, 5000, "[(${path})]");
+    </script>
 </div>

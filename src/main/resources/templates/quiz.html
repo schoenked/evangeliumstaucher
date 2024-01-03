@@ -11,12 +11,23 @@
 
 <div class="container py-5 px-4">
     <div th:text="${quiz.verse.reference}"></div>
-	<div th:insert="passageContextLoading.html :: passageContextLoading('pre')"></div>
-	<div th:insert="passageContextLoading.html :: passageContextLoading('')"></div>
-	<div th:insert="passageContextLoading.html :: passageContextLoading('post')"></div>
+    <div th:insert="passageContextLoading.html :: passageContextLoading('pre')"></div>
+    <div th:insert="passageContextLoading.html :: passageContextLoading('')"></div>
+    <div th:insert="passageContextLoading.html :: passageContextLoading('post')"></div>
 </div>
 
 <!-- Importing Footer -->
 <div th:insert="footer.html :: footer"></div>
+<script>
+
+    function loadPassageAjax(path) {
+        $.ajax({
+            url: path,
+            success: function (data) {
+                $('#waiting' + path).html(data);
+            }
+        });
+    }
+</script>
 </body>
 </html>
