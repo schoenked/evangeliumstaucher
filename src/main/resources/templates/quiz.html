@@ -22,9 +22,9 @@
         }
     </script>
     <div th:text="${quiz.verse.reference}"></div>
-    <div th:insert="passageContextLoading.html :: passageContextLoading('pre')"></div>
-    <div th:insert="passageContextLoading.html :: passageContextLoading('')"></div>
-    <div th:insert="passageContextLoading.html :: passageContextLoading('post')"></div>
+    <div th:insert="passageContextLoading.html :: passageContextLoading('pre', '')"></div>
+    <div th:insert="passageContextLoading.html :: passageContextLoading('', '')"></div>
+    <div th:insert="passageContextLoading.html :: passageContextLoading('post', '')"></div>
 </div>
 
 <!-- Importing Footer -->

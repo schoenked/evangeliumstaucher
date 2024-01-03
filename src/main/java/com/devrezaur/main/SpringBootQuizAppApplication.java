@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.web.context.WebApplicationContext;
 
 import java.io.File;
 import java.util.concurrent.TimeUnit;
@@ -72,4 +75,11 @@ public class SpringBootQuizAppApplication {
         return api;
     }
 
+    @Bean
+    @Scope(
+            value = WebApplicationContext.SCOPE_SESSION,
+            proxyMode = ScopedProxyMode.TARGET_CLASS)
+    public QuizSession session() {
+        return new QuizSession();
+    }
 }

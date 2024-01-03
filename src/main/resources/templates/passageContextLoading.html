@@ -1,5 +1,5 @@
-<div th:fragment="passageContextLoading (path)">
-
+<div th:fragment="passageContextLoading (path, text)">
+    [(${text})]
     <div th:id="|waiting${path}|">
         <div class="spinner-grow" role="status">
         </div>
