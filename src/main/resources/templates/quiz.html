@@ -2,18 +2,21 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-	<head th:insert="head.html :: head"/>
-	<title>Quiz Page</title>
+    <head th:insert="head.html :: head"/>
+    <title>Quiz Page</title>
 </head>
 <body>
-	<!-- Importing NavBar -->
-	<div th:insert="navbar.html :: navbar"></div>
-	
-	<div class="container py-5 px-4">
-<div th:text="${quiz.verse.reference}"
-	</div>
+<!-- Importing NavBar -->
+<div th:insert="navbar.html :: navbar"></div>
 
-	<!-- Importing Footer -->
-	<div th:insert="footer.html :: footer"></div>
+<div class="container py-5 px-4">
+    <div th:text="${quiz.verse.reference}"></div>
+	<div th:insert="passageContextLoading.html :: passageContextLoading('pre')"></div>
+	<div th:insert="passageContextLoading.html :: passageContextLoading('')"></div>
+	<div th:insert="passageContextLoading.html :: passageContextLoading('post')"></div>
+</div>
+
+<!-- Importing Footer -->
+<div th:insert="footer.html :: footer"></div>
 </body>
 </html>
