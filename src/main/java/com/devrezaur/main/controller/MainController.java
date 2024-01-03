@@ -28,7 +28,7 @@ public class MainController {
     public String home() {
         return "index.html";
     }
-
+/*
     @PostMapping("/quiz")
     public String quiz(@RequestParam String username, Model m, RedirectAttributes ra) {
         if (username.equals("")) {
@@ -41,7 +41,7 @@ public class MainController {
         m.addAttribute("username", username);
 
         return "quiz.html";
-    }
+    }*/
 
     @PostMapping("/submit")
     public String submit(@ModelAttribute QuestionForm qForm, Model m) {

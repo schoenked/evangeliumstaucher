@@ -10,6 +10,17 @@
 <div th:insert="navbar.html :: navbar"></div>
 
 <div class="container py-5 px-4">
+
+    <script>
+        function loadPassageAjax(path) {
+            $.ajax({
+                url: path,
+                success: function (data) {
+                    $('#waiting' + path).html(data);
+                }
+            });
+        }
+    </script>
     <div th:text="${quiz.verse.reference}"></div>
     <div th:insert="passageContextLoading.html :: passageContextLoading('pre')"></div>
     <div th:insert="passageContextLoading.html :: passageContextLoading('')"></div>
@@ -18,16 +29,5 @@
 
 <!-- Importing Footer -->
 <div th:insert="footer.html :: footer"></div>
-<script>
-
-    function loadPassageAjax(path) {
-        $.ajax({
-            url: path,
-            success: function (data) {
-                $('#waiting' + path).html(data);
-            }
-        });
-    }
-</script>
 </body>
 </html>

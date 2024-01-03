@@ -6,11 +6,11 @@ import com.devrezaur.main.viewmodel.BookModel;
 import com.devrezaur.main.viewmodel.PassageModel;
 import com.devrezaur.main.viewmodel.VerseModel;
 import de.evangeliumstaucher.invoker.ApiException;
-import de.evangeliumstaucher.model.BibleSummary;
 import de.evangeliumstaucher.model.Book;
 import de.evangeliumstaucher.model.Passage;
 import de.evangeliumstaucher.model.VerseSummary;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
+import lombok.experimental.SuperBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,42 +21,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
-
-import static java.util.stream.Collectors.groupingBy;
 
 @Controller()
 @Slf4j
-@RequiredArgsConstructor
 public class BibleController extends BaseController {
-    private final BibleService bibleService;
-    private final BookService bookService;
-    private final ChaptersService chaptersService;
-    private final VersesService versesService;
-    private final PassageService passageService;
+
+    public BibleController(BibleService bibleService, BookService bookService, ChaptersService chaptersService, VersesService versesService, PassageService passageService) {
+        super(bibleService, bookService, chaptersService, versesService, passageService);
+    }
 
     @GetMapping("/bible")
     public String getBible(Model m) {
-        try {
-            List<BibleSummary> bibles = bibleService.getBibles();
-
-            List<Map.Entry<String, List<BibleSummary>>> groups = bibles.stream()
-                    .collect(groupingBy(bibleSummary -> bibleSummary.getLanguage().getNameLocal()))
-                    .entrySet().stream()
-                    .sorted((o1, o2) -> {
-                        if (o1.getKey().equals("Deutsch")) return -1;
-                        if (o2.getKey().equals("Deutsch")) return 1;
-                        return o1.getKey().compareTo(o2.getKey());
-                    })
-                    .collect(Collectors.toList());
-
-            m.addAttribute("languages", groups);
-        } catch (ApiException e) {
-            log.error("failed", e);
-            addWarning(m);
-        }
-        return "bible.html";
+        return super.getBible(m);
     }
 
     @GetMapping("/bible/{bibleId}/passage/{passageId}")
@@ -110,10 +87,10 @@ public class BibleController extends BaseController {
         }
         return "books.html";
     }
-
+/*
     //  @PostMapping("quiz")
     public String quiz(@RequestParam String username, Model m, RedirectAttributes ra) {
-     /*   if (username.equals("")) {
+     *//*   if (username.equals("")) {
             ra.addFlashAttribute("warning", "You must enter your name");
             return "redirect:/";
         }
@@ -121,9 +98,9 @@ public class BibleController extends BaseController {
         QuestionForm qForm = qService.getQuestions();
         m.addAttribute("qForm", qForm);
         m.addAttribute("username", username);
-*/
+*//*
         return "quiz.html";
-    }
+    }*/
 
     //@PostMapping("submit")
     public String submit(@ModelAttribute QuestionForm qForm, Model m) {

@@ -10,16 +10,16 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-@Controller()
+@Controller
 @Slf4j
-@RequiredArgsConstructor
 public class QuizController extends BaseController {
-    private final BibleService bibleService;
-    private final BookService bookService;
-    private final ChaptersService chaptersService;
-    private final VersesService versesService;
-    private final PassageService passageService;
+
     private final QuizService quizService;
+
+    public QuizController(BibleService bibleService, BookService bookService, ChaptersService chaptersService, VersesService versesService, PassageService passageService, QuizService quizService) {
+        super(bibleService, bookService, chaptersService, versesService, passageService);
+        this.quizService = quizService;
+    }
 
     @GetMapping("/quiz/{bibleId}")
     public String getQuiz(@PathVariable String bibleId, Model m) {
@@ -31,5 +31,10 @@ public class QuizController extends BaseController {
             addWarning(m);
         }
         return "quiz.html";
+    }
+
+    @GetMapping("/quiz")
+    public String getQuiz(Model m) {
+        return super.getBible(m);
     }
 }
