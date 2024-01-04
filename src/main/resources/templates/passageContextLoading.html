@@ -1,10 +1,10 @@
-<div th:fragment="passageContextLoading (path, text)">
+<div th:fragment="passageContextLoading (path, text, isLoadingPassage, delayTime)">
     [(${text})]
-    <div th:id="|waiting${path}|">
+    <div th:if="${isLoadingPassage}" th:id="|waiting${path}|">
         <div class="spinner-grow" role="status">
         </div>
         <script type="text/javascript">
-            setTimeout(loadPassageAjax, 5000, "[(${path})]");
+            setTimeout(loadPassageAjax, [(${delayTime})], "[(${path})]");
         </script>
     </div>
 </div>

@@ -1,5 +1,6 @@
 package com.devrezaur.main.service;
 
+import com.devrezaur.main.controller.Part;
 import com.devrezaur.main.model.Question;
 import com.devrezaur.main.model.QuestionForm;
 import com.devrezaur.main.model.Result;
@@ -10,6 +11,7 @@ import com.devrezaur.main.viewmodel.QuizModel;
 import de.evangeliumstaucher.invoker.ApiException;
 import de.evangeliumstaucher.model.Book;
 import de.evangeliumstaucher.model.ChapterSummary;
+import de.evangeliumstaucher.model.Passage;
 import de.evangeliumstaucher.model.VerseSummary;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
@@ -79,5 +81,14 @@ public class QuizService {
         VerseSummary verse = ListUtils.randomItem(verses);
         quizModel = QuizModel.builder().verse(verse).build();
         return quizModel;
+    }
+
+    public Passage getPassage(QuizModel currentQuiz, String bibleId, Part part) throws ApiException {
+        String passageId = currentQuiz.getVerse().getId();
+        switch (part) {
+            case pre -> passageId = "GEN.1.3";
+            case post -> passageId = "GEN.1.4";
+        }
+        return passageService.getPassage(bibleId, passageId, null, false, false, false, false, false, null, false);
     }
 }
