@@ -1,10 +1,13 @@
+<!--/*@thymesVar id="path" type="com.devrezaur.main.controller.Part"*/-->
+
 <div th:fragment="passageContextLoading (path, text, isLoadingPassage, delayTime)">
-    [(${text})]
-    <div th:if="${isLoadingPassage}" th:id="|waiting${path}|">
+    <div th:if="${path != 'pre'}">[(${text})]</div>
+    <div th:id="|waiting${path}|" th:if="${isLoadingPassage}">
         <div class="spinner-grow" role="status">
         </div>
         <script type="text/javascript">
             setTimeout(loadPassageAjax, [(${delayTime})], "[(${path})]");
         </script>
     </div>
+    <div th:if="${path == 'pre'}">[(${text})]</div>
 </div>

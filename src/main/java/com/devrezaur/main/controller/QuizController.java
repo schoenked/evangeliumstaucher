@@ -53,7 +53,7 @@ public class QuizController extends BaseController {
         try {
             Passage passage = quizService.getPassage(getQuizModel(), bibleId, part);
             m.addAttribute("text", passage.getContent());
-            m.addAttribute("path", part);
+            m.addAttribute("path", part.name());
             m.addAttribute("isLoadingPassage", part != Part.origin);
             m.addAttribute("delayTime", 5000);
         } catch (ApiException e) {
