@@ -8,7 +8,7 @@
 <body>
 <!-- Importing NavBar -->
 <div th:insert="navbar.html :: navbar"></div>
-
+<!--/*@thymesVar id="question" type="com.devrezaur.main.viewmodel.RunningQuestion"*/-->
 <div class="container py-5 px-4">
 
     <script>
@@ -21,7 +21,7 @@
             });
         }
     </script>
-    <div th:text="${quiz.verse.reference}"></div>
+    <div th:text="${question.verse.reference}"></div>
     <div th:insert="passageContextLoading.html :: passageContextLoading('pre', '', true, 5000)"></div>
     <div th:insert="passageContextLoading.html :: passageContextLoading('origin', '', true, 0)"></div>
     <div th:insert="passageContextLoading.html :: passageContextLoading('post', '', true, 5000)"></div>

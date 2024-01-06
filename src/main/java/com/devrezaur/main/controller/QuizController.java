@@ -2,6 +2,7 @@ package com.devrezaur.main.controller;
 
 import com.devrezaur.main.service.*;
 import com.devrezaur.main.viewmodel.QuizModel;
+import com.devrezaur.main.viewmodel.RunningQuestion;
 import de.evangeliumstaucher.invoker.ApiException;
 import de.evangeliumstaucher.model.Passage;
 import lombok.extern.slf4j.Slf4j;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpSession;
 
@@ -24,23 +26,26 @@ public class QuizController extends BaseController {
         this.session = session;
     }
 
-    private QuizModel getQuizModel() {
-        return (QuizModel) session.getAttribute("QuizSession");
+    private String getUserId() {
+        return session.getId();
     }
 
     private void setQuizModel(QuizModel model) {
         session.setAttribute("QuizSession", model);
     }
 
-    @GetMapping("/quiz/{bibleId}/")
-    public String getQuiz(@PathVariable String bibleId, Model m) {
+    /**
+     * Creates new Quiz for the given bible
+     *
+     * @param bibleId
+     * @param m
+     * @return
+     */
+    @GetMapping("/quiz/create/{bibleId}/")
+    public RedirectView getQuiz(@PathVariable String bibleId, Model m) {
         try {
-            if (getQuizModel() == null) {
-                QuizModel quizModel = quizService.getQuiz(bibleId);
-                setQuizModel(quizModel);
-                m.addAttribute("quiz", getQuizModel());
-                return "quiz.html";
-            }
+            QuizModel quizModel = quizService.createQuiz(bibleId);
+            return new RedirectView("/quiiz/" + quizModel.getId() + "/0");
         } catch (ApiException e) {
             log.error("failed", e);
             addWarning(m);
@@ -48,10 +53,23 @@ public class QuizController extends BaseController {
         return null;
     }
 
-    @GetMapping("/quiz/{bibleId}/{part}")
-    public String getQuizPost(@PathVariable String bibleId, @PathVariable Part part, Model m) {
+    @GetMapping("/quiz/{quizId}/{qId}/}")
+    public String getQuestion(@PathVariable String quizId, Integer qId, Model m) {
         try {
-            Passage passage = quizService.getPassage(getQuizModel(), bibleId, part);
+            RunningQuestion runningQuestion = quizService.getQuestion(getUserId(), quizId, qId);
+            m.addAttribute("question", runningQuestion);
+            return "quiz.html";
+        } catch (Exception e) {
+            log.error("failed", e);
+            addWarning(m);
+        }
+        return null;
+    }
+
+    @GetMapping("/quiz/{quizId}/{qId}/{part}")
+    public String getQuizPost(@PathVariable String quizId, Integer qId, @PathVariable Part part, Model m) {
+        try {
+            Passage passage = quizService.getPassage(getUserId(), quizId,qId, part);
             m.addAttribute("text", passage.getContent());
             m.addAttribute("path", part.name());
             m.addAttribute("isLoadingPassage", part != Part.origin);
@@ -63,7 +81,7 @@ public class QuizController extends BaseController {
         return "passageContextLoading.html";
     }
 
-    @GetMapping("/quiz/")
+    @GetMapping("/quiz/create/")
     public String getQuiz(Model m) {
         return super.getBible(m);
     }

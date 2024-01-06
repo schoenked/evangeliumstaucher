@@ -1,25 +1,21 @@
 package com.devrezaur.main.service;
 
+import com.devrezaur.main.Fibonacci;
 import com.devrezaur.main.controller.Part;
-import com.devrezaur.main.model.Question;
-import com.devrezaur.main.model.QuestionForm;
-import com.devrezaur.main.model.Result;
-import com.devrezaur.main.repository.QuestionRepo;
-import com.devrezaur.main.repository.ResultRepo;
+import com.devrezaur.main.model.*;
 import com.devrezaur.main.utils.ListUtils;
 import com.devrezaur.main.viewmodel.QuizModel;
+import com.devrezaur.main.viewmodel.RunningGame;
+import com.devrezaur.main.viewmodel.RunningQuestion;
 import de.evangeliumstaucher.invoker.ApiException;
-import de.evangeliumstaucher.model.Book;
-import de.evangeliumstaucher.model.ChapterSummary;
 import de.evangeliumstaucher.model.Passage;
-import de.evangeliumstaucher.model.VerseSummary;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Sort;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Random;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -29,25 +25,13 @@ public class QuizService {
     private final ChaptersService chaptersService;
     private final VersesService versesService;
     private final PassageService passageService;
-    private final QuestionForm qForm;
-    private final QuestionRepo qRepo;
-    private final ResultRepo rRepo;
+    private final HashMap<String, QuizModel> quizzes = new HashMap<>();
+    private final HashMap<String, RunningGame> userGameplays = new HashMap<>();
 
-    public QuestionForm getQuestions() {
-        List<Question> allQues = qRepo.findAll();
-        List<Question> qList = new ArrayList<Question>();
-
-        Random random = new Random();
-
-        for (int i = 0; i < 5; i++) {
-            int rand = random.nextInt(allQues.size());
-            qList.add(allQues.get(rand));
-            allQues.remove(rand);
-        }
-
-        qForm.setQuestions(qList);
-
-        return qForm;
+    @NotNull
+    private static String getGampelayId(String userId, String quizId) {
+        String gampelayId = quizId + userId;
+        return gampelayId;
     }
 
     public int getResult(QuestionForm qForm) {
@@ -63,32 +47,74 @@ public class QuizService {
         Result saveResult = new Result();
         saveResult.setUsername(result.getUsername());
         saveResult.setTotalCorrect(result.getTotalCorrect());
-        rRepo.save(saveResult);
+        //    rRepo.save(saveResult);
     }
 
-    public List<Result> getTopScore() {
-        List<Result> sList = rRepo.findAll(Sort.by(Sort.Direction.DESC, "totalCorrect"));
-
-        return sList;
-    }
-
-    public QuizModel getQuiz(String bibleId) throws ApiException {
-
+    public QuizModel createQuiz(String bibleId) throws ApiException {
         QuizModel quizModel = null;
-        Book book = ListUtils.randomItem(bookService.getBibleBooks(bibleId));
-        ChapterSummary chapter = ListUtils.randomItem(book.getChapters());
-        List<VerseSummary> verses = versesService.getVerses(bibleId, chapter.getId());
-        VerseSummary verse = ListUtils.randomItem(verses);
-        quizModel = QuizModel.builder().verse(verse).build();
+        BibleWrap bible = bookService.getBible(bibleId);
+        BookWrap book = ListUtils.randomItem(bible.getBooks());
+        ChapterWrap chapter = ListUtils.randomItem(book.getChapters());
+        List<VerseWrap> verses = chapter.getVerses(versesService);
+        VerseWrap verse = ListUtils.randomItem(verses);
+
+        quizModel = QuizModel.builder()
+                .id(UUID.randomUUID().toString())
+                .verses(List.of(verse))
+                .build();
+        quizzes.put(quizModel.getId(), quizModel);
         return quizModel;
     }
 
-    public Passage getPassage(QuizModel currentQuiz, String bibleId, Part part) throws ApiException {
-        String passageId = currentQuiz.getVerse().getId();
+    public Passage getPassage(RunningQuestion q, Part part) throws ApiException {
+        String passageId = q.getVerse().getVerseSummary().getId();
+
         switch (part) {
-            case pre -> passageId = "GEN.1.3";
-            case post -> passageId = "GEN.1.4";
+            case pre -> {
+                q.setExtendingPrePassageCount(q.getExtendingPrePassageCount() + 1);
+                int steps = Fibonacci.nthFibonacciTerm(q.getExtendingPrePassageCount()) * -1;
+                VerseWrap preVerse = q.getPrecontextVerse().stepVerses(steps);
+                passageId = preVerse.getVerseSummary().getId()
+                        + "-"
+                        + q.getPrecontextVerse().getVerseSummary().getId();
+
+                q.setPrecontextVerse(preVerse);
+            }
+            case post -> {
+                passageId = "GEN.1.4";
+                q.setExtendingPostPassageCount(q.getExtendingPostPassageCount() + 1);
+                int steps = Fibonacci.nthFibonacciTerm(q.getExtendingPostPassageCount());
+                VerseWrap postVerse = q.getPostcontextVerse().stepVerses(steps);
+                passageId = q.getPostcontextVerse().getVerseSummary().getId()
+                        + "-"
+                        + postVerse.getVerseSummary().getId();
+
+            }
         }
-        return passageService.getPassage(bibleId, passageId, null, false, false, false, false, false, null, false);
+
+        return passageService.getPassage(q.getVerse().getVerseSummary().getBibleId(), passageId, null, false, false, false, false, false, null, false);
+    }
+
+    public RunningQuestion getQuestion(String userId, String quizId, Integer qId) {
+        RunningQuestion runningQuestion;
+        String gampelayId = getGampelayId(userId, quizId);
+        if (userGameplays.containsKey(gampelayId)) {
+            userGameplays.put(gampelayId, new RunningGame().withQuizModel(quizzes.get(quizId)));
+        }
+        RunningGame gameplay = userGameplays.get(gampelayId);
+        if (gameplay.getQuestions().size() - 1 >= qId) {
+            //already started
+            runningQuestion = gameplay.getQuestions().get(qId);
+        } else {
+            VerseWrap verse = gameplay.getQuizModel().getVerses().get(qId);
+            runningQuestion = new RunningQuestion();
+            gameplay.getQuestions().add(runningQuestion);
+            runningQuestion.setVerse(verse);
+        }
+        return runningQuestion;
+    }
+
+    public Passage getPassage(String userId, String quizId, Integer qId, Part part) throws ApiException {
+        return getPassage(userGameplays.get(getGampelayId(userId, quizId)).getQuestions().get(qId), part);
     }
 }

@@ -53,13 +53,13 @@ public class MainController {
 
         return "result.html";
     }
-
+/*
     @GetMapping("/score")
     public String score(Model m) {
         List<Result> sList = qService.getTopScore();
         m.addAttribute("sList", sList);
 
         return "scoreboard.html";
-    }
+    }*/
 
 }
