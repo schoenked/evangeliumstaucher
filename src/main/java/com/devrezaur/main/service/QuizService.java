@@ -98,10 +98,11 @@ public class QuizService {
     public RunningQuestion getQuestion(String userId, String quizId, Integer qId) {
         RunningQuestion runningQuestion;
         String gampelayId = getGampelayId(userId, quizId);
-        if (userGameplays.containsKey(gampelayId)) {
+        if (!userGameplays.containsKey(gampelayId)) {
             userGameplays.put(gampelayId, new RunningGame().withQuizModel(quizzes.get(quizId)));
         }
         RunningGame gameplay = userGameplays.get(gampelayId);
+
         if (gameplay.getQuestions().size() - 1 >= qId) {
             //already started
             runningQuestion = gameplay.getQuestions().get(qId);

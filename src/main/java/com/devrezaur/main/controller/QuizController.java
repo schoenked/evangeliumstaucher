@@ -45,7 +45,7 @@ public class QuizController extends BaseController {
     public RedirectView getQuiz(@PathVariable String bibleId, Model m) {
         try {
             QuizModel quizModel = quizService.createQuiz(bibleId);
-            return new RedirectView("/quiiz/" + quizModel.getId() + "/0");
+            return new RedirectView("/quiz/" + quizModel.getId() + "/0/");
         } catch (ApiException e) {
             log.error("failed", e);
             addWarning(m);
@@ -54,9 +54,9 @@ public class QuizController extends BaseController {
     }
 
     @GetMapping("/quiz/{quizId}/{qId}/")
-    public String getQuestion(@PathVariable String quizId, Integer qId, Model m) {
+    public String getQuestion(@PathVariable String quizId, @PathVariable String qId, Model m) {
         try {
-            RunningQuestion runningQuestion = quizService.getQuestion(getUserId(), quizId, qId);
+            RunningQuestion runningQuestion = quizService.getQuestion(getUserId(), quizId, Integer.parseInt(qId));
             m.addAttribute("question", runningQuestion);
             return "quiz.html";
         } catch (Exception e) {
@@ -67,9 +67,9 @@ public class QuizController extends BaseController {
     }
 
     @GetMapping("/quiz/{quizId}/{qId}/{part}")
-    public String getQuizPost(@PathVariable String quizId, Integer qId, @PathVariable Part part, Model m) {
+    public String getQuizPost(@PathVariable String quizId, @PathVariable String qId, @PathVariable Part part, Model m) {
         try {
-            Passage passage = quizService.getPassage(getUserId(), quizId,qId, part);
+            Passage passage = quizService.getPassage(getUserId(), quizId, Integer.parseInt(qId), part);
             m.addAttribute("text", passage.getContent());
             m.addAttribute("path", part.name());
             m.addAttribute("isLoadingPassage", part != Part.origin);
