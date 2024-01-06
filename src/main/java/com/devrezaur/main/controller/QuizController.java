@@ -53,7 +53,7 @@ public class QuizController extends BaseController {
         return null;
     }
 
-    @GetMapping("/quiz/{quizId}/{qId}/}")
+    @GetMapping("/quiz/{quizId}/{qId}/")
     public String getQuestion(@PathVariable String quizId, Integer qId, Model m) {
         try {
             RunningQuestion runningQuestion = quizService.getQuestion(getUserId(), quizId, qId);
