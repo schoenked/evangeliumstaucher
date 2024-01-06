@@ -73,7 +73,7 @@ public class QuizService {
             case pre -> {
                 q.setExtendingPrePassageCount(q.getExtendingPrePassageCount() + 1);
                 int steps = Fibonacci.nthFibonacciTerm(q.getExtendingPrePassageCount()) * -1;
-                VerseWrap preVerse = q.getPrecontextVerse().stepVerses(steps);
+                VerseWrap preVerse = q.getPrecontextVerse().stepVerses(steps, versesService);
                 passageId = preVerse.getVerseSummary().getId()
                         + "-"
                         + q.getPrecontextVerse().getVerseSummary().getId();
@@ -84,7 +84,7 @@ public class QuizService {
                 passageId = "GEN.1.4";
                 q.setExtendingPostPassageCount(q.getExtendingPostPassageCount() + 1);
                 int steps = Fibonacci.nthFibonacciTerm(q.getExtendingPostPassageCount());
-                VerseWrap postVerse = q.getPostcontextVerse().stepVerses(steps);
+                VerseWrap postVerse = q.getPostcontextVerse().stepVerses(steps, versesService);
                 passageId = q.getPostcontextVerse().getVerseSummary().getId()
                         + "-"
                         + postVerse.getVerseSummary().getId();

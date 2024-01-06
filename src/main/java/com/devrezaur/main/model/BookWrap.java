@@ -20,4 +20,22 @@ public class BookWrap {
         }
         return chapters;
     }
+
+    public BookWrap getPrevious() {
+        int myIndex = bible.getBooks().indexOf(this);
+        if (myIndex == 0) {
+            return null;
+        } else {
+            return bible.getBooks().get(myIndex - 1);
+        }
+    }
+
+    public BookWrap getNext() {
+        int myIndex = bible.getBooks().indexOf(this);
+        if (myIndex == bible.getBooks().size() - 1) {
+            return null;
+        } else {
+            return bible.getBooks().get(myIndex + 1);
+        }
+    }
 }

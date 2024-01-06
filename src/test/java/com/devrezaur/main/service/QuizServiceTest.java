@@ -4,6 +4,7 @@ import com.devrezaur.main.model.BibleWrap;
 import com.devrezaur.main.model.BookWrap;
 import com.devrezaur.main.model.ChapterWrap;
 import com.devrezaur.main.model.VerseWrap;
+import de.evangeliumstaucher.invoker.ApiException;
 import de.evangeliumstaucher.model.Book;
 import de.evangeliumstaucher.model.ChapterSummary;
 import de.evangeliumstaucher.model.VerseSummary;
@@ -12,6 +13,8 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.stream.IntStream;
+
+import static com.google.common.truth.Truth.assertThat;
 
 public class QuizServiceTest {
 
@@ -45,13 +48,26 @@ public class QuizServiceTest {
                 .mapToObj(iBook -> createBook(iBook, bible))
                 .toList();
         bible.setBooks(books);
-
     }
 
     @Test
-    public void testGetDiff() {
-      /*  quizService.getVerse(1,
-                bible.getBooksWrapped().get(2).getChapterWrapList().get(2).getVerses().get(2));*/
+    public void testGetDiff() throws ApiException {
+        VerseWrap verse = bible.getBooks().get(2).getChapters().get(2).getVerses().get(2);
+        VerseWrap stepped = verse.stepVerses(-1, null);
+        assertThat(stepped.getVerseSummary().getId()).isEqualTo("3.3.2");
+        verse = stepped;
+        stepped = verse.stepVerses(-1, null);
+        assertThat(stepped.getVerseSummary().getId()).isEqualTo("3.3.1");
+        verse = stepped;
+        stepped = verse.stepVerses(-1, null);
+        assertThat(stepped.getVerseSummary().getId()).isEqualTo("3.2.9");
+        verse = stepped;
+        stepped = verse.stepVerses(10, null);
+        assertThat(stepped.getVerseSummary().getId()).isEqualTo("3.4.1");
+        verse = stepped;
+        stepped = verse.stepVerses(-100000, null);
+        assertThat(stepped).isNull();
+
     }
 
 }
