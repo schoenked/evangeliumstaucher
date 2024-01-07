@@ -21,7 +21,7 @@
             });
         }
     </script>
-    <div th:text="${question.verse.reference}"></div>
+    <div th:text="${question.verse.verseSummary.reference}"></div>
     <div th:insert="passageContextLoading.html :: passageContextLoading('pre', '', true, 5000)"></div>
     <div th:insert="passageContextLoading.html :: passageContextLoading('origin', '', true, 0)"></div>
     <div th:insert="passageContextLoading.html :: passageContextLoading('post', '', true, 5000)"></div>
