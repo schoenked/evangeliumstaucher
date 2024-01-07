@@ -111,6 +111,8 @@ public class QuizService {
             runningQuestion = new RunningQuestion();
             gameplay.getQuestions().add(runningQuestion);
             runningQuestion.setVerse(verse);
+            runningQuestion.setPrecontextVerse(verse);
+            runningQuestion.setPostcontextVerse(verse);
         }
         return runningQuestion;
     }
