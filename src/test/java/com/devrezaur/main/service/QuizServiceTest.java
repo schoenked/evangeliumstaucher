@@ -4,6 +4,7 @@ import com.devrezaur.main.model.BibleWrap;
 import com.devrezaur.main.model.BookWrap;
 import com.devrezaur.main.model.ChapterWrap;
 import com.devrezaur.main.model.VerseWrap;
+import com.devrezaur.main.viewmodel.RunningQuestion;
 import de.evangeliumstaucher.invoker.ApiException;
 import de.evangeliumstaucher.model.Book;
 import de.evangeliumstaucher.model.ChapterSummary;
@@ -67,7 +68,24 @@ public class QuizServiceTest {
         verse = stepped;
         stepped = verse.stepVerses(-100000, null);
         assertThat(stepped).isNull();
+    }
 
+    @Test
+    public void testCalcDiff() throws ApiException {
+        RunningQuestion runningQuestion = new RunningQuestion();
+        runningQuestion.setVerse(bible.getBooks().get(0).getChapters().get(0).getVerses().get(0));
+        for (int i = 0; i <= 728; i++) {
+            VerseWrap v = runningQuestion.getVerse().stepVerses(i, null);
+            runningQuestion.setSelectedVerse(v);
+            assertThat(runningQuestion.diffVerses(null)).isEqualTo(i);
+        }
+        runningQuestion.setVerse(bible.getBooks().get(2).getChapters().get(2).getVerses().get(2));
+        runningQuestion.setSelectedVerse(bible.getBooks().get(2).getChapters().get(2).getVerses().get(1));
+        assertThat(runningQuestion.diffVerses(null)).isEqualTo(1);
+        runningQuestion.setSelectedVerse(bible.getBooks().get(2).getChapters().get(1).getVerses().get(2));
+        assertThat(runningQuestion.diffVerses(null)).isEqualTo(8);
+        runningQuestion.setSelectedVerse(bible.getBooks().get(4).getChapters().get(1).getVerses().get(0));
+        assertThat(runningQuestion.diffVerses(null)).isEqualTo(151);
     }
 
 }

@@ -14,8 +14,12 @@ public class VerseWrap {
     private final ChapterWrap chapter;
     private final VerseSummary verseSummary;
 
+    public int getIndex(VersesService versesService) throws ApiException {
+        return chapter.getVerses(versesService).indexOf(this);
+    }
+
     public VerseWrap stepVerses(int steps, VersesService versesService) throws ApiException {
-        int myIndex = chapter.getVerses(versesService).indexOf(this);
+        int myIndex = getIndex(versesService);
         if (steps == 0) {
             return this;
         } else if (steps < 0) {
@@ -30,6 +34,7 @@ public class VerseWrap {
                 return chapter.getVerses(versesService).get(myIndex - 1).stepVerses(++steps, versesService);
             }
         } else if (steps > 0) {
+            //check if last
             if (myIndex == chapter.getVerses(versesService).size() - 1) {
                 ChapterWrap next = chapter.getNext();
                 if (next == null) {
@@ -42,5 +47,15 @@ public class VerseWrap {
             }
         }
         return null;
+    }
+
+    public int diffVerses(VerseWrap to, VersesService versesService) throws ApiException {
+        int diff = 0;
+        if (this.getChapter() == to.getChapter()) {
+            diff += Math.abs(getIndex(versesService) - to.getIndex(versesService));
+        } else {
+            diff += getChapter().diffVerses(this, to, versesService);
+        }
+        return diff;
     }
 }

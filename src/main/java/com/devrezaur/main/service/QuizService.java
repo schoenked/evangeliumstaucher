@@ -73,19 +73,19 @@ public class QuizService {
             case pre -> {
                 q.setExtendingPrePassageCount(q.getExtendingPrePassageCount() + 1);
                 int steps = Fibonacci.nthFibonacciTerm(q.getExtendingPrePassageCount()) * -1;
-                VerseWrap preVerse = q.getPrecontextVerse().stepVerses(steps, versesService);
+                VerseWrap preVerse = q.getContextStartVerse().stepVerses(steps, versesService);
                 passageId = preVerse.getVerseSummary().getId()
                         + "-"
-                        + q.getPrecontextVerse().getVerseSummary().getId();
+                        + q.getContextStartVerse().getVerseSummary().getId();
 
-                q.setPrecontextVerse(preVerse);
+                q.setContextStartVerse(preVerse);
             }
             case post -> {
                 passageId = "GEN.1.4";
                 q.setExtendingPostPassageCount(q.getExtendingPostPassageCount() + 1);
                 int steps = Fibonacci.nthFibonacciTerm(q.getExtendingPostPassageCount());
-                VerseWrap postVerse = q.getPostcontextVerse().stepVerses(steps, versesService);
-                passageId = q.getPostcontextVerse().getVerseSummary().getId()
+                VerseWrap postVerse = q.getContextEndVerse().stepVerses(steps, versesService);
+                passageId = q.getContextEndVerse().getVerseSummary().getId()
                         + "-"
                         + postVerse.getVerseSummary().getId();
 
@@ -111,8 +111,8 @@ public class QuizService {
             runningQuestion = new RunningQuestion();
             gameplay.getQuestions().add(runningQuestion);
             runningQuestion.setVerse(verse);
-            runningQuestion.setPrecontextVerse(verse);
-            runningQuestion.setPostcontextVerse(verse);
+            runningQuestion.setContextStartVerse(verse);
+            runningQuestion.setContextEndVerse(verse);
         }
         return runningQuestion;
     }

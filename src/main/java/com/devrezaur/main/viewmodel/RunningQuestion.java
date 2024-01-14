@@ -1,6 +1,8 @@
 package com.devrezaur.main.viewmodel;
 
 import com.devrezaur.main.model.VerseWrap;
+import com.devrezaur.main.service.VersesService;
+import de.evangeliumstaucher.invoker.ApiException;
 import lombok.*;
 
 import java.util.Date;
@@ -11,10 +13,17 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RunningQuestion {
-    private Date startedAt = new Date();
     int extendingPrePassageCount = 0;
     int extendingPostPassageCount = 0;
+    private Date startedAt = new Date();
+    private Date answeredAt;
     private VerseWrap verse;
-    private VerseWrap precontextVerse;
-    private VerseWrap postcontextVerse;
+    private VerseWrap selectedVerse;
+    private VerseWrap contextStartVerse;
+    private VerseWrap contextEndVerse;
+
+    public int diffVerses(VersesService versesService) throws ApiException {
+
+        return verse.diffVerses(selectedVerse, versesService);
+    }
 }
