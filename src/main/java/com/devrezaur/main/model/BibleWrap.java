@@ -8,4 +8,8 @@ import java.util.List;
 @Data
 public class BibleWrap extends Bible {
     private List<BookWrap> books;
+
+    public BookWrap getLast() {
+        return books.get(books.size() - 1);
+    }
 }

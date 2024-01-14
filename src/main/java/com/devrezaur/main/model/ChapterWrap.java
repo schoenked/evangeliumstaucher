@@ -32,7 +32,7 @@ public class ChapterWrap {
             if (fromBook.getIndex() < toBook.getIndex()) {
                 diff += diffVerses(toBook.getChapters().get(0).getVerses(versesService).get(0), to, versesService);
             } else {
-                diff += diffVerses(from, fromBook.getLast().getLast(versesService), versesService);
+                diff += diffVerses(to, toBook.getLast().getLast(versesService), versesService);
             }
         } else {
             if (fromChapter.getIndex() < toChapter.getIndex()) {
@@ -65,6 +65,7 @@ public class ChapterWrap {
                         })
                         .sum();
                 diff += Math.abs(to.getIndex(versesService) - toChapter.getLast(versesService).getIndex(versesService));
+                diff++;
             } else {
                 diff += from.diffVerses(to, versesService);
             }
