@@ -1,6 +1,7 @@
 package com.devrezaur.main.controller;
 
 import com.devrezaur.main.service.*;
+import com.devrezaur.main.viewmodel.PassageModel;
 import com.devrezaur.main.viewmodel.QuizModel;
 import com.devrezaur.main.viewmodel.RunningQuestion;
 import de.evangeliumstaucher.invoker.ApiException;
@@ -70,10 +71,13 @@ public class QuizController extends BaseController {
     public String getQuizPost(@PathVariable String quizId, @PathVariable String qId, @PathVariable Part part, Model m) {
         try {
             Passage passage = quizService.getPassage(getUserId(), quizId, Integer.parseInt(qId), part);
-            m.addAttribute("text", passage.getContent());
-            m.addAttribute("path", part.name());
-            m.addAttribute("isLoadingPassage", part != Part.origin);
-            m.addAttribute("delayTime", 5000);
+            PassageModel model = PassageModel.from(passage);
+            model.setPath(part.name());
+            if (part != Part.origin) {
+                PassageModel.PassageLoader loader = new PassageModel.PassageLoader();
+                model.setPassageLoader(loader);
+            }
+            m.addAttribute("model", model);
         } catch (ApiException e) {
             log.error("failed", e);
             addWarning(m);
