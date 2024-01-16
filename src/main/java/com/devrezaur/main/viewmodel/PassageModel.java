@@ -16,9 +16,11 @@ public class PassageModel extends BaseModel {
     private PassageLoader passageLoader;
 
     public static PassageModel from(Passage passage) {
-        return PassageModel.builder()
-                .content(passage.getContent())
-                .build();
+        PassageModelBuilder builder = PassageModel.builder();
+        if (passage != null) {
+            builder.content(passage.getContent());
+        }
+        return builder.build();
     }
 
     @Data

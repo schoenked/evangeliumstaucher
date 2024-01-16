@@ -73,7 +73,7 @@ public class QuizController extends BaseController {
             Passage passage = quizService.getPassage(getUserId(), quizId, Integer.parseInt(qId), part);
             PassageModel model = PassageModel.from(passage);
             model.setPath(part.name());
-            if (part != Part.origin) {
+            if (part != Part.origin || model.getContent() == null) {
                 PassageModel.PassageLoader loader = new PassageModel.PassageLoader();
                 model.setPassageLoader(loader);
             }
