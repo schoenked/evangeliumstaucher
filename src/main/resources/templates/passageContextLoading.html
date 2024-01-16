@@ -1,7 +1,7 @@
 <!--/*@thymesVar id="model" type="com.devrezaur.main.viewmodel.PassageModel"*/-->
 
 <div th:fragment="passageContextLoading (model)">
-    <div th:if="${model.path != 'pre'}">[(${model.content})]</div>
+    <div th:if="${model.path != 'pre'}" th:class="${model.htmlClasses}" th:text="${model.content}"></div>
     <div th:id="|waiting${model.path}|" th:if="${model.passageLoader}">
         <div class="spinner-grow" role="status">
         </div>
@@ -9,5 +9,5 @@
             setTimeout(loadPassageAjax, [(${model.passageLoader.delay})], "[(${model.path})]");
         </script>
     </div>
-    <div th:if="${model.path == 'pre'}">[(${model.content})]</div>
+    <div th:if="${model.path == 'pre'}" th:class="${model.htmlClasses}" th:text="${model.content}"></div>
 </div>
