@@ -2,34 +2,35 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-	<head th:insert="head.html :: head"/>
-	<title>Home Page</title>
+    <head th:insert="head.html :: head"/>
+    <title>Home Page</title>
 </head>
 <body>
-	
-	<!-- Importing NavBar -->
-	<div th:insert="navbar.html :: navbar"></div>
 
-	<!-- Main Container Start -->
-	<div class="main-container container py-5 px-4">
-		<div class="image-box">
-			<img class="img-fluid" th:src="@{/images/diver-sd.jpg}" alt="image">
-		</div>
-		<div class="text-box">
-			<h1 class="mb-5 text-center">Klippensprung in die Tiefen in die Bibel</h1>
-			<p>
-				Bist du bereit dein Wissen der Bibel zu prüfen und zu erweitern. Stell dich der Herausforderung und generiere den eigenes Quiz.
-			</p>
-			<form class="card bg-dark py-5 px-4" action="/quiz" method="POST">
-				<p>Gib zuerst deinen Namen ein</p>
-				<input type="text" name="username" />
-				<p class="text-danger warning" th:if="${warning}" th:text="${warning}"></p>
-				<button type="submit" class="btn btn-warning">Start Quiz</button>
-			</form>
-		</div>
-	</div>
-	
-	<!-- Importing Footer -->
-	<div th:insert="footer.html :: footer"></div>
+<!-- Importing NavBar -->
+<div th:insert="navbar.html :: navbar"></div>
+
+<!-- Main Container Start -->
+<div class="main-container container py-5 px-4">
+    <div class="image-box">
+        <img alt="image" class="img-fluid" th:src="@{/images/diver-sd.jpg}">
+    </div>
+    <p>
+        Petrus sagt zu Jesus Christus:
+        "Du hast Worte des ewigen Lebens"
+        Joh 6,68
+    </p>
+    <button class="bg-secondary text-white">Tauchgang starten</button>
+    <div class="text-box">
+        <h1 class="mb-5 text-center">Klippensprung in die Tiefen in die Bibel</h1>
+        <p>
+            Bist du bereit dein Wissen der Bibel zu prüfen und zu erweitern? Stell dich der Herausforderung und
+            generiere den eigenes Quiz.
+        </p>
+    </div>
+</div>
+
+<!-- Importing Footer -->
+<div th:insert="footer.html :: footer"></div>
 </body>
 </html>
