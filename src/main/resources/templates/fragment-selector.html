@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<body>
+
+<!--/*@thymesVar id="books" type="java.util.List<com.devrezaur.main.viewmodel.BookModel>"*/-->
+<div th:fragment="selector (books)">
+    <th:block th:each="book : ${books}">
+        <div class="col-3 p-0 text-nowrap">
+            <button aria-expanded="false"
+                    class="btn btn-outline-secondary container rounded-0 m-1"
+                    data-bs-toggle="collapse"
+                    role="button"
+                    th:aria-controls="|${book.htmlId}|"
+                    th:data-bs-target="|#${book.htmlId}|"
+                    th:text="${book.abbreviation}">
+            </button>
+        </div>
+        <div class="collapse"
+             th:id="${book.htmlId}">
+            <div class="btn-group d-flex flex-wrap">
+                <div th:each="chapter : ${book.chapters}">
+                    <button aria-expanded="false"
+                            class="btn btn-secondary rounded-0 m-1"
+                            data-bs-toggle="collapse"
+                            onclick="loadVersesAjax(this.getAttribute('data-loaderid'),this.getAttribute('data-verseurl'))"
+                            role="button"
+                            th:aria-controls="|${chapter.htmlId}|"
+                            th:data-bs-target="|#${chapter.htmlIdEscaped}|"
+                            th:data-loaderid="|${chapter.htmlIdEscaped}-loader|"
+                            th:data-verseurl="|${chapter.id}|"
+                            th:id="|${chapter.htmlId}-btn|"
+                            th:text="${chapter.label}">
+                    </button>
+                    <div class="collapse"
+                         th:id="|${chapter.htmlId}|">
+                        <div th:id="|${chapter.htmlId}-loader|">
+                            <div class="spinner-grow" role="status">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </th:block>
+</div>
+</html>

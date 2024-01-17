@@ -23,7 +23,7 @@ public class BaseController {
     protected final PassageService passageService;
 
     protected void addWarning(Model m) {
-        m.addAttribute("warning", "so sorry");
+        m.addAttribute("warning", "Leider kann die Bibel zurzeit nicht geladen werden. Versuch es bitte gleich nochmal.");
     }
 
     protected String getBible(Model m) {

@@ -24,6 +24,7 @@
     <div th:insert="passageContextLoading.html :: passageContextLoading(${question.pre})"></div>
     <div th:insert="passageContextLoading.html :: passageContextLoading(${question.origin})"></div>
     <div th:insert="passageContextLoading.html :: passageContextLoading(${question.post})"></div>
+    <div th:insert="fragment-selector.html :: selector (${question.books})"></div>
 </div>
 
 <!-- Importing Footer -->
