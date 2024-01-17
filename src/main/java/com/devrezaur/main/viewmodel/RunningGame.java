@@ -27,10 +27,10 @@ public class RunningGame {
 
     private List<BookModel> getBooks(VersesService versesService) {
         if (books == null) {
-            quizModel.getBible().getBooks().stream()
+            books = quizModel.getBible().getBooks().stream()
                     .map(bookWrap -> {
                         try {
-                            return BookModel.from(bookWrap.getBook(),versesService);
+                            return BookModel.from(bookWrap.getBook(), versesService);
                         } catch (ApiException e) {
                             throw new RuntimeException(e);
                         }

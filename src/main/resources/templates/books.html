@@ -19,16 +19,6 @@
         <div th:insert="fragment-selector.html :: selector (${books})"></div>
     </div>
 </div>
-<script type="text/javascript">
-    function loadVersesAjax(loaderid, versesUrl) {
-        $.ajax({
-            url: versesUrl,
-            success: function (data) {
-                $('#' + loaderid).html(data);
-            }
-        });
-    }
-</script>
 
 <!-- Importing Footer -->
 <div th:insert="footer.html :: footer"></div>

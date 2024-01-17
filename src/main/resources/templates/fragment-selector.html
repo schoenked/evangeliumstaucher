@@ -44,5 +44,16 @@
             </div>
         </div>
     </th:block>
+
+    <script type="text/javascript">
+        function loadVersesAjax(loaderid, versesUrl) {
+            $.ajax({
+                url: versesUrl,
+                success: function (data) {
+                    $('#' + loaderid).html(data);
+                }
+            });
+        }
+    </script>
 </div>
 </html>
