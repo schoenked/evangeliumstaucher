@@ -1,6 +1,7 @@
 package com.devrezaur.main.controller;
 
 import com.devrezaur.main.service.*;
+import com.devrezaur.main.viewmodel.BibleModel;
 import de.evangeliumstaucher.invoker.ApiException;
 import de.evangeliumstaucher.model.BibleSummary;
 import lombok.RequiredArgsConstructor;
@@ -30,8 +31,10 @@ public class BaseController {
         try {
             List<BibleSummary> bibles = bibleService.getBibles();
 
-            List<Map.Entry<String, List<BibleSummary>>> groups = bibles.stream()
-                    .collect(groupingBy(bibleSummary -> bibleSummary.getLanguage().getNameLocal()))
+            List<Map.Entry<String, List<BibleModel>>> groups = bibles.stream()
+                    .map(BibleModel::from)
+                    .peek(b -> b.setUrl("/bible/" + b.getUrl()))
+                    .collect(groupingBy(BibleModel::getLanguage))
                     .entrySet().stream()
                     .sorted((o1, o2) -> {
                         if (o1.getKey().equals("Deutsch")) return -1;

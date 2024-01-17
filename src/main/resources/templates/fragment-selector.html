@@ -29,7 +29,7 @@
                             th:aria-controls="|${chapter.htmlId}|"
                             th:data-bs-target="|#${chapter.htmlIdEscaped}|"
                             th:data-loaderid="|${chapter.htmlIdEscaped}-loader|"
-                            th:data-verseurl="|${chapter.id}|"
+                            th:data-verseurl="|/bible/${chapter.bibleId}/${chapter.id}|"
                             th:id="|${chapter.htmlId}-btn|"
                             th:text="${chapter.label}">
                     </button>

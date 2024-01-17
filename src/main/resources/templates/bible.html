@@ -16,13 +16,13 @@
 <div class="main-container container py-5 px-4">
     <h1>Übersetzung wählen</h1>
 
-    <!--/*@thymesVar id="languages" type="java.util.List<java.util.Map.Entry<String, java.util.List<de.evangeliumstaucher.model.BibleSummary>>>"*/-->
+    <!--/*@thymesVar id="languages" type="java.util.List<java.util.Map.Entry<String, java.util.List<de.evangeliumstaucher.viewmodel.Bible>>>"*/-->
     <div th:each="langSet : ${languages}">
         <div th:text="${langSet.key}">
         </div>
         <div th:each="bible : ${langSet.value}">
-        <a th:href="|/bible/${bible.id}/|"
-             th:text="|${bible.abbreviationLocal} - ${bible.nameLocal} - ${bible.descriptionLocal}|">
+        <a th:href="${bible.url}"
+             th:text="${bible.label}">
         </a>
     </div>
     </div>

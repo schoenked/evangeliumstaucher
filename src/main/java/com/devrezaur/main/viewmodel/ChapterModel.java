@@ -18,6 +18,7 @@ public class ChapterModel extends BaseModel {
 
     private String label;
     private List<VerseModel> verses;
+    private String bibleId;
 
     public static Collection<ChapterModel> from(List<ChapterSummary> chapters, VersesService versesService) throws ApiException {
         List<ChapterModel> list = new ArrayList<>();
@@ -30,6 +31,7 @@ public class ChapterModel extends BaseModel {
 
     public static ChapterModel from(ChapterSummary chapter, VersesService versesService) throws ApiException {
         ChapterModel chapterModel = new ChapterModel()
+                .withBibleId(chapter.getBibleId())
                 .withLabel(chapter.getNumber());
         chapterModel.setId(chapter.getId());
         return chapterModel;
