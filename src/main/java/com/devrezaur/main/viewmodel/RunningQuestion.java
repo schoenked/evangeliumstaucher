@@ -22,9 +22,9 @@ public class RunningQuestion {
     private VerseWrap selectedVerse;
     private VerseWrap contextStartVerse;
     private VerseWrap contextEndVerse;
-    private PassageModel pre = new PassageModel("", "",Part.pre.name(), new PassageModel.PassageLoader());
-    private PassageModel post = new PassageModel("", "",Part.post.name(), new PassageModel.PassageLoader());
-    private PassageModel origin = new PassageModel("", "bg-dark bg-opacity-25 border border-primary border-4 p-2",Part.origin.name(), new PassageModel.PassageLoader().withDelay(0));
+    private PassageModel pre = new PassageModel("", "", Part.pre.name(), new PassageModel.PassageLoader());
+    private PassageModel post = new PassageModel("", "", Part.post.name(), new PassageModel.PassageLoader());
+    private PassageModel origin = new PassageModel("", "", Part.origin.name(), new PassageModel.PassageLoader().withDelay(0));
 
     public int diffVerses(VersesService versesService) throws ApiException {
 
