@@ -33,7 +33,7 @@ public class BaseController {
 
             List<Map.Entry<String, List<BibleModel>>> groups = bibles.stream()
                     .map(BibleModel::from)
-                    .peek(b -> b.setUrl("/bible/" + b.getUrl()))
+                    .peek(b -> b.setUrl(b.getUrl()))
                     .collect(groupingBy(BibleModel::getLanguage))
                     .entrySet().stream()
                     .sorted((o1, o2) -> {

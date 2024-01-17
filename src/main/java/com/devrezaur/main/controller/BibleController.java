@@ -31,7 +31,7 @@ public class BibleController extends BaseController {
         super(bibleService, bookService, chaptersService, versesService, passageService);
     }
 
-    @GetMapping("/bible")
+    @GetMapping("/bible/")
     public String getBible(Model m) {
         return super.getBible(m);
     }
