@@ -30,9 +30,9 @@ public class SpringBootQuizAppApplication {
 
         OkHttpClient client = new OkHttpClient.Builder()
                 .cache(cache)
-                .callTimeout(60, TimeUnit.SECONDS)
                 .readTimeout(60, TimeUnit.SECONDS)
                 .connectTimeout(60, TimeUnit.SECONDS)
+                .writeTimeout(60, TimeUnit.SECONDS)
                 .build();
         return client;
     }
