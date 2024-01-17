@@ -61,6 +61,7 @@ public class QuizService {
         quizModel = QuizModel.builder()
                 .id(UUID.randomUUID().toString())
                 .verses(List.of(verse))
+                .bible(bible)
                 .build();
         quizzes.put(quizModel.getId(), quizModel);
         return quizModel;
@@ -115,8 +116,8 @@ public class QuizService {
             runningQuestion = gameplay.getQuestions().get(qId);
         } else {
             VerseWrap verse = gameplay.getQuizModel().getVerses().get(qId);
-            runningQuestion = new RunningQuestion();
-            gameplay.getQuestions().add(runningQuestion);
+
+            runningQuestion =    gameplay.createRunningQuestion(versesService);
             runningQuestion.setVerse(verse);
             runningQuestion.setContextStartVerse(verse);
             runningQuestion.setContextEndVerse(verse);

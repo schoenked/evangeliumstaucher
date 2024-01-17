@@ -7,6 +7,7 @@ import de.evangeliumstaucher.invoker.ApiException;
 import lombok.*;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 @With
@@ -25,6 +26,7 @@ public class RunningQuestion {
     private PassageModel pre = new PassageModel("", "", Part.pre.name(), new PassageModel.PassageLoader());
     private PassageModel post = new PassageModel("", "", Part.post.name(), new PassageModel.PassageLoader());
     private PassageModel origin = new PassageModel("", "", Part.origin.name(), new PassageModel.PassageLoader().withDelay(0));
+    private List<BookModel> books;
 
     public int diffVerses(VersesService versesService) throws ApiException {
 

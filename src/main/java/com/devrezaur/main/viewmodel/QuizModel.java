@@ -1,5 +1,6 @@
 package com.devrezaur.main.viewmodel;
 
+import com.devrezaur.main.model.BibleWrap;
 import com.devrezaur.main.model.VerseWrap;
 import lombok.*;
 
@@ -11,8 +12,9 @@ import java.util.List;
 @With
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor
+@RequiredArgsConstructor
 public class QuizModel {
     private String id;
+    private final BibleWrap bible;
     private List<VerseWrap> verses = new ArrayList<>();
 }
