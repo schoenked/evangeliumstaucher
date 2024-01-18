@@ -7,6 +7,7 @@ import com.devrezaur.main.model.VerseWrap;
 import com.devrezaur.main.service.VersesService;
 import de.evangeliumstaucher.invoker.ApiException;
 import lombok.*;
+import lombok.extern.slf4j.Slf4j;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -18,6 +19,7 @@ import java.util.Locale;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Slf4j
 public class RunningQuestion {
     int extendingPrePassageCount = 0;
     int extendingPostPassageCount = 0;
@@ -44,12 +46,15 @@ public class RunningQuestion {
         List<BookWrap> booklist = verse.getChapter().getBook().getBible().getBooks();
         for (BookWrap bookWrap : booklist) {
             if (verseId.startsWith(bookWrap.getBook().getId())) {
+                log.debug("book: " + bookWrap.getBook());
                 for (ChapterWrap chapter : bookWrap.getChapters()) {
                     if (verseId.startsWith(chapter.getChapter().getId())) {
+                        log.debug("chapter: " + chapter.getChapter());
                         for (VerseWrap verse : chapter.getVerses(versesService)) {
                             if (verseId.startsWith(verse.getVerseSummary().getId())) {
+                                log.debug("verse: " + verse.getVerseSummary());
                                 setSelectedVerse(verse);
-                                break;
+                                return;
                             }
                         }
                         break;
@@ -58,6 +63,7 @@ public class RunningQuestion {
                 break;
             }
         }
+        throw new IllegalArgumentException("verseId is not valid " + verseId);
     }
 
     public String getTimespan() {

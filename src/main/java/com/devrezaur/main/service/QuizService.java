@@ -117,7 +117,7 @@ public class QuizService {
         } else {
             VerseWrap verse = gameplay.getQuizModel().getVerses().get(qId);
 
-            runningQuestion =    gameplay.createRunningQuestion(versesService);
+            runningQuestion = gameplay.createRunningQuestion(versesService);
             runningQuestion.setVerse(verse);
             runningQuestion.setContextStartVerse(verse);
             runningQuestion.setContextEndVerse(verse);

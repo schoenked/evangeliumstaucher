@@ -74,7 +74,7 @@ public class BookWrap {
     }
 
     private int getVersesCount(VersesService versesService) {
-        return chapters.stream()
+        return getChapters().stream()
                 .mapToInt(chapterWrap -> {
                     try {
                         return chapterWrap.getVersesCount(versesService);
@@ -86,6 +86,6 @@ public class BookWrap {
     }
 
     public ChapterWrap getLast() {
-        return chapters.get(chapters.size() - 1);
+        return getChapters().get(getChapters().size() - 1);
     }
 }
