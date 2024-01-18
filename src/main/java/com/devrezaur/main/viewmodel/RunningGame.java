@@ -35,6 +35,7 @@ public class RunningGame {
                             throw new RuntimeException(e);
                         }
                     })
+                    .peek(book -> book.setPrefixVerses("select"))
                     .collect(Collectors.toList());
         }
         return books;

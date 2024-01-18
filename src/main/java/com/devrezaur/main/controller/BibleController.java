@@ -9,8 +9,6 @@ import de.evangeliumstaucher.invoker.ApiException;
 import de.evangeliumstaucher.model.Book;
 import de.evangeliumstaucher.model.Passage;
 import de.evangeliumstaucher.model.VerseSummary;
-import lombok.AllArgsConstructor;
-import lombok.experimental.SuperBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,7 +16,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -61,11 +58,16 @@ public class BibleController extends BaseController {
     }
 
     @GetMapping("/bible/{bibleId}/{chapterId}")
-    public String getVersesView(@PathVariable String bibleId, @PathVariable String chapterId, Model m) {
+    public String getVersesView(@PathVariable String bibleId, @PathVariable String chapterId, @RequestParam("prefix") String prefix, Model m) {
         try {
             List<VerseSummary> verses = versesService.getVerses(bibleId, chapterId);
             List<VerseModel> veseeModels = verses.stream()
                     .map(v -> VerseModel.from(v))
+                    .peek(v -> {
+                        if (prefix != null) {
+                            v.setUrl("./" + prefix + "/" + v.getUrl());
+                        }
+                    })
                     .collect(Collectors.toList());
             m.addAttribute("verses", veseeModels);
         } catch (ApiException e) {
@@ -80,6 +82,7 @@ public class BibleController extends BaseController {
         try {
             List<Book> books = bookService.getBibleBooks(bibleId);
             List<BookModel> bookModels = BookModel.from(books, versesService);
+            bookModels.forEach(bookModel -> bookModel.setPrefixVerses("passage"));
             m.addAttribute("books", bookModels);
         } catch (ApiException e) {
             log.error("failed", e);

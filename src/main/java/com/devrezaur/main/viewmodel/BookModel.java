@@ -8,7 +8,6 @@ import lombok.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @With
 @Data
@@ -17,13 +16,9 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 public class BookModel extends BaseModel {
 
-    @Override
-    public String getId() {
-        return super.getId();
-    }
-
     private Collection<ChapterModel> chapters;
     private String abbreviation;
+    private String prefixVerses;
 
     public static List<BookModel> from(List<Book> books, VersesService versesService) throws ApiException {
 
@@ -35,11 +30,6 @@ public class BookModel extends BaseModel {
         return list;
     }
 
-    @Override
-    public void setId(String id) {
-        super.setId(id);
-    }
-
     public static BookModel from(Book book, VersesService versesService) throws ApiException {
         BookModel bookModel = BookModel.builder()
                 .chapters(ChapterModel.from(book.getChapters(), versesService))
@@ -47,6 +37,16 @@ public class BookModel extends BaseModel {
                 .build();
         bookModel.setId(book.getId());
         return bookModel;
+    }
+
+    @Override
+    public String getId() {
+        return super.getId();
+    }
+
+    @Override
+    public void setId(String id) {
+        super.setId(id);
     }
 
 }

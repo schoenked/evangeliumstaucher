@@ -21,6 +21,6 @@ public class VerseModel {
         return new VerseModel()
                 .withId(verseSummary.getId())
                 .withLabel(versenr)
-                .withUrl("./passage/" + verseSummary.getId());
+                .withUrl(verseSummary.getId());
     }
 }
