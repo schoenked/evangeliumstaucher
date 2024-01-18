@@ -3,6 +3,7 @@ package com.devrezaur.main.controller;
 import com.devrezaur.main.service.*;
 import com.devrezaur.main.viewmodel.PassageModel;
 import com.devrezaur.main.viewmodel.QuizModel;
+import com.devrezaur.main.viewmodel.ResultModel;
 import com.devrezaur.main.viewmodel.RunningQuestion;
 import de.evangeliumstaucher.invoker.ApiException;
 import de.evangeliumstaucher.model.Passage;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpSession;
+import java.time.LocalDateTime;
+import java.util.Date;
 
 @Controller
 @Slf4j
@@ -86,6 +89,28 @@ public class QuizController extends BaseController {
             addWarning(m);
         }
         return "passageContextLoading.html";
+    }
+
+    @GetMapping("/quiz/{quizId}/{qId}/select/{verseId}")
+    public String selectVerseGetResult(@PathVariable String quizId, @PathVariable String qId, @PathVariable String verseId, Model m) {
+        try {
+            log.debug("selectVerseGetResult() called with: quizId = [" + quizId + "], qId = [" + qId + "], verseId = [" + verseId + "], m = [" + m + "]");
+
+            RunningQuestion runningQuestion = quizService.getQuestion(getUserId(), quizId, Integer.parseInt(qId));
+            runningQuestion.setAnsweredAt(LocalDateTime.now());
+            runningQuestion.setSelectedVerse(verseId, versesService);
+
+            ResultModel resultModel = new ResultModel();
+            resultModel.setVerseDiff(runningQuestion.diffVerses(versesService));
+            resultModel.setTimespan(runningQuestion.getTimespan());
+            resultModel.setPoints(runningQuestion.getPoints(versesService));
+            resultModel.setUrlNext("");
+            m.addAttribute("model", resultModel);
+        } catch (ApiException e) {
+            log.error("failed", e);
+            addWarning(m);
+        }
+        return "result.html";
     }
 
     @GetMapping("/quiz/create/")

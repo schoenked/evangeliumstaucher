@@ -3,42 +3,31 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <head th:insert="head.html :: head"/>
-    <title>Result Page</title>
+    <title>Ergebnis</title>
 </head>
 <body>
 
 <!-- Importing NavBar -->
 <div th:insert="navbar.html :: navbar"></div>
+<!--/*@thymesVar id="model" type="com.devrezaur.main.viewmodel.ResultModel"*/-->
 
 <!-- Main Container Start -->
 <div class="main-container container py-5 px-4">
     <div class="card bg-dark text-light py-5 px-4 mx-auto">
         <img alt="image" th:src="@{/images/diver-sd.jpg}">
-
-        <h3 class="bg-danger text-center mb-5 p-2">Your Score</h3>
-
-        <div class="d-flex justify-content-center">
-            <p>Participant name:&nbsp;&nbsp;</p>
-            <p th:if="${result}" th:text="${result.username}"></p>
-        </div>
-
-        <div class="d-flex justify-content-center">
-            <p>Total correct answer:&nbsp;&nbsp;</p>
-            <p th:if="${result}" th:text="${result.totalCorrect}"></p>
-        </div>
-
-        <div class="d-flex justify-content-center">
-            <p>Total false answer:&nbsp;&nbsp;</p>
-            <p th:if="${result}" th:text="5 - ${result.totalCorrect}"></p>
-        </div>
+        <p>
+            Deine Antwort liegt
+        <h1 th:text="${model.verseDiff}"></h1>
+        Verse daneben
+        </p>
+        <p>
+            Deine benötigte Zeit betrug:
+        <h2 th:text="${model.timespan}"></h2>
+        </p>
 
         <div class="d-flex justify-content-center mt-4">
-            <button class="btn btn-outline-warning mx-auto" th:onclick="window.location.href='/score'"
-                    type="button">View Score Board
-            </button>
-            <button class="btn btn-outline-warning mx-auto" th:onclick="window.location.href='/'"
-                    type="button">Back to Homepage
-            </button>
+            <a class="btn btn-outline-warning mx-auto" role="button" th:href="${model.urlNext}"
+               type="button">weiter tauchen</a>
         </div>
     </div>
 </div>
