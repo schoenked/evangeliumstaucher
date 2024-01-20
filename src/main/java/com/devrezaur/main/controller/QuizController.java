@@ -88,11 +88,11 @@ public class QuizController extends BaseController {
     }
 
     @GetMapping("/quiz/{quizId}/{qId}/select/{verseId}")
-    public String selectVerseGetResult(@PathVariable String quizId, @PathVariable String qId, @PathVariable String verseId, Model m) {
+    public String selectVerseGetResult(@PathVariable String quizId, @PathVariable Integer qId, @PathVariable String verseId, Model m) {
         try {
             log.debug("selectVerseGetResult() called with: quizId = [" + quizId + "], qId = [" + qId + "], verseId = [" + verseId + "], m = [" + m + "]");
 
-            RunningQuestion runningQuestion = quizService.getQuestion(getUserId(), quizId, Integer.parseInt(qId));
+            RunningQuestion runningQuestion = quizService.getQuestion(getUserId(), quizId, qId);
             runningQuestion.setAnsweredAt(LocalDateTime.now());
             runningQuestion.setSelectedVerse(verseId, versesService);
 
