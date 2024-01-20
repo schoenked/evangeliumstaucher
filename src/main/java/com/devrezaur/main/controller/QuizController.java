@@ -100,6 +100,7 @@ public class QuizController extends BaseController {
             resultModel.setVerseDiff(runningQuestion.getDiffVerses(versesService));
             resultModel.setTimespan(runningQuestion.getTimespan());
             resultModel.setPoints(runningQuestion.getPoints(quizService));
+            resultModel.setPointsSum(quizService.getSumPointsRunningGame(runningQuestion));
             resultModel.setSelectedVerse(runningQuestion.getSelectedVerse().getText());
             resultModel.setSearchedVerse(runningQuestion.getVerse().getText());
             resultModel.setUrlNext(runningQuestion.getRunningGame().getQuizModel().getUrl() + (qId + 1) + "/#theverse");

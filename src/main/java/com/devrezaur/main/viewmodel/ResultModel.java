@@ -14,6 +14,7 @@ public class ResultModel {
     private String timespan;
     private int verseDiff;
     private int points;
+    private int pointsSum;
     private String urlNext;
     private String searchedVerse;
     private String selectedVerse;

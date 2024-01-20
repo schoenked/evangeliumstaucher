@@ -174,4 +174,17 @@ public class QuizService {
         int timePoints = (int) (Math.pow(duration.getSeconds(), 2));
         return timePoints;
     }
+
+    public int getSumPointsRunningGame(RunningQuestion runningQuestion) {
+        int sum = runningQuestion.getRunningGame().getQuestions().stream()
+                .mapToInt(q -> {
+                    try {
+                        return q.getPoints(this);
+                    } catch (ApiException e) {
+                        throw new RuntimeException(e);
+                    }
+                })
+                .sum();
+        return sum;
+    }
 }
