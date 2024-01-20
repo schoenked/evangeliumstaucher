@@ -59,7 +59,7 @@ public class QuizController extends BaseController {
             RunningQuestion runningQuestion = quizService.getQuestion(getUserId(), quizId, Integer.parseInt(qId));
             m.addAttribute("question", runningQuestion);
             return "quiz.html";
-        } catch (Exception e) {
+        } catch (ApiException e) {
             log.error("failed", e);
             addWarning(m);
         }

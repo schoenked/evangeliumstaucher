@@ -1,8 +1,8 @@
 package com.devrezaur.main.service;
 
-import com.devrezaur.main.utils.Fibonacci;
 import com.devrezaur.main.controller.Part;
 import com.devrezaur.main.model.*;
+import com.devrezaur.main.utils.Fibonacci;
 import com.devrezaur.main.utils.ListUtils;
 import com.devrezaur.main.viewmodel.QuizModel;
 import com.devrezaur.main.viewmodel.RunningGame;
@@ -11,12 +11,16 @@ import de.evangeliumstaucher.invoker.ApiException;
 import de.evangeliumstaucher.model.Passage;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
+
+import static org.springframework.web.client.HttpClientErrorException.BadRequest;
 
 @Service
 @RequiredArgsConstructor
@@ -54,10 +58,7 @@ public class QuizService {
     public QuizModel createQuiz(String bibleId) throws ApiException {
         QuizModel quizModel = null;
         BibleWrap bible = bookService.getBible(bibleId);
-        BookWrap book = ListUtils.randomItem(bible.getBooks());
-        ChapterWrap chapter = ListUtils.randomItem(book.getChapters());
-        List<VerseWrap> verses = chapter.getVerses(versesService);
-        VerseWrap verse = ListUtils.randomItem(verses);
+        VerseWrap verse = getRandomVerse(bible);
 
         quizModel = QuizModel.builder()
                 .id(UUID.randomUUID().toString())
@@ -66,6 +67,26 @@ public class QuizService {
                 .build();
         quizzes.put(quizModel.getId(), quizModel);
         return quizModel;
+    }
+
+    private VerseWrap getRandomVerse(BibleWrap bible) throws ApiException {
+        BookWrap book = ListUtils.randomItem(bible.getBooks());
+        ChapterWrap chapter = ListUtils.randomItem(book.getChapters());
+        List<VerseWrap> verses = chapter.getVerses(versesService);
+        VerseWrap verse = ListUtils.randomItem(verses);
+        return verse;
+    }
+
+    public VerseWrap getQuestionVerse(QuizModel quizModel, int questionId) throws BadRequest, ApiException {
+        if (quizModel.getVerses().size() < questionId) {
+            //wrong id
+            throw HttpClientErrorException.create(HttpStatus.BAD_REQUEST, "Die Frage gibt es nicht", null, null, null);
+        } else if (quizModel.getVerses().size() == questionId) {
+            //generate new question
+            VerseWrap newQuestion = getRandomVerse(quizModel.getBible());
+            quizModel.getVerses().add(newQuestion);
+        }
+        return quizModel.getVerses().get(questionId);
     }
 
     public Passage getPassage(RunningQuestion q, Part part) throws ApiException {
@@ -104,7 +125,7 @@ public class QuizService {
         return passageService.getPassage(q.getVerse().getVerseSummary().getBibleId(), passageId, null, false, false, false, false, false, null, false);
     }
 
-    public RunningQuestion getQuestion(String userId, String quizId, Integer qId) {
+    public RunningQuestion getQuestion(String userId, String quizId, Integer qId) throws ApiException {
         RunningQuestion runningQuestion;
         String gampelayId = getGampelayId(userId, quizId);
         if (!userGameplays.containsKey(gampelayId)) {
@@ -116,7 +137,7 @@ public class QuizService {
             //already started
             runningQuestion = gameplay.getQuestions().get(qId);
         } else {
-            VerseWrap verse = gameplay.getQuizModel().getVerses().get(qId);
+            VerseWrap verse = getQuestionVerse(gameplay.getQuizModel(), qId);
 
             runningQuestion = gameplay.createRunningQuestion(versesService);
             runningQuestion.setVerse(verse);
