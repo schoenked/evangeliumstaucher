@@ -34,10 +34,6 @@ public class QuizController extends BaseController {
         return session.getId();
     }
 
-    private void setQuizModel(QuizModel model) {
-        session.setAttribute("QuizSession", model);
-    }
-
     /**
      * Creates new Quiz for the given bible
      *

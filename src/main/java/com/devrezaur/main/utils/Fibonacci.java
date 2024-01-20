@@ -1,4 +1,4 @@
-package com.devrezaur.main;
+package com.devrezaur.main.utils;
 
 public class Fibonacci {
     public static int nthFibonacciTerm(int n) {

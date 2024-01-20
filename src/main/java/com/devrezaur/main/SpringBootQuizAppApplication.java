@@ -77,11 +77,4 @@ public class SpringBootQuizAppApplication {
         return api;
     }
 
-    @Bean
-    @Scope(
-            value = WebApplicationContext.SCOPE_SESSION,
-            proxyMode = ScopedProxyMode.TARGET_CLASS)
-    public QuizSession session() {
-        return new QuizSession();
-    }
 }

@@ -1,6 +1,6 @@
 package com.devrezaur.main.service;
 
-import com.devrezaur.main.Fibonacci;
+import com.devrezaur.main.utils.Fibonacci;
 import com.devrezaur.main.controller.Part;
 import com.devrezaur.main.model.*;
 import com.devrezaur.main.utils.ListUtils;
