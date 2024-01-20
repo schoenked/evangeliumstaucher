@@ -12,6 +12,7 @@ import de.evangeliumstaucher.model.Passage;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 
@@ -89,7 +90,12 @@ public class QuizService {
         return quizModel.getVerses().get(questionId);
     }
 
+    @Nullable
     public Passage getPassage(RunningQuestion q, Part part) throws ApiException {
+        if (q.getSelectedVerse() != null) {
+            //already selected
+            return null;
+        }
         String passageId = q.getVerse().getVerseSummary().getId();
 
         switch (part) {
