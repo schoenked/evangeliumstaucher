@@ -21,7 +21,8 @@
                     <a class="nav-link" href="/bible/">Lesen</a>
                 </li>
 
-                <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
+                <script defer
+                        src="https://cdnjs.cloudflare.com/ajax/libs/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
 
                 <!--
                 add if ready
@@ -41,6 +42,7 @@
                                         type="button"></button>
                             </div>
                             <div class="modal-body">
+                                <a href="https://wa.me/?text=hallo">Whatsapp</a>
                                 <div id="qrCode"></div>
                             </div>
                         </div>
@@ -49,8 +51,8 @@
                 <script>
                     var qrCodeGenerated = false;
 
-                    $(document).ready(function() {
-                        $('#share-btn').click(function() {
+                    $(document).ready(function () {
+                        $('#share-btn').click(function () {
                             // Check if the QR code has been generated already
                             if (!qrCodeGenerated) {
                                 // Generate QR code
