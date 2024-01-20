@@ -51,13 +51,13 @@ public class RunningQuestion {
         List<BookWrap> booklist = verse.getChapter().getBook().getBible().getBooks();
         for (BookWrap bookWrap : booklist) {
             if (verseId.startsWith(bookWrap.getBook().getId())) {
-                log.debug("book: " + bookWrap.getBook());
+                log.debug("book: " + bookWrap.getBook().getId());
                 for (ChapterWrap chapter : Lists.reverse(bookWrap.getChapters())) {
                     if (verseId.startsWith(chapter.getChapter().getId())) {
-                        log.debug("chapter: " + chapter.getChapter());
+                        log.debug("chapter: " + chapter.getChapter().getId());
                         for (VerseWrap verse : Lists.reverse(chapter.getVerses(versesService))) {
                             if (verseId.startsWith(verse.getVerseSummary().getId())) {
-                                log.debug("verse: " + verse.getVerseSummary());
+                                log.debug("verse: " + verse.getVerseSummary().getId());
                                 setSelectedVerse(verse);
                                 return;
                             }

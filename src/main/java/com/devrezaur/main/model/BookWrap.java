@@ -4,14 +4,18 @@ import com.devrezaur.main.service.VersesService;
 import de.evangeliumstaucher.invoker.ApiException;
 import de.evangeliumstaucher.model.Book;
 import lombok.Data;
+import lombok.ToString;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Data
+@ToString
 public class BookWrap {
+    @ToString.Exclude
     private final Book book;
     private final BibleWrap bible;
+    @ToString.Exclude
     List<ChapterWrap> chapters;
 
     public static int diffVerses(VerseWrap from, VerseWrap to, VersesService versesService) throws ApiException {

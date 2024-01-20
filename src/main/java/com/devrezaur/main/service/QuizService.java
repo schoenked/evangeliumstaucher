@@ -59,11 +59,9 @@ public class QuizService {
     public QuizModel createQuiz(String bibleId) throws ApiException {
         QuizModel quizModel = null;
         BibleWrap bible = bookService.getBible(bibleId);
-        VerseWrap verse = getRandomVerse(bible);
 
         quizModel = QuizModel.builder()
                 .id(UUID.randomUUID().toString())
-                .verses(List.of(verse))
                 .bible(bible)
                 .build();
         quizzes.put(quizModel.getId(), quizModel);

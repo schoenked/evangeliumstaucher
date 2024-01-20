@@ -15,8 +15,11 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @RequiredArgsConstructor
 public class ChapterWrap {
+    @ToString.Exclude
     private final ChapterSummary chapter;
+    @ToString.Exclude
     private final BookWrap book;
+    @ToString.Exclude
     @Setter
     List<VerseWrap> verses;
 
