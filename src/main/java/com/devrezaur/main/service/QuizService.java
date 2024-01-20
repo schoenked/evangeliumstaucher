@@ -169,9 +169,9 @@ public class QuizService {
     private int getTimePoints(RunningQuestion runningQuestion) {
         Duration duration = runningQuestion.getDuration();
         //subtract joker time
-        duration = duration.minusSeconds(10);
+        duration = duration.minusSeconds(15);
 
-        int timePoints = (int) (Math.pow(duration.getSeconds(), 2));
+        int timePoints = (int) (Math.pow(duration.getSeconds(), 1.6));
         return timePoints;
     }
 
