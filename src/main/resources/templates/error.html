@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <head th:insert="head.html :: head"/>
+    <title>Error</title>
+</head>
+<body>
+
+<!-- Importing NavBar -->
+<div th:insert="navbar.html :: navbar"></div>
+
+<div class="main-container container py-5 px-4">
+    <h1>Da ist etwas schief gelaufen</h1>
+    <a class="btn btn-primary border border-secondary border-2 btn-lg " href="/" role="button">Startseite</a>
+</div>
+
+<!-- Importing Footer -->
+<div th:insert="footer.html :: footer"></div>
+</body>
+</html>
