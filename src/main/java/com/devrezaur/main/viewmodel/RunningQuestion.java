@@ -6,6 +6,7 @@ import com.devrezaur.main.model.ChapterWrap;
 import com.devrezaur.main.model.VerseWrap;
 import com.devrezaur.main.service.QuizService;
 import com.devrezaur.main.service.VersesService;
+import com.google.common.collect.Lists;
 import de.evangeliumstaucher.invoker.ApiException;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
@@ -30,9 +31,9 @@ public class RunningQuestion {
     private VerseWrap selectedVerse;
     private VerseWrap contextStartVerse;
     private VerseWrap contextEndVerse;
-    private PassageModel pre = new PassageModel( Part.pre.name(), new PassageModel.PassageLoader());
-    private PassageModel post = new PassageModel( Part.post.name(), new PassageModel.PassageLoader());
-    private PassageModel origin = new PassageModel( Part.origin.name(), new PassageModel.PassageLoader().withDelay(0));
+    private PassageModel pre = new PassageModel(Part.pre.name(), new PassageModel.PassageLoader());
+    private PassageModel post = new PassageModel(Part.post.name(), new PassageModel.PassageLoader());
+    private PassageModel origin = new PassageModel(Part.origin.name(), new PassageModel.PassageLoader().withDelay(0));
     private List<BookModel> books;
     @Getter(AccessLevel.NONE)
     private Integer diffVerses;
@@ -50,10 +51,10 @@ public class RunningQuestion {
         for (BookWrap bookWrap : booklist) {
             if (verseId.startsWith(bookWrap.getBook().getId())) {
                 log.debug("book: " + bookWrap.getBook());
-                for (ChapterWrap chapter : bookWrap.getChapters()) {
+                for (ChapterWrap chapter : Lists.reverse(bookWrap.getChapters())) {
                     if (verseId.startsWith(chapter.getChapter().getId())) {
                         log.debug("chapter: " + chapter.getChapter());
-                        for (VerseWrap verse : chapter.getVerses(versesService)) {
+                        for (VerseWrap verse : Lists.reverse(chapter.getVerses(versesService))) {
                             if (verseId.startsWith(verse.getVerseSummary().getId())) {
                                 log.debug("verse: " + verse.getVerseSummary());
                                 setSelectedVerse(verse);
@@ -66,7 +67,7 @@ public class RunningQuestion {
                 break;
             }
         }
-        throw   new IllegalArgumentException("verseId is not valid " + verseId);
+        throw new IllegalArgumentException("verseId is not valid " + verseId);
     }
 
     public String getTimespan() {
@@ -90,7 +91,7 @@ public class RunningQuestion {
         return Duration.between(getStartedAt(), getAnsweredAt());
     }
 
-    public int getPoints(QuizService quizService ) throws ApiException {
+    public int getPoints(QuizService quizService) throws ApiException {
         return quizService.calcPoints(this);
     }
 
