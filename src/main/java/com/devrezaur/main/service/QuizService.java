@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
@@ -127,5 +128,24 @@ public class QuizService {
 
     public Passage getPassage(String userId, String quizId, Integer qId, Part part) throws ApiException {
         return getPassage(userGameplays.get(getGampelayId(userId, quizId)).getQuestions().get(qId), part);
+    }
+
+    public int calcPoints(RunningQuestion runningQuestion) throws ApiException {
+        int timePoints = getTimePoints(runningQuestion);
+        int diffPoints = getDiffPoints(runningQuestion);
+        return timePoints + diffPoints;
+    }
+
+    private int getDiffPoints(RunningQuestion runningQuestion) throws ApiException {
+        return runningQuestion.getDiffVerses(versesService);
+    }
+
+    private int getTimePoints(RunningQuestion runningQuestion) {
+        Duration duration = runningQuestion.getDuration();
+        //subtract joker time
+        duration = duration.minusSeconds(10);
+
+        int timePoints = (int) (Math.pow(duration.getSeconds(), 2));
+        return timePoints;
     }
 }

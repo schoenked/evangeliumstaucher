@@ -101,9 +101,9 @@ public class QuizController extends BaseController {
             runningQuestion.setSelectedVerse(verseId, versesService);
 
             ResultModel resultModel = new ResultModel();
-            resultModel.setVerseDiff(runningQuestion.diffVerses(versesService));
+            resultModel.setVerseDiff(runningQuestion.getDiffVerses(versesService));
             resultModel.setTimespan(runningQuestion.getTimespan());
-            resultModel.setPoints(runningQuestion.getPoints(versesService));
+            resultModel.setPoints(runningQuestion.getPoints(quizService));
             resultModel.setUrlNext("");
             m.addAttribute("model", resultModel);
         } catch (ApiException e) {

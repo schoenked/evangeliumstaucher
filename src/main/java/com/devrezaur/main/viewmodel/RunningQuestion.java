@@ -4,6 +4,7 @@ import com.devrezaur.main.controller.Part;
 import com.devrezaur.main.model.BookWrap;
 import com.devrezaur.main.model.ChapterWrap;
 import com.devrezaur.main.model.VerseWrap;
+import com.devrezaur.main.service.QuizService;
 import com.devrezaur.main.service.VersesService;
 import de.evangeliumstaucher.invoker.ApiException;
 import lombok.*;
@@ -33,9 +34,10 @@ public class RunningQuestion {
     private PassageModel post = new PassageModel("", "", Part.post.name(), new PassageModel.PassageLoader());
     private PassageModel origin = new PassageModel("", "", Part.origin.name(), new PassageModel.PassageLoader().withDelay(0));
     private List<BookModel> books;
+    @Getter(AccessLevel.NONE)
     private Integer diffVerses;
 
-    public int diffVerses(VersesService versesService) throws ApiException {
+    public int getDiffVerses(VersesService versesService) throws ApiException {
         if (diffVerses == null) {
             diffVerses = verse.diffVerses(selectedVerse, versesService);
         }
@@ -83,11 +85,11 @@ public class RunningQuestion {
         return output;
     }
 
-    private Duration getDuration() {
+    public Duration getDuration() {
         return Duration.between(getStartedAt(), getAnsweredAt());
     }
 
-    public int getPoints(VersesService versesService) throws ApiException {
-        return (int) (Math.pow(getDuration().getSeconds(), 2) + diffVerses(versesService));
+    public int getPoints(QuizService quizService ) throws ApiException {
+        return quizService.calcPoints(this);
     }
 }
