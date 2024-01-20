@@ -58,4 +58,8 @@ public class VerseWrap {
         }
         return diff;
     }
+
+    public String getText() {
+        return verseSummary.getReference();
+    }
 }

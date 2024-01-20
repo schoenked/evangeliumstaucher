@@ -17,12 +17,23 @@
         <img alt="image" th:src="@{/images/diver-sd.jpg}">
         <p>
             Deine Antwort liegt
-            <h1 th:text="${model.verseDiff}"></h1>
-            Verse daneben
+        <h1 th:text="${model.verseDiff}"></h1>
+        Verse daneben
+        </p>
+        <p>
+            Gesucht war nämlich
+        <h1 th:text="${model.searchedVerse}"></h1>
+        du hast <h3 th:text="${model.selectedVerse}"></h3> gewählt
         </p>
         <p>
             Deine benötigte Zeit:
-            <h2 th:text="${model.timespan}"></h2>
+        <h2 th:text="${model.timespan}"></h2>
+        </p>
+        <p>
+            Du hast
+        <h1 th:text="${model.points}"></h1>
+        <h2>Punkte</h2>
+        erreicht
         </p>
 
         <div class="d-flex justify-content-center mt-4">

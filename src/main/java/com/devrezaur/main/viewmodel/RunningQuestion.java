@@ -30,12 +30,13 @@ public class RunningQuestion {
     private VerseWrap selectedVerse;
     private VerseWrap contextStartVerse;
     private VerseWrap contextEndVerse;
-    private PassageModel pre = new PassageModel("", "", Part.pre.name(), new PassageModel.PassageLoader());
-    private PassageModel post = new PassageModel("", "", Part.post.name(), new PassageModel.PassageLoader());
-    private PassageModel origin = new PassageModel("", "", Part.origin.name(), new PassageModel.PassageLoader().withDelay(0));
+    private PassageModel pre = new PassageModel( Part.pre.name(), new PassageModel.PassageLoader());
+    private PassageModel post = new PassageModel( Part.post.name(), new PassageModel.PassageLoader());
+    private PassageModel origin = new PassageModel( Part.origin.name(), new PassageModel.PassageLoader().withDelay(0));
     private List<BookModel> books;
     @Getter(AccessLevel.NONE)
     private Integer diffVerses;
+    private String url;
 
     public int getDiffVerses(VersesService versesService) throws ApiException {
         if (diffVerses == null) {
@@ -65,7 +66,7 @@ public class RunningQuestion {
                 break;
             }
         }
-        throw new IllegalArgumentException("verseId is not valid " + verseId);
+        throw   new IllegalArgumentException("verseId is not valid " + verseId);
     }
 
     public String getTimespan() {
@@ -92,4 +93,9 @@ public class RunningQuestion {
     public int getPoints(QuizService quizService ) throws ApiException {
         return quizService.calcPoints(this);
     }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
 }

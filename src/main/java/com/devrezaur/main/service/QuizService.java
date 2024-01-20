@@ -140,6 +140,7 @@ public class QuizService {
             VerseWrap verse = getQuestionVerse(gameplay.getQuizModel(), qId);
 
             runningQuestion = gameplay.createRunningQuestion(versesService);
+            runningQuestion.setUrl(gameplay.getQuizModel().getUrl() + qId + "/");
             runningQuestion.setVerse(verse);
             runningQuestion.setContextStartVerse(verse);
             runningQuestion.setContextEndVerse(verse);

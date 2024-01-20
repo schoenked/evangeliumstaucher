@@ -18,7 +18,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class QuizModel {
     private String id;
+
     private final BibleWrap bible;
     private List<VerseWrap> verses = new ArrayList<>();
 
+    public String getUrl() {
+        return "/quiz/" + getId() + "/";
+    }
 }

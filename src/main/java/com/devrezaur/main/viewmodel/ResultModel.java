@@ -15,4 +15,6 @@ public class ResultModel {
     private int verseDiff;
     private int points;
     private String urlNext;
+    private String searchedVerse;
+    private String selectedVerse;
 }

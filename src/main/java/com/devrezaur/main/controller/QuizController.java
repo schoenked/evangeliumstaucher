@@ -16,7 +16,6 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Controller
 @Slf4j
@@ -45,7 +44,7 @@ public class QuizController extends BaseController {
     public RedirectView getQuiz(@PathVariable String bibleId, Model m) {
         try {
             QuizModel quizModel = quizService.createQuiz(bibleId);
-            return new RedirectView("/quiz/" + quizModel.getId() + "/0/");
+            return new RedirectView(quizModel.getUrl() + "0/");
         } catch (ApiException e) {
             log.error("failed", e);
             addWarning(m);
@@ -74,6 +73,7 @@ public class QuizController extends BaseController {
             model.setPath(part.name());
             if (part == Part.origin) {
                 model.setHtmlClasses("bg-dark bg-opacity-25 border border-primary border-4 p-2");
+                model.setHtmlId("theverse");
             }
             if (part != Part.origin && model.getContent() != null) {
                 PassageModel.PassageLoader loader = new PassageModel.PassageLoader();
@@ -100,7 +100,9 @@ public class QuizController extends BaseController {
             resultModel.setVerseDiff(runningQuestion.getDiffVerses(versesService));
             resultModel.setTimespan(runningQuestion.getTimespan());
             resultModel.setPoints(runningQuestion.getPoints(quizService));
-            resultModel.setUrlNext("");
+            resultModel.setSelectedVerse(runningQuestion.getSelectedVerse().getText());
+            resultModel.setSearchedVerse(runningQuestion.getVerse().getText());
+            resultModel.setUrlNext(runningQuestion.getUrl() + (qId + 1) + "/#theverse");
             m.addAttribute("model", resultModel);
         } catch (ApiException e) {
             log.error("failed", e);
