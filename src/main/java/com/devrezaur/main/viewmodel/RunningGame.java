@@ -19,7 +19,7 @@ public class RunningGame {
     private List<BookModel> books;
 
     public RunningQuestion createRunningQuestion(VersesService versesService) {
-        RunningQuestion created = new RunningQuestion();
+        RunningQuestion created = new RunningQuestion(this);
         created.setBooks(getBooks(versesService));
         questions.add(created);
         return created;

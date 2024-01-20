@@ -20,9 +20,10 @@ import java.util.Locale;
 @With
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor
+@RequiredArgsConstructor
 @Slf4j
 public class RunningQuestion {
+    private final RunningGame runningGame;
     int extendingPrePassageCount = 0;
     int extendingPostPassageCount = 0;
     private LocalDateTime startedAt = LocalDateTime.now();

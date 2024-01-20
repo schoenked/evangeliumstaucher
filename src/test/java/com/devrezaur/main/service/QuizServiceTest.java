@@ -72,28 +72,33 @@ public class QuizServiceTest {
 
     @Test
     public void testCalcDiff() throws ApiException {
-        RunningQuestion runningQuestion = new RunningQuestion();
-        runningQuestion.setVerse(bible.getBooks().get(0).getChapters().get(0).getVerses().get(0));
         for (int i = 0; i <= 728; i++) {
+            RunningQuestion runningQuestion = new RunningQuestion(null);
+            runningQuestion.setVerse(bible.getBooks().get(0).getChapters().get(0).getVerses().get(0));
             VerseWrap v = runningQuestion.getVerse().stepVerses(i, null);
             runningQuestion.setSelectedVerse(v);
             assertThat(runningQuestion.getDiffVerses(null)).isEqualTo(i);
         }
 
-        runningQuestion.setVerse(bible.getLast().getLast().getLast(null));
         for (int i = 0; i <= 728; i++) {
+            RunningQuestion runningQuestion = new RunningQuestion(null);
+            runningQuestion.setVerse(bible.getLast().getLast().getLast(null));
             VerseWrap v = runningQuestion.getVerse().stepVerses(i * -1, null);
             runningQuestion.setSelectedVerse(v);
             assertThat(runningQuestion.getDiffVerses(null)).isEqualTo(i);
         }
-
-        runningQuestion.setVerse(bible.getBooks().get(0).getChapters().get(0).getVerses().get(0));
-
+        RunningQuestion     runningQuestion = new RunningQuestion(null);
         runningQuestion.setVerse(bible.getBooks().get(2).getChapters().get(2).getVerses().get(2));
         runningQuestion.setSelectedVerse(bible.getBooks().get(2).getChapters().get(2).getVerses().get(1));
         assertThat(runningQuestion.getDiffVerses(null)).isEqualTo(1);
+
+        runningQuestion = new RunningQuestion(null);  runningQuestion.setSelectedVerse(bible.getBooks().get(2).getChapters().get(1).getVerses().get(2));
+        runningQuestion.setVerse(bible.getBooks().get(2).getChapters().get(2).getVerses().get(2));
         runningQuestion.setSelectedVerse(bible.getBooks().get(2).getChapters().get(1).getVerses().get(2));
         assertThat(runningQuestion.getDiffVerses(null)).isEqualTo(9);
+
+        runningQuestion = new RunningQuestion(null);
+        runningQuestion.setVerse(bible.getBooks().get(2).getChapters().get(2).getVerses().get(2));
         runningQuestion.setSelectedVerse(bible.getBooks().get(4).getChapters().get(1).getVerses().get(0));
         assertThat(runningQuestion.getDiffVerses(null)).isEqualTo(151);
     }
