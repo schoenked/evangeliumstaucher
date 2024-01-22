@@ -2,6 +2,7 @@ package com.devrezaur.main.service;
 
 import com.devrezaur.main.controller.Part;
 import com.devrezaur.main.model.*;
+import com.devrezaur.main.utils.DontJudge;
 import com.devrezaur.main.utils.Fibonacci;
 import com.devrezaur.main.utils.ListUtils;
 import com.devrezaur.main.viewmodel.QuizModel;
@@ -157,13 +158,18 @@ public class QuizService {
     }
 
     public int calcPoints(RunningQuestion runningQuestion) throws ApiException {
+        int points = 100;
+
         long timePoints = getTimePoints(runningQuestion.getDuration());
+        points -= timePoints;
+
         int diffPoints = getDiffPoints(runningQuestion);
-        return (int) (timePoints + diffPoints);
+        points -= diffPoints;
+        return points;
     }
 
     private int getDiffPoints(RunningQuestion runningQuestion) throws ApiException {
-        return runningQuestion.getDiffVerses(versesService);
+        return DontJudge.getDiffPoints(runningQuestion.getDiffVerses(versesService));
     }
 
 
