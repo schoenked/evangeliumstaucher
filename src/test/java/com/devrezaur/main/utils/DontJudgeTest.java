@@ -32,6 +32,5 @@ public class DontJudgeTest {
         assertThat(getDiffPoints(1)).isEqualTo(1);
         assertThat(getDiffPoints(10)).isEqualTo(3);
         assertThat(getDiffPoints(100)).isEqualTo(10);
-
     }
 }
