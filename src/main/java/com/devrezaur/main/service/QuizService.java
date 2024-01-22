@@ -16,11 +16,11 @@ import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 
-import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
+import static com.devrezaur.main.utils.DontJudge.getTimePoints;
 import static org.springframework.web.client.HttpClientErrorException.BadRequest;
 
 @Service
@@ -157,23 +157,15 @@ public class QuizService {
     }
 
     public int calcPoints(RunningQuestion runningQuestion) throws ApiException {
-        int timePoints = getTimePoints(runningQuestion);
+        long timePoints = getTimePoints(runningQuestion.getDuration());
         int diffPoints = getDiffPoints(runningQuestion);
-        return timePoints + diffPoints;
+        return (int) (timePoints + diffPoints);
     }
 
     private int getDiffPoints(RunningQuestion runningQuestion) throws ApiException {
         return runningQuestion.getDiffVerses(versesService);
     }
 
-    private int getTimePoints(RunningQuestion runningQuestion) {
-        Duration duration = runningQuestion.getDuration();
-        //subtract joker time
-        duration = duration.minusSeconds(15);
-
-        int timePoints = (int) (Math.pow(duration.getSeconds(), 1.6));
-        return timePoints;
-    }
 
     public int getSumPointsRunningGame(RunningQuestion runningQuestion) {
         int sum = runningQuestion.getRunningGame().getQuestions().stream()

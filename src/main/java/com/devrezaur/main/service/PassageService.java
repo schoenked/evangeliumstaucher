@@ -1,15 +1,10 @@
 package com.devrezaur.main.service;
 
-import de.evangeliumstaucher.BooksApi;
 import de.evangeliumstaucher.PassagesApi;
 import de.evangeliumstaucher.invoker.ApiException;
-import de.evangeliumstaucher.model.Book;
-import de.evangeliumstaucher.model.InlineResponse2006;
 import de.evangeliumstaucher.model.Passage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
