@@ -15,7 +15,7 @@ public class DontJudge {
         }
         return (long) (48 + 50 * Math.sin(0.0280756 * sec - 1.448));
     }
-    public static int getDiffPoints(int diff) throws ApiException {
+    public static int getDiffPoints(int diff)  {
         return (int) Math.sqrt(diff);
     }
 }

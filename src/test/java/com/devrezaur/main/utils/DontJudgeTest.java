@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import java.time.Duration;
 
+import static com.devrezaur.main.utils.DontJudge.getDiffPoints;
 import static com.devrezaur.main.utils.DontJudge.getTimePoints;
 import static com.google.common.truth.Truth.assertThat;
 
@@ -22,5 +23,15 @@ public class DontJudgeTest {
         for (int i = 0; i < 200; i++) {
             System.out.println("sec = " + i + " results points: " + getTimePoints(Duration.ofSeconds(i)));
         }
+    }
+
+    @Test
+    public void testDiff() {
+
+        assertThat(getDiffPoints(0)).isEqualTo(0);
+        assertThat(getDiffPoints(1)).isEqualTo(1);
+        assertThat(getDiffPoints(10)).isEqualTo(3);
+        assertThat(getDiffPoints(100)).isEqualTo(10);
+
     }
 }
