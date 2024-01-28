@@ -1,13 +1,56 @@
-# Starter Code For Spring Boot Quiz App
+# evangliumsTaucher
 
-This is the starter code for my YouTube channel's video tutorial on Spring Boot Quiz App.
+This is the project for the evangliumsTaucher game.
+It's a web application that uses
+
+- Spring Boot
+- Thymeleaf
+- Bootstrap
+- Hibernate (coming)
+- API.Bible
+
+Get started
 
 ---
 
-##### Check the video tutorial here: [Spring Boot Quiz App Tutorial](https://youtu.be/BqLl7mckWv8)
+## Getting started
 
-##### Get the full source code: [Spring Boot Quiz App](https://github.com/DevRezaur/spring-boot-quiz-app)
+#### System requirements
+
+- Java
+
+For installation [https://adoptium.net/de/temurin/releases/]()
+
+#### Get a Bible.API key
+
+You have to get your API key for connecting to the API.Bible
+
+see [https://docs.api.bible/getting-started/make-your-first-api-call]()
+
+copy the key to src/main/resources/application-creds.properties
+
+## Starting the application
+
+To use the Maven wrapper run the commands with `./mvnw` (Unix) or `.\mvnw` (Windows) instead ov `mvn`
+
+#### Build
+```mvn
+mvn clean dart-sass:compile-sass install
+```
+#### Run
+```
+mvn spring-boot:run
+```
+
+## TODOs
+
+* [ ]  responsonve scaling
+* [ ]  selector styling
+* [ ]  copyright
+* [ ]  footer/impressum
+* [ ]  database
+* [ ]  highscoring
 
 ---
 
-### Have a nice day
+Have fun. God bless!
