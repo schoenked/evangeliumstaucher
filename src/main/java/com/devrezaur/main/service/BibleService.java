@@ -17,7 +17,7 @@ public class BibleService {
     Map<String, String> abbreviationIdMap;
 
     public List<BibleSummary> getBibles() throws ApiException {
-        GetBibles200Response response = biblesApi.getBibles(null, null, null, null, true);
+        GetBibles200Response response = biblesApi.getBibles("deu", null, null, null, false);
         List<BibleSummary> list = response.getData();
 
       /*  Map<String, String> abbreviationIdMap = list.stream()
