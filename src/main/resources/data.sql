@@ -1,4 +1,4 @@
-insert into questions(ques_id, title, optionA, optionB, optionC, ans, chose)
+/*insert into questions(ques_id, title, optionA, optionB, optionC, ans, chose)
 values(
 	1, 
 	'What is a correct syntax to output "Hello World" in Java?',  
@@ -102,8 +102,8 @@ values(
 	10, 
 	'Which operator can be used to compare two values?',  
 	'><',
-	'&|',
+-- 	'&|',
 	'==',
 	3,
 	-1)
-;
+;*/
