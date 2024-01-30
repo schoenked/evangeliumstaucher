@@ -21,11 +21,28 @@
             });
         }
     </script>
-    <div th:insert="passageContextLoading.html :: passageContextLoading(${question.pre})"></div>
-    <div th:insert="passageContextLoading.html :: passageContextLoading(${question.origin})"></div>
-    <div th:insert="passageContextLoading.html :: passageContextLoading(${question.post})"></div>
+    <div id="quizpassage">
+        <div th:insert="passageContextLoading.html :: passageContextLoading(${question.pre})"></div>
+        <div th:insert="passageContextLoading.html :: passageContextLoading(${question.origin})"></div>
+        <div th:insert="passageContextLoading.html :: passageContextLoading(${question.post})"></div>
+    </div>
     <div th:insert="fragment-selector.html :: selector (${question.books})"></div>
 </div>
+
+<!--handling the zoom -> text scaling-->
+<script>
+    const box = document.getElementById("quizpassage");
+
+    function handleWheel(event) {
+        event.preventDefault();
+        const delta = -event.deltaY;
+        const currentFontSize = parseFloat(getComputedStyle(box).fontSize);
+        const newFontSize = currentFontSize + (delta / 20);
+        box.style.fontSize = newFontSize + "px";
+    }
+
+    box.addEventListener("wheel", handleWheel, { passive: false });
+</script>
 
 <!-- Importing Footer -->
 <div th:insert="footer.html :: footer"></div>

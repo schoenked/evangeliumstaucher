@@ -81,6 +81,10 @@
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
         </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
@@ -92,7 +96,8 @@
             <plugin>
                 <groupId>org.openapitools</groupId>
                 <artifactId>openapi-generator-maven-plugin</artifactId>
-                <version>6.6.0</version>
+                <!--stay on v 5.x because newer verseions are incaompatible with API.Bible-->
+                <version>5.4.0</version>
                 <configuration>
                     <inputSpec>https://api.scripture.api.bible/v1/swagger.json</inputSpec>
                     <generatorName>java</generatorName>
