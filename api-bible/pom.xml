@@ -11,12 +11,6 @@
     <name>API.Bible</name>
     <version>0.0.1-SNAPSHOT</version>
     <dependencies>
-        <dependency>
-            <groupId>org.openapitools</groupId>
-            <artifactId>openapi-generator-project</artifactId>
-            <version>5.4.0</version>
-            <type>pom</type>
-        </dependency>
 
         <dependency>
             <groupId>com.google.code.gson</groupId>
