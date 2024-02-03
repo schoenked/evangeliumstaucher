@@ -1,6 +1,5 @@
 package com.devrezaur.main.viewmodel;
 
-import com.devrezaur.main.viewmodel.Part;
 import com.devrezaur.main.model.BookWrap;
 import com.devrezaur.main.model.ChapterWrap;
 import com.devrezaur.main.model.VerseWrap;

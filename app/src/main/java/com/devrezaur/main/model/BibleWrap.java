@@ -1,7 +1,6 @@
 package com.devrezaur.main.model;
 
 import de.evangeliumstaucher.model.Bible;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

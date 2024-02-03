@@ -1,6 +1,5 @@
 package com.devrezaur.main.utils;
 
-import com.devrezaur.main.viewmodel.RunningQuestion;
 import de.evangeliumstaucher.invoker.ApiException;
 
 import java.time.Duration;

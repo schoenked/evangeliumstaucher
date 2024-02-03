@@ -18,6 +18,7 @@
     </properties>
     <modules>
         <module>api-bible</module>
+        <module>data</module>
         <module>app</module>
     </modules>
     <dependencyManagement>
