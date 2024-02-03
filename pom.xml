@@ -25,10 +25,25 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-logging</artifactId>
         </dependency>
-        <dependency>
+    <!--    <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <version>2.2.224</version>
+        </dependency>-->
+      <dependency>
+                 <groupId>org.hibernate.orm</groupId>
+                 <artifactId>hibernate-community-dialects</artifactId>
+                 <version>6.2.7.Final</version>
+             </dependency>
+            <!--        <dependency>
+                 <groupId>org.xerial</groupId>
+                 <artifactId>sqlite-jdbc</artifactId>
+                 <version>3.42.0.0</version>
+             </dependency>-->
+        <dependency>
+            <groupId>org.komamitsu</groupId>
+            <artifactId>spring-data-sqlite</artifactId>
+            <version>1.1.0</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>

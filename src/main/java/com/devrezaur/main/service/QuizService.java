@@ -1,7 +1,11 @@
 package com.devrezaur.main.service;
 
 import com.devrezaur.main.controller.Part;
-import com.devrezaur.main.model.*;
+import com.devrezaur.main.model.BibleWrap;
+import com.devrezaur.main.model.BookWrap;
+import com.devrezaur.main.model.ChapterWrap;
+import com.devrezaur.main.model.VerseWrap;
+import com.devrezaur.main.repository.QuestionRepository;
 import com.devrezaur.main.utils.DontJudge;
 import com.devrezaur.main.utils.Fibonacci;
 import com.devrezaur.main.utils.ListUtils;
@@ -32,6 +36,8 @@ public class QuizService {
     private final ChaptersService chaptersService;
     private final VersesService versesService;
     private final PassageService passageService;
+    private final QuestionRepository questionRepository;
+
     private final HashMap<String, QuizModel> quizzes = new HashMap<>();
     private final HashMap<String, RunningGame> userGameplays = new HashMap<>();
 
@@ -39,22 +45,6 @@ public class QuizService {
     private static String getGampelayId(String userId, String quizId) {
         String gampelayId = quizId + userId;
         return gampelayId;
-    }
-
-    public int getResult(QuestionForm qForm) {
-        int correct = 0;
-
-        for (Question q : qForm.getQuestions())
-            if (q.getAns() == q.getChose()) correct++;
-
-        return correct;
-    }
-
-    public void saveScore(Result result) {
-        Result saveResult = new Result();
-        saveResult.setUsername(result.getUsername());
-        saveResult.setTotalCorrect(result.getTotalCorrect());
-        //    rRepo.save(saveResult);
     }
 
     public QuizModel createQuiz(String bibleId) throws ApiException {

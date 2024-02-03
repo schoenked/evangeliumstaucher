@@ -5,17 +5,19 @@ import okhttp3.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Scope;
-import org.springframework.context.annotation.ScopedProxyMode;
-import org.springframework.web.context.WebApplicationContext;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 
+import javax.sql.DataSource;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 @SpringBootApplication
+//@EnableJpaRepositories(basePackages = "com.devrezaur.main.repository")
 public class SpringBootQuizAppApplication {
 
     @Value("${bibleapi.apikey}")
@@ -97,5 +99,12 @@ public class SpringBootQuizAppApplication {
         api.getApiClient().setApiKey(token);
         return api;
     }
-
+/*
+    @Bean
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory(EntityManagerFactoryBuilder builder, DataSource dataSource) {
+        return builder
+                .dataSource(dataSource)
+                .packages("com.devrezaur.main.repository")
+                .build();
+    }*/
 }

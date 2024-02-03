@@ -1,6 +1,5 @@
 package com.devrezaur.main.controller;
 
-import com.devrezaur.main.model.QuestionForm;
 import com.devrezaur.main.service.*;
 import com.devrezaur.main.viewmodel.BookModel;
 import com.devrezaur.main.viewmodel.PassageModel;
@@ -89,39 +88,6 @@ public class BibleController extends BaseController {
             addWarning(m);
         }
         return "books.html";
-    }
-/*
-    //  @PostMapping("quiz")
-    public String quiz(@RequestParam String username, Model m, RedirectAttributes ra) {
-     *//*   if (username.equals("")) {
-            ra.addFlashAttribute("warning", "You must enter your name");
-            return "redirect:/";
-        }
-
-        QuestionForm qForm = qService.getQuestions();
-        m.addAttribute("qForm", qForm);
-        m.addAttribute("username", username);
-*//*
-        return "quiz.html";
-    }*/
-
-    //@PostMapping("submit")
-    public String submit(@ModelAttribute QuestionForm qForm, Model m) {
-    /*    Result result = new Result();
-        Object username = m.getAttribute("username");
-        result.setUsername(username == null ? "" : username.toString());
-        result.setTotalCorrect(qService.getResult(qForm));
-        qService.saveScore(result);
-*/
-        return "result.html";
-    }
-
-    ////  @GetMapping("/score")
-    public String score(Model m) {
-     /*   List<Result> sList = qService.getTopScore();
-        m.addAttribute("sList", sList);
-*/
-        return "scoreboard.html";
     }
 
 }

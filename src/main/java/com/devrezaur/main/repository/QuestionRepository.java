@@ -5,6 +5,6 @@ import org.springframework.stereotype.Repository;
 import com.devrezaur.main.model.Question;
 
 @Repository
-public interface QuestionRepo extends JpaRepository<Question, Integer> {
+public interface QuestionRepository extends  org.komamitsu.spring.data.sqlite.SqliteRepository<Question, Integer> {
 
 }
