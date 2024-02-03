@@ -35,7 +35,7 @@ To use the Maven wrapper run the commands with `./mvnw` (Unix) or `.\mvnw` (Wind
 
 #### Build
 ```mvn
-mvn clean openapi-generator:generate dart-sass:compile-sass install
+mvn clean install -pl app spring-boot:run 
 ```
 - loads the libraries
 - generates API code
@@ -44,15 +44,15 @@ mvn clean openapi-generator:generate dart-sass:compile-sass install
 
 #### Run
 ```
-mvn spring-boot:run
+mvn -pl app spring-boot:run 
 ```
 
 ## TODOs
 
-* [ ]  responsonve scaling
+* [ ]  responsive scaling
 * [ ]  selector styling
 * [ ]  copyright
-* [ ]  footer/impressum
+* [ ]  footer/impress
 * [ ]  database
 * [ ]  highscoring
 
