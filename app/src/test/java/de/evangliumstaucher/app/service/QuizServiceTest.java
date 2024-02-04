@@ -44,7 +44,7 @@ public class QuizServiceTest {
     @BeforeAll
     public static void setup() {
         quizService = new QuizService(null, null, null, null, null, null);
-        bible = new BibleWrap();
+        bible = new BibleWrap("");
         List<BookWrap> books = IntStream.range(1, 10)
                 .mapToObj(iBook -> createBook(iBook, bible))
                 .toList();

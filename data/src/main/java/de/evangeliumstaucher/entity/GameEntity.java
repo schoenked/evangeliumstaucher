@@ -1,10 +1,15 @@
 package de.evangeliumstaucher.entity;
 
-import jakarta.persistence.*;
+import jakarta.annotation.Nonnull;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.sql.Date;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -15,14 +20,17 @@ import java.sql.Date;
 public class GameEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private UUID id;
 
     private String name;
 
     private String description;
 
-    @ManyToOne
-    private PlayerEntity creator;
+    @Nonnull
+    private String bibleId;
+
+    @Nonnull
+    private String creator;
     @CreatedDate
     private Date createdAt;
 

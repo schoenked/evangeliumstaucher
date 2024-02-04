@@ -1,5 +1,9 @@
 package de.evangliumstaucher.app.service;
 
+import de.evangeliumstaucher.entity.GameEntity;
+import de.evangeliumstaucher.invoker.ApiException;
+import de.evangeliumstaucher.model.Passage;
+import de.evangeliumstaucher.repo.GameRepository;
 import de.evangliumstaucher.app.model.BibleWrap;
 import de.evangliumstaucher.app.model.BookWrap;
 import de.evangliumstaucher.app.model.ChapterWrap;
@@ -11,11 +15,6 @@ import de.evangliumstaucher.app.viewmodel.Part;
 import de.evangliumstaucher.app.viewmodel.QuizModel;
 import de.evangliumstaucher.app.viewmodel.RunningGame;
 import de.evangliumstaucher.app.viewmodel.RunningQuestion;
-import de.evangeliumstaucher.invoker.ApiException;
-import de.evangeliumstaucher.model.Passage;
-import de.evangeliumstaucher.repo.GameRepository;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
@@ -39,7 +38,6 @@ public class QuizService {
     private final VersesService versesService;
     private final PassageService passageService;
     private final GameRepository gameRepository;
-    private final HashMap<String, QuizModel> quizzes = new HashMap<>();
     private final HashMap<String, RunningGame> userGameplays = new HashMap<>();
 
     @NotNull
@@ -53,10 +51,10 @@ public class QuizService {
         BibleWrap bible = bookService.getBible(bibleId);
 
         quizModel = QuizModel.builder()
-                .id(UUID.randomUUID().toString())
+                .id(UUID.randomUUID())
                 .bible(bible)
+                .bibleId(bibleId)
                 .build();
-        quizzes.put(quizModel.getId(), quizModel);
         gameRepository.save(quizModel.getEntity());
         return quizModel;
     }
@@ -122,11 +120,13 @@ public class QuizService {
         return passageService.getPassage(q.getVerse().getVerseSummary().getBibleId(), passageId, null, false, false, false, false, false, null, false);
     }
 
-    public RunningQuestion getQuestion(String userId, String quizId, Integer qId) throws ApiException {
+    public RunningQuestion getQuestion(String userId, UUID quizId, Integer qId) throws ApiException {
         RunningQuestion runningQuestion;
-        String gampelayId = getGampelayId(userId, quizId);
+        String gampelayId = getGampelayId(userId, quizId.toString());
         if (!userGameplays.containsKey(gampelayId)) {
-            userGameplays.put(gampelayId, new RunningGame().withQuizModel(quizzes.get(quizId)));
+            GameEntity e = get(quizId);
+            userGameplays.put(gampelayId, new RunningGame()
+                    .withQuizModel(QuizModel.from(e, bibleService)));
         }
         RunningGame gameplay = userGameplays.get(gampelayId);
 
@@ -143,6 +143,10 @@ public class QuizService {
             runningQuestion.setContextEndVerse(verse);
         }
         return runningQuestion;
+    }
+
+    private GameEntity get(UUID quizId) {
+        return gameRepository.findById(quizId).get();
     }
 
     public Passage getPassage(String userId, String quizId, Integer qId, Part part) throws ApiException {
