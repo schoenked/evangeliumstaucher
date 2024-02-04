@@ -43,7 +43,7 @@ public class QuizServiceTest {
 
     @BeforeAll
     public static void setup() {
-        quizService = new QuizService(null, null, null, null, null);
+        quizService = new QuizService(null, null, null, null, null, null);
         bible = new BibleWrap();
         List<BookWrap> books = IntStream.range(1, 10)
                 .mapToObj(iBook -> createBook(iBook, bible))
@@ -87,12 +87,13 @@ public class QuizServiceTest {
             runningQuestion.setSelectedVerse(v);
             assertThat(runningQuestion.getDiffVerses(null)).isEqualTo(i);
         }
-        RunningQuestion     runningQuestion = new RunningQuestion(null);
+        RunningQuestion runningQuestion = new RunningQuestion(null);
         runningQuestion.setVerse(bible.getBooks().get(2).getChapters().get(2).getVerses().get(2));
         runningQuestion.setSelectedVerse(bible.getBooks().get(2).getChapters().get(2).getVerses().get(1));
         assertThat(runningQuestion.getDiffVerses(null)).isEqualTo(1);
 
-        runningQuestion = new RunningQuestion(null);  runningQuestion.setSelectedVerse(bible.getBooks().get(2).getChapters().get(1).getVerses().get(2));
+        runningQuestion = new RunningQuestion(null);
+        runningQuestion.setSelectedVerse(bible.getBooks().get(2).getChapters().get(1).getVerses().get(2));
         runningQuestion.setVerse(bible.getBooks().get(2).getChapters().get(2).getVerses().get(2));
         runningQuestion.setSelectedVerse(bible.getBooks().get(2).getChapters().get(1).getVerses().get(2));
         assertThat(runningQuestion.getDiffVerses(null)).isEqualTo(9);

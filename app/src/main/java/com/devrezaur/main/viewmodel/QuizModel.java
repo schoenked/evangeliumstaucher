@@ -2,6 +2,7 @@ package com.devrezaur.main.viewmodel;
 
 import com.devrezaur.main.model.BibleWrap;
 import com.devrezaur.main.model.VerseWrap;
+import de.evangeliumstaucher.entity.GameEntity;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -26,5 +27,9 @@ public class QuizModel {
 
     public String getUrl() {
         return "/quiz/" + getId() + "/";
+    }
+
+    public GameEntity getEntity() {
+        return new GameEntity(null,"","",null, null);
     }
 }

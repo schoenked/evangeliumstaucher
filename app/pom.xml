@@ -10,7 +10,6 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     <name>App</name>
-    <description>Simple quiz application using Spring Boot &amp; MySQL</description>
     <properties>
         <java.version>17</java.version>
     </properties>
@@ -30,6 +29,10 @@
         <dependency>
             <groupId>de.evangeliumstaucher</groupId>
             <artifactId>api-bible</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>de.evangeliumstaucher</groupId>
+            <artifactId>data</artifactId>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>

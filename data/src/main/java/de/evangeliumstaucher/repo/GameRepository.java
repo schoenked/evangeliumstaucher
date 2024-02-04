@@ -1,7 +1,9 @@
 package de.evangeliumstaucher.repo;
 
-import de.evangeliumstaucher.entity.Game;
+import de.evangeliumstaucher.entity.GameEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface GameRepository extends JpaRepository<Game, Long> {
+@Repository
+public interface GameRepository extends JpaRepository<GameEntity, Long> {
 }

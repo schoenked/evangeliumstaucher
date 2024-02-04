@@ -1,15 +1,21 @@
 package com.devrezaur.main.service;
 
-import com.devrezaur.main.viewmodel.Part;
-import com.devrezaur.main.model.*;
+import com.devrezaur.main.model.BibleWrap;
+import com.devrezaur.main.model.BookWrap;
+import com.devrezaur.main.model.ChapterWrap;
+import com.devrezaur.main.model.VerseWrap;
 import com.devrezaur.main.utils.DontJudge;
 import com.devrezaur.main.utils.Fibonacci;
 import com.devrezaur.main.utils.ListUtils;
+import com.devrezaur.main.viewmodel.Part;
 import com.devrezaur.main.viewmodel.QuizModel;
 import com.devrezaur.main.viewmodel.RunningGame;
 import com.devrezaur.main.viewmodel.RunningQuestion;
 import de.evangeliumstaucher.invoker.ApiException;
 import de.evangeliumstaucher.model.Passage;
+import de.evangeliumstaucher.repo.GameRepository;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
@@ -32,6 +38,7 @@ public class QuizService {
     private final ChaptersService chaptersService;
     private final VersesService versesService;
     private final PassageService passageService;
+    private final GameRepository gameRepository;
     private final HashMap<String, QuizModel> quizzes = new HashMap<>();
     private final HashMap<String, RunningGame> userGameplays = new HashMap<>();
 
@@ -50,6 +57,7 @@ public class QuizService {
                 .bible(bible)
                 .build();
         quizzes.put(quizModel.getId(), quizModel);
+        gameRepository.save(quizModel.getEntity());
         return quizModel;
     }
 
