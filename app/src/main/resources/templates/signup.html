@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <head th:insert="head.html :: head"/>
+    <title>Home Page</title>
+</head>
+<body>
+
+<!-- Importing NavBar -->
+<div th:insert="navbar.html :: navbar"></div>
+
+<!-- Main Container Start -->
+<div class="main-container container py-5 px-4">
+    <div class="image-box">
+        <img alt="image" class="img-fluid" th:src="@{/images/diver-sd.jpg}">
+    </div>
+    <h1>Hallo,</h1>
+    <p>
+        bist du neu hier?
+        Ich kenne dich zumindest noch nicht.
+        Wenn du fortfahren möchtest, brauche ich noch deinen Namen.
+        Es kann auch gerne ein Spitzname sein.
+    </p>
+    <div th:if="${errortext}" class="alert alert-warning" role="alert">
+        <span th:text="${errortext}"></span>
+    </div>
+    <form action="#" th:action="@{./createuser}" th:method="post">
+        <div class="form-group">
+            <label for="username">Spielername:</label>
+            <input type="text" class="form-control" id="username" placeholder="Spielername eingeben" name="username"
+                   maxlength="20" required>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Create User</button>
+        </div>
+    </form>
+</div>
+
+<!-- Importing Footer -->
+<div th:insert="footer.html :: footer"></div>
+</body>
+</html>

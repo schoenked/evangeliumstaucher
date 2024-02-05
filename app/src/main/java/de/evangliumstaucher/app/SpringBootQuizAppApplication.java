@@ -11,6 +11,7 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,6 +20,7 @@ import java.util.concurrent.TimeUnit;
 
 @SpringBootApplication
 @EnableCaching
+@EnableWebSecurity
 @EnableJpaRepositories(basePackages = "de.evangeliumstaucher.repo")
 @EntityScan(basePackages = {"de.evangeliumstaucher.entity"})
 @ComponentScan(basePackages = {"de.evangeliumstaucher.repo","de.evangeliumstaucher.config"})
