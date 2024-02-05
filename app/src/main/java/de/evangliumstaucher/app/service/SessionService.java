@@ -19,4 +19,12 @@ public class SessionService {
                 .map(Player::from)
                 .stream().findFirst();
     }
+
+    public void create(Player player) {
+        playerRepository.save(player.getEntity());
+    }
+
+    public boolean valid(String name) {
+        return !playerRepository.existsPlayerEntityByName(name);
+    }
 }

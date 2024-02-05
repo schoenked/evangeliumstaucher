@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 public class SecurityChainConfig {
 
     public static final String LOGIN_URL = "/signup";
-    public static final String LOGIN_FAIL_URL = LOGIN_URL + "?error";
+    public static final String LOGIN_FAIL_URL = LOGIN_URL + "?error=true";
     public static final String USERNAME = "username";
     private static final String DEFAULT_SUCCESS_URL = "/";
     private final SessionService sessionService;
@@ -28,7 +28,7 @@ public class SecurityChainConfig {
                 })
                 .formLogin(form -> form
                         .loginPage(LOGIN_URL)
-                        .loginProcessingUrl(LOGIN_URL)
+                        .loginProcessingUrl("/createuser")
                         .failureUrl(LOGIN_FAIL_URL)
                         .usernameParameter(USERNAME)
                         .defaultSuccessUrl(DEFAULT_SUCCESS_URL))

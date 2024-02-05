@@ -1,34 +1,40 @@
 package de.evangliumstaucher.app.controller;
 
-import de.evangeliumstaucher.invoker.ApiException;
-import de.evangeliumstaucher.model.Book;
-import de.evangeliumstaucher.model.Passage;
-import de.evangeliumstaucher.model.VerseSummary;
+import de.evangliumstaucher.app.model.Player;
 import de.evangliumstaucher.app.service.*;
-import de.evangliumstaucher.app.viewmodel.BookModel;
-import de.evangliumstaucher.app.viewmodel.PassageModel;
-import de.evangliumstaucher.app.viewmodel.VerseModel;
+import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
-import org.checkerframework.common.reflection.qual.GetConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.List;
-import java.util.stream.Collectors;
+import org.springframework.web.bind.annotation.*;
 
 @Controller()
 @Slf4j
 public class AccountController extends BaseController {
 
+    @Autowired
+    SessionService sessionService;
+
+    @Autowired
+    HttpSession session;
+
     public AccountController(BibleService bibleService, BookService bookService, ChaptersService chaptersService, VersesService versesService, PassageService passageService) {
         super(bibleService, bookService, chaptersService, versesService, passageService);
     }
 
+    @PostMapping("/createuser")
+    public @ResponseBody String createuser(@RequestBody String username, Model m) {
+        Player player = new Player(null, session.getId(), username);
+        sessionService.create(player);
+        return "user created";
+    }
+
     @GetMapping("/signup")
-    public String signup(Model m) {
+    public String signup(Model m, @RequestParam(required = false, name = "error") boolean error) {
+        if (error) {
+            m.addAttribute("errortext", "Diesen Namen gibt es schon. Wähle einen anderen!");
+        }
         return "signup.html";
     }
 
