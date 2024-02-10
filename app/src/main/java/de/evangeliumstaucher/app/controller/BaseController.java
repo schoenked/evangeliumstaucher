@@ -1,7 +1,6 @@
 package de.evangeliumstaucher.app.controller;
 
-import de.evangeliumstaucher.app.service.*;
-import de.evangeliumstaucher.app.service.*;
+import de.evangeliumstaucher.app.service.ApiServices;
 import de.evangeliumstaucher.app.viewmodel.BibleModel;
 import de.evangeliumstaucher.invoker.ApiException;
 import de.evangeliumstaucher.model.BibleSummary;
@@ -18,11 +17,7 @@ import static java.util.stream.Collectors.groupingBy;
 @Slf4j
 @RequiredArgsConstructor
 public class BaseController {
-    protected final BibleService bibleService;
-    protected final BookService bookService;
-    protected final ChaptersService chaptersService;
-    protected final VersesService versesService;
-    protected final PassageService passageService;
+    final ApiServices apiServices;
 
     protected void addWarning(Model m) {
         m.addAttribute("warning", "Leider kann die Bibel zurzeit nicht geladen werden. Versuch es bitte gleich nochmal.");
@@ -30,7 +25,7 @@ public class BaseController {
 
     protected String getBible(Model m) {
         try {
-            List<BibleSummary> bibles = bibleService.getBibles();
+            List<BibleSummary> bibles = apiServices.getBibleService().getBibles();
 
             List<Map.Entry<String, List<BibleModel>>> groups = bibles.stream()
                     .map(BibleModel::from)

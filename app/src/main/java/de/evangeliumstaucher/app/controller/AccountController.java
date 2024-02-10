@@ -1,7 +1,8 @@
 package de.evangeliumstaucher.app.controller;
 
 import de.evangeliumstaucher.app.model.Player;
-import de.evangeliumstaucher.app.service.*;
+import de.evangeliumstaucher.app.service.ApiServices;
+import de.evangeliumstaucher.app.service.SessionService;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +20,8 @@ public class AccountController extends BaseController {
     @Autowired
     HttpSession session;
 
-    public AccountController(BibleService bibleService, BookService bookService, ChaptersService chaptersService, VersesService versesService, PassageService passageService) {
-        super(bibleService, bookService, chaptersService, versesService, passageService);
+    public AccountController(ApiServices apiServices) {
+        super(apiServices);
     }
 
     @PostMapping("/createuser")

@@ -1,9 +1,9 @@
 package de.evangeliumstaucher.app.viewmodel;
 
-import de.evangeliumstaucher.entity.GameEntity;
 import de.evangeliumstaucher.app.model.BibleWrap;
 import de.evangeliumstaucher.app.model.VerseWrap;
 import de.evangeliumstaucher.app.service.BibleService;
+import de.evangeliumstaucher.entity.GameEntity;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -18,11 +18,12 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class QuizModel {
     private final String bibleId;
-    private final UUID id;
+    private final String creator;
+    private UUID id;
     private String name;
-    private String player;
     private String description;
     private Date createdAt;
+    @Getter(AccessLevel.PRIVATE)
     private BibleWrap bible;
     private List<VerseWrap> verses = new ArrayList<>();
 
@@ -56,7 +57,7 @@ public class QuizModel {
                 name,
                 description,
                 bibleId,
-                player,
+                creator,
                 null);
     }
 }

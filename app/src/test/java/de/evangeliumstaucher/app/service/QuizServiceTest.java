@@ -21,6 +21,7 @@ public class QuizServiceTest {
 
     static QuizService quizService;
     private static BibleWrap bible;
+    private static ApiServices apiServices;
 
     private static BookWrap createBook(int iBook, BibleWrap bible) {
 
@@ -43,7 +44,8 @@ public class QuizServiceTest {
 
     @BeforeAll
     public static void setup() {
-        quizService = new QuizService(null, null, null, null, null, null);
+        apiServices = new ApiServices(null, null, null, null, null);
+        quizService = new QuizService(apiServices, null);
         bible = new BibleWrap("");
         List<BookWrap> books = IntStream.range(1, 10)
                 .mapToObj(iBook -> createBook(iBook, bible))
@@ -53,20 +55,20 @@ public class QuizServiceTest {
 
     @Test
     public void testGetDiff() throws ApiException {
-        VerseWrap verse = bible.getBooks().get(2).getChapters().get(2).getVerses().get(2);
-        VerseWrap stepped = verse.stepVerses(-1, null);
+        VerseWrap verse = bible.getBooks(null).get(2).getChapters().get(2).getVerses().get(2);
+        VerseWrap stepped = verse.stepVerses(-1, apiServices);
         assertThat(stepped.getVerseSummary().getId()).isEqualTo("3.3.2");
         verse = stepped;
-        stepped = verse.stepVerses(-1, null);
+        stepped = verse.stepVerses(-1, apiServices);
         assertThat(stepped.getVerseSummary().getId()).isEqualTo("3.3.1");
         verse = stepped;
-        stepped = verse.stepVerses(-1, null);
+        stepped = verse.stepVerses(-1, apiServices);
         assertThat(stepped.getVerseSummary().getId()).isEqualTo("3.2.9");
         verse = stepped;
-        stepped = verse.stepVerses(10, null);
+        stepped = verse.stepVerses(10, apiServices);
         assertThat(stepped.getVerseSummary().getId()).isEqualTo("3.4.1");
         verse = stepped;
-        stepped = verse.stepVerses(-100000, null);
+        stepped = verse.stepVerses(-100000, apiServices);
         assertThat(stepped).isNull();
     }
 
@@ -74,34 +76,34 @@ public class QuizServiceTest {
     public void testCalcDiff() throws ApiException {
         for (int i = 0; i <= 728; i++) {
             RunningQuestion runningQuestion = new RunningQuestion(null);
-            runningQuestion.setVerse(bible.getBooks().get(0).getChapters().get(0).getVerses().get(0));
-            VerseWrap v = runningQuestion.getVerse().stepVerses(i, null);
+            runningQuestion.setVerse(bible.getBooks(null).get(0).getChapters().get(0).getVerses().get(0));
+            VerseWrap v = runningQuestion.getVerse().stepVerses(i, apiServices);
             runningQuestion.setSelectedVerse(v);
-            assertThat(runningQuestion.getDiffVerses(null)).isEqualTo(i);
+            assertThat(runningQuestion.getDiffVerses(apiServices)).isEqualTo(i);
         }
 
         for (int i = 0; i <= 728; i++) {
             RunningQuestion runningQuestion = new RunningQuestion(null);
-            runningQuestion.setVerse(bible.getLast().getLast().getLast(null));
-            VerseWrap v = runningQuestion.getVerse().stepVerses(i * -1, null);
+            runningQuestion.setVerse(bible.getLast().getLast().getLast(apiServices));
+            VerseWrap v = runningQuestion.getVerse().stepVerses(i * -1, apiServices);
             runningQuestion.setSelectedVerse(v);
-            assertThat(runningQuestion.getDiffVerses(null)).isEqualTo(i);
+            assertThat(runningQuestion.getDiffVerses(apiServices)).isEqualTo(i);
         }
         RunningQuestion runningQuestion = new RunningQuestion(null);
-        runningQuestion.setVerse(bible.getBooks().get(2).getChapters().get(2).getVerses().get(2));
-        runningQuestion.setSelectedVerse(bible.getBooks().get(2).getChapters().get(2).getVerses().get(1));
-        assertThat(runningQuestion.getDiffVerses(null)).isEqualTo(1);
+        runningQuestion.setVerse(bible.getBooks(null).get(2).getChapters().get(2).getVerses().get(2));
+        runningQuestion.setSelectedVerse(bible.getBooks(null).get(2).getChapters().get(2).getVerses().get(1));
+        assertThat(runningQuestion.getDiffVerses(apiServices)).isEqualTo(1);
 
         runningQuestion = new RunningQuestion(null);
-        runningQuestion.setSelectedVerse(bible.getBooks().get(2).getChapters().get(1).getVerses().get(2));
-        runningQuestion.setVerse(bible.getBooks().get(2).getChapters().get(2).getVerses().get(2));
-        runningQuestion.setSelectedVerse(bible.getBooks().get(2).getChapters().get(1).getVerses().get(2));
-        assertThat(runningQuestion.getDiffVerses(null)).isEqualTo(9);
+        runningQuestion.setSelectedVerse(bible.getBooks(null).get(2).getChapters().get(1).getVerses().get(2));
+        runningQuestion.setVerse(bible.getBooks(null).get(2).getChapters().get(2).getVerses().get(2));
+        runningQuestion.setSelectedVerse(bible.getBooks(null).get(2).getChapters().get(1).getVerses().get(2));
+        assertThat(runningQuestion.getDiffVerses(apiServices)).isEqualTo(9);
 
         runningQuestion = new RunningQuestion(null);
-        runningQuestion.setVerse(bible.getBooks().get(2).getChapters().get(2).getVerses().get(2));
-        runningQuestion.setSelectedVerse(bible.getBooks().get(4).getChapters().get(1).getVerses().get(0));
-        assertThat(runningQuestion.getDiffVerses(null)).isEqualTo(151);
+        runningQuestion.setVerse(bible.getBooks(null).get(2).getChapters().get(2).getVerses().get(2));
+        runningQuestion.setSelectedVerse(bible.getBooks(null).get(4).getChapters().get(1).getVerses().get(0));
+        assertThat(runningQuestion.getDiffVerses(apiServices)).isEqualTo(151);
     }
 
 }

@@ -34,14 +34,16 @@
     const box = document.getElementById("quizpassage");
 
     function handleWheel(event) {
-        event.preventDefault();
-        const delta = -event.deltaY;
-        const currentFontSize = parseFloat(getComputedStyle(box).fontSize);
-        const newFontSize = currentFontSize + (delta / 20);
-        box.style.fontSize = newFontSize + "px";
+        if (event.ctrlKey) {
+            event.preventDefault();
+            const delta = -event.deltaY;
+            const currentFontSize = parseFloat(getComputedStyle(box).fontSize);
+            const newFontSize = currentFontSize + (delta / 20);
+            box.style.fontSize = newFontSize + "px";
+        }
     }
 
-    box.addEventListener("wheel", handleWheel, { passive: false });
+    box.addEventListener("wheel", handleWheel, {passive: false});
 </script>
 
 <!-- Importing Footer -->

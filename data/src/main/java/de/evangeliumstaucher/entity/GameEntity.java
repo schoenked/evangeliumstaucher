@@ -6,9 +6,10 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -19,7 +20,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class GameEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
     private String name;
@@ -32,6 +33,7 @@ public class GameEntity {
     @Nonnull
     private String creator;
     @CreatedDate
-    private Date createdAt;
+    @CreationTimestamp
+    private LocalDateTime createdAt;
 
 }

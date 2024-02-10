@@ -14,6 +14,7 @@ public class PlayerEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     Long id;
 
+    @Column(unique = true)
     String name;
 
 }

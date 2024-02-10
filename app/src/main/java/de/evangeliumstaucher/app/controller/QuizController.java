@@ -1,6 +1,7 @@
 package de.evangeliumstaucher.app.controller;
 
-import de.evangeliumstaucher.app.service.*;
+import de.evangeliumstaucher.app.service.ApiServices;
+import de.evangeliumstaucher.app.service.QuizService;
 import de.evangeliumstaucher.app.viewmodel.*;
 import de.evangeliumstaucher.invoker.ApiException;
 import de.evangeliumstaucher.model.Passage;
@@ -24,8 +25,8 @@ public class QuizController extends BaseController {
     private final QuizService quizService;
     private final HttpSession session;
 
-    public QuizController(BibleService bibleService, BookService bookService, ChaptersService chaptersService, VersesService versesService, PassageService passageService, QuizService quizService, HttpSession session) {
-        super(bibleService, bookService, chaptersService, versesService, passageService);
+    public QuizController(ApiServices apiServices, QuizService quizService, HttpSession session) {
+        super(apiServices);
         this.quizService = quizService;
         this.session = session;
     }
@@ -47,9 +48,9 @@ public class QuizController extends BaseController {
      * @return
      */
     @GetMapping("/quiz/create/{bibleId}/")
-    public RedirectView getQuiz(@PathVariable String bibleId, Model m) {
+    public RedirectView getQuiz(@PathVariable String bibleId, Model m, @ModelAttribute PlayerModel playerModel) {
         try {
-            QuizModel quizModel = quizService.createQuiz(bibleId);
+            QuizModel quizModel = quizService.createQuiz(bibleId, playerModel.getName());
             return new RedirectView(quizModel.getUrl() + "0/");
         } catch (ApiException e) {
             log.error("failed", e);
@@ -100,10 +101,10 @@ public class QuizController extends BaseController {
 
             RunningQuestion runningQuestion = quizService.getQuestion(getUserId(), quizId, qId);
             runningQuestion.setAnsweredAt(LocalDateTime.now());
-            runningQuestion.setSelectedVerse(verseId, versesService);
+            runningQuestion.setSelectedVerse(verseId, apiServices);
 
             ResultModel resultModel = new ResultModel();
-            resultModel.setVerseDiff(runningQuestion.getDiffVerses(versesService));
+            resultModel.setVerseDiff(runningQuestion.getDiffVerses(apiServices));
             resultModel.setTimespan(runningQuestion.getTimespan());
             resultModel.setPoints(runningQuestion.getPoints(quizService));
             resultModel.setPointsSum(quizService.getSumPointsRunningGame(runningQuestion));

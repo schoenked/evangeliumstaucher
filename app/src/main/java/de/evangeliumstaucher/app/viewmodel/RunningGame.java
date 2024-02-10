@@ -1,6 +1,6 @@
 package de.evangeliumstaucher.app.viewmodel;
 
-import de.evangeliumstaucher.app.service.VersesService;
+import de.evangeliumstaucher.app.service.ApiServices;
 import de.evangeliumstaucher.invoker.ApiException;
 import lombok.*;
 
@@ -18,25 +18,25 @@ public class RunningGame {
     private QuizModel quizModel;
     private List<BookModel> books;
 
-    public RunningQuestion createRunningQuestion(VersesService versesService) {
+    public RunningQuestion createRunningQuestion(ApiServices apiServices) throws ApiException {
         RunningQuestion created = new RunningQuestion(this);
-        created.setBooks(getBooks(versesService));
+        created.setBooks(getBooks(apiServices));
         questions.add(created);
         return created;
     }
 
-    private List<BookModel> getBooks(VersesService versesService) {
+    private List<BookModel> getBooks(ApiServices apiServices) throws ApiException {
+        books = quizModel.getBible(apiServices.getBibleService()).getBooks(apiServices.getBookService()).stream()
+                .map(bookWrap -> {
+                    try {
+                        return BookModel.from(bookWrap.getBook(), apiServices.getVersesService());
+                    } catch (ApiException e) {
+                        throw new RuntimeException(e);
+                    }
+                })
+                .peek(book -> book.setPrefixVerses("select"))
+                .collect(Collectors.toList());
         if (books == null) {
-            books = quizModel.getBible().getBooks().stream()
-                    .map(bookWrap -> {
-                        try {
-                            return BookModel.from(bookWrap.getBook(), versesService);
-                        } catch (ApiException e) {
-                            throw new RuntimeException(e);
-                        }
-                    })
-                    .peek(book -> book.setPrefixVerses("select"))
-                    .collect(Collectors.toList());
         }
         return books;
     }

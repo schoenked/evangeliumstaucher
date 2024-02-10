@@ -1,5 +1,9 @@
 package de.evangeliumstaucher.app.service;
 
+import de.evangeliumstaucher.app.model.BibleWrap;
+import de.evangeliumstaucher.app.model.BookWrap;
+import de.evangeliumstaucher.app.model.ChapterWrap;
+import de.evangeliumstaucher.app.model.VerseWrap;
 import de.evangeliumstaucher.app.utils.DontJudge;
 import de.evangeliumstaucher.app.utils.Fibonacci;
 import de.evangeliumstaucher.app.utils.ListUtils;
@@ -11,10 +15,6 @@ import de.evangeliumstaucher.entity.GameEntity;
 import de.evangeliumstaucher.invoker.ApiException;
 import de.evangeliumstaucher.model.Passage;
 import de.evangeliumstaucher.repo.GameRepository;
-import de.evangeliumstaucher.app.model.BibleWrap;
-import de.evangeliumstaucher.app.model.BookWrap;
-import de.evangeliumstaucher.app.model.ChapterWrap;
-import de.evangeliumstaucher.app.model.VerseWrap;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
@@ -31,11 +31,7 @@ import static org.springframework.web.client.HttpClientErrorException.BadRequest
 @Service
 @RequiredArgsConstructor
 public class QuizService {
-    private final BibleService bibleService;
-    private final BookService bookService;
-    private final ChaptersService chaptersService;
-    private final VersesService versesService;
-    private final PassageService passageService;
+    private final ApiServices apiServices;
     private final GameRepository gameRepository;
     private final HashMap<String, RunningGame> userGameplays = new HashMap<>();
 
@@ -45,23 +41,25 @@ public class QuizService {
         return gampelayId;
     }
 
-    public QuizModel createQuiz(String bibleId) throws ApiException {
+    public QuizModel createQuiz(String bibleId, String creator) throws ApiException {
         QuizModel quizModel = null;
-        BibleWrap bible = bookService.getBible(bibleId);
+        BibleWrap bible = apiServices.getBookService().getBible(bibleId);
 
         quizModel = QuizModel.builder()
-                .id(UUID.randomUUID())
                 .bible(bible)
+                .creator(creator)
                 .bibleId(bibleId)
                 .build();
-        gameRepository.save(quizModel.getEntity());
+        GameEntity e = gameRepository.save(quizModel.getEntity());
+        //aply generated uuid
+        quizModel.setId(e.getId());
         return quizModel;
     }
 
     private VerseWrap getRandomVerse(BibleWrap bible) throws ApiException {
-        BookWrap book = ListUtils.randomItem(bible.getBooks());
+        BookWrap book = ListUtils.randomItem(bible.getBooks(apiServices.getBookService()));
         ChapterWrap chapter = ListUtils.randomItem(book.getChapters());
-        List<VerseWrap> verses = chapter.getVerses(versesService);
+        List<VerseWrap> verses = chapter.getVerses(apiServices.getVersesService());
         VerseWrap verse = ListUtils.randomItem(verses);
         return verse;
     }
@@ -72,7 +70,7 @@ public class QuizService {
             throw HttpClientErrorException.create(HttpStatus.BAD_REQUEST, "Die Frage gibt es nicht", null, null, null);
         } else if (quizModel.getVerses().size() == questionId) {
             //generate new question
-            VerseWrap newQuestion = getRandomVerse(quizModel.getBible());
+            VerseWrap newQuestion = getRandomVerse(quizModel.getBible(apiServices.getBibleService()));
             quizModel.getVerses().add(newQuestion);
         }
         return quizModel.getVerses().get(questionId);
@@ -94,7 +92,7 @@ public class QuizService {
                 }
                 q.setExtendingPrePassageCount(c + 1);
                 int steps = Fibonacci.nthFibonacciTerm(q.getExtendingPrePassageCount()) * -1;
-                VerseWrap preVerse = q.getContextStartVerse().stepVerses(steps, versesService);
+                VerseWrap preVerse = q.getContextStartVerse().stepVerses(steps, apiServices);
                 passageId = preVerse.getVerseSummary().getId()
                         + "-"
                         + q.getContextStartVerse().getVerseSummary().getId();
@@ -107,7 +105,7 @@ public class QuizService {
                 }
                 q.setExtendingPostPassageCount(c + 1);
                 int steps = Fibonacci.nthFibonacciTerm(q.getExtendingPostPassageCount());
-                VerseWrap postVerse = q.getContextEndVerse().stepVerses(steps, versesService);
+                VerseWrap postVerse = q.getContextEndVerse().stepVerses(steps, apiServices);
                 passageId = q.getContextEndVerse().getVerseSummary().getId()
                         + "-"
                         + postVerse.getVerseSummary().getId();
@@ -116,7 +114,7 @@ public class QuizService {
             }
         }
 
-        return passageService.getPassage(q.getVerse().getVerseSummary().getBibleId(), passageId, null, false, false, false, false, false, null, false);
+        return apiServices.getPassageService().getPassage(q.getVerse().getVerseSummary().getBibleId(), passageId, null, false, false, false, false, false, null, false);
     }
 
     public RunningQuestion getQuestion(String userId, UUID quizId, Integer qId) throws ApiException {
@@ -125,7 +123,7 @@ public class QuizService {
         if (!userGameplays.containsKey(gampelayId)) {
             GameEntity e = get(quizId);
             userGameplays.put(gampelayId, new RunningGame()
-                    .withQuizModel(QuizModel.from(e, bibleService)));
+                    .withQuizModel(QuizModel.from(e, apiServices.getBibleService())));
         }
         RunningGame gameplay = userGameplays.get(gampelayId);
 
@@ -135,7 +133,7 @@ public class QuizService {
         } else {
             VerseWrap verse = getQuestionVerse(gameplay.getQuizModel(), qId);
 
-            runningQuestion = gameplay.createRunningQuestion(versesService);
+            runningQuestion = gameplay.createRunningQuestion(apiServices);
             runningQuestion.setUrl(gameplay.getQuizModel().getUrl() + qId + "/");
             runningQuestion.setVerse(verse);
             runningQuestion.setContextStartVerse(verse);
@@ -164,7 +162,7 @@ public class QuizService {
     }
 
     private int getDiffPoints(RunningQuestion runningQuestion) throws ApiException {
-        return DontJudge.getDiffPoints(runningQuestion.getDiffVerses(versesService));
+        return DontJudge.getDiffPoints(runningQuestion.getDiffVerses(apiServices));
     }
 
 

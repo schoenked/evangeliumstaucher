@@ -1,9 +1,9 @@
 package de.evangeliumstaucher.app.service;
 
 import de.evangeliumstaucher.BooksApi;
+import de.evangeliumstaucher.app.model.BibleWrap;
 import de.evangeliumstaucher.invoker.ApiException;
 import de.evangeliumstaucher.model.Book;
-import de.evangeliumstaucher.app.model.BibleWrap;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -21,7 +21,7 @@ public class BookService {
         return bibleService.get(bibleId);
     }
 
-    @Cacheable
+    @Cacheable("bibleBooks")
     public List<Book> getBibleBooks(String bibleId) throws ApiException {
         return booksApi.getBooks(bibleId, true, false).getData();
     }

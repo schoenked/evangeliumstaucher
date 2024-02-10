@@ -3,6 +3,7 @@ package de.evangeliumstaucher.app.model;
 import de.evangeliumstaucher.app.service.BookService;
 import de.evangeliumstaucher.invoker.ApiException;
 import de.evangeliumstaucher.model.Book;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -15,6 +16,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class BibleWrap {
     private final String id;
+    @Getter(AccessLevel.PRIVATE)
     private List<BookWrap> books;
 
     public List<BookWrap> getBooks(BookService bookService) throws ApiException {

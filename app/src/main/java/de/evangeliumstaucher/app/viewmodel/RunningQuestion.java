@@ -1,11 +1,11 @@
 package de.evangeliumstaucher.app.viewmodel;
 
+import com.google.common.collect.Lists;
 import de.evangeliumstaucher.app.model.BookWrap;
 import de.evangeliumstaucher.app.model.ChapterWrap;
 import de.evangeliumstaucher.app.model.VerseWrap;
+import de.evangeliumstaucher.app.service.ApiServices;
 import de.evangeliumstaucher.app.service.QuizService;
-import de.evangeliumstaucher.app.service.VersesService;
-import com.google.common.collect.Lists;
 import de.evangeliumstaucher.invoker.ApiException;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
@@ -39,22 +39,22 @@ public class RunningQuestion {
     private Integer diffVerses;
     private String url;
 
-    public int getDiffVerses(VersesService versesService) throws ApiException {
+    public int getDiffVerses(ApiServices apiServices) throws ApiException {
         if (diffVerses == null) {
-            diffVerses = verse.diffVerses(selectedVerse, versesService);
+            diffVerses = verse.diffVerses(selectedVerse, apiServices);
         }
         return diffVerses;
     }
 
-    public void setSelectedVerse(String verseId, VersesService versesService) throws ApiException {
-        List<BookWrap> booklist = verse.getChapter().getBook().getBible().getBooks();
+    public void setSelectedVerse(String verseId, ApiServices apiServices) throws ApiException {
+        List<BookWrap> booklist = verse.getChapter().getBook().getBible().getBooks(apiServices.getBookService());
         for (BookWrap bookWrap : booklist) {
             if (verseId.startsWith(bookWrap.getBook().getId())) {
                 log.debug("book: " + bookWrap.getBook().getId());
                 for (ChapterWrap chapter : Lists.reverse(bookWrap.getChapters())) {
                     if (verseId.startsWith(chapter.getChapter().getId())) {
                         log.debug("chapter: " + chapter.getChapter().getId());
-                        for (VerseWrap verse : Lists.reverse(chapter.getVerses(versesService))) {
+                        for (VerseWrap verse : Lists.reverse(chapter.getVerses(apiServices.getVersesService()))) {
                             if (verseId.startsWith(verse.getVerseSummary().getId())) {
                                 log.debug("verse: " + verse.getVerseSummary().getId());
                                 setSelectedVerse(verse);

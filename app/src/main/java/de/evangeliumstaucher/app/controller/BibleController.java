@@ -1,7 +1,6 @@
 package de.evangeliumstaucher.app.controller;
 
-import de.evangeliumstaucher.app.service.*;
-import de.evangeliumstaucher.app.service.*;
+import de.evangeliumstaucher.app.service.ApiServices;
 import de.evangeliumstaucher.app.viewmodel.BookModel;
 import de.evangeliumstaucher.app.viewmodel.PassageModel;
 import de.evangeliumstaucher.app.viewmodel.VerseModel;
@@ -23,8 +22,8 @@ import java.util.stream.Collectors;
 @Slf4j
 public class BibleController extends BaseController {
 
-    public BibleController(BibleService bibleService, BookService bookService, ChaptersService chaptersService, VersesService versesService, PassageService passageService) {
-        super(bibleService, bookService, chaptersService, versesService, passageService);
+    public BibleController(ApiServices apiServices) {
+        super(apiServices);
     }
 
     @GetMapping("/bible/")
@@ -35,7 +34,7 @@ public class BibleController extends BaseController {
     @GetMapping("/bible/{bibleId}/passage/{passageId}")
     public String getPassageView(@PathVariable String bibleId, @PathVariable String passageId, Model m) {
         try {
-            Passage passage = passageService.getPassage(
+            Passage passage = apiServices.getPassageService().getPassage(
                     bibleId,
                     passageId,
                     null,
@@ -59,7 +58,7 @@ public class BibleController extends BaseController {
     @GetMapping("/bible/{bibleId}/{chapterId}")
     public String getVersesView(@PathVariable String bibleId, @PathVariable String chapterId, @RequestParam("prefix") String prefix, Model m) {
         try {
-            List<VerseSummary> verses = versesService.getVerses(bibleId, chapterId);
+            List<VerseSummary> verses = apiServices.getVersesService().getVerses(bibleId, chapterId);
             List<VerseModel> veseeModels = verses.stream()
                     .map(v -> VerseModel.from(v))
                     .peek(v -> {
@@ -79,8 +78,8 @@ public class BibleController extends BaseController {
     @GetMapping("/bible/{bibleId}")
     public String getBooks(@PathVariable String bibleId, Model m) {
         try {
-            List<Book> books = bookService.getBibleBooks(bibleId);
-            List<BookModel> bookModels = BookModel.from(books, versesService);
+            List<Book> books = apiServices.getBookService().getBibleBooks(bibleId);
+            List<BookModel> bookModels = BookModel.from(books, apiServices.getVersesService());
             bookModels.forEach(bookModel -> bookModel.setPrefixVerses("passage"));
             m.addAttribute("books", bookModels);
         } catch (ApiException e) {
