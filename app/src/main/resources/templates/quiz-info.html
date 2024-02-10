@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <head th:insert="head.html :: head"/>
+    <title>Quiz Page</title>
+</head>
+<body>
+<!-- Importing NavBar -->
+<div th:insert="navbar.html :: navbar"></div>
+<!--/*@thymesVar id="quiz" type="de.evangeliumstaucher.app.viewmodel.QuizModel"*/-->
+<div class="container py-5 px-4">
+    <h1 th:text="${quiz.name}"/>
+    <p th:text="${quiz.description}"/>
+    <a class="btn btn-secondary text-white" th:href="${quiz.startUrl}">Eintauchen</a>
+
+    <!-- Importing Footer -->
+    <div th:insert="footer.html :: footer"></div>
+</body>
+</html>

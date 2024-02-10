@@ -121,9 +121,9 @@ public class QuizService {
         RunningQuestion runningQuestion;
         String gampelayId = getGampelayId(userId, quizId.toString());
         if (!userGameplays.containsKey(gampelayId)) {
-            GameEntity e = get(quizId);
+            QuizModel quizModel = get(quizId);
             userGameplays.put(gampelayId, new RunningGame()
-                    .withQuizModel(QuizModel.from(e, apiServices.getBibleService())));
+                    .withQuizModel(quizModel));
         }
         RunningGame gameplay = userGameplays.get(gampelayId);
 
@@ -142,8 +142,8 @@ public class QuizService {
         return runningQuestion;
     }
 
-    private GameEntity get(UUID quizId) {
-        return gameRepository.findById(quizId).get();
+    public QuizModel get(UUID quizId) {
+        return QuizModel.from(gameRepository.findById(quizId).get(), apiServices.getBibleService());
     }
 
     public Passage getPassage(String userId, String quizId, Integer qId, Part part) throws ApiException {

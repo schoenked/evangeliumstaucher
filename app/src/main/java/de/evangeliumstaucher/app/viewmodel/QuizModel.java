@@ -52,6 +52,10 @@ public class QuizModel {
         return "/quiz/" + getId() + "/";
     }
 
+    public String getStartUrl() {
+        return getUrl() + "0/";
+    }
+
     public GameEntity getEntity() {
         return new GameEntity(getId(),
                 name,

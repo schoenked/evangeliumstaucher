@@ -51,12 +51,19 @@ public class QuizController extends BaseController {
     public RedirectView getQuiz(@PathVariable String bibleId, Model m, @ModelAttribute PlayerModel playerModel) {
         try {
             QuizModel quizModel = quizService.createQuiz(bibleId, playerModel.getName());
-            return new RedirectView(quizModel.getUrl() + "0/");
+            return new RedirectView(quizModel.getUrl());
         } catch (ApiException e) {
             log.error("failed", e);
             addWarning(m);
         }
         return null;
+    }
+
+    @GetMapping("/quiz/{quizId}/")
+    public String getQuestion(@PathVariable UUID quizId, Model m) {
+        QuizModel quiz = quizService.get(quizId);
+        m.addAttribute("quiz", quiz);
+        return "quiz-info.html";
     }
 
     @GetMapping("/quiz/{quizId}/{qId}/")
