@@ -12,8 +12,17 @@
 <div class="container py-5 px-4">
     <h1 th:text="${quiz.name}"/>
     <p th:text="${quiz.description}"/>
-    <a class="btn btn-secondary text-white" th:href="${quiz.startUrl}">Eintauchen</a>
-    <div th:insert="fragment-share.html :: share (${quiz})"></div>
+    <div class="d-grid mb-4 mt-4 ">
+        <a class="btn  btn-secondary m-6 text-white  btn-lg btn-block" th:href="${quiz.startUrl}">Eintauchen</a>
+    </div>
+    <div class="card">
+        <div class="card-header">
+            <span class="card-title">Teilen</span>
+        </div>
+        <div class="card-body">
+            <div th:insert="fragment-share.html :: share (${quiz})"></div>
+        </div>
+    </div>
 
     <!-- Importing Footer -->
     <div th:insert="footer.html :: footer"></div>

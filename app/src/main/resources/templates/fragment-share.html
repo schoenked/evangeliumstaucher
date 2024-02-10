@@ -7,19 +7,19 @@
 <!--/*@thymesVar id="quiz" type="de.evangeliumstaucher.app.viewmodel.QuizModel"*/-->
 <div th:fragment="share (quiz)">
     <div th:if="${quiz}">
-        <button class="btn" target="_blank" type="button">
+        <a class="btn m-2  btn-outline-dark" role="button" target="_blank"
+           th:href="|https://wa.me/?text=Hi, lass uns in die Bibel eintauchen. Ich lade dich zum Spiel ${quiz.name} ein. ${@quizService.getShareUrl(quiz)}|"
+           type="button">
             <i class="fab fa-whatsapp"></i>&nbsp;
-            <a target="_blank"
-               th:href="|https://wa.me/?text=Hi, lass uns in die Bibel eintauchen. Ich lade dich zum Spiel ${quiz.name} ein. ${@quizService.getShareUrl(quiz)}|">Mit
-                Whatsapp teilen</a>
-        </button>
-        <button class="btn" id="copy-btn" th:data-clipboard-text="${quizService.getShareUrl(quiz)}">
+            Whatsapp</a>
+        <button class="btn m-2 btn-outline-dark" id="copy-btn"
+                th:data-clipboard-text="${quizService.getShareUrl(quiz)}">
             <i class="fas fa-copy"></i>&nbsp;
-            Copy link
+            Link kopieren
         </button>
-        <button class="btn" class="gen-qr-btn">
+        <button class="btn m-2 gen-qr-btn btn-outline-dark">
             <i class="fas fa-qrcode"></i>&nbsp;
-            QR-Code anzeigen
+            QR-Code
         </button>
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
