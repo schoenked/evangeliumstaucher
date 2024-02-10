@@ -30,6 +30,7 @@
 </div>
 
 <!--handling the zoom -> text scaling-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
 <script>
     const box = document.getElementById("quizpassage");
 
@@ -40,10 +41,40 @@
             const currentFontSize = parseFloat(getComputedStyle(box).fontSize);
             const newFontSize = currentFontSize + (delta / 20);
             box.style.fontSize = newFontSize + "px";
+        } else {
+            box.scrollLeft += event.deltaX;
+            box.scrollTop += event.deltaY;
         }
     }
 
     box.addEventListener("wheel", handleWheel, {passive: false});
+
+    function handlePan(event) {
+        totalDeltaY = window.scrollY + event.deltaY;
+
+        window.scrollTo(window.scrollX, totalDeltaY);
+    }
+
+    function handlePinch(event) {
+        if (event.scale === 1) {
+        } else {
+            const currentFontSize = parseFloat(getComputedStyle(box).fontSize);
+            scale = event.scale;
+            if (scale > 1) {
+                scale = 1 + ((scale - 1) / 100)
+            } else {
+                scale = 1 + ((scale - 1) / 100)
+            }
+            const newFontSize = currentFontSize * scale;
+            box.style.fontSize = newFontSize + "px";
+        }
+    }
+
+    const hammer = new Hammer(box);
+    hammer.get('pinch').set({enable: true});
+    hammer.on("wheel", handleWheel);
+    hammer.on("pan", handlePan);
+    hammer.on("pinch", handlePinch);
 </script>
 
 <!-- Importing Footer -->
