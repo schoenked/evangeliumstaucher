@@ -8,6 +8,6 @@ import java.util.Optional;
 
 @Repository
 public interface PlayerRepository extends JpaRepository<PlayerEntity, Long> {
-    Optional<PlayerEntity> findBySessionId(String sessionId);
+    Optional<PlayerEntity> findByName(String name);
     boolean existsPlayerEntityByName(String name);
 }

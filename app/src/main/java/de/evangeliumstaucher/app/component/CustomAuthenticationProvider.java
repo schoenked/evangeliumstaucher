@@ -9,7 +9,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -31,8 +30,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
                 .password("")
                 .roles("USER")
                 .build();
-        String sessionId = ((WebAuthenticationDetails) ((UsernamePasswordAuthenticationToken) authentication).getDetails()).getSessionId();
-        sessionService.create(new Player(null, sessionId, name));
+        sessionService.create(new Player(null, name));
         Authentication authenticated = new UsernamePasswordAuthenticationToken(
                 userDetails, "", userDetails.getAuthorities());
         return authenticated;

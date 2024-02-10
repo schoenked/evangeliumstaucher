@@ -14,8 +14,8 @@ public class SessionService {
     private final PlayerRepository playerRepository;
 
     @Cacheable("player")
-    public Optional<Player> get(String sessionId) {
-        return playerRepository.findBySessionId(sessionId)
+    public Optional<Player> get(String name) {
+        return playerRepository.findByName(name)
                 .map(Player::from)
                 .stream().findFirst();
     }

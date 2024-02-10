@@ -14,7 +14,6 @@ public class PlayerEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     Long id;
 
-    String sessionId;
     String name;
 
 }

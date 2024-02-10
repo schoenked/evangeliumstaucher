@@ -2,7 +2,6 @@ package de.evangeliumstaucher.app.controller;
 
 import de.evangeliumstaucher.app.model.Player;
 import de.evangeliumstaucher.app.service.*;
-import de.evangeliumstaucher.app.service.*;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +25,7 @@ public class AccountController extends BaseController {
 
     @PostMapping("/createuser")
     public @ResponseBody String createuser(@RequestBody String username, Model m) {
-        Player player = new Player(null, session.getId(), username);
+        Player player = new Player(null, username);
         sessionService.create(player);
         return "user created";
     }
