@@ -1,6 +1,6 @@
-# evangliumsTaucher
+# evangeliumsTaucher
 
-This is the project for the evangliumsTaucher game.
+This is the project for the evangeliumsTaucher game.
 It's a web application that uses
 
 - Spring Boot
