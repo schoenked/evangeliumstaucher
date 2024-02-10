@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<body>
+
+<!--/*@thymesVar id="quiz" type="de.evangeliumstaucher.app.viewmodel.QuizModel"*/-->
+<div th:fragment="share (quiz)">
+    <button class="btn" target="_blank" type="button">
+        <i class="fab fa-whatsapp"></i>&nbsp;
+        <a target="_blank"
+           th:href="|https://wa.me/?text=Hi evangliumstaucher, lass uns in ${quiz.name} eintauchen. ${@quizService.getShareUrl(quiz)}|">Mit
+            Whatsapp teilen</a>
+    </button>
+
+    <button class="btn" id="copy-btn" th:data-clipboard-text="${quizService.getShareUrl(quiz)}">
+        <i class="fas fa-copy"></i>&nbsp;
+        Copy link
+    </button>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
+    <script>
+        var clipboard = new ClipboardJS('#copy-btn');
+
+        clipboard.on('success', function (e) {
+            console.log('Action:', e.action);
+            console.log('Text:', e.text);
+            console.log('Trigger:', e.trigger);
+        });
+
+        clipboard.on('error', function (e) {
+            console.error('Action:', e.action);
+            console.error('Trigger:', e.trigger);
+        });
+    </script>
+
+
+    <div id="qrCode"></div>
+
+    <script>
+        var qrCodeGenerated = false;
+
+        $(document).ready(function () {
+            $('#share-btn').click(function () {
+                // Check if the QR code has been generated already
+                if (!qrCodeGenerated) {
+                    // Generate QR code
+                    $('#qrCode').qrcode({
+                        text: '[[${quizService.getShareUrl(quiz)}]]',
+                        width: 200,
+                        height: 200
+                    });
+
+                    // Set the flag to true
+                    qrCodeGenerated = true;
+                }
+            });
+        });
+    </script>
+</div>
+</body>
+</html>

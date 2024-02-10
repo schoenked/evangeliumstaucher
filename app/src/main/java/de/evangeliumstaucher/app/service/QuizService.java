@@ -17,6 +17,7 @@ import de.evangeliumstaucher.model.Passage;
 import de.evangeliumstaucher.repo.GameRepository;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
@@ -34,11 +35,17 @@ public class QuizService {
     private final ApiServices apiServices;
     private final GameRepository gameRepository;
     private final HashMap<String, RunningGame> userGameplays = new HashMap<>();
+    @Value("${hostname}")
+    private String hostname;
 
     @NotNull
     private static String getGampelayId(String userId, String quizId) {
         String gampelayId = quizId + userId;
         return gampelayId;
+    }
+
+    public String getShareUrl(QuizModel quizModel) {
+        return hostname + quizModel.getUrl();
     }
 
     public QuizModel createQuiz(String bibleId, String creator) throws ApiException {

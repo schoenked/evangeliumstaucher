@@ -63,6 +63,7 @@ public class QuizController extends BaseController {
     public String getQuestion(@PathVariable UUID quizId, Model m) {
         QuizModel quiz = quizService.get(quizId);
         m.addAttribute("quiz", quiz);
+        m.addAttribute("quizService", quizService);
         return "quiz-info.html";
     }
 
