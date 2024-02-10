@@ -29,16 +29,11 @@
                     <a class="nav-link" href="/bible/">Lesen</a>
                 </li>
 
-                <script defer
-                        src="https://cdnjs.cloudflare.com/ajax/libs/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
-
-                <!--
-                add if ready
                 <li class="nav-item">
                     <button class="nav-link" data-bs-target="#qrCodeModal" data-bs-toggle="modal" id="share-btn">
                         Teilen <i class="fas fa-solid fa-share-nodes"></i>
                     </button>
-                </li>-->
+                </li>
                 <!-- Modal dialog for displaying the QR code -->
                 <div aria-hidden="true" aria-labelledby="qrCodeModalLabel" class="modal fade" id="qrCodeModal"
                      tabindex="-1">
@@ -50,9 +45,7 @@
                                         type="button"></button>
                             </div>
                             <div class="modal-body">
-                                <
-                                <a href="https://wa.me/?text=hallo" target="_blank">Whatsapp</a>
-                                <div id="qrCode"></div>
+                                <div th:insert="fragment-share.html :: share (${quiz})"></div>
                             </div>
                         </div>
                     </div>
