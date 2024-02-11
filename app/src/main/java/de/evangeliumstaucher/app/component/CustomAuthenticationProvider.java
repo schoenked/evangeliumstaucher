@@ -20,11 +20,12 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 
-        String name = authentication.getPrincipal().toString();
+        String name = authentication.getPrincipal().toString().trim();
         if (!sessionService.valid(name)) {
-            throw new AuthenticationException("name already exists") {
+            throw new AuthenticationException("") {
             };
         }
+
         // Create a fully authenticated Authentication object
         UserDetails userDetails = User.withUsername(name)
                 .password("")

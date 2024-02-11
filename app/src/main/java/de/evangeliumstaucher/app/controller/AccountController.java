@@ -32,9 +32,9 @@ public class AccountController extends BaseController {
     }
 
     @GetMapping("/signup")
-    public String signup(Model m, @RequestParam(required = false, name = "error") boolean error) {
-        if (error) {
-            m.addAttribute("errortext", "Diesen Namen gibt es schon. Wähle einen anderen!");
+    public String signup(Model m, @RequestParam(required = false, name = "error") String error) {
+        if (error != null) {
+            m.addAttribute("errortext", error);
         }
         return "signup.html";
     }
