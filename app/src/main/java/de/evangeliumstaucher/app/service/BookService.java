@@ -21,7 +21,7 @@ public class BookService {
         return bibleService.get(bibleId);
     }
 
-    @Cacheable("bibleBooks")
+    @Cacheable(value = "bibleBooks", cacheManager = "databaseCacheManager")
     public List<Book> getBibleBooks(String bibleId) throws ApiException {
         return booksApi.getBooks(bibleId, true, false).getData();
     }
