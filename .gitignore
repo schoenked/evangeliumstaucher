@@ -37,3 +37,4 @@ build/
 
 cache/
 **/application-creds.properties
+**/application-accounts.yaml
