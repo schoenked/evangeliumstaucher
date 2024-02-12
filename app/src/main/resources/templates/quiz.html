@@ -40,7 +40,7 @@
         box.style.fontSize = newFontSize + "px";
 
         // Store the new font size in localStorage
-        localStorage.setItem("fontSize", newFontSize);
+        localStorage.setItem("passageFontSize", newFontSize);
     }
 
     function handleWheel(event) {
@@ -81,7 +81,7 @@
     // Function to restore the font size from localStorage and apply it
     function restoreFontSize() {
         // Get the font size from localStorage
-        const fontSize = localStorage.getItem("fontSize");
+        const fontSize = localStorage.getItem("passageFontSize");
 
         // If the font size exists in localStorage, apply it
         if (fontSize) {
