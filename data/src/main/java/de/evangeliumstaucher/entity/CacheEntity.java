@@ -12,7 +12,6 @@ public class CacheEntity {
     private String key;
     @Column(length = 100000)
     private String value;
-    private String clazz;
     private Long expiry;
 
     // getters and setters
