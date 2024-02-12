@@ -30,51 +30,63 @@
 </div>
 
 <!--handling the zoom -> text scaling-->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
 <script>
     const box = document.getElementById("quizpassage");
+
+    function scale(summand) {
+        const currentFontSize = parseFloat(getComputedStyle(box).fontSize);
+        const newFontSize = currentFontSize + summand;
+        box.style.fontSize = newFontSize + "px";
+    }
 
     function handleWheel(event) {
         if (event.ctrlKey) {
             event.preventDefault();
             const delta = -event.deltaY;
-            const currentFontSize = parseFloat(getComputedStyle(box).fontSize);
-            const newFontSize = currentFontSize + (delta / 20);
-            box.style.fontSize = newFontSize + "px";
-        } else {
-            box.scrollLeft += event.deltaX;
-            box.scrollTop += event.deltaY;
+            scale(delta / 20);
         }
     }
 
     box.addEventListener("wheel", handleWheel, {passive: false});
 
-    function handlePan(event) {
-        totalDeltaY = window.scrollY + event.deltaY;
+    let hypo = undefined;
 
-        window.scrollTo(window.scrollX, totalDeltaY);
+    box.addEventListener('touchmove', function (event) {
+        var summand;
+        if (event.targetTouches.length === 2) {
+            event.preventDefault();
+            let hypo1 = Math.hypot((event.targetTouches[0].pageX - event.targetTouches[1].pageX),
+                (event.targetTouches[0].pageY - event.targetTouches[1].pageY));
+            if (hypo === undefined) {
+                hypo = hypo1;
+            }
+            summand = ((hypo1 / hypo) - 1) * 5;
+            console.log("pinch scale summand :" + summand);
+            scale(hypo1 / hypo);
+        }
+    }, false);
+
+    box.addEventListener('touchend', function (event) {
+        hypo = undefined;
+    }, false);
+
+    /*
+    function handlePan(event) {
+        scale((event.scale - 1) * 50);
     }
 
     function handlePinch(event) {
-        if (event.scale === 1) {
-        } else {
-            const currentFontSize = parseFloat(getComputedStyle(box).fontSize);
-            scale = event.scale;
-            if (scale > 1) {
-                scale = 1 + ((scale - 1) / 100)
-            } else {
-                scale = 1 + ((scale - 1) / 100)
-            }
-            const newFontSize = currentFontSize * scale;
-            box.style.fontSize = newFontSize + "px";
-        }
-    }
+        scale((event.scale - 1) * 5);
+    }*/
+    /*
+        const hammer = new Hammer(box);
+        hammer.get('pinch').set({enable: true});
 
-    const hammer = new Hammer(box);
-    hammer.get('pinch').set({enable: true});
-    hammer.on("wheel", handleWheel);
-    hammer.on("pan", handlePan);
-    hammer.on("pinch", handlePinch);
+        hammer.on("pinch", handlePinch);
+        hammer.get('pan').set({
+            enable: true,
+            touchAction: 'none'
+        });*/
 </script>
 
 <!-- Importing Footer -->
