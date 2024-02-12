@@ -34,7 +34,7 @@ public class SessionService {
             throw new AuthenticationServiceException("Name nicht erlaubt.");
         }
         if (playerRepository.existsPlayerEntityByName(name)) {
-            throw new AuthenticationServiceException("Name ist nicht mehr verfügbar.");
+            throw new AuthenticationServiceException("Der   Name wird schon verwendet.");
         }
         if (accountConfig.getWhitelist() != null && !accountConfig.getWhitelist().isEmpty() && !accountConfig.getWhitelist().contains(name)) {
             throw new AuthenticationServiceException("Kenn ich nicht.");

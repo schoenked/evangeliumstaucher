@@ -9,18 +9,33 @@ import org.springframework.cache.Cache;
 import org.springframework.cache.support.SimpleValueWrapper;
 
 import java.io.*;
+import java.lang.reflect.Type;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.concurrent.Callable;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Supplier;
 
 public class JpaCache implements Cache {
     final Gson gson = Converters.registerOffsetDateTime(new GsonBuilder()).create();
     private final String name;
     private final CacheRepository cacheRepository;
+    private final Type type;
 
-    public JpaCache(String name, CacheRepository cacheRepository) {
+    public JpaCache(String name, CacheRepository cacheRepository, Type type) {
         this.name = name;
         this.cacheRepository = cacheRepository;
+        this.type = type;
+    }
+
+    @Override
+    public CompletableFuture<?> retrieve(Object key) {
+        return Cache.super.retrieve(key);
+    }
+
+    @Override
+    public <T> CompletableFuture<T> retrieve(Object key, Supplier<CompletableFuture<T>> valueLoader) {
+        return Cache.super.retrieve(key, valueLoader);
     }
 
     @Override
@@ -35,16 +50,11 @@ public class JpaCache implements Cache {
 
     @Override
     public ValueWrapper get(Object key) {
-        CacheEntity cacheEntity = cacheRepository.findByKey(this.name + gson.toJson(key));
+        CacheEntity cacheEntity = cacheRepository.findFirstByKeyOrderByExpiryDesc(this.name + gson.toJson(key));
         if (cacheEntity != null && cacheEntity.getExpiry() > System.currentTimeMillis()) {
-            Object o = null;
-
-            try {
-                o = getDeserialized(cacheEntity.getValue());
-            } catch (ClassNotFoundException e) {
-                throw new RuntimeException(e);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+            Object o = gson.fromJson(cacheEntity.getValue(), type);
+            if (o == null) {
+                return null;
             }
             return new SimpleValueWrapper(o);
         }
@@ -73,15 +83,11 @@ public class JpaCache implements Cache {
     @Override
     public void put(Object key, Object value) {
         CacheEntity cacheEntity = new CacheEntity();
-        try {
-            String clazz = getSerialized(value);
-            cacheEntity.setKey(this.name + gson.toJson(key));
-            cacheEntity.setValue(gson.toJson(value));
-            cacheEntity.setExpiry(System.currentTimeMillis() + Duration.of(14, ChronoUnit.DAYS).toMillis()); // cache
-            cacheRepository.save(cacheEntity);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        String val = gson.toJson(value);
+        cacheEntity.setKey(this.name + gson.toJson(key));
+        cacheEntity.setValue(val);
+        cacheEntity.setExpiry(System.currentTimeMillis() + Duration.of(14, ChronoUnit.DAYS).toMillis()); // cache
+        cacheRepository.save(cacheEntity);
     }
 
     private String getSerialized(Object o) throws IOException {
@@ -95,7 +101,7 @@ public class JpaCache implements Cache {
 
     @Override
     public void evict(Object key) {
-        CacheEntity cacheEntity = cacheRepository.findByKey(this.name);
+        CacheEntity cacheEntity = cacheRepository.findFirstByKeyOrderByExpiryDesc(this.name);
         if (cacheEntity != null) {
             cacheRepository.deleteById(cacheEntity.getId());
         }
