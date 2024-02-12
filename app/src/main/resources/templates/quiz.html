@@ -36,6 +36,7 @@
     function scale(summand) {
         const currentFontSize = parseFloat(getComputedStyle(box).fontSize);
         const newFontSize = currentFontSize + summand;
+        console.log("old " + currentFontSize + "px new " + newFontSize + "px");
         box.style.fontSize = newFontSize + "px";
     }
 
@@ -60,9 +61,9 @@
             if (hypo === undefined) {
                 hypo = hypo1;
             }
-            summand = ((hypo1 / hypo) - 1) * 5;
+            summand = ((hypo1 / hypo) - 1);
             console.log("pinch scale summand :" + summand);
-            scale(hypo1 / hypo);
+            scale(summand);
         }
     }, false);
 
