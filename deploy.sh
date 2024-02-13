@@ -7,4 +7,4 @@ scp "$dir"/app/gospeldiver.sh root@$IP:
 scp "$dir"/app/target/app*.jar root@$IP:app.jar
 
 #start the server
-#ssh root@$IP 'java -jar'  todo
+ssh root@$IP 'sh gospeldiver.sh start'
