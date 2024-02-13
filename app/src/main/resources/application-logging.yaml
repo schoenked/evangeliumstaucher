@@ -1,0 +1,23 @@
+logging:
+  pattern:
+  #console: "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+  #file: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+  appenders:
+    rollingFile:
+      class: ch.qos.logback.core.FileAppender
+      file: log/myapp-${date:yyyy-MM-dd}.log
+      encoder:
+        class: ch.qos.logback.classic.encoder.PatternLayoutEncoder
+        pattern: ${logging.pattern.file}
+      rollingPolicy:
+        class: ch.qos.logback.core.rolling.FixedWindowRollingPolicy
+        fileNamePattern: log/app-%i.log
+        minIndex: 1
+        maxIndex: 10
+      triggeringPolicy:
+        class: ch.qos.logback.core.rolling.TimeBasedRollingPolicy
+        fileNamePattern: log/%d{yyyy-MM-dd}.log
+        maxHistory: 30
+        totalSizeCap: 1GB
+  file:
+    name: logs/app.log
