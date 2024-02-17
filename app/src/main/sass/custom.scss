@@ -3,19 +3,37 @@
 @import "bootstrap-5.3.2/scss/variables";
 @import "bootstrap-5.3.2/scss/mixins";
 
-$primary: #FFFFD9; // set the $primary variable
-$secondary: #708E62;
-
+$primary: #c99d82; // set the $primary variable
+$secondary: #7cbba4;
+$third: #012619;
+$fourth: #01402E;
+$fifth: #A65437;
+$sixth: #591202;
+$seventh: #31594B;
+$light: #E9EEF2;
+$dark: #010D00;
+$woodred: #591202;
+$themegrey: #736E65;
+$brown: #260B01;
+$sky: #AAB7BF;
 // merge with existing $theme-colors map
 $theme-colors: (
         "primary": $primary,
         "secondary": $secondary,
+        "third": $third,
+        "fourth": $fourth,
+        "fifth": $fifth,
+        "sixth": $sixth,
+        "light": $light,
+        "dark": $dark,
+        "woodred": $woodred,
+        "themegrey": $themegrey,
+        "brown": $brown,
+        "sky": $sky,
         "success": $success,
         "info": $info,
         "warning": $warning,
         "danger": $danger,
-        "light": $light,
-        "dark": $dark,
         "gray-700": $gray-700
 );
 
@@ -31,6 +49,7 @@ h1 {
 .navbar-brand {
   font-family: 'ThemeFont', sans-serif;
 }
+
 // Import Bootstrap
 @import "bootstrap-5.3.2/scss/bootstrap";
 
