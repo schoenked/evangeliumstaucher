@@ -19,5 +19,18 @@ $theme-colors: (
         "gray-700": $gray-700
 );
 
+@font-face {
+  font-family: 'ThemeFont';
+  src: url('/Macondo-Regular.ttf') format('truetype');
+}
+
+h1 {
+  font-family: 'ThemeFont', sans-serif;
+}
+
+.navbar-brand {
+  font-family: 'ThemeFont', sans-serif;
+}
 // Import Bootstrap
 @import "bootstrap-5.3.2/scss/bootstrap";
+
