@@ -8,17 +8,17 @@
 <body>
 
 <!-- Importing NavBar -->
-<div th:insert="navbar.html :: navbar"></div>
+<div th:insert="~{navbar.html :: navbar]"></div>
 
 <!-- Main Container Start -->
 <div class="main-container container py-5 px-4">
     <div class="btn-group row d-flex flex-wrap">
 
-        <div th:insert="fragment-selector.html :: selector (${books})"></div>
+        <div th:insert="~{fragment-selector.html :: selector (${books})}"></div>
     </div>
 </div>
 
 <!-- Importing Footer -->
-<div th:insert="footer.html :: footer"></div>
+<div th:insert="~{footer.html :: footer}"></div>
 </body>
 </html>
