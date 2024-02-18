@@ -50,6 +50,23 @@ h1 {
   font-family: 'ThemeFont', sans-serif;
 }
 
+.bg-image {
+  /* The image used */
+  background-image: url("/images/diver.jpg");
+  /* Add the blur effect */
+  filter: blur(30px);
+  -webkit-filter: blur(30px);
+  width: 120%;
+  height: 120%;
+  left: -20px;
+  top: -20px;
+  z-index: -1;
+  position: fixed;
+  background-position: center;
+  /* Full height */
+  /* Center and scale the image nicely */
+  background-repeat: repeat;
+}
 
 // Import Bootstrap
 @import "bootstrap-5.3.2/scss/bootstrap";
