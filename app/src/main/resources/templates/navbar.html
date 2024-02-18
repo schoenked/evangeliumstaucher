@@ -2,59 +2,62 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <body>
-
-<!-- Navbar Start -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark" th:fragment="navbar">
-    <div class="container-fluid">
-        <div class="d-flex flex-column">
-            <a class="navbar-brand" href="/"><span class="text-primary">evangeliums</span><span class="text-secondary">taucher</span></a>
-            <div class="d-flex row">
-                <div class="p-2" th:if="${playerModel}">
-                    <span class="text-secondary">Spielername: </span><span class="text-primary"
-                                                                           th:text="${playerModel.name}"></span>
+<div th:fragment="navbar">
+    <!-- Navbar Start -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <div class="d-flex flex-column">
+                <a class="navbar-brand" href="/"><span class="text-primary">evangeliums</span><span
+                        class="text-secondary">taucher</span></a>
+                <div class="d-flex row">
+                    <div class="p-2" th:if="${playerModel}">
+                        <span class="text-secondary">Spielername: </span><span class="text-primary"
+                                                                               th:text="${playerModel.name}"></span>
+                    </div>
                 </div>
             </div>
-        </div>
-        <button aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"
-                class="navbar-toggler"
-                data-bs-target="#navbarSupportedContent" data-bs-toggle="collapse" type="button">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link" href="/quiz/create/">Spielen</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/bible/">Lesen</a>
-                </li>
+            <button aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"
+                    class="navbar-toggler"
+                    data-bs-target="#navbarSupportedContent" data-bs-toggle="collapse" type="button">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/quiz/create/">Spielen</a>
+                    </li>
 
-                <li class="nav-item">
-                    <button class="nav-link" data-bs-target="#qrCodeModal" data-bs-toggle="modal" id="share-btn">
-                        Teilen <i class="fas fa-solid fa-share-nodes"></i>
-                    </button>
-                </li>
-                <!-- Modal dialog for displaying the QR code -->
-                <div aria-hidden="true" aria-labelledby="qrCodeModalLabel" class="modal fade" id="qrCodeModal"
-                     tabindex="-1">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="qrCodeModalLabel">QR-Code</h5>
-                                <button aria-label="Close" class="btn-close" data-bs-dismiss="modal"
-                                        type="button"></button>
-                            </div>
-                            <div class="modal-body">
-                                <div th:insert="fragment-share.html :: share (${quiz})"></div>
+                    <li class="nav-item" th:if="question">
+                        <button class="nav-link" data-bs-target="#qrCodeModal" data-bs-toggle="modal" id="share-btn">
+                            Teilen <i class="fas fa-solid fa-share-nodes"></i>
+                        </button>
+                    </li>
+                    <!-- Modal dialog for displaying the QR code -->
+                    <div aria-hidden="true" aria-labelledby="qrCodeModalLabel" class="modal fade" id="qrCodeModal"
+                         tabindex="-1">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="qrCodeModalLabel">QR-Code</h5>
+                                    <button aria-label="Close" class="btn-close" data-bs-dismiss="modal"
+                                            type="button"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div th:insert="fragment-share.html :: share (${quiz})"></div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-            </ul>
+                </ul>
+            </div>
         </div>
-    </div>
-</nav>
+
+    </nav>
+    <!--show warning-->
+    <div th:insert="alerts.html"></div>
+</div>
 <!-- Navbar End -->
+
 </body>
 </html>

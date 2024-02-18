@@ -2,13 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-    <head th:insert="head.html :: head"/>
-    <title>Home Page</title>
+    <head th:insert="~{head.html :: head}"/>
+    <title>Evangeliumstaucher</title>
 </head>
 <body>
 
 <!-- Importing NavBar -->
-<div th:insert="navbar.html :: navbar"></div>
+<div th:insert="~{navbar.html :: navbar}"></div>
 
 <!-- Main Container Start -->
 <div class="main-container container py-5 px-4">
@@ -36,6 +36,6 @@
 </div>
 
 <!-- Importing Footer -->
-<div th:insert="footer.html :: footer"></div>
+<div th:insert="~{footer.html :: footer}"></div>
 </body>
 </html>

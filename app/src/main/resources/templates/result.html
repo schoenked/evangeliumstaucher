@@ -2,13 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-    <head th:insert="head.html :: head"/>
-    <title>Ergebnis</title>
+    <head th:insert="~{head.html :: head}"/>
+    <title>Evangeliumstaucher - Ergebnis</title>
 </head>
 <body>
 
 <!-- Importing NavBar -->
-<div th:insert="navbar.html :: navbar"></div>
+<div th:insert="~{navbar.html :: navbar}"></div>
 <!--/*@thymesVar id="model" type="de.evangeliumstaucher.app.viewmodel.ResultModel"*/-->
 
 <!-- Main Container Start -->
@@ -47,6 +47,6 @@
 </div>
 
 <!-- Importing Footer -->
-<div th:insert="footer.html :: footer"></div>
+<div th:insert="~{footer.html :: footer}"></div>
 </body>
 </html>

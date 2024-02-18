@@ -25,17 +25,17 @@
             <dependency>
                 <groupId>de.evangeliumstaucher</groupId>
                 <artifactId>app</artifactId>
-                <version>${project.version}</version>
+                <version>0.0.1-beta</version>
             </dependency>
             <dependency>
                 <groupId>de.evangeliumstaucher</groupId>
                 <artifactId>api-bible</artifactId>
-                <version>${project.version}</version>
+                <version>0.0.1-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>de.evangeliumstaucher</groupId>
                 <artifactId>data</artifactId>
-                <version>${project.version}</version>
+                <version>0.0.1-SNAPSHOT</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -62,7 +62,7 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>30.1.1-jre</version>
+            <version>31.1-jre</version>
         </dependency>
         <dependency>
             <groupId>com.google.truth</groupId>

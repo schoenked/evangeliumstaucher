@@ -1,0 +1,24 @@
+<!--show warning-->
+<!--/*@thymesVar id="info" type="java.lang.String"*/-->
+<div class="alert alert-info alert-dismissible"
+     role="alert" th:if="${info != null}">
+    <span th:text="${info}"></span>
+    <button aria-label="Close" class="close" data-dismiss="alert" type="button">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="alert alert-warning alert-dismissible"
+     role="alert" th:if="${warning != null}">
+    <span th:text="${warning}"></span>
+    <button aria-label="Close" class="close" data-dismiss="alert" type="button">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<!--show warning-->
+<div class="alert alert-danger alert-dismissible"
+     role="alert" th:if="${error != null}">
+    <span th:text="${error}"></span>
+    <button aria-label="Close" class="close" data-dismiss="alert" type="button">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
