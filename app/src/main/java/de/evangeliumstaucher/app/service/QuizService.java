@@ -166,8 +166,8 @@ public class QuizService {
 
         int diffPoints = getDiffPointsSubtract(runningQuestion);
         points -= diffPoints;
-        points = Math.min(points, 0);
-        points = Math.max(points, 100);
+        points = Math.min(points, 100);
+        points = Math.max(points, 0);
         return points;
     }
 
