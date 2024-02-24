@@ -32,6 +32,7 @@ import static org.springframework.web.client.HttpClientErrorException.BadRequest
 @Service
 @RequiredArgsConstructor
 public class QuizService {
+    public static final int COUNT_CONTEXT_EXTENSIONS = 4;
     private final ApiServices apiServices;
     private final GameRepository gameRepository;
     private final HashMap<String, RunningGame> userGameplays = new HashMap<>();
@@ -94,7 +95,7 @@ public class QuizService {
         switch (part) {
             case pre -> {
                 int c = q.getExtendingPrePassageCount();
-                if (c > 4) {
+                if (c > COUNT_CONTEXT_EXTENSIONS) {
                     return null;
                 }
                 q.setExtendingPrePassageCount(c + 1);
@@ -102,18 +103,18 @@ public class QuizService {
                 VerseWrap preVerse = q.getContextStartVerse().stepVerses(steps, apiServices);
                 passageId = preVerse.getVerseSummary().getId()
                         + "-"
-                        + q.getContextStartVerse().getVerseSummary().getId();
+                        + q.getContextStartVerse().stepVerses(-1, apiServices).getVerseSummary().getId();
                 q.setContextStartVerse(preVerse);
             }
             case post -> {
                 int c = q.getExtendingPostPassageCount();
-                if (c > 4) {
+                if (c > COUNT_CONTEXT_EXTENSIONS) {
                     return null;
                 }
                 q.setExtendingPostPassageCount(c + 1);
                 int steps = Fibonacci.nthFibonacciTerm(q.getExtendingPostPassageCount());
                 VerseWrap postVerse = q.getContextEndVerse().stepVerses(steps, apiServices);
-                passageId = q.getContextEndVerse().getVerseSummary().getId()
+                passageId = q.getContextEndVerse().stepVerses(1, apiServices).getVerseSummary().getId()
                         + "-"
                         + postVerse.getVerseSummary().getId();
                 q.setContextEndVerse(postVerse);
