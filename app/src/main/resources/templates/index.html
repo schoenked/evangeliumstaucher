@@ -11,27 +11,43 @@
 <div th:insert="navbar.html :: navbar"></div>
 
 <!-- Main Container Start -->
-<div class="container min-vh-100 py-5 px-4 min-vh-100">
+<div class="container min-vh-100">
     <div class="image-box">
         <img alt="image" class="img-fluid" th:src="@{/images/diver.jpg}">
     </div>
-    <p>
-        Petrus sagt zu Jesus Christus:
-        "Du hast Worte des ewigen Lebens"
-        Joh 6,68
-    </p>
-    <p>
-        wertvoller als Gold
-        Ps 19,11
-    </p>
-    <a class="btn btn-secondary text-white" href="/quiz/create/">Tauchgang starten</a>
-    <div class="text-box">
-        <h1 class="mb-5 text-center">Sprung in die Tiefe in die Bibel</h1>
-        <p>
-            Bist du bereit dein Wissen der Bibel zu prüfen und zu erweitern? Stell dich der Herausforderung und
-            generiere den eigenes Quiz.
-        </p>
+    <div class="container" id="start">
+
+        <div class="card text-bg-dark mb-5 bg-opacity-25 text-center ">
+            <div class="card-body">
+                <h1 class="mb-5 text-primary text-center">Sprung in die Tiefe in die Bibel</h1>
+                <p class="card-text"> Bist du bereit, deine Kenntnis der Bibel zu prüfen und zu erweitern? Forder dich
+                    heraus. Ich bau dir dein eigenes Quiz.</p>
+                <a class="btn btn-lg btn-block btn-secondary text-white" href="/quiz/create/">Tauchgang starten</a>
+            </div>
+        </div>
     </div>
+
+    <div class="container" id="why">
+
+        <div class="card text-bg-dark mb-5 bg-opacity-25 text-center ">
+            <div class="card-header">
+                Joh 6,68
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">"Du hast Worte des ewigen Lebens"</h5>
+                <p class="card-text">sagt Petrus zu Jesus Christus</p>
+            </div>
+        </div>
+        <div class="card text-bg-dark mb-5 bg-opacity-25 text-center ">
+            <div class="card-header">
+                Ps 19,11
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">wertvoller als Gold</h5>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 <!-- Importing Footer -->

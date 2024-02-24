@@ -13,7 +13,7 @@ public class MainController {
 
     @GetMapping("/")
     public String home(Model m) {
-        m.addAttribute("info", "Der evangeliumstaucher befindet sich noch in der Entwicklung. Daher ist er nicht im vollem Umfang verfügbar.");
+        m.addAttribute("info", "Der evangeliumstaucher befindet sich noch in der Entwicklung. Daher ist er nur eingeschränkt verfügbar.");
         return "index.html";
     }
 
