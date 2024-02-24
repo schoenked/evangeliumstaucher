@@ -87,7 +87,7 @@ public class QuizController extends BaseController {
             PassageModel model = PassageModel.from(passage);
             model.setPath(part.name());
             if (part == Part.origin) {
-                model.setHtmlClasses("bg-dark bg-opacity-25 border border-primary border-4 p-2");
+                model.setHtmlClasses("border-secondary border-2 my-4");
             }
             if (part != Part.origin && model.getContent() != null) {
                 PassageModel.PassageLoader loader = new PassageModel.PassageLoader();
