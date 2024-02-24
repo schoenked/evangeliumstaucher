@@ -161,15 +161,17 @@ public class QuizService {
     public int calcPoints(RunningQuestion runningQuestion) throws ApiException {
         int points = 100;
 
-        long timePoints = DontJudge.getTimePoints(runningQuestion.getDuration());
+        long timePoints = DontJudge.getTimePointsSubtract(runningQuestion.getDuration());
         points -= timePoints;
 
-        int diffPoints = getDiffPoints(runningQuestion);
+        int diffPoints = getDiffPointsSubtract(runningQuestion);
         points -= diffPoints;
+        points = Math.min(points, 0);
+        points = Math.max(points, 100);
         return points;
     }
 
-    private int getDiffPoints(RunningQuestion runningQuestion) throws ApiException {
+    private int getDiffPointsSubtract(RunningQuestion runningQuestion) throws ApiException {
         return DontJudge.getDiffPoints(runningQuestion.getDiffVerses(apiServices));
     }
 
