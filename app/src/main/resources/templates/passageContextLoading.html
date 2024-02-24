@@ -1,19 +1,21 @@
 <!--/*@thymesVar id="model" type="de.evangeliumstaucher.app.viewmodel.PassageModel"*/-->
 <div th:fragment="passageContextLoading (model)">
 
-    <div th:if="${model}">
-        <div th:class="${model.htmlClasses}" th:id="${model.htmlId}" th:if="${model.path != 'pre'}">
-            [(${model.content})]
+    <div th:class="${model.htmlClasses}" th:id="${model.htmlId}" th:if="${model.path != 'pre'}">
+        [(${model.content})]
+    </div>
+    <div th:id="|waiting${model.path}|" th:if="${model.passageLoader}">
+        <div class="spinner-grow" role="status">
         </div>
-        <div th:id="|waiting${model.path}|" th:if="${model.passageLoader}">
-            <div class="spinner-grow" role="status">
-            </div>
-            <script type="text/javascript">
-                setTimeout(loadPassageAjax, [(${model.passageLoader.delay})], "[(${model.path})]");
-            </script>
-        </div>
-        <div th:class="${model.htmlClasses}" th:id="${model.htmlId}" th:if="${model.path == 'pre'}">
-            [(${model.content})]
+        <script type="text/javascript">
+            setTimeout(loadPassageAjax, [(${model.passageLoader.delay})], "[(${model.path})]");
+        </script>
+    </div>
+    <div th:class="${model.htmlClasses}" th:id="${model.htmlId}" th:if="${model.path == 'pre'}">
+        [(${model.content})]
+    </div>
+
+</div>
         </div>
     </div>
 </div>

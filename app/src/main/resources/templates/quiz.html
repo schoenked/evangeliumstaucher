@@ -9,7 +9,7 @@
 <!-- Importing NavBar -->
 <div th:insert="~{navbar.html :: navbar}"></div>
 <!--/*@thymesVar id="question" type="de.evangeliumstaucher.app.viewmodel.RunningQuestion"*/-->
-<div class="container min-vh-100">
+<div class="container p-0 min-vh-100">
 
     <script>
         function loadPassageAjax(path) {
@@ -22,13 +22,32 @@
         }
     </script>
     <div id="quizpassage">
-        <div th:insert="passageContextLoading.html :: passageContextLoading(${question.pre})"></div>
+        <div class="card p-0" style="
+            background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 1))
+        ">
+            <div class="card-body p-0">
+                <div class="card-text">
+                    <div th:insert="passageContextLoading.html :: passageContextLoading(${question.pre})"></div>
+                </div>
+            </div>
+        </div>
         <div id="theverse">
             <div th:insert="passageContextLoading.html :: passageContextLoading(${question.origin})"></div>
         </div>
-        <div th:insert="passageContextLoading.html :: passageContextLoading(${question.post})"></div>
+
+        <div class="card p-0" style="
+            background-image: linear-gradient(to bottom, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0.5))
+        ">
+            <div class="card-body p-0">
+                <div class="card-text">
+                    <div th:insert="passageContextLoading.html :: passageContextLoading(${question.post})"></div>
+                </div>
+            </div>
+        </div>
     </div>
-    <div th:insert="fragment-selector.html :: selector (${question.books})"></div>
+    <div class="container">
+        <div th:insert="fragment-selector.html :: selector (${question.books})"></div>
+    </div>
 </div>
 
 <!--handling the zoom -> text scaling-->
