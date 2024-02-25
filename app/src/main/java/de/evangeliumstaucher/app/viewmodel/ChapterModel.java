@@ -6,7 +6,6 @@ import de.evangeliumstaucher.model.ChapterSummary;
 import lombok.*;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 
@@ -20,7 +19,7 @@ public class ChapterModel extends BaseModel {
     private List<VerseModel> verses;
     private String bibleId;
 
-    public static Collection<ChapterModel> from(List<ChapterSummary> chapters, VersesService versesService) throws ApiException {
+    public static List<ChapterModel> from(List<ChapterSummary> chapters, VersesService versesService) throws ApiException {
         List<ChapterModel> list = new ArrayList<>();
         for (ChapterSummary chapter : chapters) {
             ChapterModel model = from(chapter, versesService);

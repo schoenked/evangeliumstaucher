@@ -1,12 +1,12 @@
 package de.evangeliumstaucher.app.viewmodel;
 
 import de.evangeliumstaucher.app.service.VersesService;
+import de.evangeliumstaucher.app.utils.ListUtils;
 import de.evangeliumstaucher.invoker.ApiException;
 import de.evangeliumstaucher.model.Book;
 import lombok.*;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 @With
@@ -16,7 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 public class BookModel extends BaseModel {
 
-    private Collection<ChapterModel> chapters;
+    private List<ChapterModel> chapters;
     private String abbreviation;
     private String prefixVerses;
 
@@ -37,6 +37,10 @@ public class BookModel extends BaseModel {
                 .build();
         bookModel.setId(book.getId());
         return bookModel;
+    }
+
+    public List<List<ChapterModel>> chapterGroups() {
+        return ListUtils.groupsOf(chapters, 5);
     }
 
     @Override

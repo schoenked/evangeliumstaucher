@@ -1,11 +1,17 @@
 <!--/*@thymesVar id="verses" type="java.util.List<de.evangeliumstaucher.app.viewmodel.VerseModel>"*/-->
-<div class="btn-group d-flex flex-wrap">
-    <div th:each="verse : ${verses}">
-        <a aria-expanded="false"
-           class="btn btn-dark rounded-0 m-1"
-           th:href="${verse.url}"
-           th:text="${verse.label}"
-           role="button">
-        </a>
+<div class="container p-0">
+    <div th:each="group : ${verseGroups}">
+        <div class="col-12 row">
+            <th:block th:each="verse : ${group}">
+                <div class="col-2">
+                    <a aria-expanded="false"
+                       class="btn w-100 btn-dark rounded-0 m-1"
+                       role="button"
+                       th:href="${verse.url}"
+                       th:text="${verse.label}">
+                    </a>
+                </div>
+            </th:block>
+        </div>
     </div>
 </div>

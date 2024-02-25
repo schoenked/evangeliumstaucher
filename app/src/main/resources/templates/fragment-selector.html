@@ -5,11 +5,11 @@
 <body>
 
 <!--/*@thymesVar id="books" type="java.util.List<de.evangeliumstaucher.app.viewmodel.BookModel>"*/-->
-<div th:fragment="selector (books)">
+<div class="container p-0 row text-center" th:fragment="selector (books)">
     <th:block th:each="book : ${books}">
-        <div class="col-3 p-0 text-nowrap">
+        <div class="col-2 p-0 text-nowrap">
             <button aria-expanded="false"
-                    class="btn btn-outline-secondary container rounded-0 m-1"
+                    class="btn w-100 btn-outline-secondary rounded-0 m-1"
                     data-bs-toggle="collapse"
                     role="button"
                     th:aria-controls="|${book.htmlId}|"
@@ -19,28 +19,34 @@
         </div>
         <div class="collapse"
              th:id="${book.htmlId}">
-            <div class="btn-group d-flex flex-wrap">
-                <div th:each="chapter : ${book.chapters}">
-                    <button aria-expanded="false"
-                            class="btn btn-secondary rounded-0 m-1"
-                            data-bs-toggle="collapse"
-                            onclick="loadVersesAjax(this.getAttribute('data-loaderid'),this.getAttribute('data-verseurl'))"
-                            role="button"
-                            th:aria-controls="|${chapter.htmlId}|"
-                            th:data-bs-target="|#${chapter.htmlIdEscaped}|"
-                            th:data-loaderid="|${chapter.htmlIdEscaped}-loader|"
-                            th:data-verseurl="|/bible/${chapter.bibleId}/${chapter.id}?prefix=${book.prefixVerses}|"
-                            th:id="|${chapter.htmlId}-btn|"
-                            th:text="${chapter.label}">
-                    </button>
-                    <div class="collapse"
-                         th:id="|${chapter.htmlId}|">
-                        <div th:id="|${chapter.htmlId}-loader|">
-                            <div class="spinner-grow" role="status">
-                            </div>
-                        </div>
+            <div class="container row p-0">
+                <th:block th:each="group : ${book.chapterGroups}">
+                    <div class="col-12 row">
+                        <th:block th:each="chapter : ${group}">
+                            <span class="col-2 w-20">
+                                <button aria-expanded="false"
+                                        class="btn w-100 btn-secondary rounded-0 m-1"
+                                        data-bs-toggle="collapse"
+                                        onclick="loadVersesAjax(this.getAttribute('data-loaderid'),this.getAttribute('data-verseurl'))"
+                                        role="button"
+                                        th:aria-controls="|${chapter.htmlId}|"
+                                        th:data-bs-target="|#${chapter.htmlIdEscaped}|"
+                                        th:data-loaderid="|${chapter.htmlIdEscaped}-loader|"
+                                        th:data-verseurl="|/bible/${chapter.bibleId}/${chapter.id}?prefix=${book.prefixVerses}|"
+                                        th:id="|${chapter.htmlId}-btn|"
+                                        th:text="${chapter.label}">
+                                </button>
+                            </span>
+                            <span class="collapse"
+                                  th:id="|${chapter.htmlId}|">
+                                <span th:id="|${chapter.htmlId}-loader|">
+                                    <span class="spinner-grow" role="status">
+                                    </span>
+                                </span>
+                            </span>
+                        </th:block>
                     </div>
-                </div>
+                </th:block>
             </div>
         </div>
     </th:block>
@@ -56,4 +62,5 @@
         }
     </script>
 </div>
+</body>
 </html>

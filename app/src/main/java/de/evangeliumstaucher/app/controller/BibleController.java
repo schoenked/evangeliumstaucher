@@ -1,6 +1,7 @@
 package de.evangeliumstaucher.app.controller;
 
 import de.evangeliumstaucher.app.service.ApiServices;
+import de.evangeliumstaucher.app.utils.ListUtils;
 import de.evangeliumstaucher.app.viewmodel.BookModel;
 import de.evangeliumstaucher.app.viewmodel.PassageModel;
 import de.evangeliumstaucher.app.viewmodel.VerseModel;
@@ -67,7 +68,7 @@ public class BibleController extends BaseController {
                         }
                     })
                     .collect(Collectors.toList());
-            m.addAttribute("verses", veseeModels);
+            m.addAttribute("verseGroups", ListUtils.groupsOf(veseeModels, 5));
         } catch (ApiException e) {
             log.error("failed", e);
             addWarning(m);
