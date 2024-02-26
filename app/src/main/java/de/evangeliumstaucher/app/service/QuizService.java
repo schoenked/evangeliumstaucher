@@ -159,6 +159,10 @@ public class QuizService {
     }
 
     public int calcPoints(RunningQuestion runningQuestion) throws ApiException {
+        if (runningQuestion.getSelectedVerse() == null && runningQuestion.getAnsweredAt() == null) {
+            // if not answered
+            return 0;
+        }
         int points = 100;
 
         long timePoints = DontJudge.getTimePointsSubtract(runningQuestion.getDuration());
