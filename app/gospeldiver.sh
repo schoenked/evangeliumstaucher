@@ -2,9 +2,15 @@
 
 APP_JAR=app.jar
 
+if [ "$2" = "public" ]; then
+    PROFILES=default,db,creds,logging,dev
+else
+    PROFILES=default,db,creds,accounts,logging,dev
+fi
+
 start_app() {
   stop_app
-  java -jar "$APP_JAR" -Xmx632m &
+  java -jar "$APP_JAR" -Xmx632m --spring.profiles.active=$PROFILES &
   background_pid=$!
   echo $background_pid > gospeldiver.pid
 }
