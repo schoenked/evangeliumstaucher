@@ -4,7 +4,7 @@ APP_JAR=app.jar
 
 start_app() {
   stop_app
-  java -jar "$APP_JAR" -Xmx737m &
+  java -jar "$APP_JAR" -Xmx632m &
   background_pid=$!
   echo $background_pid > gospeldiver.pid
 }
