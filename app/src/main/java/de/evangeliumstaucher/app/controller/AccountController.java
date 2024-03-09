@@ -35,6 +35,7 @@ public class AccountController extends BaseController {
         return "user created";
     }
 
+
     @GetMapping("/signup")
     public String signup(Model m, @RequestParam(required = false, name = "error") String error) {
         if (accountConfig.getWhitelist() != null) {

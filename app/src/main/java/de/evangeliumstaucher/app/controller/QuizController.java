@@ -8,6 +8,8 @@ import de.evangeliumstaucher.model.Passage;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.annotation.CurrentSecurityContext;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,9 +35,13 @@ public class QuizController extends BaseController {
 
     @ModelAttribute("playerModel")
     public PlayerModel PlayerModelAttribute(@AuthenticationPrincipal UserDetails userDetails) {
-        return new PlayerModel(userDetails.getUsername());
+        return null;
     }
 
+    @ModelAttribute("sc")
+    public PlayerModel PlayerModelAttribute(@CurrentSecurityContext SecurityContext securityContext) {
+        return null;
+    }
     private String getUserId() {
         return session.getId();
     }

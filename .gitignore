@@ -39,3 +39,5 @@ build/
 cache/
 **/application-creds.properties
 **/application-accounts.yaml
+
+gd.p12
