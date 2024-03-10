@@ -6,13 +6,13 @@
     <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button"></button>
 </div>
 <div class="alert alert-warning alert-dismissible fade show"
-     role="alert" th:if="${warning != null}">
-    <span th:text="${warning}"></span>
+     role="alert" th:if="${warning != null || param.warning != null}">
+    <span th:text="${T(de.evangeliumstaucher.app.utils.Alerter).join(warning, param.warning)}"></span>
     <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button"></button>
 </div>
 <!--show warning-->
 <div class="alert alert-danger alert-dismissible fade show"
-     role="alert" th:if="${error != null}">
-    <span th:text="${error}"></span>
+     role="alert" th:if="${error != null || param.error != null}">
+    <span th:text="${T(de.evangeliumstaucher.app.utils.Alerter).join( error ,  param.error)}"></span>
     <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button"></button>
 </div>

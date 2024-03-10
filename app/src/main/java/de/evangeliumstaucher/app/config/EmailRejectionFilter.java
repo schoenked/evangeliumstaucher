@@ -1,11 +1,17 @@
 package de.evangeliumstaucher.app.config;
 
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+
+import java.io.IOException;
 
 public class EmailRejectionFilter extends AbstractAuthenticationProcessingFilter {
 
@@ -14,6 +20,11 @@ public class EmailRejectionFilter extends AbstractAuthenticationProcessingFilter
     public EmailRejectionFilter(AccountConfig accountConfig) throws Exception {
         super(new AntPathRequestMatcher("/login/oauth2/code/*"));
         this.accountConfig = accountConfig;
+    }
+
+    @Override
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+        super.doFilter(request, response, chain);
     }
 
     @Override
