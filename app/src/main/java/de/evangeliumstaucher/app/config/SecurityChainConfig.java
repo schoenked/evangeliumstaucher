@@ -17,6 +17,7 @@ public class SecurityChainConfig {
     public static final String USERNAME = "username";
     private static final String DEFAULT_SUCCESS_URL = "/";
     private final SessionService sessionService;
+    private final AccountConfig accountConfig;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -28,7 +29,9 @@ public class SecurityChainConfig {
                                 .permitAll())
                 .oauth2Login(oauth2Login -> oauth2Login.successHandler((request, response, authentication) ->
                 {
-                    authentication.setAuthenticated(false);
+                    if (!accountConfig.isValid(authentication)) {
+                        authentication.setAuthenticated(false);
+                    }
                 }))
                 .exceptionHandling(e -> e.accessDeniedHandler((request, response, accessDeniedException) -> {
                     String redirectUrl = "/error/403"; // Custom error page for 403 Forbidden
