@@ -29,6 +29,10 @@ public class UserService {
         playerRepository.save(player.getEntity());
     }
 
+    public void save(PlayerEntity player) {
+        playerRepository.save(player);
+    }
+
     public boolean valid(String name) throws AuthenticationException {
         if (StringUtils.isEmpty(name)) {
             return false;

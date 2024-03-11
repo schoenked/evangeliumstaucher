@@ -12,21 +12,22 @@
 
 <!-- Main Container Start -->
 <div class="container min-vh-100 py-5 px-4">
-
-<h1>Hallo,</h1>
-    <p>
-        schön, dass du hier bist, um auch ins Evangelium einzutauchen.
-        Ich brauche vorher noch deinen Namen.
-    </p>
-    <div th:if="${errortext}" class="alert alert-warning" role="alert">
+    <div th:if="${!userPersists}">
+        <h1>Hallo,</h1>
+        <p>
+            schön, dass du hier bist, um auch ins Evangelium einzutauchen.
+            Ich brauche vorher noch deinen Namen.
+        </p>
+    </div>
+    <div class="alert alert-warning" role="alert" th:if="${errortext}">
         <span th:text="${errortext}"></span>
     </div>
     <form action="#" th:action="${actionUrl}" th:method="post">
         <div class="form-group m-2">
             <label for="username">Spielername:</label>
-            <input class="form-control form-control-lg mv-2" id="username" name="username"
-                   placeholder="Spielername eingeben" type="text"
-                   maxlength="30" required>
+            <input class="form-control form-control-lg mv-2" id="username" maxlength="30"
+                   name="username" placeholder="Spielername eingeben"
+                   required type="text">
             <small class="form-text text-muted" id="usernameHelp">Es kann auch gerne ein Spitzname sein.</small>
 
         </div>
