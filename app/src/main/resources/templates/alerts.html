@@ -1,18 +1,19 @@
 <!--show warning-->
 <!--/*@thymesVar id="info" type="java.lang.String"*/-->
-<div class="alert alert-info alert-dismissible fade show"
-     role="alert" th:if="${info != null}">
-    <span th:text="${info}"></span>
+<div class="alert alert-danger alert-dismissible fade show"
+     role="alert" th:if="${error != null || param.error != null}">
+    <span th:text="${T(de.evangeliumstaucher.app.utils.Alerter).join( error ,  param.error)}"></span>
     <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button"></button>
 </div>
+
 <div class="alert alert-warning alert-dismissible fade show"
      role="alert" th:if="${warning != null || param.warning != null}">
     <span th:text="${T(de.evangeliumstaucher.app.utils.Alerter).join(warning, param.warning)}"></span>
     <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button"></button>
 </div>
-<!--show warning-->
-<div class="alert alert-danger alert-dismissible fade show"
-     role="alert" th:if="${error != null || param.error != null}">
-    <span th:text="${T(de.evangeliumstaucher.app.utils.Alerter).join( error ,  param.error)}"></span>
+
+<div class="alert alert-info alert-dismissible fade show"
+     role="alert" th:if="${info != null}">
+    <span th:text="${info}"></span>
     <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button"></button>
 </div>

@@ -1,11 +1,17 @@
 package de.evangeliumstaucher.app.config;
 
+import de.evangeliumstaucher.app.service.UserService;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Checks for
@@ -13,8 +19,9 @@ import java.io.IOException;
  * - username set for profile
  */
 @Slf4j
-public class AuthorizationFilter
-        implements Filter {
+@RequiredArgsConstructor
+public class AuthorizationFilter implements Filter {
+    private final UserService userService;
 
     @Override
     public void doFilter(
@@ -24,13 +31,31 @@ public class AuthorizationFilter
 
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
-        log.info(
-                "Logging Request  {} : {}", req.getMethod(),
-                req.getRequestURI());
-        chain.doFilter(request, response);
-        log.info(
-                "Logging Response :{}",
-                res.getContentType());
+        if (!checkUsernameSetup(req)) {
+            log.debug("redirecting to createuser");
+            res.setStatus(303);
+            res.setHeader("Location", "/signup?forwardTo=" + URLEncoder.encode(req.getRequestURI(), StandardCharsets.UTF_8));
+        } else {
+            chain.doFilter(request, response);
+        }
     }
+
+    private boolean checkUsernameSetup(HttpServletRequest req) {
+
+        if (req != null && req.getUserPrincipal() != null) {
+            OAuth2AuthenticationToken userPrincipal = (OAuth2AuthenticationToken) req.getUserPrincipal();
+            if (userPrincipal != null && userPrincipal.getPrincipal() != null) {
+                OidcUser oidcUser = (OidcUser) userPrincipal.getPrincipal();
+                if (oidcUser != null) {
+                    String mail = oidcUser.getEmail();
+                    if (mail != null) {
+                        return userService.getByEMail(mail).isPresent();
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
 
 }

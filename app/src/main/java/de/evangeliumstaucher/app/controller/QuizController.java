@@ -2,15 +2,14 @@ package de.evangeliumstaucher.app.controller;
 
 import de.evangeliumstaucher.app.service.ApiServices;
 import de.evangeliumstaucher.app.service.QuizService;
+import de.evangeliumstaucher.app.service.UserService;
 import de.evangeliumstaucher.app.viewmodel.*;
 import de.evangeliumstaucher.invoker.ApiException;
 import de.evangeliumstaucher.model.Passage;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.annotation.CurrentSecurityContext;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,23 +24,21 @@ import java.util.UUID;
 @Slf4j
 public class QuizController extends BaseController {
     private final QuizService quizService;
+    private final UserService userService;
     private final HttpSession session;
 
-    public QuizController(ApiServices apiServices, QuizService quizService, HttpSession session) {
+    public QuizController(ApiServices apiServices, QuizService quizService, UserService userService, HttpSession session) {
         super(apiServices);
         this.quizService = quizService;
+        this.userService = userService;
         this.session = session;
     }
 
     @ModelAttribute("playerModel")
-    public PlayerModel PlayerModelAttribute(@AuthenticationPrincipal UserDetails userDetails) {
-        return null;
+    public PlayerModel PlayerModelAttribute(@AuthenticationPrincipal OidcUser oidcUser) {
+        return PlayerModel.from(userService.getByEMail(oidcUser.getEmail()).get());
     }
 
-    @ModelAttribute("sc")
-    public PlayerModel PlayerModelAttribute(@CurrentSecurityContext SecurityContext securityContext) {
-        return null;
-    }
     private String getUserId() {
         return session.getId();
     }

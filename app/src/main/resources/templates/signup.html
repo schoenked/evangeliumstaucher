@@ -15,22 +15,23 @@
 
 <h1>Hallo,</h1>
     <p>
-        bist du neu hier?
-        Ich kenne dich zumindest noch nicht.
-        Wenn du fortfahren möchtest, brauche ich noch deinen Namen.
-        Es kann auch gerne ein Spitzname sein.
+        schön, dass du hier bist, um auch ins Evangelium einzutauchen.
+        Ich brauche vorher noch deinen Namen.
     </p>
     <div th:if="${errortext}" class="alert alert-warning" role="alert">
         <span th:text="${errortext}"></span>
     </div>
-    <form action="#" th:action="@{./createuser}" th:method="post">
-        <div class="form-group">
+    <form action="#" th:action="${actionUrl}" th:method="post">
+        <div class="form-group m-2">
             <label for="username">Spielername:</label>
-            <input type="text" class="form-control" id="username" placeholder="Spielername eingeben" name="username"
+            <input class="form-control form-control-lg mv-2" id="username" name="username"
+                   placeholder="Spielername eingeben" type="text"
                    maxlength="30" required>
+            <small class="form-text text-muted" id="usernameHelp">Es kann auch gerne ein Spitzname sein.</small>
+
         </div>
         <div class="form-group">
-            <button class="btn btn-primary" type="submit">Weiter</button>
+            <button class="btn btn-primary btn-lg w-100" type="submit">Weiter</button>
         </div>
     </form>
 </div>

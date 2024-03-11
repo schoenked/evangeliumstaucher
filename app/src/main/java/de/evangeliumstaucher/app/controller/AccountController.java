@@ -3,20 +3,31 @@ package de.evangeliumstaucher.app.controller;
 import de.evangeliumstaucher.app.config.AccountConfig;
 import de.evangeliumstaucher.app.model.Player;
 import de.evangeliumstaucher.app.service.ApiServices;
-import de.evangeliumstaucher.app.service.SessionService;
+import de.evangeliumstaucher.app.service.UserService;
+import jakarta.annotation.Nonnull;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.view.RedirectView;
 
-@Controller()
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+
+@Controller
 @Slf4j
+
 public class AccountController extends BaseController {
 
     @Autowired
-    SessionService sessionService;
+    UserService userService;
 
     @Autowired
     HttpSession session;
@@ -29,21 +40,32 @@ public class AccountController extends BaseController {
     }
 
     @PostMapping("/createuser")
-    public @ResponseBody String createuser(@RequestBody String username, Model m) {
-        Player player = new Player(null, username);
-        sessionService.create(player);
-        return "user created";
+    public RedirectView createuser(@AuthenticationPrincipal OidcUser oidcUser, @RequestParam @Nonnull String username, @RequestParam(required = false, name = "forwardTo") String forwardTo, Model m) {
+        RedirectView out = new RedirectView();
+        Player player = new Player(null, username, oidcUser.getEmail());
+        if (!userService.valid(username)) {
+            out.setUrl("/signup");
+            out.getAttributesMap().put("warning", "Der Name wird schon verwendet. Verwende bitte einen anderen.");
+            return out;
+        } else {
+            userService.create(player);
+            out.setUrl(forwardTo);
+            return out;
+        }
     }
 
 
     @GetMapping("/signup")
-    public String signup(Model m, @RequestParam(required = false, name = "error") String error) {
-        if (accountConfig.getWhitelist() != null) {
-            m.addAttribute("warning", "Zurzeit sind nur ausgewählte Nutzer zur Nutzung autorisiert.");
-        }
+    public String signup(Model m, @RequestParam(required = false, name = "error") String error, @RequestParam(required = false, name = "forwardTo") String forwardTo) {
         if (error != null) {
             m.addAttribute("errortext", error);
         }
+        String actionURL = "/createuser";
+        if (StringUtils.isNotEmpty(forwardTo)) {
+            actionURL += "?forwardTo=" + URLEncoder.encode(forwardTo, StandardCharsets.UTF_8);
+        }
+
+        m.addAttribute("actionUrl", actionURL);
         return "signup.html";
     }
 

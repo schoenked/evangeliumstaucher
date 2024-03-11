@@ -15,6 +15,9 @@ public class PlayerEntity {
     Long id;
 
     @Column(unique = true)
-    String name;
+    String username;
+
+    @Column(unique = true)
+    String email;
 
 }

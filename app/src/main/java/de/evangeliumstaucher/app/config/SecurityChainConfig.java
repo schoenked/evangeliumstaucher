@@ -1,6 +1,6 @@
 package de.evangeliumstaucher.app.config;
 
-import de.evangeliumstaucher.app.service.SessionService;
+import de.evangeliumstaucher.app.service.UserService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -23,7 +23,7 @@ public class SecurityChainConfig {
     public static final String LOGIN_FAIL_URL = LOGIN_URL + "?error";
     public static final String USERNAME = "username";
     private static final String DEFAULT_SUCCESS_URL = "/";
-    private final SessionService sessionService;
+    private final UserService sessionService;
     private final AccountConfig accountConfig;
 
     @Bean
@@ -31,6 +31,8 @@ public class SecurityChainConfig {
 
         http.authorizeHttpRequests(r ->
                 r.requestMatchers("/quiz/**")
+                        .authenticated()
+                        .requestMatchers("/createuser/*")
                         .authenticated()
                         .anyRequest()
                         .permitAll());
@@ -54,13 +56,13 @@ public class SecurityChainConfig {
     }
 
     @Bean
-    public FilterRegistrationBean<AuthorizationFilter> loggingFilter() {
+    public FilterRegistrationBean<AuthorizationFilter> loggingFilter(UserService userService) {
         FilterRegistrationBean<AuthorizationFilter> registrationBean
                 = new FilterRegistrationBean<>();
 
-        registrationBean.setFilter(new AuthorizationFilter());
-        registrationBean.addUrlPatterns("/quiz/**");
-        registrationBean.setOrder(1);
+        registrationBean.setFilter(new AuthorizationFilter(userService));
+        registrationBean.addUrlPatterns("/quiz/*");
+        registrationBean.setOrder(Integer.MAX_VALUE);
 
         return registrationBean;
     }

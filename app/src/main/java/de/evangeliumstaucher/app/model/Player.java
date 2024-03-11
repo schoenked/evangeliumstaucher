@@ -14,12 +14,13 @@ import java.io.Serializable;
 public class Player implements Serializable {
     Long id;
     String name;
+    String email;
 
     public static Player from(PlayerEntity e) {
-        return new Player(e.getId(), e.getName());
+        return new Player(e.getId(), e.getUsername(), e.getEmail());
     }
 
     public PlayerEntity getEntity() {
-        return new PlayerEntity(null, name);
+        return new PlayerEntity(null, name, email);
     }
 }
