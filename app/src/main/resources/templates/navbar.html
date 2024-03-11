@@ -12,7 +12,8 @@
                 <div class="d-flex row">
                     <div class="p-2" th:if="${playerModel}">
                         <span class="text-secondary">Spielername: </span><span class="text-primary"
-                                                                               th:text="${playerModel.name}"></span>
+                                                                               th:text="${playerModel.name}"></span> <a
+                            class="link-secondary" href="/logout">Abmelden</a>
                     </div>
                 </div>
             </div>
