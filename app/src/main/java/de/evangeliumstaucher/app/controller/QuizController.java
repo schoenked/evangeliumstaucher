@@ -120,7 +120,7 @@ public class QuizController extends BaseController {
             resultModel.setPointsSum(quizService.getSumPointsRunningGame(runningQuestion));
             resultModel.setSelectedVerse(runningQuestion.getSelectedVerse().getText());
             resultModel.setSearchedVerse(runningQuestion.getVerse().getText());
-            resultModel.setUrlNext(runningQuestion.getRunningGame().getQuizModel().getUrl() + (qId + 1) + "/#theverse");
+            resultModel.setUrlNext(runningQuestion.getRunningGame().getQuizModel().getUrl() + (qId + 1) + "/");
             m.addAttribute("model", resultModel);
         } catch (ApiException e) {
             log.error("failed", e);
