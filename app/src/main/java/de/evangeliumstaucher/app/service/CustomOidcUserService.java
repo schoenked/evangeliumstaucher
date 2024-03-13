@@ -1,4 +1,4 @@
-package de.evangeliumstaucher.app.config;
+package de.evangeliumstaucher.app.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;

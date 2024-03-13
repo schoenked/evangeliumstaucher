@@ -11,7 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.oauth2.core.oidc.user.OidcUser;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,9 +41,9 @@ public class AccountController extends BaseController {
     }
 
     @PostMapping("/createuser")
-    public RedirectView createuser(@AuthenticationPrincipal OidcUser oidcUser, @RequestParam @Nonnull String username, @RequestParam(required = false, name = "forwardTo") String forwardTo, Model m) {
+    public RedirectView createuser(@AuthenticationPrincipal OAuth2User oidcUser, @RequestParam @Nonnull String username, @RequestParam(required = false, name = "forwardTo") String forwardTo, Model m) {
         RedirectView out = new RedirectView();
-        Player player = new Player(null, username, oidcUser.getEmail());
+        Player player = new Player(null, username, oidcUser.getAttribute("email"));
         if (!userService.valid(username)) {
             out.setUrl("/signup");
             out.getAttributesMap().put("warning", "Der Name wird schon verwendet. Verwende bitte einen anderen.");
@@ -56,9 +56,9 @@ public class AccountController extends BaseController {
     }
 
     @PostMapping("/changename")
-    public RedirectView changename(@AuthenticationPrincipal OidcUser oidcUser, @RequestParam @Nonnull String username, @RequestParam(required = false, name = "forwardTo") String forwardTo, Model m) {
+    public RedirectView changename(@AuthenticationPrincipal OAuth2User oidcUser, @RequestParam @Nonnull String username, @RequestParam(required = false, name = "forwardTo") String forwardTo, Model m) {
         RedirectView out = new RedirectView();
-        PlayerEntity player = (userService.getByEMail(oidcUser.getEmail()).get());
+        PlayerEntity player = (userService.getByEMail(oidcUser.getAttribute("email")).get());
 
         if (!userService.valid(username)) {
             out.setUrl("/edituser");

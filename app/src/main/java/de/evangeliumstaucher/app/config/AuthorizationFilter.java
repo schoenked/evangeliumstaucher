@@ -7,7 +7,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
-import org.springframework.security.oauth2.core.oidc.user.OidcUser;
+import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 
 import java.io.IOException;
 import java.net.URLEncoder;
@@ -45,9 +45,9 @@ public class AuthorizationFilter implements Filter {
         if (req != null && req.getUserPrincipal() != null) {
             OAuth2AuthenticationToken userPrincipal = (OAuth2AuthenticationToken) req.getUserPrincipal();
             if (userPrincipal != null && userPrincipal.getPrincipal() != null) {
-                OidcUser oidcUser = (OidcUser) userPrincipal.getPrincipal();
+                DefaultOAuth2User oidcUser = (DefaultOAuth2User) userPrincipal.getPrincipal();
                 if (oidcUser != null) {
-                    String mail = oidcUser.getEmail();
+                    String mail = (String) oidcUser.getAttributes().get("email");
                     if (mail != null) {
                         return userService.getByEMail(mail).isPresent();
                     }

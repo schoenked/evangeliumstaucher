@@ -9,7 +9,7 @@ import de.evangeliumstaucher.model.Passage;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.oauth2.core.oidc.user.OidcUser;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,8 +35,8 @@ public class QuizController extends BaseController {
     }
 
     @ModelAttribute("playerModel")
-    public PlayerModel PlayerModelAttribute(@AuthenticationPrincipal OidcUser oidcUser) {
-        return PlayerModel.from(userService.getByEMail(oidcUser.getEmail()).get());
+    public PlayerModel PlayerModelAttribute(@AuthenticationPrincipal OAuth2User oidcUser) {
+        return PlayerModel.from(userService.getByEMail(oidcUser.getAttribute("email")).get());
     }
 
     private String getUserId() {
