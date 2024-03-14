@@ -12,7 +12,7 @@
 
 <!-- Main Container Start -->
 <div class="container min-vh-100 py-5 px-4">
-    <div th:if="${!userPersists}">
+    <div th:if="${userPersists == null || !userPersists}">
         <h1>Hallo,</h1>
         <p>
             schön, dass du hier bist, um auch ins Evangelium einzutauchen.
