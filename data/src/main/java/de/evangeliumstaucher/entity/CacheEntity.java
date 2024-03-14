@@ -10,7 +10,7 @@ public class CacheEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String key;
-    @Column(length = 100000)
+    @Column(length = 100000000)
     private String value;
     private Long expiry;
 
