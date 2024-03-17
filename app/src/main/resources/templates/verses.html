@@ -1,9 +1,9 @@
 <!--/*@thymesVar id="verses" type="java.util.List<de.evangeliumstaucher.app.viewmodel.VerseModel>"*/-->
 <div class="container p-0">
     <div th:each="group : ${verseGroups}">
-        <div class="col-12 p-0 row">
+        <div class="col-12 row">
             <th:block th:each="verse : ${group}">
-                <div class="col-2 p-0">
+                <div class="col-2 p-1">
                     <a aria-expanded="false"
                        class="btn w-100 btn-dark rounded-0 m-1"
                        role="button"
