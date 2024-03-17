@@ -9,7 +9,7 @@
     <th:block th:each="book : ${books}">
         <div class="col-2 p-0 text-nowrap">
             <button aria-expanded="false"
-                    class="btn w-100 btn-outline-secondary rounded-0 m-1"
+                    class="btn w-100 btn-outline-secondary rounded-0 m-1 text-truncate"
                     data-bs-toggle="collapse"
                     role="button"
                     th:aria-controls="|${book.htmlId}|"
