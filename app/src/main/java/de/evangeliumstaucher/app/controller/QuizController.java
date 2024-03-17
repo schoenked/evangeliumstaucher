@@ -100,6 +100,18 @@ public class QuizController extends BaseController {
         } catch (ApiException e) {
             log.error("failed", e);
             addWarning(m);
+
+            PassageModel model = new PassageModel();
+            model.setContent("");
+            model.setPath(part.name());
+            if (part == Part.origin) {
+                model.setHtmlClasses("border-secondary border-2 my-4");
+            }
+            if (part != Part.origin && model.getContent() != null) {
+                PassageModel.PassageLoader loader = new PassageModel.PassageLoader();
+                model.setPassageLoader(loader);
+            }
+            m.addAttribute("model", model);
         }
         return "passageContextLoading.html";
     }
