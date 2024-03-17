@@ -9,7 +9,7 @@
 <!-- Importing NavBar -->
 <div th:insert="navbar.html :: navbar"></div>
 <!--/*@thymesVar id="quiz" type="de.evangeliumstaucher.app.viewmodel.QuizModel"*/-->
-<div class="container py-5 px-4">
+<div class="container min-vh-100  py-5 px-4">
     <h1 th:text="${quiz.name}"/>
     <p th:text="${quiz.description}"/>
     <div class="d-grid mb-4 mt-4 ">

@@ -30,6 +30,10 @@ public class BookModel extends BaseModel {
         return list;
     }
 
+    public String getAbbreviationShort() {
+        return getAbbreviation().replace(" ", "");
+    }
+
     public static BookModel from(Book book, VersesService versesService) throws ApiException {
         BookModel bookModel = BookModel.builder()
                 .chapters(ChapterModel.from(book.getChapters(), versesService))

@@ -18,6 +18,7 @@ public class BaseModel {
         String outreturn = StringUtils.replace(getHtmlId(), ".", "\\.");
         return outreturn;
     }
+
     public String getHtmlId() {
         String outreturn = StringUtils.left(id,1)
                 .replace("1", "first")

@@ -9,21 +9,21 @@
     <th:block th:each="book : ${books}">
         <div class="col-2 p-0 text-nowrap">
             <button aria-expanded="false"
-                    class="btn w-100 btn-outline-secondary rounded-0 m-1 text-truncate"
+                    class="btn w-100 btn-outline-secondary rounded-0 m-1 px-0 text-truncate"
                     data-bs-toggle="collapse"
                     role="button"
                     th:aria-controls="|${book.htmlId}|"
                     th:data-bs-target="|#${book.htmlId}|"
-                    th:text="${book.abbreviation}">
+                    th:text="${book.abbreviationShort}">
             </button>
         </div>
-        <div class="collapse"
+        <div class="collapse p-0"
              th:id="${book.htmlId}">
             <div class="container row p-0">
                 <th:block th:each="group : ${book.chapterGroups}">
-                    <div class="col-12 row">
+                    <div class="col-12 p-0 row">
                         <th:block th:each="chapter : ${group}">
-                            <span class="col-2 w-20">
+                            <span class="col-2 p-0 w-20">
                                 <button aria-expanded="false"
                                         class="btn w-100 btn-secondary rounded-0 m-1"
                                         data-bs-toggle="collapse"
@@ -37,7 +37,7 @@
                                         th:text="${chapter.label}">
                                 </button>
                             </span>
-                            <span class="collapse"
+                            <span class="collapse p-0"
                                   th:id="|${chapter.htmlId}|">
                                 <span th:id="|${chapter.htmlId}-loader|">
                                     <span class="spinner-grow" role="status">
