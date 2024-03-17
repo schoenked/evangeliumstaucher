@@ -17,9 +17,9 @@
                     th:text="${book.abbreviationShort}">
             </button>
         </div>
-        <div class="collapse p-0"
+        <div class="collapse "
              th:id="${book.htmlId}">
-            <div class="container row p-0">
+            <div class="container row ">
                 <th:block th:each="group : ${book.chapterGroups}">
                     <div class="col-12 p-0 row">
                         <th:block th:each="chapter : ${group}">
