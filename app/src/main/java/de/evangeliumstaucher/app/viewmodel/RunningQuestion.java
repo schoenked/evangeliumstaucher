@@ -1,11 +1,15 @@
 package de.evangeliumstaucher.app.viewmodel;
 
 import com.google.common.collect.Lists;
+import de.evangeliumstaucher.app.model.BibleWrap;
 import de.evangeliumstaucher.app.model.BookWrap;
 import de.evangeliumstaucher.app.model.ChapterWrap;
 import de.evangeliumstaucher.app.model.VerseWrap;
 import de.evangeliumstaucher.app.service.ApiServices;
 import de.evangeliumstaucher.app.service.QuizService;
+import de.evangeliumstaucher.entity.GameSessionEntity;
+import de.evangeliumstaucher.entity.QuestionEntity;
+import de.evangeliumstaucher.entity.UserQuestionEntity;
 import de.evangeliumstaucher.invoker.ApiException;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +26,8 @@ import java.util.Locale;
 @RequiredArgsConstructor
 @Slf4j
 public class RunningQuestion {
-    private final RunningGame runningGame;
+    private final QuestionEntity questionEntity;
+    private final GameSessionEntity gameSessionEntity;
     int extendingPrePassageCount = 0;
     int extendingPostPassageCount = 0;
     private LocalDateTime startedAt = LocalDateTime.now();
@@ -38,6 +43,29 @@ public class RunningQuestion {
     @Getter(AccessLevel.NONE)
     private Integer diffVerses;
     private String url;
+    private Integer points;
+
+    public static VerseWrap getVerse(String verseId, BibleWrap bibleWrap, ApiServices apiServices) throws ApiException {
+        for (BookWrap bookWrap : bibleWrap.getBooks(apiServices.getBookService())) {
+            if (verseId.startsWith(bookWrap.getBook().getId())) {
+                log.debug("book: " + bookWrap.getBook().getId());
+                for (ChapterWrap chapter : Lists.reverse(bookWrap.getChapters())) {
+                    if (verseId.startsWith(chapter.getChapter().getId())) {
+                        log.debug("chapter: " + chapter.getChapter().getId());
+                        for (VerseWrap verse : Lists.reverse(chapter.getVerses(apiServices.getVersesService()))) {
+                            if (verseId.startsWith(verse.getVerseSummary().getId())) {
+                                log.debug("verse: " + verse.getVerseSummary().getId());
+                                return verse;
+                            }
+                        }
+                        break;
+                    }
+                }
+                break;
+            }
+        }
+        return null;
+    }
 
     public int getDiffVerses(ApiServices apiServices) throws ApiException {
         if (diffVerses == null) {
@@ -47,27 +75,12 @@ public class RunningQuestion {
     }
 
     public void setSelectedVerse(String verseId, ApiServices apiServices) throws ApiException {
-        List<BookWrap> booklist = verse.getChapter().getBook().getBible().getBooks(apiServices.getBookService());
-        for (BookWrap bookWrap : booklist) {
-            if (verseId.startsWith(bookWrap.getBook().getId())) {
-                log.debug("book: " + bookWrap.getBook().getId());
-                for (ChapterWrap chapter : Lists.reverse(bookWrap.getChapters())) {
-                    if (verseId.startsWith(chapter.getChapter().getId())) {
-                        log.debug("chapter: " + chapter.getChapter().getId());
-                        for (VerseWrap verse : Lists.reverse(chapter.getVerses(apiServices.getVersesService()))) {
-                            if (verseId.startsWith(verse.getVerseSummary().getId())) {
-                                log.debug("verse: " + verse.getVerseSummary().getId());
-                                setSelectedVerse(verse);
-                                return;
-                            }
-                        }
-                        break;
-                    }
-                }
-                break;
-            }
+        VerseWrap set = getVerse(verseId, verse.getChapter().getBook().getBible(), apiServices);
+        if (set != null) {
+            setSelectedVerse(set);
+        } else {
+            throw new IllegalArgumentException("verseId is not valid " + verseId);
         }
-        throw new IllegalArgumentException("verseId is not valid " + verseId);
     }
 
     public String getTimespan() {
@@ -91,12 +104,26 @@ public class RunningQuestion {
         return Duration.between(getStartedAt(), getAnsweredAt());
     }
 
-    public int getPoints(QuizService quizService) throws ApiException {
-        return quizService.calcPoints(this);
+    public Integer getPoints(QuizService quizService) throws ApiException {
+        if (points == null) {
+            points = quizService.calcPoints(this);
+        }
+        return points;
     }
 
     public void setUrl(String url) {
         this.url = url;
     }
 
+    public void updateEntity(QuizService quizservice) throws ApiException {
+        UserQuestionEntity entity = quizservice.getUserQuestionRepository().findByGameSessionIdAndQuestionId(gameSessionEntity.getId(), questionEntity.getId()).get();
+        entity.setAnsweredAt(getAnsweredAt());
+        entity.setSelectedVerse(getSelectedVerse().getVerseSummary().getId());
+        entity.setPoints(getPoints(quizservice));
+        quizservice.getUserQuestionRepository().save(entity);
+    }
+
+    public QuizModel getQuizModel(ApiServices apiServices) {
+        return QuizModel.from(gameSessionEntity.getGame(), apiServices.getBibleService());
+    }
 }

@@ -1,5 +1,6 @@
 package de.evangeliumstaucher.app.service;
 
+import com.google.common.collect.Lists;
 import de.evangeliumstaucher.app.model.BibleWrap;
 import de.evangeliumstaucher.app.model.BookWrap;
 import de.evangeliumstaucher.app.model.ChapterWrap;
@@ -8,24 +9,25 @@ import de.evangeliumstaucher.app.utils.DontJudge;
 import de.evangeliumstaucher.app.utils.Fibonacci;
 import de.evangeliumstaucher.app.utils.ListUtils;
 import de.evangeliumstaucher.app.viewmodel.Part;
+import de.evangeliumstaucher.app.viewmodel.PlayerModel;
 import de.evangeliumstaucher.app.viewmodel.QuizModel;
-import de.evangeliumstaucher.app.viewmodel.RunningGame;
 import de.evangeliumstaucher.app.viewmodel.RunningQuestion;
-import de.evangeliumstaucher.entity.GameEntity;
+import de.evangeliumstaucher.entity.*;
 import de.evangeliumstaucher.invoker.ApiException;
 import de.evangeliumstaucher.model.Passage;
 import de.evangeliumstaucher.repo.GameRepository;
+import de.evangeliumstaucher.repo.GameSessionRepository;
+import de.evangeliumstaucher.repo.QuestionRepository;
+import de.evangeliumstaucher.repo.UserQuestionRepository;
+import jakarta.annotation.Nonnull;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.jetbrains.annotations.NotNull;
+import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 import static org.springframework.web.client.HttpClientErrorException.BadRequest;
 
@@ -35,21 +37,25 @@ public class QuizService {
     public static final int COUNT_CONTEXT_EXTENSIONS = 4;
     private final ApiServices apiServices;
     private final GameRepository gameRepository;
-    private final HashMap<String, RunningGame> userGameplays = new HashMap<>();
+    private final QuestionRepository questionRepository;
+    @Getter
+    private final UserQuestionRepository userQuestionRepository;
+    private final GameSessionRepository gameSessionRepository;
+    private final HashMap<String, RunningQuestion> runningQuestionHashMap = new HashMap<>();
     @Value("${hostname}")
     private String hostname;
 
-    @NotNull
-    private static String getGampelayId(String userId, String quizId) {
-        String gampelayId = quizId + userId;
-        return gampelayId;
+    @Nonnull
+    private static String getQuestionId(Long userId, UUID quizId, Long questionindex) {
+        String questionId = String.join(".", quizId.toString(), userId.toString(), questionindex.toString());
+        return questionId;
     }
 
     public String getShareUrl(QuizModel quizModel) {
         return hostname + quizModel.getUrl();
     }
 
-    public QuizModel createQuiz(String bibleId, String creator) throws ApiException {
+    public QuizModel createQuiz(String bibleId, PlayerModel creator) throws ApiException {
         QuizModel quizModel = null;
         BibleWrap bible = apiServices.getBookService().getBible(bibleId);
 
@@ -58,9 +64,18 @@ public class QuizService {
                 .creator(creator)
                 .bibleId(bibleId)
                 .build();
+        quizModel.getVerses(this);
         GameEntity e = gameRepository.save(quizModel.getEntity());
-        //aply generated uuid
+        //apply generated uuid
         quizModel.setId(e.getId());
+        LinkedList<QuestionEntity> questionEntities = Lists.newLinkedList();
+        for (long i = 0; i < quizModel.getVerses(this).size(); i++) {
+            VerseWrap vers = quizModel.getVerses(this).get((int) i);
+            QuestionEntity verseEntity = new QuestionEntity(null, e, i, vers.getVerseSummary().getId());
+            questionEntities.add(verseEntity);
+        }
+        questionRepository.saveAll(questionEntities);
+
         return quizModel;
     }
 
@@ -72,16 +87,8 @@ public class QuizService {
         return verse;
     }
 
-    public VerseWrap getQuestionVerse(QuizModel quizModel, int questionId) throws BadRequest, ApiException {
-        if (quizModel.getVerses().size() < questionId) {
-            //wrong id
-            throw HttpClientErrorException.create(HttpStatus.BAD_REQUEST, "Die Frage gibt es nicht", null, null, null);
-        } else if (quizModel.getVerses().size() == questionId) {
-            //generate new question
-            VerseWrap newQuestion = getRandomVerse(quizModel.getBible(apiServices.getBibleService()));
-            quizModel.getVerses().add(newQuestion);
-        }
-        return quizModel.getVerses().get(questionId);
+    public VerseWrap getQuestionVerse(QuizModel quizModel) throws BadRequest, ApiException {
+        return getRandomVerse(quizModel.getBible(apiServices.getBibleService()));
     }
 
     @Nullable
@@ -118,44 +125,71 @@ public class QuizService {
                         + "-"
                         + postVerse.getVerseSummary().getId();
                 q.setContextEndVerse(postVerse);
-
             }
         }
 
         return apiServices.getPassageService().getPassage(q.getVerse().getVerseSummary().getBibleId(), passageId, null, false, false, false, false, false, null, false);
     }
 
-    public RunningQuestion getQuestion(String userId, UUID quizId, Integer qId) throws ApiException {
+    public RunningQuestion getQuestion(Long userId, UUID quizId, Long qId) throws ApiException, BadRequestException {
         RunningQuestion runningQuestion;
-        String gampelayId = getGampelayId(userId, quizId.toString());
-        if (!userGameplays.containsKey(gampelayId)) {
-            QuizModel quizModel = get(quizId);
-            userGameplays.put(gampelayId, new RunningGame()
-                    .withQuizModel(quizModel));
-        }
-        RunningGame gameplay = userGameplays.get(gampelayId);
-
-        if (gameplay.getQuestions().size() - 1 >= qId) {
-            //already started
-            runningQuestion = gameplay.getQuestions().get(qId);
+        Optional<GameSessionEntity> gamesessionoptional = gameSessionRepository.findByPlayerIdAndGameId(userId, quizId);
+        GameSessionEntity gamesession;
+        if (!gamesessionoptional.isPresent()) {
+            gamesession = createGameSession(userId, quizId);
         } else {
-            VerseWrap verse = getQuestionVerse(gameplay.getQuizModel(), qId);
-
-            runningQuestion = gameplay.createRunningQuestion(apiServices);
-            runningQuestion.setUrl(gameplay.getQuizModel().getUrl() + qId + "/");
-            runningQuestion.setVerse(verse);
-            runningQuestion.setContextStartVerse(verse);
-            runningQuestion.setContextEndVerse(verse);
+            gamesession = gamesessionoptional.get();
         }
-        return runningQuestion;
+        QuizModel quizModel = get(quizId);
+        String questionId = getQuestionId(userId, quizId, qId);
+        Optional<QuestionEntity> questionEntityWrap;
+        QuestionEntity question;
+        if (!runningQuestionHashMap.containsKey(questionId)) {
+            questionEntityWrap = questionRepository.findByGameEntityIdAndQuestionIndex(quizId, qId);
+            if (!questionEntityWrap.isPresent()) {
+                throw new BadRequestException("Ungültige Fragennummer");
+            }
+            question = questionEntityWrap.get();
+            RunningQuestion q = new RunningQuestion(question, gamesession);
+            BibleWrap bible = quizModel.getBible(apiServices.getBibleService());
+            VerseWrap verse = RunningQuestion.getVerse(question.getVerseId(), bible, apiServices);
+            q.setVerse(verse);
+            q.setUrl(quizModel.getUrl() + qId + "/");
+            q.setVerse(verse);
+            q.setContextStartVerse(verse);
+            q.setContextEndVerse(verse);
+            runningQuestionHashMap.put(questionId, q);
+        }
+        RunningQuestion q = runningQuestionHashMap.get(questionId);
+        Optional<UserQuestionEntity> userQestionEntityWrap = userQuestionRepository.findByGameSessionIdAndQuestionId(gamesession.getId(), q.getQuestionEntity().getId());
+
+        if (userQestionEntityWrap.isPresent()) {
+
+        } else {
+            UserQuestionEntity e = new UserQuestionEntity();
+            e.setQuestion(q.getQuestionEntity());
+            e.setStartedAt(q.getStartedAt());
+            e.setGameSession(gamesession);
+            e = userQuestionRepository.save(e);
+        }
+
+        return q;
+    }
+
+    private GameSessionEntity createGameSession(Long userId, UUID quizId) {
+        GameSessionEntity gamesession = new GameSessionEntity();
+        gamesession.setPlayer(new PlayerEntity().withId(userId));
+        gamesession.setGame(GameEntity.builder().id(quizId).build());
+        GameSessionEntity e = gameSessionRepository.save(gamesession);
+        return e;
     }
 
     public QuizModel get(UUID quizId) {
         return QuizModel.from(gameRepository.findById(quizId).get(), apiServices.getBibleService());
     }
 
-    public Passage getPassage(String userId, String quizId, Integer qId, Part part) throws ApiException {
-        return getPassage(userGameplays.get(getGampelayId(userId, quizId)).getQuestions().get(qId), part);
+    public Passage getPassage(Long userId, UUID quizId, Long qId, Part part) throws ApiException {
+        return getPassage(runningQuestionHashMap.get(getQuestionId(userId, quizId, qId)), part);
     }
 
     public int calcPoints(RunningQuestion runningQuestion) throws ApiException {
@@ -168,27 +202,17 @@ public class QuizService {
         long timePoints = DontJudge.getTimePointsSubtract(runningQuestion.getDuration());
         points -= timePoints;
 
-        int diffPoints = getDiffPointsSubtract(runningQuestion);
+        int diffPoints = DontJudge.getDiffPoints(runningQuestion.getDiffVerses(apiServices));
+        //limit 0-100
         points -= diffPoints;
         points = Math.min(points, 100);
         points = Math.max(points, 0);
         return points;
     }
 
-    private int getDiffPointsSubtract(RunningQuestion runningQuestion) throws ApiException {
-        return DontJudge.getDiffPoints(runningQuestion.getDiffVerses(apiServices));
-    }
-
-
     public int getSumPointsRunningGame(RunningQuestion runningQuestion) {
-        int sum = runningQuestion.getRunningGame().getQuestions().stream()
-                .mapToInt(q -> {
-                    try {
-                        return q.getPoints(this);
-                    } catch (ApiException e) {
-                        throw new RuntimeException(e);
-                    }
-                })
+        int sum = userQuestionRepository.findByGameSessionId(runningQuestion.getGameSessionEntity().getId()).stream()
+                .mapToInt(UserQuestionEntity::getPoints)
                 .sum();
         return sum;
     }

@@ -9,16 +9,17 @@ import lombok.*;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@With
-public class PlayerEntity {
+public class QuestionEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     Long id;
 
-    @Column(unique = true)
-    String username;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "game_entity_id", nullable = false)
+    private GameEntity gameEntity;
 
-    @Column(unique = true)
-    String email;
+    private Long questionIndex;
 
+    private String verseId;
 }

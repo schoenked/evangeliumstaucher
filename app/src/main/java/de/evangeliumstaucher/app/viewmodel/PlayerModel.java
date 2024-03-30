@@ -9,9 +9,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PlayerModel {
+    Long id;
     String name;
 
     public static PlayerModel from(PlayerEntity playerEntity) {
-        return new PlayerModel(playerEntity.getUsername());
+        return new PlayerModel(playerEntity.getId(), playerEntity.getUsername());
     }
 }

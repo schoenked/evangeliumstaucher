@@ -8,6 +8,7 @@ import de.evangeliumstaucher.invoker.ApiException;
 import de.evangeliumstaucher.model.Passage;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.coyote.BadRequestException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
@@ -39,10 +40,6 @@ public class QuizController extends BaseController {
         return PlayerModel.from(userService.getByEMail(oidcUser.getAttribute("email")).get());
     }
 
-    private String getUserId() {
-        return session.getId();
-    }
-
     /**
      * Creates new Quiz for the given bible
      *
@@ -53,7 +50,7 @@ public class QuizController extends BaseController {
     @GetMapping("/quiz/create/{bibleId}/")
     public RedirectView getQuiz(@PathVariable String bibleId, Model m, @ModelAttribute PlayerModel playerModel) {
         try {
-            QuizModel quizModel = quizService.createQuiz(bibleId, playerModel.getName());
+            QuizModel quizModel = quizService.createQuiz(bibleId, playerModel);
             return new RedirectView(quizModel.getUrl());
         } catch (ApiException e) {
             log.error("failed", e);
@@ -71,9 +68,9 @@ public class QuizController extends BaseController {
     }
 
     @GetMapping("/quiz/{quizId}/{qId}/")
-    public String getQuestion(@PathVariable UUID quizId, @PathVariable String qId, Model m) {
+    public String getQuestion(@PathVariable UUID quizId, @PathVariable Long qId, @ModelAttribute PlayerModel playerModel, Model m) throws BadRequestException {
         try {
-            RunningQuestion runningQuestion = quizService.getQuestion(getUserId(), quizId, Integer.parseInt(qId));
+            RunningQuestion runningQuestion = quizService.getQuestion(playerModel.getId(), quizId, qId);
             m.addAttribute("question", runningQuestion);
             return "quiz.html";
         } catch (ApiException e) {
@@ -84,9 +81,9 @@ public class QuizController extends BaseController {
     }
 
     @GetMapping("/quiz/{quizId}/{qId}/{part}")
-    public String getQuizPost(@PathVariable String quizId, @PathVariable String qId, @PathVariable Part part, Model m) {
+    public String getQuizPost(@PathVariable UUID quizId, @PathVariable Long qId, @PathVariable Part part, @ModelAttribute PlayerModel playerModel, Model m) {
         try {
-            Passage passage = quizService.getPassage(getUserId(), quizId, Integer.parseInt(qId), part);
+            Passage passage = quizService.getPassage(playerModel.getId(), quizId, qId, part);
             PassageModel model = PassageModel.from(passage);
             model.setPath(part.name());
             if (part == Part.origin) {
@@ -117,13 +114,14 @@ public class QuizController extends BaseController {
     }
 
     @GetMapping("/quiz/{quizId}/{qId}/select/{verseId}")
-    public String selectVerseGetResult(@PathVariable UUID quizId, @PathVariable Integer qId, @PathVariable String verseId, Model m) {
+    public String selectVerseGetResult(@PathVariable UUID quizId, @PathVariable Long qId, @PathVariable String verseId, @ModelAttribute PlayerModel playerModel, Model m) throws BadRequestException {
         try {
             log.debug("selectVerseGetResult() called with: quizId = [" + quizId + "], qId = [" + qId + "], verseId = [" + verseId + "], m = [" + m + "]");
 
-            RunningQuestion runningQuestion = quizService.getQuestion(getUserId(), quizId, qId);
+            RunningQuestion runningQuestion = quizService.getQuestion(playerModel.getId(), quizId, qId);
             runningQuestion.setAnsweredAt(LocalDateTime.now());
             runningQuestion.setSelectedVerse(verseId, apiServices);
+            runningQuestion.updateEntity(quizService);
 
             ResultModel resultModel = new ResultModel();
             resultModel.setVerseDiff(runningQuestion.getDiffVerses(apiServices));
@@ -132,7 +130,7 @@ public class QuizController extends BaseController {
             resultModel.setPointsSum(quizService.getSumPointsRunningGame(runningQuestion));
             resultModel.setSelectedVerse(runningQuestion.getSelectedVerse().getText());
             resultModel.setSearchedVerse(runningQuestion.getVerse().getText());
-            resultModel.setUrlNext(runningQuestion.getRunningGame().getQuizModel().getUrl() + (qId + 1) + "/");
+            resultModel.setUrlNext(runningQuestion.getQuizModel(apiServices).getUrl() + (qId + 1) + "/");
             m.addAttribute("model", resultModel);
         } catch (ApiException e) {
             log.error("failed", e);

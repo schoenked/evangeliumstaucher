@@ -1,12 +1,10 @@
 package de.evangeliumstaucher.entity;
 
 import jakarta.annotation.Nonnull;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.time.OffsetDateTime;
@@ -18,7 +16,10 @@ import java.util.UUID;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
+@With
+@Builder
 public class GameEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
@@ -30,8 +31,12 @@ public class GameEntity {
     @Nonnull
     private String bibleId;
 
+    @ManyToOne
+    @JoinColumn(name = "creator_id")
     @Nonnull
-    private String creator;
+    @Lazy
+    private PlayerEntity creator;
+
     @CreatedDate
     @CreationTimestamp
     private OffsetDateTime createdAt;

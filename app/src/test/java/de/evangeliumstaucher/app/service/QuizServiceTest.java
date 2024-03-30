@@ -5,10 +5,13 @@ import de.evangeliumstaucher.app.model.BookWrap;
 import de.evangeliumstaucher.app.model.ChapterWrap;
 import de.evangeliumstaucher.app.model.VerseWrap;
 import de.evangeliumstaucher.app.viewmodel.RunningQuestion;
+import de.evangeliumstaucher.entity.GameSessionEntity;
+import de.evangeliumstaucher.entity.QuestionEntity;
 import de.evangeliumstaucher.invoker.ApiException;
 import de.evangeliumstaucher.model.Book;
 import de.evangeliumstaucher.model.ChapterSummary;
 import de.evangeliumstaucher.model.VerseSummary;
+import jakarta.annotation.Nonnull;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -45,7 +48,7 @@ public class QuizServiceTest {
     @BeforeAll
     public static void setup() {
         apiServices = new ApiServices(null, null, null, null, null);
-        quizService = new QuizService(apiServices, null);
+        quizService = new QuizService(apiServices, null, null, null, null);
         bible = new BibleWrap("");
         List<BookWrap> books = IntStream.range(1, 10)
                 .mapToObj(iBook -> createBook(iBook, bible))
@@ -72,10 +75,15 @@ public class QuizServiceTest {
         assertThat(stepped).isNull();
     }
 
+    @Nonnull
+    private static RunningQuestion getRunningQuestion() {
+        return new RunningQuestion(new QuestionEntity(), new GameSessionEntity());
+    }
+
     @Test
     public void testCalcDiff() throws ApiException {
         for (int i = 0; i <= 728; i++) {
-            RunningQuestion runningQuestion = new RunningQuestion(null);
+            RunningQuestion runningQuestion = getRunningQuestion();
             runningQuestion.setVerse(bible.getBooks(null).get(0).getChapters().get(0).getVerses().get(0));
             VerseWrap v = runningQuestion.getVerse().stepVerses(i, apiServices);
             runningQuestion.setSelectedVerse(v);
@@ -83,24 +91,24 @@ public class QuizServiceTest {
         }
 
         for (int i = 0; i <= 728; i++) {
-            RunningQuestion runningQuestion = new RunningQuestion(null);
+            RunningQuestion runningQuestion = getRunningQuestion();
             runningQuestion.setVerse(bible.getLast().getLast().getLast(apiServices));
             VerseWrap v = runningQuestion.getVerse().stepVerses(i * -1, apiServices);
             runningQuestion.setSelectedVerse(v);
             assertThat(runningQuestion.getDiffVerses(apiServices)).isEqualTo(i);
         }
-        RunningQuestion runningQuestion = new RunningQuestion(null);
+        RunningQuestion runningQuestion = getRunningQuestion();
         runningQuestion.setVerse(bible.getBooks(null).get(2).getChapters().get(2).getVerses().get(2));
         runningQuestion.setSelectedVerse(bible.getBooks(null).get(2).getChapters().get(2).getVerses().get(1));
         assertThat(runningQuestion.getDiffVerses(apiServices)).isEqualTo(1);
 
-        runningQuestion = new RunningQuestion(null);
+        runningQuestion = getRunningQuestion();
         runningQuestion.setSelectedVerse(bible.getBooks(null).get(2).getChapters().get(1).getVerses().get(2));
         runningQuestion.setVerse(bible.getBooks(null).get(2).getChapters().get(2).getVerses().get(2));
         runningQuestion.setSelectedVerse(bible.getBooks(null).get(2).getChapters().get(1).getVerses().get(2));
         assertThat(runningQuestion.getDiffVerses(apiServices)).isEqualTo(9);
 
-        runningQuestion = new RunningQuestion(null);
+        runningQuestion = getRunningQuestion();
         runningQuestion.setVerse(bible.getBooks(null).get(2).getChapters().get(2).getVerses().get(2));
         runningQuestion.setSelectedVerse(bible.getBooks(null).get(4).getChapters().get(1).getVerses().get(0));
         assertThat(runningQuestion.getDiffVerses(apiServices)).isEqualTo(151);

@@ -19,8 +19,8 @@ public class GameSessionEntity {
         Long id;
 
         @ManyToOne(fetch = FetchType.LAZY)
-
         PlayerEntity player;
+
         @ManyToOne(fetch = FetchType.LAZY)
         GameEntity game;
 
