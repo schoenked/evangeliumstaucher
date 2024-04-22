@@ -1,6 +1,5 @@
 package de.evangeliumstaucher.entity;
 
-import jakarta.annotation.Nonnull;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -28,12 +27,10 @@ public class GameEntity {
 
     private String description;
 
-    @Nonnull
     private String bibleId;
 
     @ManyToOne
     @JoinColumn(name = "creator_id")
-    @Nonnull
     @Lazy
     private PlayerEntity creator;
 
