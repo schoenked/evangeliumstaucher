@@ -88,6 +88,8 @@ public class QuizController extends BaseController {
             model.setPath(part.name());
             if (part == Part.origin) {
                 model.setHtmlClasses("border-secondary border-2 my-4");
+            } else {
+                model.setHtmlClasses("");
             }
             if (part != Part.origin && model.getContent() != null) {
                 PassageModel.PassageLoader loader = new PassageModel.PassageLoader();

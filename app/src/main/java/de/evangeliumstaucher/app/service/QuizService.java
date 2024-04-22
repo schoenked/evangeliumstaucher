@@ -135,37 +135,29 @@ public class QuizService {
         RunningQuestion runningQuestion;
         Optional<GameSessionEntity> gamesessionoptional = gameSessionRepository.findByPlayerIdAndGameId(userId, quizId);
         GameSessionEntity gamesession;
-        if (!gamesessionoptional.isPresent()) {
-            gamesession = createGameSession(userId, quizId);
-        } else {
-            gamesession = gamesessionoptional.get();
-        }
+        gamesession = gamesessionoptional.orElseGet(() -> createGameSession(userId, quizId));
         QuizModel quizModel = get(quizId);
         String questionId = getQuestionId(userId, quizId, qId);
         Optional<QuestionEntity> questionEntityWrap;
         QuestionEntity question;
-        if (!runningQuestionHashMap.containsKey(questionId)) {
-            questionEntityWrap = questionRepository.findByGameEntityIdAndQuestionIndex(quizId, qId);
-            if (!questionEntityWrap.isPresent()) {
-                throw new BadRequestException("Ungültige Fragennummer");
-            }
-            question = questionEntityWrap.get();
-            RunningQuestion q = new RunningQuestion(question, gamesession);
-            BibleWrap bible = quizModel.getBible(apiServices.getBibleService());
-            VerseWrap verse = RunningQuestion.getVerse(question.getVerseId(), bible, apiServices);
-            q.setVerse(verse);
-            q.setUrl(quizModel.getUrl() + qId + "/");
-            q.setVerse(verse);
-            q.setContextStartVerse(verse);
-            q.setContextEndVerse(verse);
-            runningQuestionHashMap.put(questionId, q);
+        questionEntityWrap = questionRepository.findByGameEntityIdAndQuestionIndex(quizId, qId);
+        if (!questionEntityWrap.isPresent()) {
+            throw new BadRequestException("Ungültige Fragennummer");
         }
-        RunningQuestion q = runningQuestionHashMap.get(questionId);
+        question = questionEntityWrap.get();
+        RunningQuestion q = new RunningQuestion(question, gamesession);
+        BibleWrap bible = quizModel.getBible(apiServices.getBibleService());
+        VerseWrap verse = RunningQuestion.getVerse(question.getVerseId(), bible, apiServices);
+        q.setVerse(verse);
+        q.setUrl(quizModel.getUrl() + qId + "/");
+        q.setVerse(verse);
+        q.setContextStartVerse(verse);
+        q.setContextEndVerse(verse);
+        runningQuestionHashMap.put(questionId, q);
+
         Optional<UserQuestionEntity> userQestionEntityWrap = userQuestionRepository.findByGameSessionIdAndQuestionId(gamesession.getId(), q.getQuestionEntity().getId());
 
-        if (userQestionEntityWrap.isPresent()) {
-
-        } else {
+        if (userQestionEntityWrap.isEmpty()) {
             UserQuestionEntity e = new UserQuestionEntity();
             e.setQuestion(q.getQuestionEntity());
             e.setStartedAt(q.getStartedAt());
