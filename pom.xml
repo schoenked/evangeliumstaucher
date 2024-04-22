@@ -19,6 +19,8 @@
         <module>api-bible</module>
         <module>data</module>
         <module>app</module>
+        <module>sword-modules</module>
+        <module>jsword-base</module>
     </modules>
     <dependencyManagement>
         <dependencies>
