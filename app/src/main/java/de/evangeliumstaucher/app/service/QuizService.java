@@ -179,7 +179,9 @@ public class QuizService {
     private GameSessionEntity createGameSession(Long userId, UUID quizId) {
         GameSessionEntity gamesession = new GameSessionEntity();
         gamesession.setPlayer(new PlayerEntity().withId(userId));
-        gamesession.setGame(GameEntity.builder().id(quizId).build());
+        GameEntity gameEntity = new GameEntity();
+        gameEntity.setId(quizId);
+        gamesession.setGame(gameEntity);
         GameSessionEntity e = gameSessionRepository.save(gamesession);
         return e;
     }
