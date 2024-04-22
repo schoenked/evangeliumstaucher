@@ -8,12 +8,10 @@ import de.evangeliumstaucher.app.model.VerseWrap;
 import de.evangeliumstaucher.app.utils.DontJudge;
 import de.evangeliumstaucher.app.utils.Fibonacci;
 import de.evangeliumstaucher.app.utils.ListUtils;
-import de.evangeliumstaucher.app.viewmodel.Part;
-import de.evangeliumstaucher.app.viewmodel.PlayerModel;
-import de.evangeliumstaucher.app.viewmodel.QuizModel;
-import de.evangeliumstaucher.app.viewmodel.RunningQuestion;
+import de.evangeliumstaucher.app.viewmodel.*;
 import de.evangeliumstaucher.entity.*;
 import de.evangeliumstaucher.invoker.ApiException;
+import de.evangeliumstaucher.model.Book;
 import de.evangeliumstaucher.model.Passage;
 import de.evangeliumstaucher.repo.GameRepository;
 import de.evangeliumstaucher.repo.GameSessionRepository;
@@ -149,6 +147,12 @@ public class QuizService {
         BibleWrap bible = quizModel.getBible(apiServices.getBibleService());
         VerseWrap verse = RunningQuestion.getVerse(question.getVerseId(), bible, apiServices);
         q.setVerse(verse);
+        List<Book> books = verse.getChapter().getBook()
+                .getBible()
+                .getBooks(apiServices.getBookService())
+                .stream().map(BookWrap::getBook)
+                .toList();
+        q.setBooks(BookModel.from(books, apiServices.getVersesService()));
         q.setUrl(quizModel.getUrl() + qId + "/");
         q.setVerse(verse);
         q.setContextStartVerse(verse);
