@@ -54,71 +54,73 @@
             </p>
         </div>
     </div>
+
+    <!--handling the zoom -> text scaling-->
+    <script>
+
+        const box = document.getElementById("quizpassage");
+
+        // Restore the font size from localStorage on start
+        restoreFontSize();
+
+        // Function to restore the font size from localStorage and apply it
+        function restoreFontSize() {
+            // Get the font size from localStorage
+            const fontSize = localStorage.getItem("passageFontSize");
+
+            // If the font size exists in localStorage, apply it
+            if (fontSize) {
+                box.style.fontSize = fontSize + "px";
+            }
+        }
+
+        function scale(summand) {
+            const currentFontSize = parseFloat(getComputedStyle(box).fontSize);
+            const newFontSize = currentFontSize + summand;
+            console.log("old " + currentFontSize + "px new " + newFontSize + "px");
+            box.style.fontSize = newFontSize + "px";
+
+            // Store the new font size in localStorage
+            localStorage.setItem("passageFontSize", newFontSize);
+        }
+
+        function handleWheel(event) {
+            if (event.ctrlKey) {
+                event.preventDefault();
+                const delta = -event.deltaY;
+                scale(delta / 20);
+            }
+        }
+
+        box.addEventListener("wheel", handleWheel, {passive: false});
+
+        let hypo = undefined;
+
+        box.addEventListener('touchmove', function (event) {
+            var summand;
+            if (event.targetTouches.length === 2) {
+                event.preventDefault();
+                let hypo1 = Math.hypot((event.targetTouches[0].pageX - event.targetTouches[1].pageX),
+                    (event.targetTouches[0].pageY - event.targetTouches[1].pageY));
+                if (hypo === undefined) {
+                    hypo = hypo1;
+                }
+                summand = ((hypo1 / hypo) - 1);
+                console.log("pinch scale summand :" + summand);
+                scale(summand);
+            }
+        }, false);
+
+        box.addEventListener('touchend', function (event) {
+            hypo = undefined;
+        }, false);
+
+    </script>
+
     <div class="container">
         <div th:insert="fragment-selector.html :: selector (${question.books})"></div>
     </div>
 </div>
-
-<!--handling the zoom -> text scaling-->
-<script>
-    const box = document.getElementById("quizpassage");
-
-    function scale(summand) {
-        const currentFontSize = parseFloat(getComputedStyle(box).fontSize);
-        const newFontSize = currentFontSize + summand;
-        console.log("old " + currentFontSize + "px new " + newFontSize + "px");
-        box.style.fontSize = newFontSize + "px";
-
-        // Store the new font size in localStorage
-        localStorage.setItem("passageFontSize", newFontSize);
-    }
-
-    function handleWheel(event) {
-        if (event.ctrlKey) {
-            event.preventDefault();
-            const delta = -event.deltaY;
-            scale(delta / 20);
-        }
-    }
-
-    box.addEventListener("wheel", handleWheel, {passive: false});
-
-    let hypo = undefined;
-
-    box.addEventListener('touchmove', function (event) {
-        var summand;
-        if (event.targetTouches.length === 2) {
-            event.preventDefault();
-            let hypo1 = Math.hypot((event.targetTouches[0].pageX - event.targetTouches[1].pageX),
-                (event.targetTouches[0].pageY - event.targetTouches[1].pageY));
-            if (hypo === undefined) {
-                hypo = hypo1;
-            }
-            summand = ((hypo1 / hypo) - 1);
-            console.log("pinch scale summand :" + summand);
-            scale(summand);
-        }
-    }, false);
-
-    box.addEventListener('touchend', function (event) {
-        hypo = undefined;
-    }, false);
-
-
-    // Restore the font size from localStorage on start
-    restoreFontSize();
-
-    // Function to restore the font size from localStorage and apply it
-    function restoreFontSize() {
-        // Get the font size from localStorage
-        const fontSize = localStorage.getItem("passageFontSize");
-
-        // If the font size exists in localStorage, apply it
-        if (fontSize) {
-            box.style.fontSize = fontSize + "px";
-        }
-    }
-</script>
 
 <!-- Importing Footer -->
 <div th:insert="footer.html :: footer"></div>
