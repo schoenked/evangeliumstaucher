@@ -20,11 +20,11 @@ public class BookModel extends BaseModel {
     private String abbreviation;
     private String prefixVerses;
 
-    public static List<BookModel> from(List<Book> books, VersesService versesService) throws ApiException {
+    public static List<BookModel> from(List<Book> books, String prefixVerse, VersesService versesService) throws ApiException {
 
         List<BookModel> list = new ArrayList<>();
         for (Book book : books) {
-            BookModel from = from(book, versesService);
+            BookModel from = from(book, prefixVerse, versesService);
             list.add(from);
         }
         return list;
@@ -34,12 +34,13 @@ public class BookModel extends BaseModel {
         return getAbbreviation().replace(" ", "");
     }
 
-    public static BookModel from(Book book, VersesService versesService) throws ApiException {
+    public static BookModel from(Book book, String prefixVerse, VersesService versesService) throws ApiException {
         BookModel bookModel = BookModel.builder()
                 .chapters(ChapterModel.from(book.getChapters(), versesService))
                 .abbreviation(book.getAbbreviation())
                 .build();
         bookModel.setId(book.getId());
+        bookModel.setPrefixVerses(prefixVerse);
         return bookModel;
     }
 
