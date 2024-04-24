@@ -152,7 +152,7 @@ public class QuizService {
                 .getBooks(apiServices.getBookService())
                 .stream().map(BookWrap::getBook)
                 .toList();
-        q.setBooks(BookModel.from(books, apiServices.getVersesService()));
+        q.setBooks(BookModel.from(books, "select", apiServices.getVersesService()));
         q.setUrl(quizModel.getUrl() + qId + "/");
         q.setVerse(verse);
         q.setContextStartVerse(verse);

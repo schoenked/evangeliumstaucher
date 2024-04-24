@@ -1,5 +1,6 @@
 package de.evangeliumstaucher.app.controller;
 
+import com.google.common.base.Strings;
 import de.evangeliumstaucher.app.service.ApiServices;
 import de.evangeliumstaucher.app.utils.ListUtils;
 import de.evangeliumstaucher.app.viewmodel.BookModel;
@@ -63,7 +64,7 @@ public class BibleController extends BaseController {
             List<VerseModel> veseeModels = verses.stream()
                     .map(v -> VerseModel.from(v))
                     .peek(v -> {
-                        if (prefix != null) {
+                        if (!Strings.isNullOrEmpty(prefix)) {
                             v.setUrl("./" + prefix + "/" + v.getUrl());
                         }
                     })
@@ -80,8 +81,7 @@ public class BibleController extends BaseController {
     public String getBooks(@PathVariable String bibleId, Model m) {
         try {
             List<Book> books = apiServices.getBookService().getBibleBooks(bibleId);
-            List<BookModel> bookModels = BookModel.from(books, apiServices.getVersesService());
-            bookModels.forEach(bookModel -> bookModel.setPrefixVerses("passage"));
+            List<BookModel> bookModels = BookModel.from(books, "passage", apiServices.getVersesService());
             m.addAttribute("books", bookModels);
         } catch (ApiException e) {
             log.error("failed", e);
