@@ -1,7 +1,8 @@
 <!--/*@thymesVar id="model" type="de.evangeliumstaucher.app.viewmodel.PassageModel"*/-->
 <div th:fragment="passageContextLoading (model)">
 
-    <div th:class="${model.htmlClasses}" th:id="${model.htmlId}" th:if="${model.path != 'pre'}">
+    <div th:class="|${model.htmlClasses} animate\_\_animated animate\_\_fadeInDown|" th:id="${model.htmlId}"
+         th:if="${model.path != 'pre'}">
         [(${model.content})]
     </div>
     <div th:id="|waiting${model.path}|" th:if="${model.passageLoader}">
@@ -11,7 +12,8 @@
             setTimeout(loadPassageAjax, [(${model.passageLoader.delay})], "[(${model.path})]");
         </script>
     </div>
-    <div th:class="${model.htmlClasses}" th:id="${model.htmlId}" th:if="${model.path == 'pre'}">
+    <div th:class="|${model.htmlClasses} animate\_\_animated animate\_\_fadeInUp|" th:id="${model.htmlId}"
+         th:if="${model.path == 'pre'}">
         [(${model.content})]
     </div>
 
