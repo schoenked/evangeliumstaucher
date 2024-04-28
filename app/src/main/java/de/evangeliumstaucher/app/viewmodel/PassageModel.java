@@ -12,13 +12,17 @@ import lombok.*;
 public class PassageModel extends BaseModel {
     private String content;
     private String htmlClasses;
-    private String htmlId;
     private String path;
     private PassageLoader passageLoader;
 
     public PassageModel(String path, PassageLoader passageLoader) {
         this.path = path;
         this.passageLoader = passageLoader;
+    }
+
+    @Override
+    public String getHtmlIdEscaped() {
+        return super.getHtmlIdEscaped();
     }
 
     public static PassageModel from(Passage passage) {

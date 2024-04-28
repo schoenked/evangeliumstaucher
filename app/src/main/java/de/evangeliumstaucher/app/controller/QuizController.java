@@ -97,6 +97,9 @@ public class QuizController extends BaseController {
                 PassageModel.PassageLoader loader = new PassageModel.PassageLoader();
                 model.setPassageLoader(loader);
             }
+            if (passage != null && passage.getId() != null) {
+                model.setId(passage.getId() + "_passage");
+            }
             m.addAttribute("model", model);
         } catch (ApiException e) {
             log.error("failed", e);

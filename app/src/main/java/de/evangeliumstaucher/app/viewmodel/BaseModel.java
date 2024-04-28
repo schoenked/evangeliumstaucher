@@ -20,6 +20,9 @@ public class BaseModel {
     }
 
     public String getHtmlId() {
+        if (id == null) {
+            return null;
+        }
         String outreturn = StringUtils.left(id,1)
                 .replace("1", "first")
                 .replace("2", "second")
