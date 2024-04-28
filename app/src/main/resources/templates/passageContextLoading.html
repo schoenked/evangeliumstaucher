@@ -1,14 +1,31 @@
 <!--/*@thymesVar id="model" type="de.evangeliumstaucher.app.viewmodel.PassageModel"*/-->
 <div th:fragment="passageContextLoading (model)">
+
     <div th:replace="passage_phrase.html :: passagetext(model=${model}, path='post')"></div>
     <div th:replace="passage_phrase.html :: passagetext(model=${model}, path='origin')"></div>
-
-    <div th:id="|waiting${model.path}|" th:if="${model.passageLoader}">
-        <div class="spinner-grow" role="status">
+    <a class="btn w-100" href="#" role="button" th:if="${model.path != 'origin'}"
+       th:onclick="|showPassage(this, ${model.hashcode})|">
+        <p class="w-100 p-2 ">
+            <span class="placeholder col-1"></span>
+            <span class="placeholder col-3"></span>
+            <span class="placeholder col-2"></span>
+            <span class="placeholder col-4"></span>
+            <span class="placeholder col-2"></span>
+            <span class="placeholder col-2"></span>
+            <span class="placeholder col-4"></span>
+            <span class="placeholder col-5"></span>
+            <span class="placeholder col-1"></span>
+            <span class="placeholder"></span>
+        </p>
+    </a>
+    <div th:classappend="${model.path != 'origin' ? 'd-none' : ''}" th:id="${model.hashcode}">
+        <div th:id="|waiting${model.path}|" th:if="${model.passageLoader}">
+            <div class="spinner-grow" role="status">
+            </div>
+            <script type="text/javascript">
+                setTimeout(loadPassageAjax, [(${model.passageLoader.delay})], "[(${model.path})]");
+            </script>
         </div>
-        <script type="text/javascript">
-            setTimeout(loadPassageAjax, [(${model.passageLoader.delay})], "[(${model.path})]");
-        </script>
     </div>
     <div th:replace="passage_phrase.html :: passagetext(model=${model}, path='pre')"></div>
 </div>

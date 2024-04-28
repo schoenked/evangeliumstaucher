@@ -1,17 +1,8 @@
 <!--/*@thymesVar id="model" type="de.evangeliumstaucher.app.viewmodel.PassageModel"*/-->
 
 <div th:fragment="passagetext (model, path)">
-    <div th:if="${model.path == path}">
-        <a aria-expanded="false" class="btn" data-bs-toggle="collapse" role="button"
-           th:aria-controls="|collapsetext${model.htmlIdEscaped}|"
-           th:href="|#collapsetext${model.htmlIdEscaped}|">
-            👁
-        </a>
-
-        <div class="collapse" th:id="|collapsetext${model.htmlIdEscaped}|">
-            <div th:class="|${model.htmlClasses}|" th:id="${model.htmlIdEscaped}">
-                [(${model.content})]
-            </div>
-        </div>
+    <div th:class="|${model.htmlClasses}|"
+         th:if="${model.path == path}">
+        [(${model.content})]
     </div>
 </div>
