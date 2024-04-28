@@ -2,7 +2,7 @@
 
 <div th:fragment="passagetext (model, path)">
     <div th:if="${model.path == path}">
-        <a aria-expanded="false" class="btn" data-toggle="collapse" role="button"
+        <a aria-expanded="false" class="btn" data-bs-toggle="collapse" role="button"
            th:aria-controls="|collapsetext${model.htmlIdEscaped}|"
            th:href="|#collapsetext${model.htmlIdEscaped}|">
             👁
