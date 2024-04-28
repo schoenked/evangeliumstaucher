@@ -1,10 +1,8 @@
 <!--/*@thymesVar id="model" type="de.evangeliumstaucher.app.viewmodel.PassageModel"*/-->
 <div th:fragment="passageContextLoading (model)">
+    <div th:replace="passage_phrase.html :: passagetext(model=${model}, path='post')"></div>
+    <div th:replace="passage_phrase.html :: passagetext(model=${model}, path='origin')"></div>
 
-    <div th:class="|${model.htmlClasses}|" th:id="${model.htmlId}"
-         th:if="${model.path != 'pre'}">
-        [(${model.content})]
-    </div>
     <div th:id="|waiting${model.path}|" th:if="${model.passageLoader}">
         <div class="spinner-grow" role="status">
         </div>
@@ -12,12 +10,5 @@
             setTimeout(loadPassageAjax, [(${model.passageLoader.delay})], "[(${model.path})]");
         </script>
     </div>
-    <div th:class="|${model.htmlClasses}|" th:id="${model.htmlId}"
-         th:if="${model.path == 'pre'}">
-        [(${model.content})]
-    </div>
-
-</div>
-        </div>
-    </div>
+    <div th:replace="passage_phrase.html :: passagetext(model=${model}, path='pre')"></div>
 </div>

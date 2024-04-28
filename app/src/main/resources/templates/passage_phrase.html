@@ -1,0 +1,8 @@
+<!--/*@thymesVar id="model" type="de.evangeliumstaucher.app.viewmodel.PassageModel"*/-->
+
+<div th:fragment="passagetext (model, path)">
+    <div th:class="|${model.htmlClasses}|" th:id="${model.htmlId}"
+         th:if="${model.path == path}">
+        [(${model.content})]
+    </div>
+</div>
