@@ -9,6 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@EqualsAndHashCode
 public class PassageModel extends BaseModel {
     private String content;
     private String htmlClasses;
@@ -20,17 +21,21 @@ public class PassageModel extends BaseModel {
         this.passageLoader = passageLoader;
     }
 
-    @Override
-    public String getHtmlIdEscaped() {
-        return super.getHtmlIdEscaped();
-    }
-
     public static PassageModel from(Passage passage) {
         PassageModelBuilder builder = PassageModel.builder();
         if (passage != null) {
             builder.content(passage.getContent());
         }
         return builder.build();
+    }
+
+    public int getHashcode() {
+        return hashCode();
+    }
+
+    @Override
+    public String getHtmlIdEscaped() {
+        return super.getHtmlIdEscaped();
     }
 
     @Data
