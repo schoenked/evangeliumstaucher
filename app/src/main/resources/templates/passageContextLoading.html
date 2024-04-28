@@ -3,7 +3,7 @@
 
     <div th:replace="passage_phrase.html :: passagetext(model=${model}, path='post')"></div>
     <div th:replace="passage_phrase.html :: passagetext(model=${model}, path='origin')"></div>
-    <a class="btn w-100" role="button" th:href="|#${model.hashcode}|" th:if="${model.path != 'origin'}"
+    <a class="btn w-100" role="button" th:id="|#${model.hashcode}tag|" th:if="${model.path != 'origin'}"
        th:onclick="|showPassage(this, ${model.hashcode})|">
         <p class="w-100 p-2 ">
             <span class="placeholder col-1"></span>
@@ -19,6 +19,7 @@
         </p>
     </a>
     <div th:classappend="${model.path != 'origin' ? 'd-none' : ''}" th:id="${model.hashcode}">
+        <p th:id="|${model.hashcode}tag|"></p>
         <div th:id="|waiting${model.path}|" th:if="${model.passageLoader}">
             <div class="spinner-grow" role="status">
             </div>
