@@ -5,7 +5,7 @@
 <body>
 
 <!--/*@thymesVar id="books" type="java.util.List<de.evangeliumstaucher.app.model.BookWrap>"*/-->
-<div class="container p-0 row text-center" th:fragment="selector (books)">
+<div class="container p-0 row text-center" id="selector" th:fragment="selector (books)">
     <th:block th:each="book : ${books}">
         <div class="col-2 p-0 text-nowrap">
             <button aria-expanded="false"
