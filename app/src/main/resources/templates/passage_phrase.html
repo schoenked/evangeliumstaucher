@@ -3,6 +3,9 @@
 <div th:fragment="passagetext (model, path)">
     <div th:class="|${model.htmlClasses}|"
          th:if="${model.path == path}">
+        <span style='position: relative; top:-90vh;z-index: -1;' th:id="|${model.hashcode}tag|"
+              th:if='${model.path == "pre" }'></span>
         [(${model.content})]
+        <span th:id="|${model.hashcode}tag|" th:if='${model.path == "post"}'></span>
     </div>
 </div>
