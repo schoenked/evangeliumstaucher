@@ -30,7 +30,7 @@ public class RunningQuestion {
     private final GameSessionEntity gameSessionEntity;
     int extendingPrePassageCount = 0;
     int extendingPostPassageCount = 0;
-    private LocalDateTime startedAt = LocalDateTime.now();
+    private LocalDateTime startedAt;
     private LocalDateTime answeredAt;
     private VerseWrap verse;
     private VerseWrap selectedVerse;
@@ -115,9 +115,10 @@ public class RunningQuestion {
         this.url = url;
     }
 
-    public void updateEntity(QuizService quizservice) throws ApiException {
+    public void syncEntity(QuizService quizservice) throws ApiException {
         UserQuestionEntity entity = quizservice.getUserQuestionRepository().findByGameSessionIdAndQuestionId(gameSessionEntity.getId(), questionEntity.getId()).get();
         entity.setAnsweredAt(getAnsweredAt());
+        this.setStartedAt(entity.getStartedAt());
         entity.setSelectedVerse(getSelectedVerse().getVerseSummary().getId());
         entity.setPoints(getPoints(quizservice));
         quizservice.getUserQuestionRepository().save(entity);

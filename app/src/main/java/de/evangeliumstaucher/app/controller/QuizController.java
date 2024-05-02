@@ -128,7 +128,7 @@ public class QuizController extends BaseController {
             RunningQuestion runningQuestion = quizService.getQuestion(playerModel.getId(), quizId, qId);
             runningQuestion.setAnsweredAt(LocalDateTime.now());
             runningQuestion.setSelectedVerse(verseId, apiServices);
-            runningQuestion.updateEntity(quizService);
+            runningQuestion.syncEntity(quizService);
 
             ResultModel resultModel = new ResultModel();
             resultModel.setVerseDiff(runningQuestion.getDiffVerses(apiServices));
