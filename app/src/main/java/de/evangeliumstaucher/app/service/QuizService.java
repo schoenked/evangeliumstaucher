@@ -25,6 +25,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 import static org.springframework.web.client.HttpClientErrorException.BadRequest;
@@ -164,7 +165,7 @@ public class QuizService {
         if (userQestionEntityWrap.isEmpty()) {
             UserQuestionEntity e = new UserQuestionEntity();
             e.setQuestion(q.getQuestionEntity());
-            e.setStartedAt(q.getStartedAt());
+            e.setStartedAt(LocalDateTime.now());
             e.setGameSession(gamesession);
             e = userQuestionRepository.save(e);
         }
