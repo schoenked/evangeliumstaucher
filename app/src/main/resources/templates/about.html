@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <head th:insert="~{head.html :: head}"/>
+    <title>Über das Projekt evangeliumstaucher</title>
+</head>
+<body>
+
+<!-- Importing NavBar -->
+<div th:insert="~{navbar.html :: navbar}"></div>
+
+<!-- Main Container Start -->
+<div class="container min-vh-100 p-4">
+    <h1>Über den evangliumstaucher</h1>
+    <p>
+        Das Projekt evangliumstaucher ist ein gemeinnütziges Projekt von nobler.tech
+        Hinter nobler.tech steht zum jetzigen Zeitpunkt Daniel Schönke.
+        Unter diesem Namen möchte er technische Produkte bereitstellen, welche das Ziel haben
+        die gute Nachricht des Gottes der Bibel in und unter den Menschen zu verbreiten.
+    </p>
+    <p>
+        <b></b><i>nobler</i></b>, weil es die Eigenschaft der Menschen in der griechischen Stadt Beröa beschreibt (s.
+        Apostelgeschichte 17,11).
+        Sie waren dem Evangliuem gegenüber aufgeschlossen.
+        Sie studierten es und prüften, ob es wahr sei.
+    </p>
+    <p>
+        evangliumstaucher ist Open Source.
+        Es kann frei erweitert und selbst betrieben werden.
+
+        <a href="https://github.com/schoenked/evangeliumstaucher">Projekt auf GitHub ansehen.</a>
+        Über technische Unterstützung würde ich mich sehr freuen.
+    </p>
+</div>
+
+<!-- Importing Footer -->
+<div th:insert="~{footer.html :: footer}"></div>
+</body>
+</html>

@@ -25,4 +25,9 @@ public class MainController {
         return "User-agent: *\n" +
                 "Disallow: /quiz/\n";
     }
+
+    @RequestMapping(value = {"/about.html"})
+    public String about() {
+        return "about.html";
+    }
 }
