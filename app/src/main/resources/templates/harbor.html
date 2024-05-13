@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <head th:insert="~{head.html :: head}"/>
+    <title>Lies die Bibel</title>
+    <link href="https://cdn.datatables.net/2.0.7/css/dataTables.dataTables.min.css" rel="stylesheet"></link>
+    <script src="https://cdn.datatables.net/2.0.7/js/dataTables.min.js"></script>
+</head>
+<body>
+
+<!-- Importing NavBar -->
+<div th:insert="navbar.html :: navbar"></div>
+
+<!-- Main Container Start -->
+<div class="container min-vh-100 p-4">
+    <h1>Tauchgänge im Trend</h1>
+    <table class="table" id="quizzes">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>von</th>
+            <th>am</th>
+            <th>Spieler</th>
+        </tr>
+        </thead>
+    </table>
+</div>
+
+<script>
+    $('table#quizzes').DataTable({
+        ajax: {
+            contentType: 'application/json',
+            url: '/quiz/datatable/quizzes',
+            type: 'POST',
+            headers: {
+                'X-XSRF-TOKEN': '[[${_csrf.token}]]'
+            },
+            data: function (d) {
+                return JSON.stringify(d);
+            }
+        },
+        columns: [
+            {data: "name", name: "Name"},
+            {data: "creator"},
+            {data: "createdAt"},
+            {data: "playerCount"},
+        ],
+        serverSide: true
+    })
+</script>
+
+<!-- Importing Footer -->
+<div th:insert="footer.html :: footer"></div>
+</body>
+</html>
