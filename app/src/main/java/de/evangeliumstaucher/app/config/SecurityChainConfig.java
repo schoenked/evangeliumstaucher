@@ -8,10 +8,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
+import org.springframework.security.web.csrf.CsrfTokenRepository;
+import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 
 import java.io.IOException;
 
@@ -27,15 +30,30 @@ public class SecurityChainConfig {
     private final AccountConfig accountConfig;
 
     @Bean
+    public CsrfTokenRepository csrfTokenRepository() {
+        HttpSessionCsrfTokenRepository repository = new HttpSessionCsrfTokenRepository();
+        repository.setHeaderName("X-XSRF-TOKEN");
+        return repository;
+    }
+
+    @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http.authorizeHttpRequests(r ->
-                r.requestMatchers("/quiz/**")
+                r
+                        .requestMatchers(HttpMethod.GET, "/quiz/**")
+                        .authenticated()
+                        .requestMatchers(HttpMethod.POST, "/quiz/**")
                         .authenticated()
                         .requestMatchers("/createuser/*")
                         .authenticated()
                         .anyRequest()
                         .permitAll());
+
+        http.csrf(c -> {
+            c.csrfTokenRepository(csrfTokenRepository());
+        });
+
         http.oauth2Login(oauth2Login -> oauth2Login.successHandler(new SavedRequestAwareAuthenticationSuccessHandler() {
             @Override
             public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws ServletException, IOException {
