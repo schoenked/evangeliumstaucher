@@ -3,6 +3,8 @@ package de.evangeliumstaucher.app.controller;
 import de.evangeliumstaucher.app.service.ApiServices;
 import de.evangeliumstaucher.app.service.QuizService;
 import de.evangeliumstaucher.app.service.UserService;
+import de.evangeliumstaucher.app.viewmodel.DatatableColumn;
+import de.evangeliumstaucher.app.viewmodel.DatatableViewModel;
 import de.evangeliumstaucher.app.viewmodel.PlayerModel;
 import de.evangeliumstaucher.repoDatatables.GameDatatablesRepository;
 import jakarta.servlet.http.HttpSession;
@@ -10,8 +12,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+
+import java.util.List;
 
 @Controller
 @Slf4j
@@ -35,7 +40,16 @@ public class HarborController extends BaseController {
     }
 
     @GetMapping("/quiz/harbor/")
-    public String get() {
+    public String get(Model m) {
+        DatatableViewModel model = new DatatableViewModel();
+        List<DatatableColumn> columns = List.of(
+                new DatatableColumn("Name", "name"),
+                new DatatableColumn("von", "creator"),
+                new DatatableColumn("am", "createdAt"),
+                new DatatableColumn("Spieler", "playerCount")
+        );
+        model.setColumns(columns);
+        m.addAttribute("model", model);
         return "harbor.html";
     }
 }
