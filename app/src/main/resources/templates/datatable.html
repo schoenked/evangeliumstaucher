@@ -10,7 +10,7 @@
     </table>
 
     <script>
-        $('table#[[${model.id}]]').DataTable({
+        let t = $('table#[[${model.id}]]').DataTable({
             ajax: {
                 contentType: 'application/json',
                 url: '/quiz/datatable/quizzes',
@@ -27,5 +27,13 @@
             ],
             serverSide: true
         })
+
+        t.on('click', 'tbody tr', function () {
+            let data = t.row(this).data();
+            console.log('You clicked on ' + data.location + "'s row");
+            if (data.location !== undefined) {
+                window.location = data.location;
+            }
+        });
     </script>
 </div>
