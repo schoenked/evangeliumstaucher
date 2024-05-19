@@ -1,0 +1,31 @@
+<div th:fragment="datatable (model)">
+    <table class="table" th:id="${model.id}">
+        <thead>
+        <tr>
+            <th:block th:each="col : ${model.columns}">
+                <th th:text="${col.name}"></th>
+            </th:block>
+        </tr>
+        </thead>
+    </table>
+
+    <script>
+        $('table#[[${model.id}]]').DataTable({
+            ajax: {
+                contentType: 'application/json',
+                url: '/quiz/datatable/quizzes',
+                type: 'POST',
+                headers: {
+                    'X-XSRF-TOKEN': '[[${_csrf.token}]]'
+                },
+                data: function (d) {
+                    return JSON.stringify(d);
+                }
+            },
+            columns: [
+                [(${model.columnsText})]
+            ],
+            serverSide: true
+        })
+    </script>
+</div>

@@ -15,40 +15,8 @@
 <!-- Main Container Start -->
 <div class="container min-vh-100 p-4">
     <h1>Tauchgänge im Trend</h1>
-    <table class="table" id="quizzes">
-        <thead>
-        <tr>
-            <th>Name</th>
-            <th>von</th>
-            <th>am</th>
-            <th>Spieler</th>
-        </tr>
-        </thead>
-    </table>
+    <div th:insert="datatable.html :: datatable(${model})"></div>
 </div>
-
-<script>
-    $('table#quizzes').DataTable({
-        ajax: {
-            contentType: 'application/json',
-            url: '/quiz/datatable/quizzes',
-            type: 'POST',
-            headers: {
-                'X-XSRF-TOKEN': '[[${_csrf.token}]]'
-            },
-            data: function (d) {
-                return JSON.stringify(d);
-            }
-        },
-        columns: [
-            {data: "name", name: "Name"},
-            {data: "creator"},
-            {data: "createdAt"},
-            {data: "playerCount"},
-        ],
-        serverSide: true
-    })
-</script>
 
 <!-- Importing Footer -->
 <div th:insert="footer.html :: footer"></div>

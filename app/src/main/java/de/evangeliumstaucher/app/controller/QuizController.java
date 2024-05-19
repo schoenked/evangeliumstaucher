@@ -159,7 +159,6 @@ public class QuizController extends BaseController {
     @PostMapping(value = "/quiz/datatable/quizzes")
     public @ResponseBody DataTablesOutput<GameRow> getQuizzes(@Valid @RequestBody DataTablesInput input) {
         DataTablesOutput<GameRow> out = gameRepository.findAll(input);
-
         return out;
     }
 }
