@@ -20,7 +20,8 @@ import java.util.UUID;
             g.created_at created_at,
             (   SELECT COUNT(*)
                 FROM game_session_entity gse
-                WHERE  gse.game_id = g.id) player_count
+                WHERE  gse.game_id = g.id) player_count,
+            '/quiz/' || g.id || '/' location
         FROM game_entity g
         JOIN player_entity pe 
             ON pe.id = g.creator_id
@@ -45,4 +46,9 @@ public class GameRow {
     @Column(name = "created_at")
     @JsonView
     OffsetDateTime createdAt;
+
+    @Column(name = "location")
+    @JsonView
+    String location;
+
 }
