@@ -4,21 +4,19 @@ import de.evangeliumstaucher.app.service.ApiServices;
 import de.evangeliumstaucher.app.service.QuizService;
 import de.evangeliumstaucher.app.service.UserService;
 import de.evangeliumstaucher.app.viewmodel.*;
-import de.evangeliumstaucher.entity.datatables.GameRow;
 import de.evangeliumstaucher.invoker.ApiException;
 import de.evangeliumstaucher.model.Passage;
-import de.evangeliumstaucher.repoDatatables.GameDatatablesRepository;
+import de.evangeliumstaucher.repoDatatables.TrendingGamesDatatablesRepository;
 import jakarta.servlet.http.HttpSession;
-import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.BadRequestException;
-import org.springframework.data.jpa.datatables.mapping.DataTablesInput;
-import org.springframework.data.jpa.datatables.mapping.DataTablesOutput;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.time.LocalDateTime;
@@ -30,9 +28,9 @@ public class QuizController extends BaseController {
     private final QuizService quizService;
     private final UserService userService;
     private final HttpSession session;
-    private final GameDatatablesRepository gameRepository;
+    private final TrendingGamesDatatablesRepository gameRepository;
 
-    public QuizController(ApiServices apiServices, QuizService quizService, UserService userService, HttpSession session, GameDatatablesRepository gameRepository) {
+    public QuizController(ApiServices apiServices, QuizService quizService, UserService userService, HttpSession session, TrendingGamesDatatablesRepository gameRepository) {
         super(apiServices);
         this.quizService = quizService;
         this.userService = userService;
@@ -156,9 +154,4 @@ public class QuizController extends BaseController {
         return super.getBible(m);
     }
 
-    @PostMapping(value = "/quiz/datatable/quizzes")
-    public @ResponseBody DataTablesOutput<GameRow> getQuizzes(@Valid @RequestBody DataTablesInput input) {
-        DataTablesOutput<GameRow> out = gameRepository.findAll(input);
-        return out;
-    }
 }
