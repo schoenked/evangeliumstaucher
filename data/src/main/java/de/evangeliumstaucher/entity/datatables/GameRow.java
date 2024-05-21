@@ -2,31 +2,28 @@ package de.evangeliumstaucher.entity.datatables;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import org.hibernate.annotations.Subselect;
-import org.springframework.data.annotation.Immutable;
+import jakarta.persistence.MappedSuperclass;
 
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
-@Entity
-@Immutable
-@Subselect("""
-        SELECT
-            g.id id,
-            g.name name,
-            pe.username creator,
-            g.created_at created_at,
-            (   SELECT COUNT(*)
-                FROM game_session_entity gse
-                WHERE  gse.game_id = g.id) player_count,
-            '/quiz/' || g.id || '/' location
-        FROM game_entity g
-        JOIN player_entity pe 
-            ON pe.id = g.creator_id
-        """)
+@MappedSuperclass
 public class GameRow {
+    public static final String SUBSELECT = """
+            SELECT
+                g.id id,
+                g.name name,
+                pe.username creator,
+                g.created_at created_at,
+                (   SELECT COUNT(*)
+                    FROM game_session_entity gse
+                    WHERE  gse.game_id = g.id) player_count,
+                '/quiz/' || g.id || '/' location
+            FROM game_entity g
+            JOIN player_entity pe
+                ON pe.id = g.creator_id
+            """;
     @Id
     @JsonView
     UUID id;

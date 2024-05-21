@@ -6,7 +6,7 @@ import de.evangeliumstaucher.app.service.UserService;
 import de.evangeliumstaucher.app.viewmodel.DatatableColumn;
 import de.evangeliumstaucher.app.viewmodel.DatatableViewModel;
 import de.evangeliumstaucher.app.viewmodel.PlayerModel;
-import de.evangeliumstaucher.repoDatatables.GameDatatablesRepository;
+import de.evangeliumstaucher.repoDatatables.TrendingGamesDatatablesRepository;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -24,9 +24,9 @@ public class HarborController extends BaseController {
     private final QuizService quizService;
     private final UserService userService;
     private final HttpSession session;
-    private final GameDatatablesRepository gameRepository;
+    private final TrendingGamesDatatablesRepository gameRepository;
 
-    public HarborController(ApiServices apiServices, QuizService quizService, UserService userService, HttpSession session, GameDatatablesRepository gameRepository) {
+    public HarborController(ApiServices apiServices, QuizService quizService, UserService userService, HttpSession session, TrendingGamesDatatablesRepository gameRepository) {
         super(apiServices);
         this.quizService = quizService;
         this.userService = userService;
