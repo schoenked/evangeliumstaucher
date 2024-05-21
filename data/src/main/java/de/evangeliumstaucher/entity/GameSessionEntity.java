@@ -5,6 +5,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.CreatedDate;
+
+import java.time.OffsetDateTime;
 
 
 @Entity
@@ -23,5 +27,9 @@ public class GameSessionEntity {
 
         @ManyToOne(fetch = FetchType.LAZY)
         GameEntity game;
+
+        @CreatedDate
+        @CreationTimestamp
+        private OffsetDateTime startedAt;
 
 }

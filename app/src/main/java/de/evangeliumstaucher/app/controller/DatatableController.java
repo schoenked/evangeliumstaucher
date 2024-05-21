@@ -3,6 +3,7 @@ package de.evangeliumstaucher.app.controller;
 import de.evangeliumstaucher.app.service.DatatableService;
 import de.evangeliumstaucher.app.service.UserService;
 import de.evangeliumstaucher.app.viewmodel.PlayerModel;
+import de.evangeliumstaucher.entity.datatables.GameRowMyDives;
 import de.evangeliumstaucher.entity.datatables.GameRowTrend;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -30,9 +31,15 @@ public class DatatableController {
         return PlayerModel.from(userService.getByEMail(oidcUser.getAttribute("email")).get());
     }
 
-    @PostMapping(value = "/quiz/datatable/quizzes")
+    @PostMapping(value = "/quiz/datatable/trending")
     public @ResponseBody DataTablesOutput<GameRowTrend> getQuizzes(@Valid @RequestBody DataTablesInput input, @ModelAttribute PlayerModel playerModel) {
         DataTablesOutput<GameRowTrend> out = datatableService.getTrendingGames(input, playerModel.getId());
+        return out;
+    }
+
+    @PostMapping(value = "/quiz/datatable/myDives")
+    public @ResponseBody DataTablesOutput<GameRowMyDives> getMyDives(@Valid @RequestBody DataTablesInput input, @ModelAttribute PlayerModel playerModel) {
+        DataTablesOutput<GameRowMyDives> out = datatableService.getMyDives(input, playerModel.getId());
         return out;
     }
 

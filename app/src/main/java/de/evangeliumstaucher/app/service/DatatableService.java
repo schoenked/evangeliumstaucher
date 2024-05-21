@@ -1,6 +1,8 @@
 package de.evangeliumstaucher.app.service;
 
+import de.evangeliumstaucher.entity.datatables.GameRowMyDives;
 import de.evangeliumstaucher.entity.datatables.GameRowTrend;
+import de.evangeliumstaucher.repoDatatables.MyGamesDatatablesRepository;
 import de.evangeliumstaucher.repoDatatables.TrendingGamesDatatablesRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class DatatableService {
     private final TrendingGamesDatatablesRepository trendingGamesDatatablesRepository;
+    private final MyGamesDatatablesRepository myGamesDatatablesRepository;
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -23,5 +26,12 @@ public class DatatableService {
         Filter f = session.enableFilter("notAlreadyPlayedFilter");
         f.setParameter("playerID", playerId);
         return trendingGamesDatatablesRepository.findAll(input);
+    }
+
+    public DataTablesOutput<GameRowMyDives> getMyDives(DataTablesInput input, Long playerId) {
+        Session session = entityManager.unwrap(Session.class);
+        Filter f = session.enableFilter("startedDivesPlayedFilter");
+        f.setParameter("playerID", playerId);
+        return myGamesDatatablesRepository.findAll(input);
     }
 }

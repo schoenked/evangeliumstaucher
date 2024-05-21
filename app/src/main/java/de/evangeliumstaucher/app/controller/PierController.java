@@ -20,13 +20,13 @@ import java.util.List;
 
 @Controller
 @Slf4j
-public class HarborController extends BaseController {
+public class PierController extends BaseController {
     private final QuizService quizService;
     private final UserService userService;
     private final HttpSession session;
     private final TrendingGamesDatatablesRepository gameRepository;
 
-    public HarborController(ApiServices apiServices, QuizService quizService, UserService userService, HttpSession session, TrendingGamesDatatablesRepository gameRepository) {
+    public PierController(ApiServices apiServices, QuizService quizService, UserService userService, HttpSession session, TrendingGamesDatatablesRepository gameRepository) {
         super(apiServices);
         this.quizService = quizService;
         this.userService = userService;
@@ -39,17 +39,29 @@ public class HarborController extends BaseController {
         return PlayerModel.from(userService.getByEMail(oidcUser.getAttribute("email")).get());
     }
 
-    @GetMapping("/quiz/harbor/")
+    @GetMapping("/quiz/pier/")
     public String get(Model m) {
-        DatatableViewModel model = new DatatableViewModel();
+        DatatableViewModel modelTrending = new DatatableViewModel();
         List<DatatableColumn> columns = List.of(
                 new DatatableColumn("Name", "name"),
                 new DatatableColumn("von", "creator"),
                 new DatatableColumn("am", "createdAt"),
                 new DatatableColumn("Spieler", "playerCount")
         );
-        model.setColumns(columns);
-        m.addAttribute("model", model);
-        return "harbor.html";
+        modelTrending.setColumns(columns);
+        modelTrending.setUrl("/quiz/datatable/trending");
+        m.addAttribute("modelTrending", modelTrending);
+
+        DatatableViewModel modelMyDives = new DatatableViewModel();
+        List<DatatableColumn> columnsMyDives = List.of(
+                new DatatableColumn("Name", "name"),
+                new DatatableColumn("gespielt/gestartet am", "startedAt"),
+                new DatatableColumn("Fortschritt", "progress")
+        );
+        modelMyDives.setColumns(columnsMyDives);
+        modelMyDives.setUrl("/quiz/datatable/myDives");
+        m.addAttribute("modelMyDives", modelMyDives);
+
+        return "pier.html";
     }
 }

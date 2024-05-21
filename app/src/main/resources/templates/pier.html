@@ -14,8 +14,12 @@
 
 <!-- Main Container Start -->
 <div class="container min-vh-100 p-4">
-    <h1>Tauchgänge im Trend</h1>
-    <div th:insert="datatable.html :: datatable(${model})"></div>
+    <h1>Tauchbasis am Pier</h1>
+    <h2>Tauchgänge im Trend</h2>
+    <div th:insert="datatable.html :: datatable(${modelTrending})"></div>
+    <a class="btn btn-primary" href="/quiz/create/" role="button">Einen neuen Tauchgang erstellen</a>
+    <h2>Meine Tauchgänge</h2>
+    <div th:insert="datatable.html :: datatable(${modelMyDives})"></div>
 </div>
 
 <!-- Importing Footer -->
