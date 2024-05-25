@@ -10,9 +10,10 @@ fi
 
 start_app() {
   stop_app
-  java -jar "$APP_JAR" -Xmx573m --spring.profiles.active=$PROFILES &
+  java -jar "$APP_JAR" -Xmx773m --spring.profiles.active=$PROFILES &
   background_pid=$!
   echo $background_pid > gospeldiver.pid
+  echo -17 > /proc/$background_pid/oom_adj
 }
 
 stop_app() {
