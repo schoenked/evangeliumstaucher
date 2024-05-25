@@ -43,6 +43,16 @@ public class QuizController extends BaseController {
         return PlayerModel.from(userService.getByEMail(oidcUser.getAttribute("email")).get());
     }
 
+    @GetMapping("/quiz/")
+    public RedirectView getQuiz(Model m) {
+        return new RedirectView("/quiz/pier/");
+    }
+
+    @GetMapping("/quiz/create/")
+    public String getQuizCreate(Model m) {
+        return super.getBible(m);
+    }
+
     /**
      * Creates new Quiz for the given bible
      *
@@ -147,11 +157,6 @@ public class QuizController extends BaseController {
             addWarning(m);
         }
         return "result.html";
-    }
-
-    @GetMapping("/quiz/create/")
-    public String getQuiz(Model m) {
-        return super.getBible(m);
     }
 
 }
