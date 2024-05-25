@@ -14,12 +14,41 @@
 
 <!-- Main Container Start -->
 <div class="container min-vh-100 p-4">
-    <h1>Tauchbasis am Pier</h1>
-    <h2>Tauchgänge im Trend</h2>
-    <div th:insert="datatable.html :: datatable(${modelTrending})"></div>
-    <a class="btn btn-primary" href="/quiz/create/" role="button">Einen neuen Tauchgang erstellen</a>
-    <h2>Meine Tauchgänge</h2>
-    <div th:insert="datatable.html :: datatable(${modelMyDives})"></div>
+    <h1 class="text-primary">Tauchbasis am Pier</h1>
+    <div class="card">
+        <div class="card-header">
+            <ul class="nav nav-tabs card-header-tabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button aria-controls="trend" aria-selected="true" class="nav-link" data-bs-target="#trend"
+                            data-bs-toggle="tab"
+                            id="trend-tab" role="tab" type="button">Tauchgänge im Trend
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button aria-controls="my" aria-selected="false" class="nav-link" data-bs-target="#my"
+                            data-bs-toggle="tab"
+                            id="my-tab" role="tab" type="button">Meine Tauchgänge
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/quiz/create/">Tauchgang erstellen</a>
+                </li>
+            </ul>
+        </div>
+        <div class="card-body">
+            <div class="tab-content" id="myTabContent">
+                <div aria-labelledby="trend-tab" class="tab-pane fade show active" id="trend" role="tabpanel">
+                    <h4 class="card-title">Tauchgänge im Trend</h4>
+                    <div th:insert="datatable.html :: datatable(${modelTrending})"></div>
+                </div>
+                <div aria-labelledby="my-tab" class="tab-pane fade show active" id="my" role="tabpanel">
+                    <h4 class="card-title">Meine Tauchgänge</h4>
+                    <div th:insert="datatable.html :: datatable(${modelMyDives})"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 <!-- Importing Footer -->
