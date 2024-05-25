@@ -21,6 +21,9 @@
             });
         }
     </script>
+    <div class="bg-black py-3">
+        <h2 class="text-primary">Betrachte den Bibeltext und seinen Kontext.</h2>
+    </div>
     <div class="bg-third" id="quizpassage">
         <div class="card bg-third p-0" style="
             background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 1))
@@ -123,6 +126,7 @@
     </script>
 
     <div class="container">
+        <h2 class="py-3">Wo steht die Passage? Wähle aus.</h2>
         <div th:insert="fragment-selector.html :: selector (${question.books})"></div>
     </div>
     <div class="position-fixed bottom-0 end-0  m-2">
@@ -135,5 +139,6 @@
 
     <!-- Importing Footer -->
     <div th:insert="footer.html :: footer"></div>
+</div>
 </body>
 </html>
