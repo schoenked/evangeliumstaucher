@@ -17,16 +17,16 @@
     <h1 class="text-primary">Tauchbasis am Pier</h1>
     <div class="card">
         <div class="card-header">
-            <ul class="nav nav-tabs card-header-tabs" role="tablist">
+            <ul class="nav nav-pills card-header-pills" role="tablist">
                 <li class="nav-item" role="presentation">
-                    <button aria-controls="trend" aria-selected="true" class="nav-link" data-bs-target="#trend"
-                            data-bs-toggle="tab"
+                    <button aria-controls="trend" aria-selected="true" class="nav-link active" data-bs-target="#trend"
+                            data-bs-toggle="pill"
                             id="trend-tab" role="tab" type="button">Tauchgänge im Trend
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
                     <button aria-controls="my" aria-selected="false" class="nav-link" data-bs-target="#my"
-                            data-bs-toggle="tab"
+                            data-bs-toggle="pill"
                             id="my-tab" role="tab" type="button">Meine Tauchgänge
                     </button>
                 </li>
@@ -41,7 +41,7 @@
                     <h4 class="card-title">Tauchgänge im Trend</h4>
                     <div th:insert="datatable.html :: datatable(${modelTrending})"></div>
                 </div>
-                <div aria-labelledby="my-tab" class="tab-pane fade show active" id="my" role="tabpanel">
+                <div aria-labelledby="my-tab" class="tab-pane fade" id="my" role="tabpanel">
                     <h4 class="card-title">Meine Tauchgänge</h4>
                     <div th:insert="datatable.html :: datatable(${modelMyDives})"></div>
                 </div>
