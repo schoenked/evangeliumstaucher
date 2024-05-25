@@ -37,6 +37,10 @@ $theme-colors: (
         "gray-700": $gray-700
 );
 
+$nav-link-color: $seventh;
+$nav-pills-link-active-color: $white;
+$nav-pills-link-active-bg: $seventh;
+
 @font-face {
   font-family: 'ThemeFont';
   src: url('/Macondo-Regular.ttf') format('truetype');
