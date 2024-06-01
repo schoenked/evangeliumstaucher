@@ -44,6 +44,8 @@ public class RunningQuestion {
     private Integer diffVerses;
     private String url;
     private Integer points;
+    private int countQuestions;
+    private long indexQuestion;
 
     public static VerseWrap getVerse(String verseId, BibleWrap bibleWrap, ApiServices apiServices) throws ApiException {
         for (BookWrap bookWrap : bibleWrap.getBooks(apiServices.getBookService())) {
@@ -115,12 +117,13 @@ public class RunningQuestion {
         this.url = url;
     }
 
-    public void syncEntity(QuizService quizservice) throws ApiException {
+    public void syncEntity(QuizService quizservice, ApiServices apiServices) throws ApiException {
         UserQuestionEntity entity = quizservice.getUserQuestionRepository().findByGameSessionIdAndQuestionId(gameSessionEntity.getId(), questionEntity.getId()).get();
         entity.setAnsweredAt(getAnsweredAt());
         this.setStartedAt(entity.getStartedAt());
         entity.setSelectedVerse(getSelectedVerse().getVerseSummary().getId());
         entity.setPoints(getPoints(quizservice));
+        entity.setDiffVerses(getDiffVerses(apiServices));
         quizservice.getUserQuestionRepository().save(entity);
     }
 

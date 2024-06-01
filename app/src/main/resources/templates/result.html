@@ -4,6 +4,8 @@
 <head>
     <head th:insert="~{head.html :: head}"/>
     <title>evangeliumstaucher - Ergebnis</title>
+    <link href="https://cdn.datatables.net/2.0.7/css/dataTables.dataTables.min.css" rel="stylesheet"></link>
+    <script src="https://cdn.datatables.net/2.0.7/js/dataTables.min.js"></script>
 </head>
 <body>
 
@@ -14,7 +16,8 @@
 <!-- Main Container Start -->
 <div class="container min-vh-100 py-5 px-4">
     <div class="card bg-dark text-light py-5 px-4 mx-auto">
-        <img alt="image" th:src="@{/images/diver.jpg}">
+        <p>Passage <span th:text="${model.indexQuestion}"></span> von <span th:text="${model.countQuestions}"></span>
+        </p>
         <p>
             Deine Antwort liegt
         <h1 th:text="${model.verseDiff}"></h1>
@@ -33,10 +36,11 @@
             Du hast
         <h1 th:text="${model.points}"></h1>
         <h2>Punkte</h2>
-            erreicht
+        erreicht
         </p>
         <p>
-            Gesamt: <h1 th:text="${model.pointsSum}"></h1>
+            Gesamt:
+        <h1 th:text="${model.pointsSum}"></h1>
         </p>
 
         <div class="d-flex justify-content-center mt-4">
@@ -44,6 +48,7 @@
                type="button">weiter tauchen</a>
         </div>
     </div>
+    <div th:insert="datatable.html :: datatable(${questionScoreTable})"></div>
 </div>
 
 <!-- Importing Footer -->

@@ -18,4 +18,6 @@ public class ResultModel {
     private String urlNext;
     private String searchedVerse;
     private String selectedVerse;
+    private long indexQuestion;
+    private long countQuestions;
 }

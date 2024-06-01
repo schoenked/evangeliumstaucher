@@ -131,7 +131,6 @@ public class QuizService {
     }
 
     public RunningQuestion getQuestion(Long userId, UUID quizId, Long qId) throws ApiException, BadRequestException {
-        RunningQuestion runningQuestion;
         Optional<GameSessionEntity> gamesessionoptional = gameSessionRepository.findByPlayerIdAndGameId(userId, quizId);
         GameSessionEntity gamesession;
         gamesession = gamesessionoptional.orElseGet(() -> createGameSession(userId, quizId));
@@ -145,6 +144,8 @@ public class QuizService {
         }
         question = questionEntityWrap.get();
         RunningQuestion q = new RunningQuestion(question, gamesession);
+        q.setCountQuestions(quizModel.getVerses(this).size());
+        q.setIndexQuestion(qId + 1);
         BibleWrap bible = quizModel.getBible(apiServices.getBibleService());
         VerseWrap verse = RunningQuestion.getVerse(question.getVerseId(), bible, apiServices);
         q.setVerse(verse);

@@ -26,11 +26,11 @@ public class UserQuestionEntity {
     @JoinColumn(name = "gameSession_id")
     private GameSessionEntity gameSession;
 
+    private Integer points;
     private LocalDateTime startedAt;
     private LocalDateTime answeredAt;
-
-    private Integer points;
     private String selectedVerse;
+    private Integer diffVerses;
 
     public Duration getDuration() {
         return Duration.between(getStartedAt(), getAnsweredAt());
