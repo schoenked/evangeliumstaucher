@@ -4,18 +4,24 @@ import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import org.hibernate.annotations.Filter;
+import org.hibernate.annotations.FilterDef;
+import org.hibernate.annotations.ParamDef;
 import org.hibernate.annotations.Subselect;
 import org.springframework.data.annotation.Immutable;
 
 @Entity
 @Immutable
+@FilterDef(name = "userquestionentityid",
+        parameters = @ParamDef(name = "userquestionentityid", type = Long.class))
 @Subselect("""
         SELECT
             uqe.id id,
             pe.username player,
             uqe.points points,
             uqe.diff_verses diff_verses,
-            EXTRACT(SECOND FROM(uqe.answered_at - uqe.started_at)) duration
+            EXTRACT(SECOND FROM(uqe.answered_at - uqe.started_at)) duration,
+            uqe.id userquestionentityid
         FROM
             user_question_entity uqe
         JOIN user_question_entity uqe2
@@ -26,6 +32,11 @@ import org.springframework.data.annotation.Immutable;
         JOIN player_entity pe
             ON pe.id = gse.player_id
         ORDER BY uqe.points DESC
+        """)
+@Filter(name = "userquestionentityid", condition = """
+        (
+            userquestionentityid = :userquestionentityid
+        )
         """)
 public class QuestionScores {
 

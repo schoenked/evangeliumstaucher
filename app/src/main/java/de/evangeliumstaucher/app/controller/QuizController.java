@@ -144,7 +144,7 @@ public class QuizController extends BaseController {
             RunningQuestion runningQuestion = quizService.getQuestion(playerModel.getId(), quizId, qId);
             runningQuestion.setAnsweredAt(LocalDateTime.now());
             runningQuestion.setSelectedVerse(verseId, apiServices);
-            runningQuestion.syncEntity(quizService, apiServices);
+            Long id = runningQuestion.syncEntity(quizService, apiServices);
 
             ResultModel resultModel = new ResultModel();
             resultModel.setIndexQuestion(runningQuestion.getIndexQuestion());
@@ -158,7 +158,7 @@ public class QuizController extends BaseController {
             resultModel.setUrlNext(runningQuestion.getQuizModel(apiServices).getUrl() + (qId + 1) + "/");
             m.addAttribute("model", resultModel);
 
-            DatatableViewModel questionScoreTable = getDatatableQuestionScore(runningQuestion.getQuestionEntity().getId());
+            DatatableViewModel questionScoreTable = getDatatableQuestionScore(id);
             m.addAttribute("questionScoreTable", questionScoreTable);
         } catch (ApiException e) {
             log.error("failed", e);
