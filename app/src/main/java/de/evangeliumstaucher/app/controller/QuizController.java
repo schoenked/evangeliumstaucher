@@ -7,6 +7,7 @@ import de.evangeliumstaucher.app.viewmodel.*;
 import de.evangeliumstaucher.invoker.ApiException;
 import de.evangeliumstaucher.model.Passage;
 import de.evangeliumstaucher.repoDatatables.TrendingGamesDatatablesRepository;
+import jakarta.annotation.Nonnull;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.BadRequestException;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Controller
@@ -87,6 +89,7 @@ public class QuizController extends BaseController {
             m.addAttribute("question", runningQuestion);
             return "quiz.html";
         } catch (ApiException e) {
+
             log.error("failed", e);
             addWarning(m);
         }
@@ -141,9 +144,11 @@ public class QuizController extends BaseController {
             RunningQuestion runningQuestion = quizService.getQuestion(playerModel.getId(), quizId, qId);
             runningQuestion.setAnsweredAt(LocalDateTime.now());
             runningQuestion.setSelectedVerse(verseId, apiServices);
-            runningQuestion.syncEntity(quizService);
+            runningQuestion.syncEntity(quizService, apiServices);
 
             ResultModel resultModel = new ResultModel();
+            resultModel.setIndexQuestion(runningQuestion.getIndexQuestion());
+            resultModel.setCountQuestions(runningQuestion.getCountQuestions());
             resultModel.setVerseDiff(runningQuestion.getDiffVerses(apiServices));
             resultModel.setTimespan(runningQuestion.getTimespan());
             resultModel.setPoints(runningQuestion.getPoints(quizService));
@@ -152,11 +157,27 @@ public class QuizController extends BaseController {
             resultModel.setSearchedVerse(runningQuestion.getVerse().getText());
             resultModel.setUrlNext(runningQuestion.getQuizModel(apiServices).getUrl() + (qId + 1) + "/");
             m.addAttribute("model", resultModel);
+
+            DatatableViewModel questionScoreTable = getDatatableQuestionScore(runningQuestion.getQuestionEntity().getId());
+            m.addAttribute("questionScoreTable", questionScoreTable);
         } catch (ApiException e) {
             log.error("failed", e);
             addWarning(m);
         }
         return "result.html";
+    }
+
+    private @Nonnull DatatableViewModel getDatatableQuestionScore(Long id) {
+        DatatableViewModel questionScoreTable = new DatatableViewModel();
+        List<DatatableColumn> columns = List.of(
+                new DatatableColumn("Spieler", "player"),
+                new DatatableColumn("Punkte", "points"),
+                new DatatableColumn("Distanz", "diffVerses"),
+                new DatatableColumn("Dauer", "duration")
+        );
+        questionScoreTable.setColumns(columns);
+        questionScoreTable.setUrl("/quiz/datatable/questionscore/" + id);
+        return questionScoreTable;
     }
 
 }

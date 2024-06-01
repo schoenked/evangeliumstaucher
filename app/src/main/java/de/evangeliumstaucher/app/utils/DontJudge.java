@@ -2,6 +2,9 @@ package de.evangeliumstaucher.app.utils;
 
 import java.time.Duration;
 
+/**
+ * You shall not judge, but...
+ */
 public class DontJudge {
 
     public static long getTimePointsSubtract(Duration duration) {

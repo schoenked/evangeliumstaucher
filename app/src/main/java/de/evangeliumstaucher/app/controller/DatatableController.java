@@ -5,7 +5,9 @@ import de.evangeliumstaucher.app.service.UserService;
 import de.evangeliumstaucher.app.viewmodel.PlayerModel;
 import de.evangeliumstaucher.entity.datatables.GameRowMyDives;
 import de.evangeliumstaucher.entity.datatables.GameRowTrend;
+import de.evangeliumstaucher.entity.datatables.QuestionScores;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.datatables.mapping.DataTablesInput;
@@ -13,10 +15,7 @@ import org.springframework.data.jpa.datatables.mapping.DataTablesOutput;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @Slf4j
@@ -43,4 +42,9 @@ public class DatatableController {
         return out;
     }
 
+    @PostMapping(value = "/quiz/datatable/questionscore/{id}")
+    public @ResponseBody DataTablesOutput<QuestionScores> getQuizzes(@Valid @RequestBody DataTablesInput input, @PathVariable @NotNull Long id, @ModelAttribute PlayerModel playerModel) {
+        DataTablesOutput<QuestionScores> out = datatableService.getQuestoinScores(input, id, playerModel.getId());
+        return out;
+    }
 }

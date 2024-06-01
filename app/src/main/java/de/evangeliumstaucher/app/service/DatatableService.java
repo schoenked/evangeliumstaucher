@@ -2,7 +2,9 @@ package de.evangeliumstaucher.app.service;
 
 import de.evangeliumstaucher.entity.datatables.GameRowMyDives;
 import de.evangeliumstaucher.entity.datatables.GameRowTrend;
+import de.evangeliumstaucher.entity.datatables.QuestionScores;
 import de.evangeliumstaucher.repoDatatables.MyGamesDatatablesRepository;
+import de.evangeliumstaucher.repoDatatables.QuestionScoresDatatablesRepository;
 import de.evangeliumstaucher.repoDatatables.TrendingGamesDatatablesRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Service;
 public class DatatableService {
     private final TrendingGamesDatatablesRepository trendingGamesDatatablesRepository;
     private final MyGamesDatatablesRepository myGamesDatatablesRepository;
+    private final QuestionScoresDatatablesRepository questionScoresDatatablesRepository;
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -33,5 +36,9 @@ public class DatatableService {
         Filter f = session.enableFilter("startedDivesPlayedFilter");
         f.setParameter("playerID", playerId);
         return myGamesDatatablesRepository.findAll(input);
+    }
+
+    public DataTablesOutput<QuestionScores> getQuestoinScores(DataTablesInput input, Long questionI, Long playerId) {
+        return questionScoresDatatablesRepository.findAll(input);
     }
 }
