@@ -117,14 +117,22 @@ public class RunningQuestion {
         this.url = url;
     }
 
-    public void syncEntity(QuizService quizservice, ApiServices apiServices) throws ApiException {
+    public Long syncEntity(QuizService quizservice, ApiServices apiServices) throws ApiException {
         UserQuestionEntity entity = quizservice.getUserQuestionRepository().findByGameSessionIdAndQuestionId(gameSessionEntity.getId(), questionEntity.getId()).get();
-        entity.setAnsweredAt(getAnsweredAt());
+        if (entity.getAnsweredAt() == null) {
+            entity.setAnsweredAt(getAnsweredAt());
+        }
+        this.setAnsweredAt(entity.getAnsweredAt());
         this.setStartedAt(entity.getStartedAt());
-        entity.setSelectedVerse(getSelectedVerse().getVerseSummary().getId());
-        entity.setPoints(getPoints(quizservice));
-        entity.setDiffVerses(getDiffVerses(apiServices));
+        if (entity.getSelectedVerse() == null) {
+            entity.setSelectedVerse(getSelectedVerse().getVerseSummary().getId());
+            entity.setPoints(getPoints(quizservice));
+            entity.setDiffVerses(getDiffVerses(apiServices));
+        }
+        this.setDiffVerses(entity.getDiffVerses());
+        this.setPoints(entity.getPoints());
         quizservice.getUserQuestionRepository().save(entity);
+        return entity.getId();
     }
 
     public QuizModel getQuizModel(ApiServices apiServices) {

@@ -38,7 +38,10 @@ public class DatatableService {
         return myGamesDatatablesRepository.findAll(input);
     }
 
-    public DataTablesOutput<QuestionScores> getQuestoinScores(DataTablesInput input, Long questionI, Long playerId) {
+    public DataTablesOutput<QuestionScores> getQuestoinScores(DataTablesInput input, Long questionId, Long playerId) {
+        Session session = entityManager.unwrap(Session.class);
+        Filter f = session.enableFilter("userquestionentityid");
+        f.setParameter("userquestionentityid", questionId);
         return questionScoresDatatablesRepository.findAll(input);
     }
 }
