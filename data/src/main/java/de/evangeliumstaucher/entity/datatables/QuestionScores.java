@@ -15,24 +15,24 @@ import org.springframework.data.annotation.Immutable;
 @FilterDef(name = "userquestionentityid",
         parameters = @ParamDef(name = "userquestionentityid", type = Long.class))
 @Subselect("""
-        SELECT
-            uqe2.id id,
-            pe.username player,
-            uqe2.points points,
-            uqe2.diff_verses diff_verses,
-            EXTRACT(SECOND FROM(uqe2.answered_at - uqe2.started_at)) duration,
-            uqe.id userquestionentityid
-        FROM
-            user_question_entity uqe
-        JOIN user_question_entity uqe2
-            ON uqe.question_id = uqe2.question_id
-        JOIN
-            game_session_entity gse
-            ON gse.id = uqe2.game_session_id
-        JOIN player_entity pe
-            ON pe.id = gse.player_id
-        ORDER BY uqe2.points DESC
-        """)
+              SELECT
+                  uqe2.id id,
+                  pe.username player,
+                  uqe2.points points,
+                  uqe2.diff_verses diff_verses,
+                  EXTRACT(EPOCH FROM (uqe2.answered_at - uqe2.started_at)) duration,            
+                  uqe.id userquestionentityid
+              FROM
+                  user_question_entity uqe
+              JOIN user_question_entity uqe2
+                  ON uqe.question_id = uqe2.question_id
+              JOIN
+                  game_session_entity gse
+                  ON gse.id = uqe2.game_session_id
+              JOIN player_entity pe
+                  ON pe.id = gse.player_id
+              ORDER BY uqe2.points DESC
+              """)
 @Filter(name = "userquestionentityid", condition = """
         (
             userquestionentityid = :userquestionentityid
