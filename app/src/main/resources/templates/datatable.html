@@ -1,5 +1,5 @@
 <div th:fragment="datatable (model)">
-    <table class="table" th:id="${model.id}">
+<table class="table" th:id="${model.id}" style="width: 100%">
         <thead>
         <tr>
             <th:block th:each="col : ${model.columns}">
@@ -25,7 +25,8 @@
             columns: [
                 [(${model.columnsText})]
             ],
-            serverSide: true
+            serverSide: true,
+            autoWidth: true
         })
 
         t[[${model.javascriptId}]].on('click', 'tbody tr', function () {
