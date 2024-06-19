@@ -53,7 +53,6 @@ public class SecurityChainConfig {
         http.csrf(c -> {
             c.csrfTokenRepository(csrfTokenRepository());
         });
-
         http.oauth2Login(oauth2Login -> oauth2Login.successHandler(new SavedRequestAwareAuthenticationSuccessHandler() {
             @Override
             public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws ServletException, IOException {
