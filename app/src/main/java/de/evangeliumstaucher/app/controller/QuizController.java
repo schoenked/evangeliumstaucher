@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.view.RedirectView;
 
+import javax.naming.ServiceUnavailableException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -63,15 +64,20 @@ public class QuizController extends BaseController {
      * @return
      */
     @GetMapping("/quiz/create/{bibleId}/")
-    public RedirectView getQuiz(@PathVariable String bibleId, Model m, @ModelAttribute PlayerModel playerModel) {
+    public RedirectView getQuiz(@PathVariable String bibleId, Model m, @ModelAttribute PlayerModel playerModel) throws ServiceUnavailableException {
         try {
             QuizModel quizModel = quizService.createQuiz(bibleId, playerModel);
             return new RedirectView(quizModel.getUrl());
         } catch (ApiException e) {
-            log.error("failed", e);
+            log.info("failed", e);
             addWarning(m);
+            handleUnavailable();
         }
         return null;
+    }
+
+    private static void handleUnavailable() throws ServiceUnavailableException {
+        throw new ServiceUnavailableException("Service vorübergehend nicht verfügbar");
     }
 
     @GetMapping("/quiz/{quizId}/")
@@ -83,15 +89,15 @@ public class QuizController extends BaseController {
     }
 
     @GetMapping("/quiz/{quizId}/{qId}/")
-    public String getQuestion(@PathVariable UUID quizId, @PathVariable Long qId, @ModelAttribute PlayerModel playerModel, Model m) throws BadRequestException {
+    public String getQuestion(@PathVariable UUID quizId, @PathVariable Long qId, @ModelAttribute PlayerModel playerModel, Model m) throws BadRequestException, ServiceUnavailableException {
         try {
             RunningQuestion runningQuestion = quizService.getQuestion(playerModel.getId(), quizId, qId);
             m.addAttribute("question", runningQuestion);
             return "quiz.html";
         } catch (ApiException e) {
-
             log.error("failed", e);
             addWarning(m);
+            handleUnavailable();
         }
         return null;
     }
@@ -137,7 +143,7 @@ public class QuizController extends BaseController {
     }
 
     @GetMapping("/quiz/{quizId}/{qId}/select/{verseId}")
-    public String selectVerseGetResult(@PathVariable UUID quizId, @PathVariable Long qId, @PathVariable String verseId, @ModelAttribute PlayerModel playerModel, Model m) throws BadRequestException {
+    public String selectVerseGetResult(@PathVariable UUID quizId, @PathVariable Long qId, @PathVariable String verseId, @ModelAttribute PlayerModel playerModel, Model m) throws BadRequestException, ServiceUnavailableException {
         try {
             log.debug("selectVerseGetResult() called with: quizId = [" + quizId + "], qId = [" + qId + "], verseId = [" + verseId + "], m = [" + m + "]");
 
@@ -163,6 +169,7 @@ public class QuizController extends BaseController {
         } catch (ApiException e) {
             log.error("failed", e);
             addWarning(m);
+            handleUnavailable();
         }
         return "result.html";
     }
