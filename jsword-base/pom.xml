@@ -13,7 +13,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <checkstyle.config.location>${basedir}/JSword.checkstyle.xml</checkstyle.config.location>
-        <java.version>1.7</java.version>
+        <java.version>8</java.version>
         <maven.compiler.source>1.7</maven.compiler.source>
         <maven.compiler.target>1.7</maven.compiler.target>
 
