@@ -1,6 +1,6 @@
 package de.evangeliumstaucher.app.viewmodel;
 
-import de.evangeliumstaucher.model.Passage;
+import de.evangeliumstaucher.repo.model.Passage;
 import lombok.*;
 
 @Data

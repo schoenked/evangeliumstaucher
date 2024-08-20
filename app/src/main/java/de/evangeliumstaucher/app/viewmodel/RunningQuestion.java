@@ -5,12 +5,11 @@ import de.evangeliumstaucher.app.model.BibleWrap;
 import de.evangeliumstaucher.app.model.BookWrap;
 import de.evangeliumstaucher.app.model.ChapterWrap;
 import de.evangeliumstaucher.app.model.VerseWrap;
-import de.evangeliumstaucher.app.service.ApiServices;
 import de.evangeliumstaucher.app.service.QuizService;
 import de.evangeliumstaucher.entity.GameSessionEntity;
 import de.evangeliumstaucher.entity.QuestionEntity;
 import de.evangeliumstaucher.entity.UserQuestionEntity;
-import de.evangeliumstaucher.invoker.ApiException;
+import de.evangeliumstaucher.repo.service.Library;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 
@@ -47,16 +46,16 @@ public class RunningQuestion {
     private int countQuestions;
     private long indexQuestion;
 
-    public static VerseWrap getVerse(String verseId, BibleWrap bibleWrap, ApiServices apiServices) throws ApiException {
-        for (BookWrap bookWrap : bibleWrap.getBooks(apiServices.getBookService())) {
+    public static VerseWrap getVerse(String verseId, BibleWrap bibleWrap, Library library) {
+        for (BookWrap bookWrap : bibleWrap.getBooks(library)) {
             if (verseId.startsWith(bookWrap.getBook().getId())) {
                 log.debug("book: " + bookWrap.getBook().getId());
                 for (ChapterWrap chapter : Lists.reverse(bookWrap.getChapters())) {
                     if (verseId.startsWith(chapter.getChapter().getId())) {
                         log.debug("chapter: " + chapter.getChapter().getId());
-                        for (VerseWrap verse : Lists.reverse(chapter.getVerses(apiServices.getVersesService()))) {
-                            if (verseId.startsWith(verse.getVerseSummary().getId())) {
-                                log.debug("verse: " + verse.getVerseSummary().getId());
+                        for (VerseWrap verse : Lists.reverse(chapter.getVerses(library))) {
+                            if (verseId.startsWith(verse.getVerse().getId())) {
+                                log.debug("verse: " + verse.getVerse().getId());
                                 return verse;
                             }
                         }
@@ -69,15 +68,15 @@ public class RunningQuestion {
         return null;
     }
 
-    public int getDiffVerses(ApiServices apiServices) throws ApiException {
+    public int getDiffVerses(Library library) {
         if (diffVerses == null) {
-            diffVerses = verse.diffVerses(selectedVerse, apiServices);
+            diffVerses = verse.diffVerses(selectedVerse, library);
         }
         return diffVerses;
     }
 
-    public void setSelectedVerse(String verseId, ApiServices apiServices) throws ApiException {
-        VerseWrap set = getVerse(verseId, verse.getChapter().getBook().getBible(), apiServices);
+    public void setSelectedVerse(String verseId, Library library) {
+        VerseWrap set = getVerse(verseId, verse.getChapter().getBook().getBible(), library);
         if (set != null) {
             setSelectedVerse(set);
         } else {
@@ -106,7 +105,7 @@ public class RunningQuestion {
         return Duration.between(getStartedAt(), getAnsweredAt());
     }
 
-    public Integer getPoints(QuizService quizService) throws ApiException {
+    public Integer getPoints(QuizService quizService) {
         if (points == null) {
             points = quizService.calcPoints(this);
         }
@@ -117,7 +116,7 @@ public class RunningQuestion {
         this.url = url;
     }
 
-    public Long syncEntity(QuizService quizservice, ApiServices apiServices) throws ApiException {
+    public Long syncEntity(QuizService quizservice, Library library) {
         UserQuestionEntity entity = quizservice.getUserQuestionRepository().findByGameSessionIdAndQuestionId(gameSessionEntity.getId(), questionEntity.getId()).get();
         if (entity.getAnsweredAt() == null) {
             entity.setAnsweredAt(getAnsweredAt());
@@ -125,9 +124,9 @@ public class RunningQuestion {
         this.setAnsweredAt(entity.getAnsweredAt());
         this.setStartedAt(entity.getStartedAt());
         if (entity.getSelectedVerse() == null) {
-            entity.setSelectedVerse(getSelectedVerse().getVerseSummary().getId());
+            entity.setSelectedVerse(getSelectedVerse().getVerse().getId());
             entity.setPoints(getPoints(quizservice));
-            entity.setDiffVerses(getDiffVerses(apiServices));
+            entity.setDiffVerses(getDiffVerses(library));
         }
         this.setDiffVerses(entity.getDiffVerses());
         this.setPoints(entity.getPoints());
@@ -135,7 +134,7 @@ public class RunningQuestion {
         return entity.getId();
     }
 
-    public QuizModel getQuizModel(ApiServices apiServices) {
-        return QuizModel.from(gameSessionEntity.getGame(), apiServices.getBibleService());
+    public QuizModel getQuizModel(Library library) {
+        return QuizModel.from(gameSessionEntity.getGame(), library);
     }
 }

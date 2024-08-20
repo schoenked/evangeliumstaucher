@@ -1,6 +1,6 @@
 package de.evangeliumstaucher.app.viewmodel;
 
-import de.evangeliumstaucher.model.VerseSummary;
+import de.evangeliumstaucher.repo.model.Verse;
 import lombok.*;
 import org.apache.commons.lang3.StringUtils;
 
@@ -14,13 +14,13 @@ public class VerseModel {
     private String url;
     private String label;
 
-    public static VerseModel from(VerseSummary verseSummary) {
-        String versenr = verseSummary.getOrgId();
+    public static VerseModel from(Verse verse) {
+        String versenr = verse.getId();
         versenr = StringUtils.substringAfterLast(versenr, ".");
 
         return new VerseModel()
-                .withId(verseSummary.getId())
+                .withId(verse.getId())
                 .withLabel(versenr)
-                .withUrl(verseSummary.getId());
+                .withUrl(verse.getId());
     }
 }

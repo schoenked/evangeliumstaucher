@@ -1,9 +1,8 @@
 package de.evangeliumstaucher.app.viewmodel;
 
-import de.evangeliumstaucher.app.service.VersesService;
 import de.evangeliumstaucher.app.utils.ListUtils;
-import de.evangeliumstaucher.invoker.ApiException;
-import de.evangeliumstaucher.model.Book;
+import de.evangeliumstaucher.repo.model.BibleBook;
+import de.evangeliumstaucher.repo.service.Library;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -20,28 +19,28 @@ public class BookModel extends BaseModel {
     private String abbreviation;
     private String prefixVerses;
 
-    public static List<BookModel> from(List<Book> books, String prefixVerse, VersesService versesService) throws ApiException {
+    public static List<BookModel> from(List<BibleBook> books, String prefixVerse, Library library) {
 
         List<BookModel> list = new ArrayList<>();
-        for (Book book : books) {
-            BookModel from = from(book, prefixVerse, versesService);
+        for (BibleBook book : books) {
+            BookModel from = from(book, prefixVerse, library);
             list.add(from);
         }
         return list;
     }
 
-    public String getAbbreviationShort() {
-        return getAbbreviation().replace(" ", "");
-    }
-
-    public static BookModel from(Book book, String prefixVerse, VersesService versesService) throws ApiException {
+    public static BookModel from(BibleBook book, String prefixVerse, Library library) {
         BookModel bookModel = BookModel.builder()
-                .chapters(ChapterModel.from(book.getChapters(), versesService))
+                .chapters(ChapterModel.from(book.getChapters(library), library))
                 .abbreviation(book.getAbbreviation())
                 .build();
         bookModel.setId(book.getId());
         bookModel.setPrefixVerses(prefixVerse);
         return bookModel;
+    }
+
+    public String getAbbreviationShort() {
+        return getAbbreviation().replace(" ", "");
     }
 
     public List<List<ChapterModel>> chapterGroups() {

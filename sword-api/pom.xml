@@ -2,31 +2,21 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>sword-modules</artifactId>
+    <artifactId>sword-api</artifactId>
     <parent>
         <groupId>de.evangeliumstaucher</groupId>
         <artifactId>parent</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-    <name>Sword-Modules</name>
+    <name>Sword-API</name>
     <properties>
         <java.version>22</java.version>
     </properties>
     <dependencies>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>de.evangeliumstaucher</groupId>
-            <artifactId>bible-repo</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>de.evangeliumstaucher</groupId>
-            <artifactId>sword-api</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <groupId>com.github.crosswire</groupId>
+            <artifactId>jsword</artifactId>
+            <version>2.1</version>
         </dependency>
     </dependencies>
     <build>
@@ -41,4 +31,10 @@
             </plugin>
         </plugins>
     </build>
+    <repositories>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
 </project>

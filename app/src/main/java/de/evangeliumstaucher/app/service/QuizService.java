@@ -10,13 +10,13 @@ import de.evangeliumstaucher.app.utils.Fibonacci;
 import de.evangeliumstaucher.app.utils.ListUtils;
 import de.evangeliumstaucher.app.viewmodel.*;
 import de.evangeliumstaucher.entity.*;
-import de.evangeliumstaucher.invoker.ApiException;
-import de.evangeliumstaucher.model.Book;
-import de.evangeliumstaucher.model.Passage;
 import de.evangeliumstaucher.repo.GameRepository;
 import de.evangeliumstaucher.repo.GameSessionRepository;
 import de.evangeliumstaucher.repo.QuestionRepository;
 import de.evangeliumstaucher.repo.UserQuestionRepository;
+import de.evangeliumstaucher.repo.model.BibleBook;
+import de.evangeliumstaucher.repo.model.Passage;
+import de.evangeliumstaucher.repo.service.Library;
 import jakarta.annotation.Nonnull;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +34,7 @@ import static org.springframework.web.client.HttpClientErrorException.BadRequest
 @RequiredArgsConstructor
 public class QuizService {
     public static final int COUNT_CONTEXT_EXTENSIONS = 4;
-    private final ApiServices apiServices;
+    private final Library library;
     private final GameRepository gameRepository;
     private final QuestionRepository questionRepository;
     @Getter
@@ -54,9 +54,9 @@ public class QuizService {
         return hostname + quizModel.getUrl();
     }
 
-    public QuizModel createQuiz(String bibleId, PlayerModel creator) throws ApiException {
+    public QuizModel createQuiz(String bibleId, PlayerModel creator) {
         QuizModel quizModel = null;
-        BibleWrap bible = apiServices.getBookService().getBible(bibleId);
+        BibleWrap bible = new BibleWrap(bibleId);
 
         quizModel = QuizModel.builder()
                 .bible(bible)
@@ -70,7 +70,7 @@ public class QuizService {
         LinkedList<QuestionEntity> questionEntities = Lists.newLinkedList();
         for (long i = 0; i < quizModel.getVerses(this).size(); i++) {
             VerseWrap vers = quizModel.getVerses(this).get((int) i);
-            QuestionEntity verseEntity = new QuestionEntity(null, e, i, vers.getVerseSummary().getId());
+            QuestionEntity verseEntity = new QuestionEntity(null, e, i, vers.getVerse().getId());
             questionEntities.add(verseEntity);
         }
         questionRepository.saveAll(questionEntities);
@@ -78,25 +78,25 @@ public class QuizService {
         return quizModel;
     }
 
-    private VerseWrap getRandomVerse(BibleWrap bible) throws ApiException {
-        BookWrap book = ListUtils.randomItem(bible.getBooks(apiServices.getBookService()));
+    private VerseWrap getRandomVerse(BibleWrap bible) {
+        BookWrap book = ListUtils.randomItem(bible.getBooks(library));
         ChapterWrap chapter = ListUtils.randomItem(book.getChapters());
-        List<VerseWrap> verses = chapter.getVerses(apiServices.getVersesService());
+        List<VerseWrap> verses = chapter.getVerses(library);
         VerseWrap verse = ListUtils.randomItem(verses);
         return verse;
     }
 
-    public VerseWrap getQuestionVerse(QuizModel quizModel) throws BadRequest, ApiException {
-        return getRandomVerse(quizModel.getBible(apiServices.getBibleService()));
+    public VerseWrap getQuestionVerse(QuizModel quizModel) throws BadRequest {
+        return getRandomVerse(quizModel.getBible(library));
     }
 
     @Nullable
-    public Passage getPassage(RunningQuestion q, Part part) throws ApiException {
+    public Passage getPassage(RunningQuestion q, Part part) {
         if (q.getSelectedVerse() != null) {
             //already selected
             return null;
         }
-        String passageId = q.getVerse().getVerseSummary().getId();
+        String passageId = q.getVerse().getVerse().getId();
 
         switch (part) {
             case pre -> {
@@ -106,10 +106,10 @@ public class QuizService {
                 }
                 q.setExtendingPrePassageCount(c + 1);
                 int steps = Fibonacci.nthFibonacciTerm(q.getExtendingPrePassageCount()) * -1;
-                VerseWrap preVerse = q.getContextStartVerse().stepVerses(steps, apiServices);
-                passageId = preVerse.getVerseSummary().getId()
+                VerseWrap preVerse = q.getContextStartVerse().stepVerses(steps, library);
+                passageId = preVerse.getVerse().getId()
                         + "-"
-                        + q.getContextStartVerse().stepVerses(-1, apiServices).getVerseSummary().getId();
+                        + q.getContextStartVerse().stepVerses(-1, library).getVerse().getId();
                 q.setContextStartVerse(preVerse);
             }
             case post -> {
@@ -119,18 +119,18 @@ public class QuizService {
                 }
                 q.setExtendingPostPassageCount(c + 1);
                 int steps = Fibonacci.nthFibonacciTerm(q.getExtendingPostPassageCount());
-                VerseWrap postVerse = q.getContextEndVerse().stepVerses(steps, apiServices);
-                passageId = q.getContextEndVerse().stepVerses(1, apiServices).getVerseSummary().getId()
+                VerseWrap postVerse = q.getContextEndVerse().stepVerses(steps, library);
+                passageId = q.getContextEndVerse().stepVerses(1, library).getVerse().getId()
                         + "-"
-                        + postVerse.getVerseSummary().getId();
+                        + postVerse.getVerse().getId();
                 q.setContextEndVerse(postVerse);
             }
         }
 
-        return apiServices.getPassageService().getPassage(q.getVerse().getVerseSummary().getBibleId(), passageId, null, false, false, false, false, false, null, false);
+        return library.getPassage(q.getVerse().getVerse().getBibleId(), passageId);
     }
 
-    public RunningQuestion getQuestion(Long userId, UUID quizId, Long qId) throws ApiException, BadRequestException {
+    public RunningQuestion getQuestion(Long userId, UUID quizId, Long qId) throws BadRequestException {
         Optional<GameSessionEntity> gamesessionoptional = gameSessionRepository.findByPlayerIdAndGameId(userId, quizId);
         GameSessionEntity gamesession;
         gamesession = gamesessionoptional.orElseGet(() -> createGameSession(userId, quizId));
@@ -146,15 +146,15 @@ public class QuizService {
         RunningQuestion q = new RunningQuestion(question, gamesession);
         q.setCountQuestions(quizModel.getVerses(this).size());
         q.setIndexQuestion(qId + 1);
-        BibleWrap bible = quizModel.getBible(apiServices.getBibleService());
-        VerseWrap verse = RunningQuestion.getVerse(question.getVerseId(), bible, apiServices);
+        BibleWrap bible = quizModel.getBible(library);
+        VerseWrap verse = RunningQuestion.getVerse(question.getVerseId(), bible, library);
         q.setVerse(verse);
-        List<Book> books = verse.getChapter().getBook()
+        List<BibleBook> books = verse.getChapter().getBook()
                 .getBible()
-                .getBooks(apiServices.getBookService())
+                .getBooks(library)
                 .stream().map(BookWrap::getBook)
                 .toList();
-        q.setBooks(BookModel.from(books, "select", apiServices.getVersesService()));
+        q.setBooks(BookModel.from(books, "select", library));
         q.setUrl(quizModel.getUrl() + qId + "/");
         q.setVerse(verse);
         q.setContextStartVerse(verse);
@@ -185,14 +185,14 @@ public class QuizService {
     }
 
     public QuizModel get(UUID quizId) {
-        return QuizModel.from(gameRepository.findById(quizId).get(), apiServices.getBibleService());
+        return QuizModel.from(gameRepository.findById(quizId).get(), library);
     }
 
-    public Passage getPassage(Long userId, UUID quizId, Long qId, Part part) throws ApiException {
+    public Passage getPassage(Long userId, UUID quizId, Long qId, Part part) {
         return getPassage(runningQuestionHashMap.get(getQuestionId(userId, quizId, qId)), part);
     }
 
-    public int calcPoints(RunningQuestion runningQuestion) throws ApiException {
+    public int calcPoints(RunningQuestion runningQuestion) {
         if (runningQuestion.getSelectedVerse() == null && runningQuestion.getAnsweredAt() == null) {
             // if not answered
             return 0;
@@ -202,7 +202,7 @@ public class QuizService {
         long timePoints = DontJudge.getTimePointsSubtract(runningQuestion.getDuration());
         points -= timePoints;
 
-        int diffPoints = DontJudge.getDiffPoints(runningQuestion.getDiffVerses(apiServices));
+        int diffPoints = DontJudge.getDiffPoints(runningQuestion.getDiffVerses(library));
         //limit 0-100
         points -= diffPoints;
         points = Math.min(points, 100);
