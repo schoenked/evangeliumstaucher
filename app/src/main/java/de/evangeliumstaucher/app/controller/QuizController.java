@@ -1,11 +1,10 @@
 package de.evangeliumstaucher.app.controller;
 
-import de.evangeliumstaucher.app.service.ApiServices;
 import de.evangeliumstaucher.app.service.QuizService;
 import de.evangeliumstaucher.app.service.UserService;
 import de.evangeliumstaucher.app.viewmodel.*;
-import de.evangeliumstaucher.invoker.ApiException;
-import de.evangeliumstaucher.model.Passage;
+import de.evangeliumstaucher.repo.model.Passage;
+import de.evangeliumstaucher.repo.service.Library;
 import de.evangeliumstaucher.repoDatatables.TrendingGamesDatatablesRepository;
 import jakarta.annotation.Nonnull;
 import jakarta.servlet.http.HttpSession;
@@ -33,12 +32,16 @@ public class QuizController extends BaseController {
     private final HttpSession session;
     private final TrendingGamesDatatablesRepository gameRepository;
 
-    public QuizController(ApiServices apiServices, QuizService quizService, UserService userService, HttpSession session, TrendingGamesDatatablesRepository gameRepository) {
-        super(apiServices);
+    public QuizController(Library library, QuizService quizService, UserService userService, HttpSession session, TrendingGamesDatatablesRepository gameRepository) {
+        super(library);
         this.quizService = quizService;
         this.userService = userService;
         this.session = session;
         this.gameRepository = gameRepository;
+    }
+
+    private static void handleUnavailable() throws ServiceUnavailableException {
+        throw new ServiceUnavailableException("Service vorübergehend nicht verfügbar");
     }
 
     @ModelAttribute("playerModel")
@@ -68,16 +71,12 @@ public class QuizController extends BaseController {
         try {
             QuizModel quizModel = quizService.createQuiz(bibleId, playerModel);
             return new RedirectView(quizModel.getUrl());
-        } catch (ApiException e) {
+        } catch (Exception e) {
             log.info("failed", e);
             addWarning(m);
             handleUnavailable();
         }
         return null;
-    }
-
-    private static void handleUnavailable() throws ServiceUnavailableException {
-        throw new ServiceUnavailableException("Service vorübergehend nicht verfügbar");
     }
 
     @GetMapping("/quiz/{quizId}/")
@@ -94,7 +93,7 @@ public class QuizController extends BaseController {
             RunningQuestion runningQuestion = quizService.getQuestion(playerModel.getId(), quizId, qId);
             m.addAttribute("question", runningQuestion);
             return "quiz.html";
-        } catch (ApiException e) {
+        } catch (Exception e) {
             log.error("failed", e);
             addWarning(m);
             handleUnavailable();
@@ -123,7 +122,7 @@ public class QuizController extends BaseController {
                 model.setId(passage.getId() + "_passage");
             }
             m.addAttribute("model", model);
-        } catch (ApiException e) {
+        } catch (Exception e) {
             log.error("failed", e);
             addWarning(m);
 
@@ -149,24 +148,24 @@ public class QuizController extends BaseController {
 
             RunningQuestion runningQuestion = quizService.getQuestion(playerModel.getId(), quizId, qId);
             runningQuestion.setAnsweredAt(LocalDateTime.now());
-            runningQuestion.setSelectedVerse(verseId, apiServices);
-            Long id = runningQuestion.syncEntity(quizService, apiServices);
+            runningQuestion.setSelectedVerse(verseId, library);
+            Long id = runningQuestion.syncEntity(quizService, library);
 
             ResultModel resultModel = new ResultModel();
             resultModel.setIndexQuestion(runningQuestion.getIndexQuestion());
             resultModel.setCountQuestions(runningQuestion.getCountQuestions());
-            resultModel.setVerseDiff(runningQuestion.getDiffVerses(apiServices));
+            resultModel.setVerseDiff(runningQuestion.getDiffVerses(library));
             resultModel.setTimespan(runningQuestion.getTimespan());
             resultModel.setPoints(runningQuestion.getPoints(quizService));
             resultModel.setPointsSum(quizService.getSumPointsRunningGame(runningQuestion));
             resultModel.setSelectedVerse(runningQuestion.getSelectedVerse().getText());
             resultModel.setSearchedVerse(runningQuestion.getVerse().getText());
-            resultModel.setUrlNext(runningQuestion.getQuizModel(apiServices).getUrl() + (qId + 1) + "/");
+            resultModel.setUrlNext(runningQuestion.getQuizModel(library).getUrl() + (qId + 1) + "/");
             m.addAttribute("model", resultModel);
 
             DatatableViewModel questionScoreTable = getDatatableQuestionScore(id);
             m.addAttribute("questionScoreTable", questionScoreTable);
-        } catch (ApiException e) {
+        } catch (Exception e) {
             log.error("failed", e);
             addWarning(m);
             handleUnavailable();

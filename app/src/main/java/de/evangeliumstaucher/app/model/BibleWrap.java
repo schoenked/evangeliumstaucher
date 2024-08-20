@@ -1,8 +1,7 @@
 package de.evangeliumstaucher.app.model;
 
-import de.evangeliumstaucher.app.service.BookService;
-import de.evangeliumstaucher.invoker.ApiException;
-import de.evangeliumstaucher.model.Book;
+import de.evangeliumstaucher.repo.model.BibleBook;
+import de.evangeliumstaucher.repo.service.Library;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -19,9 +18,9 @@ public class BibleWrap {
     @Getter(AccessLevel.PRIVATE)
     private List<BookWrap> books;
 
-    public List<BookWrap> getBooks(BookService bookService) throws ApiException {
+    public List<BookWrap> getBooks(Library library)   {
         if (books == null) {
-            List<Book> booklist = bookService.getBibleBooks(id);
+            List<BibleBook> booklist = library.getBibleBooks(id);
             books = booklist.stream()
                     .map(book ->
                             new BookWrap(book, this))
@@ -32,7 +31,7 @@ public class BibleWrap {
 /*    @ToString.Exclude
     private final Bible bible;*/
 
-    public BookWrap getLast() {
-        return books.get(books.size() - 1);
+    public BookWrap getLast(Library library) {
+        return getBooks().get(getBooks().size() - 1);
     }
 }

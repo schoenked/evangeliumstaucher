@@ -1,9 +1,8 @@
 package de.evangeliumstaucher.app.controller;
 
-import de.evangeliumstaucher.app.service.ApiServices;
 import de.evangeliumstaucher.app.viewmodel.BibleModel;
-import de.evangeliumstaucher.invoker.ApiException;
-import de.evangeliumstaucher.model.BibleSummary;
+import de.evangeliumstaucher.repo.model.Bible;
+import de.evangeliumstaucher.repo.service.Library;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ui.Model;
@@ -17,7 +16,7 @@ import static java.util.stream.Collectors.groupingBy;
 @Slf4j
 @RequiredArgsConstructor
 public class BaseController {
-    final ApiServices apiServices;
+    final Library library;
 
     protected void addWarning(Model m) {
         m.addAttribute("warning", "Leider kann die Bibel zurzeit nicht geladen werden. Versuch es bitte gleich nochmal.");
@@ -25,7 +24,7 @@ public class BaseController {
 
     protected String getBible(Model m) {
         try {
-            List<BibleSummary> bibles = apiServices.getBibleService().getBibles();
+            List<Bible> bibles = library.getBibles();
 
             List<Map.Entry<String, List<BibleModel>>> groups = bibles.stream()
                     .map(BibleModel::from)
@@ -40,7 +39,7 @@ public class BaseController {
                     .collect(Collectors.toList());
 
             m.addAttribute("languages", groups);
-        } catch (ApiException e) {
+        } catch (Exception e) {
             log.error("failed", e);
             addWarning(m);
         }

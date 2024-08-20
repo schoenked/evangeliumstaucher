@@ -2,9 +2,9 @@ package de.evangeliumstaucher.app.controller;
 
 import de.evangeliumstaucher.app.config.AccountConfig;
 import de.evangeliumstaucher.app.model.Player;
-import de.evangeliumstaucher.app.service.ApiServices;
 import de.evangeliumstaucher.app.service.UserService;
 import de.evangeliumstaucher.entity.PlayerEntity;
+import de.evangeliumstaucher.repo.service.Library;
 import jakarta.annotation.Nonnull;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
@@ -36,8 +36,8 @@ public class AccountController extends BaseController {
     @Autowired
     AccountConfig accountConfig;
 
-    public AccountController(ApiServices apiServices) {
-        super(apiServices);
+    public AccountController(Library library) {
+        super(library);
     }
 
     @PostMapping("/createuser")

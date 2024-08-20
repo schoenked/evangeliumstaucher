@@ -13,13 +13,14 @@
     <name>parent</name>
     <packaging>pom</packaging>
     <properties>
-        <java.version>17</java.version>
+        <java.version>22</java.version>
     </properties>
     <modules>
-        <module>api-bible</module>
         <module>data</module>
-        <module>app</module>
+        <module>bible-repo</module>
+        <module>sword-api</module>
         <module>sword-modules</module>
+        <module>app</module>
     </modules>
     <dependencyManagement>
         <dependencies>
@@ -30,12 +31,22 @@
             </dependency>
             <dependency>
                 <groupId>de.evangeliumstaucher</groupId>
-                <artifactId>api-bible</artifactId>
+                <artifactId>data</artifactId>
                 <version>0.0.1-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>de.evangeliumstaucher</groupId>
-                <artifactId>data</artifactId>
+                <artifactId>sword-api</artifactId>
+                <version>0.0.1-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>de.evangeliumstaucher</groupId>
+                <artifactId>sword-modules</artifactId>
+                <version>0.0.1-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>de.evangeliumstaucher</groupId>
+                <artifactId>bible-repo</artifactId>
                 <version>0.0.1-SNAPSHOT</version>
             </dependency>
         </dependencies>
@@ -84,29 +95,5 @@
             <artifactId>junit</artifactId>
         </dependency>
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.openapitools</groupId>
-                <artifactId>openapi-generator-maven-plugin</artifactId>
-                <!--stay on v 5.x because newer verseions are incaompatible with API.Bible-->
-                <version>5.4.0</version>
-                <configuration>
-                    <inputSpec>https://api.scripture.api.bible/v1/swagger.json</inputSpec>
-                    <generatorName>java</generatorName>
-                    <configOptions>
-                        <dateLibrary>java8</dateLibrary>
-                    </configOptions>
-                    <apiPackage>${project.groupId}</apiPackage>
-                    <modelPackage>${project.groupId}.model</modelPackage>
-                    <invokerPackage>${project.groupId}.invoker</invokerPackage>
-                    <groupId>${project.groupId}</groupId>
-                    <artifactId>spring-openapi-bible-api-client</artifactId>
-                    <artifactVersion>0.0.1-SNAPSHOT</artifactVersion>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
 
 </project>

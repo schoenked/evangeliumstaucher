@@ -1,15 +1,14 @@
 package de.evangeliumstaucher.app.controller;
 
 import com.google.common.base.Strings;
-import de.evangeliumstaucher.app.service.ApiServices;
 import de.evangeliumstaucher.app.utils.ListUtils;
 import de.evangeliumstaucher.app.viewmodel.BookModel;
 import de.evangeliumstaucher.app.viewmodel.PassageModel;
 import de.evangeliumstaucher.app.viewmodel.VerseModel;
-import de.evangeliumstaucher.invoker.ApiException;
-import de.evangeliumstaucher.model.Book;
-import de.evangeliumstaucher.model.Passage;
-import de.evangeliumstaucher.model.VerseSummary;
+import de.evangeliumstaucher.repo.model.BibleBook;
+import de.evangeliumstaucher.repo.model.Passage;
+import de.evangeliumstaucher.repo.model.Verse;
+import de.evangeliumstaucher.repo.service.Library;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,8 +23,8 @@ import java.util.stream.Collectors;
 @Slf4j
 public class BibleController extends BaseController {
 
-    public BibleController(ApiServices apiServices) {
-        super(apiServices);
+    public BibleController(Library library) {
+        super(library);
     }
 
     @GetMapping("/bible/")
@@ -36,21 +35,13 @@ public class BibleController extends BaseController {
     @GetMapping("/bible/{bibleId}/passage/{passageId}")
     public String getPassageView(@PathVariable String bibleId, @PathVariable String passageId, Model m) {
         try {
-            Passage passage = apiServices.getPassageService().getPassage(
+            Passage passage = library.getPassage(
                     bibleId,
-                    passageId,
-                    null,
-                    false,
-                    false,
-                    false,
-                    false,
-                    false,
-                    null,
-                    false
+                    passageId
             );
             PassageModel passageModel = PassageModel.from(passage);
             m.addAttribute("passage", passageModel);
-        } catch (ApiException e) {
+        } catch (Exception e) {
             log.error("failed", e);
             addWarning(m);
         }
@@ -60,7 +51,7 @@ public class BibleController extends BaseController {
     @GetMapping("/bible/{bibleId}/{chapterId}")
     public String getVersesView(@PathVariable String bibleId, @PathVariable String chapterId, @RequestParam("prefix") String prefix, Model m) {
         try {
-            List<VerseSummary> verses = apiServices.getVersesService().getVerses(bibleId, chapterId);
+            List<Verse> verses = library.getVerses(bibleId, chapterId);
             List<VerseModel> veseeModels = verses.stream()
                     .map(v -> VerseModel.from(v))
                     .peek(v -> {
@@ -70,7 +61,7 @@ public class BibleController extends BaseController {
                     })
                     .collect(Collectors.toList());
             m.addAttribute("verseGroups", ListUtils.groupsOf(veseeModels, 5));
-        } catch (ApiException e) {
+        } catch (Exception e) {
             log.error("failed", e);
             addWarning(m);
         }
@@ -80,10 +71,10 @@ public class BibleController extends BaseController {
     @GetMapping("/bible/{bibleId}")
     public String getBooks(@PathVariable String bibleId, Model m) {
         try {
-            List<Book> books = apiServices.getBookService().getBibleBooks(bibleId);
-            List<BookModel> bookModels = BookModel.from(books, "passage", apiServices.getVersesService());
+            List<BibleBook> books = library.getBibleBooks(bibleId);
+            List<BookModel> bookModels = BookModel.from(books, "passage", library);
             m.addAttribute("books", bookModels);
-        } catch (ApiException e) {
+        } catch (Exception e) {
             log.error("failed", e);
             addWarning(m);
         }

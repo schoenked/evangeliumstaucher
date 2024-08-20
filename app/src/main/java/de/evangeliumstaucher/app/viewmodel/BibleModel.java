@@ -1,6 +1,6 @@
 package de.evangeliumstaucher.app.viewmodel;
 
-import de.evangeliumstaucher.model.BibleSummary;
+import de.evangeliumstaucher.repo.model.Bible;
 import lombok.*;
 
 @Data
@@ -14,14 +14,14 @@ public class BibleModel extends BaseModel {
     private String label;
     private String language;
 
-    public static BibleModel from(BibleSummary bibleSummary) {
+    public static BibleModel from(Bible bibleSummary) {
         BibleModelBuilder builder = BibleModel.builder()
                 .id(bibleSummary.getId())
                 .url(bibleSummary.getId() + "/")
-                .language(bibleSummary.getLanguage().getNameLocal())
-                .label(bibleSummary.getAbbreviationLocal() +
-                        " - " + bibleSummary.getNameLocal() +
-                        " - " + bibleSummary.getDescriptionLocal());
+                .language(bibleSummary.getLanguage())
+                .label(bibleSummary.getAbbreviation() +
+                        " - " + bibleSummary.getName() +
+                        " - " + bibleSummary.getDescription());
         return builder.build();
     }
 }

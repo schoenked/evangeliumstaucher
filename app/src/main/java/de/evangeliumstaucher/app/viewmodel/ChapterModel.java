@@ -1,11 +1,11 @@
 package de.evangeliumstaucher.app.viewmodel;
 
-import de.evangeliumstaucher.app.service.VersesService;
-import de.evangeliumstaucher.invoker.ApiException;
-import de.evangeliumstaucher.model.ChapterSummary;
+import de.evangeliumstaucher.repo.model.Chapter;
+import de.evangeliumstaucher.repo.service.Library;
 import lombok.*;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 
@@ -19,16 +19,16 @@ public class ChapterModel extends BaseModel {
     private List<VerseModel> verses;
     private String bibleId;
 
-    public static List<ChapterModel> from(List<ChapterSummary> chapters, VersesService versesService) throws ApiException {
+    public static List<ChapterModel> from(Collection<Chapter> chapters, Library library) {
         List<ChapterModel> list = new ArrayList<>();
-        for (ChapterSummary chapter : chapters) {
-            ChapterModel model = from(chapter, versesService);
+        for (Chapter chapter : chapters) {
+            ChapterModel model = from(chapter, library);
             list.add(model);
         }
         return list;
     }
 
-    public static ChapterModel from(ChapterSummary chapter, VersesService versesService) throws ApiException {
+    public static ChapterModel from(Chapter chapter, Library library) {
         ChapterModel chapterModel = new ChapterModel()
                 .withBibleId(chapter.getBibleId())
                 .withLabel(chapter.getNumber());

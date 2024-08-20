@@ -1,11 +1,11 @@
 package de.evangeliumstaucher.app.controller;
 
-import de.evangeliumstaucher.app.service.ApiServices;
 import de.evangeliumstaucher.app.service.QuizService;
 import de.evangeliumstaucher.app.service.UserService;
 import de.evangeliumstaucher.app.viewmodel.DatatableColumn;
 import de.evangeliumstaucher.app.viewmodel.DatatableViewModel;
 import de.evangeliumstaucher.app.viewmodel.PlayerModel;
+import de.evangeliumstaucher.repo.service.Library;
 import de.evangeliumstaucher.repoDatatables.TrendingGamesDatatablesRepository;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
@@ -26,8 +26,8 @@ public class PierController extends BaseController {
     private final HttpSession session;
     private final TrendingGamesDatatablesRepository gameRepository;
 
-    public PierController(ApiServices apiServices, QuizService quizService, UserService userService, HttpSession session, TrendingGamesDatatablesRepository gameRepository) {
-        super(apiServices);
+    public PierController(Library library, QuizService quizService, UserService userService, HttpSession session, TrendingGamesDatatablesRepository gameRepository) {
+        super(library);
         this.quizService = quizService;
         this.userService = userService;
         this.session = session;

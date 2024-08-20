@@ -1,10 +1,7 @@
 package de.evangeliumstaucher.app.model;
 
-import de.evangeliumstaucher.app.service.ApiServices;
-import de.evangeliumstaucher.app.service.BookService;
-import de.evangeliumstaucher.app.service.VersesService;
-import de.evangeliumstaucher.invoker.ApiException;
-import de.evangeliumstaucher.model.Book;
+import de.evangeliumstaucher.repo.model.BibleBook;
+import de.evangeliumstaucher.repo.service.Library;
 import lombok.Data;
 import lombok.ToString;
 
@@ -15,39 +12,39 @@ import java.util.stream.Collectors;
 @ToString
 public class BookWrap {
     @ToString.Exclude
-    private final Book book;
+    private final BibleBook book;
     private final BibleWrap bible;
     @ToString.Exclude
     List<ChapterWrap> chapters;
 
-    public static int diffVerses(VerseWrap from, VerseWrap to, ApiServices apiServices) throws ApiException {
+    public static int diffVerses(VerseWrap from, VerseWrap to, Library library) {
         int diff = 0;
         BookWrap fromBook = from.getChapter().getBook();
         BookWrap toBook = to.getChapter().getBook();
-        if (fromBook.getIndex(apiServices) < toBook.getIndex(apiServices)) {
+        if (fromBook.getIndex(library) < toBook.getIndex(library)) {
             // verses in chapter
             // diff += from.diffVerses(from.getChapter().getLast(versesService), versesService);
             // remaining verses in book
-            diff += ChapterWrap.diffVerses(from, fromBook.getLast().getLast(apiServices), apiServices);
+            diff += ChapterWrap.diffVerses(from, fromBook.getLast().getLast(library), library);
             // verses of all books between
             int sum = 0;
-            for (BookWrap b : fromBook.getBible().getBooks(apiServices.getBookService())) {
-                if (fromBook.getIndex(apiServices) < b.getIndex(apiServices) && b.getIndex(apiServices) < toBook.getIndex(apiServices)) {
-                    int versesCount = b.getVersesCount(apiServices.getVersesService());
+            for (BookWrap b : fromBook.getBible().getBooks(library)) {
+                if (fromBook.getIndex(library) < b.getIndex(library) && b.getIndex(library) < toBook.getIndex(library)) {
+                    int versesCount = b.getVersesCount(library);
                     sum += versesCount;
                 }
             }
             diff += sum;
-        } else if (fromBook.getIndex(apiServices) > toBook.getIndex(apiServices)) {
+        } else if (fromBook.getIndex(library) > toBook.getIndex(library)) {
             // verses in chapter
             // diff += from.diffVerses(from.getChapter().getVerses(versesService).get(0), versesService);
             // remaining verses in book
-            diff += ChapterWrap.diffVerses(from, fromBook.getChapters().get(0).getVerses(apiServices.getVersesService()).get(0), apiServices);
+            diff += ChapterWrap.diffVerses(from, fromBook.getChapters().get(0).getVerses(library).get(0), library);
             // verses of all books between
             int sum = 0;
-            for (BookWrap b : fromBook.getBible().getBooks(apiServices.getBookService())) {
-                if (toBook.getIndex(apiServices) < b.getIndex(apiServices) && b.getIndex(apiServices) < fromBook.getIndex(apiServices)) {
-                    int versesCount = b.getVersesCount(apiServices.getVersesService());
+            for (BookWrap b : fromBook.getBible().getBooks(library)) {
+                if (toBook.getIndex(library) < b.getIndex(library) && b.getIndex(library) < fromBook.getIndex(library)) {
+                    int versesCount = b.getVersesCount(library);
                     sum += versesCount;
                 }
             }
@@ -56,45 +53,41 @@ public class BookWrap {
         return diff;
     }
 
-    public int getIndex(ApiServices apiServices) throws ApiException {
-        return bible.getBooks(apiServices.getBookService()).indexOf(this);
+    public int getIndex(Library library) {
+        return bible.getBooks(library).indexOf(this);
     }
 
-    public List<ChapterWrap> getChapters() {
+    public List<ChapterWrap> getChapters(Library library) {
         if (chapters == null) {
-            chapters = book.getChapters().stream()
+            chapters = book.getChapters(library).stream()
                     .map(chapterSummary -> new ChapterWrap(chapterSummary, this))
                     .collect(Collectors.toList());
         }
         return chapters;
     }
 
-    public BookWrap getPrevious(BookService bookService) throws ApiException {
-        int myIndex = bible.getBooks(bookService).indexOf(this);
+    public BookWrap getPrevious(Library library) {
+        int myIndex = bible.getBooks(library).indexOf(this);
         if (myIndex == 0) {
             return null;
         } else {
-            return bible.getBooks(bookService).get(myIndex - 1);
+            return bible.getBooks(library).get(myIndex - 1);
         }
     }
 
-    public BookWrap getNext(ApiServices apiServices) throws ApiException {
-        int myIndex = getIndex(apiServices);
-        if (myIndex == bible.getBooks(apiServices.getBookService()).size() - 1) {
+    public BookWrap getNext(Library library) {
+        int myIndex = getIndex(library);
+        if (myIndex == bible.getBooks(library).size() - 1) {
             return null;
         } else {
-            return bible.getBooks(apiServices.getBookService()).get(myIndex + 1);
+            return bible.getBooks(library).get(myIndex + 1);
         }
     }
 
-    private int getVersesCount(VersesService versesService) {
+    private int getVersesCount(Library library) {
         return getChapters().stream()
                 .mapToInt(chapterWrap -> {
-                    try {
-                        return chapterWrap.getVersesCount(versesService);
-                    } catch (ApiException e) {
-                        throw new RuntimeException(e);
-                    }
+                    return chapterWrap.getVersesCount(library);
                 })
                 .sum();
     }
