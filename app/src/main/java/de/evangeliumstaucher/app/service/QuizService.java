@@ -56,7 +56,7 @@ public class QuizService {
 
     public QuizModel createQuiz(String bibleId, PlayerModel creator) {
         QuizModel quizModel = null;
-        BibleWrap bible = new BibleWrap(bibleId);
+        BibleWrap bible = new BibleWrap(bibleId, library.getBible(bibleId));
 
         quizModel = QuizModel.builder()
                 .bible(bible)
@@ -149,7 +149,7 @@ public class QuizService {
         BibleWrap bible = quizModel.getBible(library);
         VerseWrap verse = RunningQuestion.getVerse(question.getVerseId(), bible, library);
         q.setVerse(verse);
-        List<BibleBook> books = verse.getChapter().getBook()
+        List<? extends BibleBook> books = verse.getChapter().getBook()
                 .getBible()
                 .getBooks(library)
                 .stream().map(BookWrap::getBook)

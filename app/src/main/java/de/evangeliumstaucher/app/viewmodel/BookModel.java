@@ -19,7 +19,7 @@ public class BookModel extends BaseModel {
     private String abbreviation;
     private String prefixVerses;
 
-    public static List<BookModel> from(List<BibleBook> books, String prefixVerse, Library library) {
+    public static List<BookModel> from(List<? extends BibleBook> books, String prefixVerse, Library library) {
 
         List<BookModel> list = new ArrayList<>();
         for (BibleBook book : books) {
@@ -31,7 +31,7 @@ public class BookModel extends BaseModel {
 
     public static BookModel from(BibleBook book, String prefixVerse, Library library) {
         BookModel bookModel = BookModel.builder()
-                .chapters(ChapterModel.from(book.getChapters(library), library))
+                .chapters(ChapterModel.from(book.getChapters(), library))
                 .abbreviation(book.getAbbreviation())
                 .build();
         bookModel.setId(book.getId());

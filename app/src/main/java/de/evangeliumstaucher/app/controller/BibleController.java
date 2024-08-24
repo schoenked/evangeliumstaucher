@@ -71,7 +71,7 @@ public class BibleController extends BaseController {
     @GetMapping("/bible/{bibleId}")
     public String getBooks(@PathVariable String bibleId, Model m) {
         try {
-            List<BibleBook> books = library.getBibleBooks(bibleId);
+            List<? extends BibleBook> books = library.getBibleBooks(bibleId);
             List<BookModel> bookModels = BookModel.from(books, "passage", library);
             m.addAttribute("books", bookModels);
         } catch (Exception e) {

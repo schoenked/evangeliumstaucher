@@ -13,7 +13,6 @@ import org.crosswire.jsword.book.sword.SwordBook;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
@@ -23,14 +22,14 @@ import java.util.stream.Stream;
 @Service
 @Slf4j
 public class BibleService {
-    private static final String PREFIX = "sword\\";
+    private static final String PREFIX = "sword-";
     InstallManager imanager = new InstallManager();
 
     public Bible getBible(String name) {
         log.trace("loading bible {}", name);
         if (name.startsWith(PREFIX)) {
             //trim prefix
-            name = name.substring(PREFIX.length() - 1);
+            name = name.substring(PREFIX.length());
             String swordName = decodeName(name);
             log.trace("bible name {}", swordName);
             Book book = Books.installed().getBook(swordName);
@@ -42,10 +41,6 @@ public class BibleService {
             return toBible(book);
         }
         return null;
-    }
-
-    private String encodeName(String coded) {
-        return Base64.getEncoder().encodeToString(coded.getBytes());
     }
 
     private boolean filterBibles(Book book) {
@@ -66,7 +61,7 @@ public class BibleService {
                     .builder()
                     .swordBook(book)
                     .id(PREFIX + encodeName(book.getName()))
-                    .name(book.getName() )
+                    .name(book.getName())
                     .description(book.getProperties().getOrDefault("desc", "").toString())
                     .abbreviation(book.getInitials())
                     .language(book.getLanguage() != null ? book.getLanguage().getName() : "N/A")
@@ -77,7 +72,11 @@ public class BibleService {
     }
 
     private String decodeName(String name) {
-        return Arrays.toString(Base64.getDecoder().decode(name));
+        return new String(Base64.getDecoder().decode(name));
+    }
+
+    private String encodeName(String coded) {
+        return Base64.getEncoder().encodeToString(coded.getBytes());
     }
 
     @Nullable
@@ -134,7 +133,7 @@ public class BibleService {
                     .filter(this::filterBibles)
                     .map(this::toBible);
         } catch (Exception e) {
-            log.error(e.getMessage(), e);
+            //   log.error(e.getMessage(), e);
         }
         return bibleStream;
     }

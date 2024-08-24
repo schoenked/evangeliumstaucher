@@ -1,5 +1,6 @@
 package de.evangeliumstaucher.app.model;
 
+import de.evangeliumstaucher.repo.model.Bible;
 import de.evangeliumstaucher.repo.model.BibleBook;
 import de.evangeliumstaucher.repo.service.Library;
 import lombok.AccessLevel;
@@ -15,12 +16,13 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class BibleWrap {
     private final String id;
+    private final Bible bible;
     @Getter(AccessLevel.PRIVATE)
     private List<BookWrap> books;
 
-    public List<BookWrap> getBooks(Library library)   {
+    public List<BookWrap> getBooks(Library library) {
         if (books == null) {
-            List<BibleBook> booklist = library.getBibleBooks(id);
+            List<? extends BibleBook> booklist = library.getBibleBooks(bible);
             books = booklist.stream()
                     .map(book ->
                             new BookWrap(book, this))

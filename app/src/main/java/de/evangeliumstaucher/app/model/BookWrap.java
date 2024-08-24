@@ -57,9 +57,9 @@ public class BookWrap {
         return bible.getBooks(library).indexOf(this);
     }
 
-    public List<ChapterWrap> getChapters(Library library) {
+    public List<ChapterWrap> getChapters( ) {
         if (chapters == null) {
-            chapters = book.getChapters(library).stream()
+            chapters = book.getChapters().stream()
                     .map(chapterSummary -> new ChapterWrap(chapterSummary, this))
                     .collect(Collectors.toList());
         }

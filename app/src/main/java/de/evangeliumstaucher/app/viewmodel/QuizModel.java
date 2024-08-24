@@ -40,7 +40,7 @@ public class QuizModel {
 
     public BibleWrap getBible(Library library) {
         if (bible == null) {
-            bible = new BibleWrap(bibleId);
+            bible = new BibleWrap(bibleId, library.getBible(bibleId));
         }
         return bible;
     }
