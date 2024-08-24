@@ -37,6 +37,7 @@ public class BaseController {
                         return o1.getKey().compareTo(o2.getKey());
                     })
                     .collect(Collectors.toList());
+            groups = groups.subList(0, 2);
 
             m.addAttribute("languages", groups);
         } catch (Exception e) {

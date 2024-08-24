@@ -11,7 +11,6 @@ import de.evangeliumstaucher.repo.model.BibleBook;
 import de.evangeliumstaucher.repo.model.Chapter;
 import de.evangeliumstaucher.repo.model.Verse;
 import de.evangeliumstaucher.repo.service.Library;
-import de.evangeliumstaucher.sword.SwordLibrary;
 import jakarta.annotation.Nonnull;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -94,7 +93,6 @@ public class QuizServiceTest {
 
     @BeforeAll
     public static void setup() {
-        library = new SwordLibrary();
         quizService = new QuizService(library, null, null, null, null);
         bible = new BibleWrap("");
         List<BookWrap> books = IntStream.range(1, 10)
