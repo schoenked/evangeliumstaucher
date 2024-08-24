@@ -30,8 +30,9 @@ public class QuizServiceTest {
     private static BookWrap createBook(int iBook, BibleWrap bible) {
 
         BookWrap book = new BookWrap(new BibleBook() {
+
             @Override
-            public Collection<Chapter> getChapters(Library library) {
+            public Collection<Chapter> getChapters() {
                 return List.of();
             }
 
@@ -94,7 +95,7 @@ public class QuizServiceTest {
     @BeforeAll
     public static void setup() {
         quizService = new QuizService(library, null, null, null, null);
-        bible = new BibleWrap("");
+        bible = new BibleWrap("", library.getBible(""));
         List<BookWrap> books = IntStream.range(1, 10)
                 .mapToObj(iBook -> createBook(iBook, bible))
                 .toList();

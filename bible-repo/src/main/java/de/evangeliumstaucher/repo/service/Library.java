@@ -11,11 +11,14 @@ public interface Library {
 
     Bible getBible(String name);
 
-    List<BibleBook> getBibleBooks(String bibleName);
+    List<? extends BibleBook> getBibleBooks(String bibleName);
+
+    List<? extends BibleBook> getBibleBooks(Bible bible);
 
     List<Bible> getBibles();
 
     Passage getPassage(String bibleId, String passageId);
 
     List<Verse> getVerses(String bibleId, String chapterId);
+
 }
