@@ -10,9 +10,12 @@ import de.evangeliumstaucher.sword.model.SwordBible;
 import de.evangeliumstaucher.sword.model.SwordBibleBook;
 import lombok.RequiredArgsConstructor;
 import org.crosswire.jsword.book.sword.SwordBook;
+import org.crosswire.jsword.passage.NoSuchVerseException;
+import org.crosswire.jsword.passage.PassageTally;
 import org.crosswire.jsword.versification.Versification;
 import org.springframework.stereotype.Service;
 
+import java.util.LinkedList;
 import java.util.List;
 
 @Service
@@ -43,7 +46,26 @@ public class SwordLibrary implements Library {
 
     @Override
     public List<Verse> getVerses(String bibleId, String chapterId) {
-        return List.of();
+        Bible bible = getBible(bibleId);
+        int count = 0;
+        if (bible instanceof SwordBible swordBible) {
+            Versification versification = swordBible.getSwordBook().getVersification();
+            try {
+                PassageTally p = new PassageTally(versification, chapterId);
+                count = p.countVerses();
+            } catch (NoSuchVerseException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        LinkedList<Verse> output = new LinkedList<Verse>();
+        for (int i = 1; i <= count; i++) {
+            SwordVerse v = new SwordVerse();
+            v.setText(Integer.toString(i));
+            v.setBibleId(bibleId);
+            v.setId(chapterId + ":" + i);
+            output.add(v);
+        }
+        return output;
     }
 
     @Override
@@ -51,7 +73,7 @@ public class SwordLibrary implements Library {
         if (bible instanceof SwordBible swordBible && swordBible.getSwordBook() instanceof SwordBook swordBook) {
             Versification versification = swordBook.getVersification();
             List<SwordBibleBook> books = Streams.stream(versification.getBookIterator())
-
+                    .filter(b -> !b.name().startsWith("Intro"))
                     .map(b -> fromBook(b, bible, versification))
                     .toList();
             return books;
