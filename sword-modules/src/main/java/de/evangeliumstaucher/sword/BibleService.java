@@ -55,11 +55,11 @@ public class BibleService {
     }
 
     private Bible toBible(@Nullable Book book) {
-        if (book instanceof SwordBook) {
+        if (book instanceof SwordBook swordBook) {
 
             SwordBible swordBible = SwordBible
                     .builder()
-                    .swordBook(book)
+                    .swordBook(swordBook)
                     .id(PREFIX + encodeName(book.getName()))
                     .name(book.getName())
                     .description(book.getProperties().getOrDefault("desc", "").toString())
