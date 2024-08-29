@@ -4,13 +4,13 @@ import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BooksEvent;
 import org.crosswire.jsword.book.BooksListener;
 
-import java.util.concurrent.locks.Lock;
+import java.util.concurrent.Semaphore;
 
 public class SwordBooksListener implements BooksListener {
-    private final Lock lock;
+    private final Semaphore lock;
     Book installedBook;
 
-    public SwordBooksListener(Lock lock) {
+    public SwordBooksListener(Semaphore lock) {
         this.lock = lock;
     }
 
@@ -22,7 +22,7 @@ public class SwordBooksListener implements BooksListener {
     public void bookAdded(BooksEvent booksEvent) {
         //return book to requesting function
         this.installedBook = booksEvent.getBook();
-        lock.unlock();
+        lock.release();
     }
 
     @Override

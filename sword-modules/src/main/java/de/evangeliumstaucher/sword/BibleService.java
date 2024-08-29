@@ -15,8 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Base64;
 import java.util.List;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.Semaphore;
 import java.util.stream.Stream;
 
 @Service
@@ -87,21 +86,23 @@ public class BibleService {
 
             if (book != null) {
                 try {
-                    Lock lock = new ReentrantLock();
-                    lock.lock();
-                    SwordBooksListener listener = getListener(lock);
+                    Semaphore semaphore = new Semaphore(22,false);
+                    semaphore.acquire();
+                    SwordBooksListener listener = getListener(semaphore);
                     installer.addBooksListener(listener);
                     //wait until installed and return installed book
                     log.info("installing bible {}", name);
                     installer.install(book);
                     //waits until installed
-                    lock.lock();
+                    semaphore.acquire();
                     log.info("bible {} installed", name);
                     Book installedBook = listener.getInstalledBook();
-                    lock.unlock();
+                    semaphore.release();
                     installer.removeBooksListener(listener);
                     return installedBook;
                 } catch (InstallException e) {
+                    log.error(e.getMessage(), e);
+                } catch (InterruptedException e) {
                     log.error(e.getMessage(), e);
                 }
                 log.error("Book {} not installed", name);
@@ -111,7 +112,7 @@ public class BibleService {
         return null;
     }
 
-    private SwordBooksListener getListener(Lock lock) {
+    private SwordBooksListener getListener(Semaphore lock) {
         return new SwordBooksListener(lock);
     }
 

@@ -8,6 +8,7 @@ import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.junit.Test;
 
 import java.util.List;
+import java.util.concurrent.Semaphore;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -43,4 +44,23 @@ public class SwordTest {
         assertThat(canonicalText).contains("so hat Gott der Welt seine Liebe gezeigt");
     }
 
+    @Test
+    public void testSemaphore() {
+        Semaphore s = new Semaphore(1);
+        try {
+            s.acquire();
+            new Thread(() -> {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                s.release();
+            }).start();
+            s.acquire();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
 }

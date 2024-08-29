@@ -12,8 +12,10 @@ import de.evangeliumstaucher.repo.model.Chapter;
 import de.evangeliumstaucher.repo.model.Verse;
 import de.evangeliumstaucher.repo.service.Library;
 import jakarta.annotation.Nonnull;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Collection;
 import java.util.List;
@@ -21,11 +23,13 @@ import java.util.stream.IntStream;
 
 import static com.google.common.truth.Truth.assertThat;
 
+@SpringBootTest
 public class QuizServiceTest {
 
     static QuizService quizService;
     private static BibleWrap bible;
-    private static Library library;
+    @Autowired
+    public Library library;
 
     private static BookWrap createBook(int iBook, BibleWrap bible) {
 
@@ -92,19 +96,19 @@ public class QuizServiceTest {
         return book;
     }
 
-    @BeforeAll
-    public static void setup() {
+    @Nonnull
+    private static RunningQuestion getRunningQuestion() {
+        return new RunningQuestion(new QuestionEntity(), new GameSessionEntity());
+    }
+
+    @BeforeEach
+    public void setup() {
         quizService = new QuizService(library, null, null, null, null);
         bible = new BibleWrap("", library.getBible(""));
         List<BookWrap> books = IntStream.range(1, 10)
                 .mapToObj(iBook -> createBook(iBook, bible))
                 .toList();
         bible.setBooks(books);
-    }
-
-    @Nonnull
-    private static RunningQuestion getRunningQuestion() {
-        return new RunningQuestion(new QuestionEntity(), new GameSessionEntity());
     }
 
     @Test

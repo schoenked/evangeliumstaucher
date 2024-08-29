@@ -23,6 +23,7 @@ public class BibleWrap {
     public List<BookWrap> getBooks(Library library) {
         if (books == null) {
             List<? extends BibleBook> booklist = library.getBibleBooks(bible);
+
             books = booklist.stream()
                     .map(book ->
                             new BookWrap(book, this))
