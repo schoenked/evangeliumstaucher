@@ -9,7 +9,13 @@ import de.evangeliumstaucher.repo.service.Library;
 import de.evangeliumstaucher.sword.model.SwordBible;
 import de.evangeliumstaucher.sword.model.SwordBibleBook;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.crosswire.jsword.book.BookData;
+import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.book.sword.SwordBook;
+import org.crosswire.jsword.passage.Key;
+import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.PassageTally;
 import org.crosswire.jsword.versification.Versification;
@@ -20,6 +26,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class SwordLibrary implements Library {
 
     private final BibleService bibleService;
@@ -41,6 +48,27 @@ public class SwordLibrary implements Library {
 
     @Override
     public Passage getPassage(String bibleId, String passageId) {
+        Bible bible = getBible(bibleId);
+
+        if (bible instanceof SwordBible swordBible) {
+            Versification versification = swordBible.getSwordBook().getVersification();
+
+            try {
+                Key key = ((SwordBible) bible).getSwordBook().getKey(passageId);
+                BookData bookData = new BookData(swordBible.getSwordBook(), key);
+                String canonicalText = OSISUtil.getCanonicalText(bookData.getOsisFragment());
+                SwordPassage passage = new SwordPassage();
+                passage.setId(passageId);
+                passage.setContent(canonicalText);
+                return passage;
+            } catch (BookException e) {
+                log.error(e.getMessage(), e);
+            } catch (NoSuchVerseException e) {
+                log.error(e.getMessage(), e);
+            } catch (NoSuchKeyException e) {
+                log.error(e.getMessage(), e);
+            }
+        }
         return null;
     }
 
@@ -73,7 +101,7 @@ public class SwordLibrary implements Library {
         if (bible instanceof SwordBible swordBible && swordBible.getSwordBook() instanceof SwordBook swordBook) {
             Versification versification = swordBook.getVersification();
             List<SwordBibleBook> books = Streams.stream(versification.getBookIterator())
-                    .filter(b -> !b.name().startsWith("Intro"))
+                    .filter(b -> !b.name().startsWith("INTRO"))
                     .map(b -> fromBook(b, bible, versification))
                     .toList();
             return books;
@@ -81,7 +109,8 @@ public class SwordLibrary implements Library {
         return null;
     }
 
-    private SwordBibleBook fromBook(org.crosswire.jsword.versification.BibleBook bibleBook, Bible bible, Versification versification) {
+    private SwordBibleBook fromBook(org.crosswire.jsword.versification.BibleBook bibleBook, Bible
+            bible, Versification versification) {
         SwordBibleBook output = new SwordBibleBook(bibleBook, bible, versification);
 
         output.setId(bibleBook.getOSIS());
