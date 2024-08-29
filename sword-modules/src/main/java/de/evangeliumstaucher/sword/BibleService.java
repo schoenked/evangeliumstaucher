@@ -6,22 +6,23 @@ import lombok.extern.slf4j.Slf4j;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookCategory;
 import org.crosswire.jsword.book.Books;
-import org.crosswire.jsword.book.install.InstallException;
 import org.crosswire.jsword.book.install.InstallManager;
 import org.crosswire.jsword.book.install.Installer;
 import org.crosswire.jsword.book.sword.SwordBook;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 
 import java.util.Base64;
 import java.util.List;
-import java.util.concurrent.Semaphore;
 import java.util.stream.Stream;
 
 @Service
 @Slf4j
 public class BibleService {
     private static final String PREFIX = "sword-";
+    @Autowired
+    public AsyncInstaller asyncInstaller;
     InstallManager imanager = new InstallManager();
 
     public Bible getBible(String name) {
@@ -80,40 +81,38 @@ public class BibleService {
 
     @Nullable
     private Book install(String name) {
-
+        SwordBooksListener listener = getListener();
+        Books.installed().addBooksListener(listener);
         for (Installer installer : imanager.getInstallers().values()) {
             Book book = installer.getBook(name);
 
             if (book != null) {
                 try {
-                    Semaphore semaphore = new Semaphore(22,false);
-                    semaphore.acquire();
-                    SwordBooksListener listener = getListener(semaphore);
-                    installer.addBooksListener(listener);
                     //wait until installed and return installed book
                     log.info("installing bible {}", name);
-                    installer.install(book);
+                    asyncInstaller.installAsync(installer, book);
+
                     //waits until installed
-                    semaphore.acquire();
+                    listener.getLock().acquire();
+
                     log.info("bible {} installed", name);
                     Book installedBook = listener.getInstalledBook();
-                    semaphore.release();
-                    installer.removeBooksListener(listener);
+                    Books.installed().removeBooksListener(listener);
                     return installedBook;
-                } catch (InstallException e) {
-                    log.error(e.getMessage(), e);
-                } catch (InterruptedException e) {
+                } catch (Exception e) {
                     log.error(e.getMessage(), e);
                 }
                 log.error("Book {} not installed", name);
             }
         }
         log.warn("installation of Book {} failed", name);
+        Books.installed().removeBooksListener(listener);
         return null;
     }
 
-    private SwordBooksListener getListener(Semaphore lock) {
-        return new SwordBooksListener(lock);
+
+    private SwordBooksListener getListener() {
+        return new SwordBooksListener();
     }
 
     public List<Bible> getBibles() {
