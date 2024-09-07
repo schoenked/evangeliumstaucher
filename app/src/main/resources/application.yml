@@ -1,0 +1,24 @@
+cache: true
+hostname: http://evangeliumstaucher.nobler.tech
+logging:
+    level:
+        de:
+            evangeliumstaucher: DEBUG
+        org:
+            crosswire: fatal
+            springframework:
+                security: trace
+            thymeleaf: ERROR
+        root: INFO
+        web: INFO
+security:
+    require-ssl: true
+server:
+    port: 443
+    ssl:
+        key-store: /etc/letsencrypt/live/evangeliumstaucher.nobler.tech/myp12file.p12
+        keyAlias: your_alias_name
+        keyStoreType: PKCS12
+spring:
+    profiles:
+        default: default,db,creds,accounts,logging
