@@ -1,0 +1,13 @@
+hostname: https://reinaldus.fritz.box:8443
+server:
+    port: 8443
+    ssl:
+        enabled: true
+        key-store: ./gd.p12
+        key-store-password: changeit
+        keyAlias: gd
+        keyStoreType: PKCS12
+spring:
+    jpa:
+        hibernate:
+            ddl-auto: update
