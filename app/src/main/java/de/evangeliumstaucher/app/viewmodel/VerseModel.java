@@ -2,7 +2,6 @@ package de.evangeliumstaucher.app.viewmodel;
 
 import de.evangeliumstaucher.repo.model.Verse;
 import lombok.*;
-import org.apache.commons.lang3.StringUtils;
 
 @Data
 @With(AccessLevel.PRIVATE)
@@ -15,8 +14,7 @@ public class VerseModel {
     private String label;
 
     public static VerseModel from(Verse verse) {
-        String versenr = verse.getId();
-        versenr = StringUtils.substringAfterLast(versenr, ".");
+        String versenr = verse.getTextShort();
 
         return new VerseModel()
                 .withId(verse.getId())

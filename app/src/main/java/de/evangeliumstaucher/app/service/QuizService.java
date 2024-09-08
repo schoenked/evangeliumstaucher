@@ -3,7 +3,6 @@ package de.evangeliumstaucher.app.service;
 import com.google.common.collect.Lists;
 import de.evangeliumstaucher.app.model.BibleWrap;
 import de.evangeliumstaucher.app.model.BookWrap;
-import de.evangeliumstaucher.app.model.ChapterWrap;
 import de.evangeliumstaucher.app.model.VerseWrap;
 import de.evangeliumstaucher.app.utils.DontJudge;
 import de.evangeliumstaucher.app.utils.Fibonacci;
@@ -16,6 +15,7 @@ import de.evangeliumstaucher.repo.QuestionRepository;
 import de.evangeliumstaucher.repo.UserQuestionRepository;
 import de.evangeliumstaucher.repo.model.BibleBook;
 import de.evangeliumstaucher.repo.model.Passage;
+import de.evangeliumstaucher.repo.model.Verse;
 import de.evangeliumstaucher.repo.service.Library;
 import jakarta.annotation.Nonnull;
 import lombok.Getter;
@@ -69,8 +69,8 @@ public class QuizService {
         quizModel.setId(e.getId());
         LinkedList<QuestionEntity> questionEntities = Lists.newLinkedList();
         for (long i = 0; i < quizModel.getVerses(this).size(); i++) {
-            VerseWrap vers = quizModel.getVerses(this).get((int) i);
-            QuestionEntity verseEntity = new QuestionEntity(null, e, i, vers.getVerse().getId());
+            Verse vers = quizModel.getVerses(this).get((int) i);
+            QuestionEntity verseEntity = new QuestionEntity(null, e, i, vers.getId());
             questionEntities.add(verseEntity);
         }
         questionRepository.saveAll(questionEntities);
@@ -78,15 +78,12 @@ public class QuizService {
         return quizModel;
     }
 
-    private VerseWrap getRandomVerse(BibleWrap bible) {
-        BookWrap book = ListUtils.randomItem(bible.getBooks(library));
-        ChapterWrap chapter = ListUtils.randomItem(book.getChapters());
-        List<VerseWrap> verses = chapter.getVerses(library);
-        VerseWrap verse = ListUtils.randomItem(verses);
+    private Verse getRandomVerse(BibleWrap bible) {
+        Verse verse =ListUtils.randomItem( bible.getBible().getVerses());
         return verse;
     }
 
-    public VerseWrap getQuestionVerse(QuizModel quizModel) throws BadRequest {
+    public Verse getQuestionVerse(QuizModel quizModel) throws BadRequest {
         return getRandomVerse(quizModel.getBible(library));
     }
 
@@ -148,6 +145,7 @@ public class QuizService {
         q.setIndexQuestion(qId + 1);
         BibleWrap bible = quizModel.getBible(library);
         VerseWrap verse = RunningQuestion.getVerse(question.getVerseId(), bible, library);
+
         q.setVerse(verse);
         List<? extends BibleBook> books = verse.getChapter().getBook()
                 .getBible()

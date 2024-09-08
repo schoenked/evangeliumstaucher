@@ -37,7 +37,7 @@ build/
 
 
 cache/
-**/application-creds.properties
+**/application-creds.yml
 **/application-accounts.yaml
 
 gd.p12

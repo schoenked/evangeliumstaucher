@@ -58,7 +58,12 @@ public class VerseWrap {
         return diff;
     }
 
-    public String getText() {
-        return verse.getText();
+    public String getTextShort() {
+        return verse.getTextShort();
     }
+
+    public String getTeXTLong() {
+        return verse.getTeXTLong().replace(":", ",");
+    }
+
 }

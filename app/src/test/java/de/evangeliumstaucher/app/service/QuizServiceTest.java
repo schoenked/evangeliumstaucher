@@ -46,6 +46,11 @@ public class QuizServiceTest {
             }
 
             @Override
+            public String getName() {
+                return "";
+            }
+
+            @Override
             public String getId() {
                 return String.valueOf(iBook);
             }
@@ -64,6 +69,16 @@ public class QuizServiceTest {
                                 }
 
                                 @Override
+                                public String getText() {
+                                    return "";
+                                }
+
+                                @Override
+                                public BibleBook getBibleBook() {
+                                    return null;
+                                }
+
+                                @Override
                                 public String getId() {
                                     return iBook + "." + iChapter;
                                 }
@@ -71,8 +86,14 @@ public class QuizServiceTest {
                             List<VerseWrap> verses = IntStream.range(1, 10)
                                     .mapToObj(iVerse -> {
                                                 return new VerseWrap(chapter, new Verse() {
+
                                                     @Override
-                                                    public String getText() {
+                                                    public String getTextShort() {
+                                                        return "";
+                                                    }
+
+                                                    @Override
+                                                    public String getTeXTLong() {
                                                         return "";
                                                     }
 
@@ -134,7 +155,7 @@ public class QuizServiceTest {
     public void testCalcDiff() {
         for (int i = 0; i <= 728; i++) {
             RunningQuestion runningQuestion = getRunningQuestion();
-            runningQuestion.setVerse(bible.getBooks(null).get(0).getChapters().get(0).getVerses().get(0));
+            runningQuestion.setVerse(bible.getBooks(null).getFirst().getChapters().getFirst().getVerses().getFirst());
             VerseWrap v = runningQuestion.getVerse().stepVerses(i, library);
             runningQuestion.setSelectedVerse(v);
             assertThat(runningQuestion.getDiffVerses(library)).isEqualTo(i);
@@ -160,7 +181,7 @@ public class QuizServiceTest {
 
         runningQuestion = getRunningQuestion();
         runningQuestion.setVerse(bible.getBooks(null).get(2).getChapters().get(2).getVerses().get(2));
-        runningQuestion.setSelectedVerse(bible.getBooks(null).get(4).getChapters().get(1).getVerses().get(0));
+        runningQuestion.setSelectedVerse(bible.getBooks(null).get(4).getChapters().get(1).getVerses().getFirst());
         assertThat(runningQuestion.getDiffVerses(library)).isEqualTo(151);
     }
 

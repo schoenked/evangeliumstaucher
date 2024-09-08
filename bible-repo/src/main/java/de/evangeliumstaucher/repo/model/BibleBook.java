@@ -7,4 +7,5 @@ public interface BibleBook extends Model {
     Collection<Chapter> getChapters();
 
     String getAbbreviation();
+    String getName();
 }

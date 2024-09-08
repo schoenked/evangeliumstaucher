@@ -1,5 +1,6 @@
 package de.evangeliumstaucher.sword;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Streams;
 import de.evangeliumstaucher.repo.model.Bible;
 import de.evangeliumstaucher.repo.model.BibleBook;
@@ -18,10 +19,10 @@ import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.PassageTally;
+import org.crosswire.jsword.versification.BookName;
 import org.crosswire.jsword.versification.Versification;
 import org.springframework.stereotype.Service;
 
-import java.util.LinkedList;
 import java.util.List;
 
 @Service
@@ -74,25 +75,27 @@ public class SwordLibrary implements Library {
 
     @Override
     public List<Verse> getVerses(String bibleId, String chapterId) {
+        List<Verse> output = Lists.newLinkedList();
         Bible bible = getBible(bibleId);
         int count = 0;
         if (bible instanceof SwordBible swordBible) {
             Versification versification = swordBible.getSwordBook().getVersification();
             try {
                 PassageTally p = new PassageTally(versification, chapterId);
-                count = p.countVerses();
+                output = Streams.stream(p.iterator())
+                        .map(key -> (org.crosswire.jsword.passage.Verse) key)
+                        .map(
+                                verse -> {
+                                    SwordVerse v = SwordVerse.from(verse, bibleId);
+
+                                    return (Verse) v;
+                                }
+                        ).toList();
             } catch (NoSuchVerseException e) {
                 throw new RuntimeException(e);
             }
         }
-        LinkedList<Verse> output = new LinkedList<Verse>();
-        for (int i = 1; i <= count; i++) {
-            SwordVerse v = new SwordVerse();
-            v.setText(Integer.toString(i));
-            v.setBibleId(bibleId);
-            v.setId(chapterId + ":" + i);
-            output.add(v);
-        }
+
         return output;
     }
 
@@ -114,8 +117,9 @@ public class SwordLibrary implements Library {
         SwordBibleBook output = new SwordBibleBook(bibleBook, bible, versification);
 
         output.setId(bibleBook.getOSIS());
-        String name = versification.getBookName(bibleBook).getShortName();
-        output.setAbbreviation(name);
+        BookName name = versification.getBookName(bibleBook);
+        output.setAbbreviation(name.getShortName());
+        output.setName(name.getLongName());
         return output;
     }
 }

@@ -1,10 +1,10 @@
 package de.evangeliumstaucher.app.viewmodel;
 
 import de.evangeliumstaucher.app.model.BibleWrap;
-import de.evangeliumstaucher.app.model.VerseWrap;
 import de.evangeliumstaucher.app.service.QuizService;
 import de.evangeliumstaucher.entity.GameEntity;
 import de.evangeliumstaucher.entity.PlayerEntity;
+import de.evangeliumstaucher.repo.model.Verse;
 import de.evangeliumstaucher.repo.service.Library;
 import lombok.*;
 
@@ -29,7 +29,7 @@ public class QuizModel {
     @Getter(AccessLevel.PRIVATE)
     private BibleWrap bible;
     @Getter(AccessLevel.PRIVATE)
-    private List<VerseWrap> verses = new ArrayList<>();
+    private List<Verse> verses = new ArrayList<>();
 
     public static QuizModel from(GameEntity gameEntity, Library library) {
         return QuizModel.builder()
@@ -45,11 +45,11 @@ public class QuizModel {
         return bible;
     }
 
-    public List<VerseWrap> getVerses(QuizService quizService)   {
+    public List<Verse> getVerses(QuizService quizService)   {
         if (verses == null) {
             verses = new ArrayList<>();
             for (int i = 0; i < QUESTION_COUNT; i++) {
-                VerseWrap q = quizService.getQuestionVerse(this);
+                Verse q = quizService.getQuestionVerse(this);
                 verses.add(q);
             }
         }

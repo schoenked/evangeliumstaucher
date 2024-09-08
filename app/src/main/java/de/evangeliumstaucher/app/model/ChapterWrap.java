@@ -32,7 +32,7 @@ public class ChapterWrap {
             diff += BookWrap.diffVerses(from, to, library);
             diff++;
             if (fromBook.getIndex(library) < toBook.getIndex(library)) {
-                diff += diffVerses(toBook.getChapters().get(0).getVerses(library).get(0), to, library);
+                diff += diffVerses(toBook.getChapters().getFirst().getVerses(library).getFirst(), to, library);
             } else {
                 diff += diffVerses(to, toBook.getLast().getLast(library), library);
             }
@@ -50,7 +50,7 @@ public class ChapterWrap {
                 diff += to.getIndex(library) + 1;
             } else if (fromChapter.getIndex() > toChapter.getIndex()) {
                 // verses in chapter
-                diff += from.diffVerses(fromChapter.getVerses(library).get(0), library);
+                diff += from.diffVerses(fromChapter.getVerses(library).getFirst(), library);
                 // verses of all chapters between
                 diff += fromBook.getChapters().stream()
                         .filter(c -> toChapter.getIndex() < c.getIndex() && c.getIndex() < fromChapter.getIndex())
@@ -91,7 +91,7 @@ public class ChapterWrap {
             if (previous == null) {
                 return null;
             }
-            return previous.getChapters().get(previous.getChapters().size() - 1);
+            return previous.getChapters().getLast();
         } else {
             return book.getChapters().get(myIndex - 1);
         }
@@ -104,14 +104,14 @@ public class ChapterWrap {
             if (next == null) {
                 return null;
             }
-            return next.getChapters().get(0);
+            return next.getChapters().getFirst();
         } else {
             return book.getChapters().get(myIndex + 1);
         }
     }
 
     public VerseWrap getLast(Library library)   {
-        return getVerses(library).get(getVerses(library).size() - 1);
+        return getVerses(library).getLast();
     }
 
     public int getVersesCount(Library library)   {
