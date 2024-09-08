@@ -53,7 +53,7 @@ public class BibleController extends BaseController {
         try {
             List<Verse> verses = library.getVerses(bibleId, chapterId);
             List<VerseModel> veseeModels = verses.stream()
-                    .map(v -> VerseModel.from(v))
+                    .map(VerseModel::from)
                     .peek(v -> {
                         if (!Strings.isNullOrEmpty(prefix)) {
                             v.setUrl("./" + prefix + "/" + v.getUrl());

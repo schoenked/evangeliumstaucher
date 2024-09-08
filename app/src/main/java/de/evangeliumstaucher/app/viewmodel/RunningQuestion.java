@@ -1,6 +1,5 @@
 package de.evangeliumstaucher.app.viewmodel;
 
-import com.google.common.collect.Lists;
 import de.evangeliumstaucher.app.model.BibleWrap;
 import de.evangeliumstaucher.app.model.BookWrap;
 import de.evangeliumstaucher.app.model.ChapterWrap;
@@ -9,6 +8,7 @@ import de.evangeliumstaucher.app.service.QuizService;
 import de.evangeliumstaucher.entity.GameSessionEntity;
 import de.evangeliumstaucher.entity.QuestionEntity;
 import de.evangeliumstaucher.entity.UserQuestionEntity;
+import de.evangeliumstaucher.repo.model.Verse;
 import de.evangeliumstaucher.repo.service.Library;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
@@ -46,26 +46,21 @@ public class RunningQuestion {
     private int countQuestions;
     private long indexQuestion;
 
-    public static VerseWrap getVerse(String verseId, BibleWrap bibleWrap, Library library) {
-        for (BookWrap bookWrap : bibleWrap.getBooks(library)) {
-            if (verseId.startsWith(bookWrap.getBook().getId())) {
-                log.debug("book: " + bookWrap.getBook().getId());
-                for (ChapterWrap chapter : Lists.reverse(bookWrap.getChapters())) {
-                    if (verseId.startsWith(chapter.getChapter().getId())) {
-                        log.debug("chapter: " + chapter.getChapter().getId());
-                        for (VerseWrap verse : Lists.reverse(chapter.getVerses(library))) {
-                            if (verseId.startsWith(verse.getVerse().getId())) {
-                                log.debug("verse: " + verse.getVerse().getId());
-                                return verse;
-                            }
-                        }
-                        break;
+    public static VerseWrap getVerse(String id, BibleWrap bibleWrap, Library library) {
+        Verse v = bibleWrap.getBible().getVerse(id);
+        ChapterWrap c = null;
+        for (BookWrap book : bibleWrap.getBooks(library)) {
+            if (id.startsWith(book.getBook().getName())) {
+                id = id.substring(book.getBook().getName().length() + 1);
+                id = id.split(":")[0];
+                for (ChapterWrap chapter : book.getChapters()) {
+                    if (id.equals(chapter.getChapter().getNumber())) {
+                        c = chapter;
                     }
                 }
-                break;
             }
         }
-        return null;
+        return new VerseWrap(c, v);
     }
 
     public int getDiffVerses(Library library) {

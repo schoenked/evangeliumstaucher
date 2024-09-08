@@ -47,7 +47,8 @@ public class BibleService {
         try {
             //error in sword lib
             if (book.getBookCategory() != null && book.getBookCategory() == BookCategory.BIBLE) {
-                return true;
+                //locked
+                return !book.getProperties().containsKey("CipherKey");
             }
         } catch (Exception _) {
         }

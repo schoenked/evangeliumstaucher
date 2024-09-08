@@ -30,6 +30,7 @@ public class BaseModel {
                 .replace("4", "fourth")
                 .replace("5", "fifth")
                 + StringUtils.substring(id, 1);
+        outreturn = StringUtils.deleteWhitespace(outreturn);
 
         return outreturn;
     }

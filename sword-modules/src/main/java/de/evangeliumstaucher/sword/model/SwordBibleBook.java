@@ -15,9 +15,8 @@ public class SwordBibleBook implements BibleBook {
     private final Bible bible;
     private final Versification versification;
     private Collection<Chapter> chapters;
-
+    private String name;
     private String abbreviation;
-
     private String id;
 
     public Collection<Chapter> getChapters() {

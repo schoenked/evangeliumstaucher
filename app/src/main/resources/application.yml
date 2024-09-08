@@ -5,7 +5,7 @@ logging:
         de:
             evangeliumstaucher: DEBUG
         org:
-            crosswire: fatal
+            crosswire: off
             springframework:
                 security: trace
             thymeleaf: ERROR
