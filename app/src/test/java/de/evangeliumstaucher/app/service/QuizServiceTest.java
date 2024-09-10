@@ -9,6 +9,7 @@ import de.evangeliumstaucher.entity.GameSessionEntity;
 import de.evangeliumstaucher.entity.QuestionEntity;
 import de.evangeliumstaucher.repo.model.BibleBook;
 import de.evangeliumstaucher.repo.model.Chapter;
+import de.evangeliumstaucher.repo.model.Division;
 import de.evangeliumstaucher.repo.model.Verse;
 import de.evangeliumstaucher.repo.service.Library;
 import jakarta.annotation.Nonnull;
@@ -48,6 +49,11 @@ public class QuizServiceTest {
             @Override
             public String getName() {
                 return "";
+            }
+
+            @Override
+            public List<Division> getDivisions() {
+                return List.of();
             }
 
             @Override
