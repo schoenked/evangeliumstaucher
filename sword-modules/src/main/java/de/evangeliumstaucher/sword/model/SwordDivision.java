@@ -15,10 +15,10 @@ public class SwordDivision implements Division {
             "primary",
             "secondary",
             "third",
-            "fourth",
             "fifth",
-            "sixth",
-            "seventh"
+            "fourth",
+            "seventh",
+            "sixth"
     );
     private static final Map<DivisionName, SwordDivision> map = new HashMap<>();
     private final DivisionName divisionName;
