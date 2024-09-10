@@ -7,7 +7,7 @@ logging:
         org:
             crosswire: off
             springframework:
-                security: trace
+                security: INFO
             thymeleaf: ERROR
         root: INFO
         web: INFO
