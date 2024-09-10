@@ -6,6 +6,7 @@ import de.evangeliumstaucher.repo.model.Verse;
 import de.evangeliumstaucher.sword.SwordVerse;
 import lombok.Builder;
 import lombok.Data;
+import lombok.ToString;
 import org.crosswire.jsword.book.sword.SwordBook;
 
 import java.util.List;
@@ -19,6 +20,7 @@ public class SwordBible implements Bible {
     String name;
     String description;
     String id;
+    @ToString.Exclude
     private List<Verse> verses;
 
     @Override

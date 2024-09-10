@@ -1,3 +1,5 @@
+package de.evangeliumstaucher.sword;
+
 import org.crosswire.jsword.book.*;
 import org.crosswire.jsword.book.install.InstallException;
 import org.crosswire.jsword.book.install.InstallManager;

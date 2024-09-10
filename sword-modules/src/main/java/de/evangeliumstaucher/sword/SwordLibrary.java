@@ -84,6 +84,7 @@ public class SwordLibrary implements Library {
                 PassageTally p = new PassageTally(versification, chapterId);
                 output = Streams.stream(p.iterator())
                         .map(key -> (org.crosswire.jsword.passage.Verse) key)
+                        .filter(key -> key.getVerse() > 0 && key.getChapter() > 0)
                         .map(
                                 verse -> {
                                     SwordVerse v = SwordVerse.from(verse, bibleId);
