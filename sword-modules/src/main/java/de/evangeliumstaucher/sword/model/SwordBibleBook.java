@@ -3,11 +3,16 @@ package de.evangeliumstaucher.sword.model;
 import de.evangeliumstaucher.repo.model.Bible;
 import de.evangeliumstaucher.repo.model.BibleBook;
 import de.evangeliumstaucher.repo.model.Chapter;
+import de.evangeliumstaucher.repo.model.Division;
 import lombok.Data;
+import org.crosswire.jsword.versification.DivisionName;
 import org.crosswire.jsword.versification.Versification;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 public class SwordBibleBook implements BibleBook {
@@ -32,6 +37,19 @@ public class SwordBibleBook implements BibleBook {
             }
         }
         return chapters;
+    }
+
+    @Override
+    public List<Division> getDivisions() {
+        List<Division> divisions = Arrays.stream(DivisionName.values())
+                .filter(divisionName -> divisionName.contains(getBibleBook()))
+                .map(
+                        divisionName -> {
+                            return new SwordDivision(divisionName);
+                        }).collect(Collectors.toUnmodifiableList());
+
+
+        return divisions;
     }
 
 }
