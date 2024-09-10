@@ -45,7 +45,7 @@ public class SwordBibleBook implements BibleBook {
                 .filter(divisionName -> divisionName.contains(getBibleBook()))
                 .map(
                         divisionName -> {
-                            return new SwordDivision(divisionName);
+                            return  SwordDivision.from(divisionName);
                         }).collect(Collectors.toUnmodifiableList());
 
 

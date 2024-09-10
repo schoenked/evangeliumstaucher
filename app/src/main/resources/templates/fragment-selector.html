@@ -4,12 +4,12 @@
 
 <body>
 
-<!--/*@thymesVar id="books" type="java.util.List<de.evangeliumstaucher.app.model.BookWrap>"*/-->
+<!--/*@thymesVar id="books" type="java.util.List<de.evangeliumstaucher.app.viewmodel.BookModel>"*/-->
 <div class="container p-0 row text-center" id="selector" th:fragment="selector (books)">
     <th:block th:each="book : ${books}">
         <div class="col-2 p-0 text-nowrap">
             <button aria-expanded="false"
-                    class="btn w-100 btn-outline-secondary rounded-0 m-1 px-0 text-truncate"
+                    th:class="|btn w-100 btn-${book.color} rounded-0 m-1 px-0 text-truncate|"
                     data-bs-toggle="collapse"
                     role="button"
                     th:aria-controls="|${book.htmlId}|"
