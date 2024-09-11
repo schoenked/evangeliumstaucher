@@ -9,7 +9,9 @@ import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.book.install.InstallManager;
 import org.crosswire.jsword.book.install.Installer;
 import org.crosswire.jsword.book.sword.SwordBook;
+import org.crosswire.jsword.internationalisation.LocaleProviderManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +26,11 @@ public class BibleService {
     @Autowired
     public AsyncInstaller asyncInstaller;
     InstallManager imanager = new InstallManager();
+
+    public BibleService() {
+        //set locale by spring boot bean config
+        LocaleProviderManager.setLocaleProvider(LocaleContextHolder::getLocale);
+    }
 
     public Bible getBible(String name) {
         log.trace("loading bible {}", name);
@@ -66,6 +73,7 @@ public class BibleService {
                     .description(book.getProperties().getOrDefault("desc", "").toString())
                     .abbreviation(book.getInitials())
                     .language(book.getLanguage() != null ? book.getLanguage().getName() : "N/A")
+                    .languageCode(book.getLanguage() != null ? book.getLanguage().getCode() : "N/A")
                     .build();
             return swordBible;
         }
