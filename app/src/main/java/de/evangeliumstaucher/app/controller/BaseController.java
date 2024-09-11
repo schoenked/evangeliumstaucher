@@ -33,12 +33,14 @@ public class BaseController {
                     .collect(groupingBy(BibleModel::getLanguageCode))
                     .entrySet().stream()
                     .sorted((o1, o2) -> {
+                        //sort user locale matching to beginning
                         if (o1.getKey().equals(LocaleContextHolder.getLocale().getLanguage())) return -1;
                         if (o2.getKey().equals(LocaleContextHolder.getLocale().getLanguage())) return 1;
                         return o1.getKey().compareTo(o2.getKey());
                     })
                     .collect(Collectors.toList());
-            groups = groups.subList(0, 6);
+            groups = groups.subList(0, 10);
+
 
             m.addAttribute("languages", groups);
         } catch (Exception e) {
