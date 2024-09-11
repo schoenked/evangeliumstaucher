@@ -6,6 +6,8 @@ public interface Bible extends Model {
 
     String getLanguage();
 
+    String getLanguageCode();
+
     String getAbbreviation();
 
     String getName();
@@ -15,4 +17,5 @@ public interface Bible extends Model {
     List<Verse> getVerses();
 
     Verse getVerse(String verseId);
+
 }

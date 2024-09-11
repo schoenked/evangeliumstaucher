@@ -16,6 +16,7 @@ import java.util.List;
 public class SwordBible implements Bible {
     private final SwordBook swordBook;
     String language;
+    String languageCode;
     String abbreviation;
     String name;
     String description;

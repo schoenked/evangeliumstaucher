@@ -5,6 +5,7 @@ import de.evangeliumstaucher.repo.model.Bible;
 import de.evangeliumstaucher.repo.service.Library;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.ui.Model;
 
 import java.util.List;
@@ -29,11 +30,11 @@ public class BaseController {
             List<Map.Entry<String, List<BibleModel>>> groups = bibles.stream()
                     .map(BibleModel::from)
                     .peek(b -> b.setUrl(b.getUrl()))
-                    .collect(groupingBy(BibleModel::getLanguage))
+                    .collect(groupingBy(BibleModel::getLanguageCode))
                     .entrySet().stream()
                     .sorted((o1, o2) -> {
-                        if (o1.getKey().equals("Deutsch")) return -1;
-                        if (o2.getKey().equals("Deutsch")) return 1;
+                        if (o1.getKey().equals(LocaleContextHolder.getLocale().getLanguage())) return -1;
+                        if (o2.getKey().equals(LocaleContextHolder.getLocale().getLanguage())) return 1;
                         return o1.getKey().compareTo(o2.getKey());
                     })
                     .collect(Collectors.toList());
