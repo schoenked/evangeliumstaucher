@@ -1,7 +1,7 @@
-#!/bin/bash
+﻿#!/bin/bash
+# -*- coding: utf-8 -*-
 
 APP_JAR=app.jar
-
 if [ "$2" = "public" ]; then
     PROFILES=default,db,creds,logging
 else

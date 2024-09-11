@@ -1,4 +1,3 @@
-
 #!/bin/bash
 
 dir=$(dirname $0)
