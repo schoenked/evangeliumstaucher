@@ -5,7 +5,7 @@
 <body>
 
 <!--/*@thymesVar id="books" type="java.util.List<de.evangeliumstaucher.app.viewmodel.BookModel>"*/-->
-<div class="container p-0 row text-center" id="selector" th:fragment="selector (books)">
+<div class=" p-0 row gx-0 text-center" id="selector" th:fragment="selector (books)">
     <th:block th:each="book : ${books}">
         <div class="col-2 p-0 text-nowrap">
             <button aria-expanded="false"
@@ -19,9 +19,9 @@
         </div>
         <div class="collapse "
              th:id="${book.htmlId}">
-            <div class="container row ">
+            <div class="row gx-0">
                 <th:block th:each="group : ${book.chapterGroups}">
-                    <div class="col-12 p-0 row">
+                    <div class="col-12 p-0 row gx-0">
                         <th:block th:each="chapter : ${group}">
                             <span class="col-2 p-1" style="width: 20%;">
                                 <button aria-expanded="false"
