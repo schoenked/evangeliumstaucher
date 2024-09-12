@@ -2,26 +2,31 @@ package de.evangeliumstaucher.sword;
 
 import de.evangeliumstaucher.repo.model.Verse;
 import lombok.Data;
-import org.crosswire.jsword.passage.VerseKey;
 import org.springframework.context.i18n.LocaleContextHolder;
 
 import java.util.Locale;
 
 @Data
 public class SwordVerse implements Verse {
-    private String textShort;
-    private VerseKey key;
+    private org.crosswire.jsword.passage.Verse key;
     private String bibleId;
-    private String id;
+
+    public SwordVerse(org.crosswire.jsword.passage.Verse verse) {
+        this.key = verse;
+    }
 
     public static SwordVerse from(org.crosswire.jsword.passage.Verse verse, String bibleId) {
-        SwordVerse v = new SwordVerse();
-        int index = verse.getVerse();
-        v.setTextShort(Integer.toString(index));
-        v.setKey(verse);
+        SwordVerse v = new SwordVerse(verse);
         v.setBibleId(bibleId);
-        v.setId(verse.toString());
         return v;
+    }
+
+    public String getId() {
+        return key.toString();
+    }
+
+    public String getTextShort() {
+        return Integer.toString(key.getVerse());
     }
 
     @Override

@@ -79,7 +79,7 @@ public class QuizService {
     }
 
     private Verse getRandomVerse(BibleWrap bible) {
-        Verse verse =ListUtils.randomItem( bible.getBible().getVerses());
+        Verse verse = ListUtils.randomItem(bible.getBible().getVerses());
         return verse;
     }
 
