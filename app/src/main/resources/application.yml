@@ -19,6 +19,8 @@ server:
         key-store: /etc/letsencrypt/live/evangeliumstaucher.nobler.tech/myp12file.p12
         keyAlias: your_alias_name
         keyStoreType: PKCS12
+    tomcat.max-threads: 4
+
 spring:
     profiles:
         default: default,db,creds,accounts,logging

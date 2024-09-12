@@ -14,11 +14,6 @@
     </properties>
     <dependencies>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>de.evangeliumstaucher</groupId>
             <artifactId>bible-repo</artifactId>
             <version>0.0.1-SNAPSHOT</version>
