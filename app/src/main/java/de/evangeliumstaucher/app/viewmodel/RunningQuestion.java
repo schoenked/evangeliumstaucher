@@ -27,8 +27,8 @@ import java.util.Locale;
 public class RunningQuestion {
     private final QuestionEntity questionEntity;
     private final GameSessionEntity gameSessionEntity;
-    int extendingPrePassageCount = 0;
-    int extendingPostPassageCount = 0;
+    int extendingPrePassageCount = 2;
+    int extendingPostPassageCount = 2;
     private LocalDateTime startedAt;
     private LocalDateTime answeredAt;
     private VerseWrap verse;

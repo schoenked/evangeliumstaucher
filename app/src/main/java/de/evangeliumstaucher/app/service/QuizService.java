@@ -33,7 +33,7 @@ import static org.springframework.web.client.HttpClientErrorException.BadRequest
 @Service
 @RequiredArgsConstructor
 public class QuizService {
-    public static final int COUNT_CONTEXT_EXTENSIONS = 4;
+    public static final int COUNT_CONTEXT_EXTENSIONS = 6;
     private final Library library;
     private final GameRepository gameRepository;
     private final QuestionRepository questionRepository;
@@ -102,7 +102,7 @@ public class QuizService {
                     return null;
                 }
                 q.setExtendingPrePassageCount(c + 1);
-                int steps = Fibonacci.nthFibonacciTerm(q.getExtendingPrePassageCount()) * -1;
+                int steps = Fibonacci.nthFibonacciTerm(q.getExtendingPrePassageCount()) * -1 ;
                 VerseWrap preVerse = q.getContextStartVerse().stepVerses(steps, library);
                 passageId = preVerse.getVerse().getId()
                         + "-"
