@@ -20,9 +20,10 @@ public class ChapterWrap {
     private final BookWrap book;
     @ToString.Exclude
     @Setter
+    @Getter(AccessLevel.NONE)
     List<VerseWrap> verses;
 
-    public static int diffVerses(VerseWrap from, VerseWrap to, Library library )   {
+    public static int diffVerses(VerseWrap from, VerseWrap to, Library library) {
         int diff = 0;
         ChapterWrap fromChapter = from.getChapter();
         BookWrap fromBook = fromChapter.getBook();
@@ -44,7 +45,7 @@ public class ChapterWrap {
                 diff += fromBook.getChapters().stream()
                         .filter(c -> fromChapter.getIndex() < c.getIndex() && c.getIndex() < toChapter.getIndex())
                         .mapToInt(chapterWrap -> {
-                                return chapterWrap.getVerses(library).size();
+                            return chapterWrap.getVerses(library).size();
                         })
                         .sum();
                 diff += to.getIndex(library) + 1;
@@ -55,9 +56,9 @@ public class ChapterWrap {
                 diff += fromBook.getChapters().stream()
                         .filter(c -> toChapter.getIndex() < c.getIndex() && c.getIndex() < fromChapter.getIndex())
                         .mapToInt(chapterWrap -> {
-                      
-                                return chapterWrap.getVerses(library).size();
-                        
+
+                            return chapterWrap.getVerses(library).size();
+
                         })
                         .sum();
                 diff += Math.abs(to.getIndex(library) - toChapter.getLast(library).getIndex(library));
@@ -74,7 +75,7 @@ public class ChapterWrap {
         return book.getChapters().indexOf(this);
     }
 
-    public List<VerseWrap> getVerses(Library library)   {
+    public List<VerseWrap> getVerses(Library library) {
         if (verses == null) {
             List<Verse> versesLoaded = library.getVerses(chapter.getBibleId(), chapter.getId());
             verses = versesLoaded.stream()
@@ -84,7 +85,7 @@ public class ChapterWrap {
         return verses;
     }
 
-    public ChapterWrap getPrevious(Library library)   {
+    public ChapterWrap getPrevious(Library library) {
         int myIndex = book.getChapters().indexOf(this);
         if (myIndex == 0) {
             BookWrap previous = book.getPrevious(library);
@@ -97,7 +98,7 @@ public class ChapterWrap {
         }
     }
 
-    public ChapterWrap getNext(Library library)   {
+    public ChapterWrap getNext(Library library) {
         int myIndex = getIndex();
         if (myIndex == book.getChapters().size() - 1) {
             BookWrap next = book.getNext(library);
@@ -110,11 +111,11 @@ public class ChapterWrap {
         }
     }
 
-    public VerseWrap getLast(Library library)   {
+    public VerseWrap getLast(Library library) {
         return getVerses(library).getLast();
     }
 
-    public int getVersesCount(Library library)   {
+    public int getVersesCount(Library library) {
         return getVerses(library).size();
     }
 }

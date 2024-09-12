@@ -13,6 +13,23 @@ public class VerseWrap {
     private final ChapterWrap chapter;
     private final Verse verse;
 
+    public static VerseWrap getVerse(String id, BibleWrap bibleWrap, Library library) {
+        Verse v = bibleWrap.getBible().getVerse(id);
+        ChapterWrap c = null;
+        for (BookWrap book : bibleWrap.getBooks(library)) {
+            if (id.startsWith(book.getBook().getName())) {
+                id = id.substring(book.getBook().getName().length() + 1);
+                id = id.split(":")[0];
+                for (ChapterWrap chapter : book.getChapters()) {
+                    if (id.equals(chapter.getChapter().getNumber())) {
+                        c = chapter;
+                    }
+                }
+            }
+        }
+        return new VerseWrap(c, v);
+    }
+
     public int getIndex(Library library) {
         return chapter.getVerses(library).indexOf(this);
     }

@@ -140,7 +140,7 @@ public class QuizServiceTest {
 
     @Test
     public void testGetDiff() {
-        VerseWrap verse = bible.getBooks(null).get(2).getChapters().get(2).getVerses().get(2);
+        VerseWrap verse = bible.getBooks(null).get(2).getChapters().get(2).getVerses(library).get(2);
         VerseWrap stepped = verse.stepVerses(-1, library);
         assertThat(stepped.getVerse().getId()).isEqualTo("3.3.2");
         verse = stepped;
@@ -161,7 +161,7 @@ public class QuizServiceTest {
     public void testCalcDiff() {
         for (int i = 0; i <= 728; i++) {
             RunningQuestion runningQuestion = getRunningQuestion();
-            runningQuestion.setVerse(bible.getBooks(null).getFirst().getChapters().getFirst().getVerses().getFirst());
+            runningQuestion.setVerse(bible.getBooks(null).getFirst().getChapters().getFirst().getVerses(library).getFirst());
             VerseWrap v = runningQuestion.getVerse().stepVerses(i, library);
             runningQuestion.setSelectedVerse(v);
             assertThat(runningQuestion.getDiffVerses(library)).isEqualTo(i);
@@ -175,19 +175,19 @@ public class QuizServiceTest {
             assertThat(runningQuestion.getDiffVerses(library)).isEqualTo(i);
         }
         RunningQuestion runningQuestion = getRunningQuestion();
-        runningQuestion.setVerse(bible.getBooks(null).get(2).getChapters().get(2).getVerses().get(2));
-        runningQuestion.setSelectedVerse(bible.getBooks(null).get(2).getChapters().get(2).getVerses().get(1));
+        runningQuestion.setVerse(bible.getBooks(null).get(2).getChapters().get(2).getVerses(library).get(2));
+        runningQuestion.setSelectedVerse(bible.getBooks(null).get(2).getChapters().get(2).getVerses(library).get(1));
         assertThat(runningQuestion.getDiffVerses(library)).isEqualTo(1);
 
         runningQuestion = getRunningQuestion();
-        runningQuestion.setSelectedVerse(bible.getBooks(null).get(2).getChapters().get(1).getVerses().get(2));
-        runningQuestion.setVerse(bible.getBooks(null).get(2).getChapters().get(2).getVerses().get(2));
-        runningQuestion.setSelectedVerse(bible.getBooks(null).get(2).getChapters().get(1).getVerses().get(2));
+        runningQuestion.setSelectedVerse(bible.getBooks(null).get(2).getChapters().get(1).getVerses(library).get(2));
+        runningQuestion.setVerse(bible.getBooks(null).get(2).getChapters().get(2).getVerses(library).get(2));
+        runningQuestion.setSelectedVerse(bible.getBooks(null).get(2).getChapters().get(1).getVerses(library).get(2));
         assertThat(runningQuestion.getDiffVerses(library)).isEqualTo(9);
 
         runningQuestion = getRunningQuestion();
-        runningQuestion.setVerse(bible.getBooks(null).get(2).getChapters().get(2).getVerses().get(2));
-        runningQuestion.setSelectedVerse(bible.getBooks(null).get(4).getChapters().get(1).getVerses().getFirst());
+        runningQuestion.setVerse(bible.getBooks(null).get(2).getChapters().get(2).getVerses(library).get(2));
+        runningQuestion.setSelectedVerse(bible.getBooks(null).get(4).getChapters().get(1).getVerses(library).getFirst());
         assertThat(runningQuestion.getDiffVerses(library)).isEqualTo(151);
     }
 

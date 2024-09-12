@@ -102,7 +102,7 @@ public class QuizService {
                     return null;
                 }
                 q.setExtendingPrePassageCount(c + 1);
-                int steps = Fibonacci.nthFibonacciTerm(q.getExtendingPrePassageCount()) * -1 ;
+                int steps = Fibonacci.nthFibonacciTerm(q.getExtendingPrePassageCount()) * -1;
                 VerseWrap preVerse = q.getContextStartVerse().stepVerses(steps, library);
                 passageId = preVerse.getVerse().getId()
                         + "-"
@@ -144,7 +144,7 @@ public class QuizService {
         q.setCountQuestions(quizModel.getVerses(this).size());
         q.setIndexQuestion(qId + 1);
         BibleWrap bible = quizModel.getBible(library);
-        VerseWrap verse = RunningQuestion.getVerse(question.getVerseId(), bible, library);
+        VerseWrap verse = VerseWrap.getVerse(question.getVerseId(), bible, library);
 
         q.setVerse(verse);
         List<? extends BibleBook> books = verse.getChapter().getBook()

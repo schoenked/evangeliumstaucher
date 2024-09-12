@@ -1,5 +1,7 @@
 package de.evangeliumstaucher.app.service;
 
+import de.evangeliumstaucher.app.model.BibleWrap;
+import de.evangeliumstaucher.app.model.VerseWrap;
 import de.evangeliumstaucher.repo.model.Bible;
 import de.evangeliumstaucher.repo.model.Passage;
 import de.evangeliumstaucher.repo.model.Verse;
@@ -9,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
+
+import static com.google.common.truth.Truth.assertThat;
 
 @SpringBootTest
 public class PassageTest {
@@ -35,5 +39,21 @@ public class PassageTest {
         Bible bible = swordLibrary.getBible(ID_SCHLACHTER);
 
         List<Verse> verses = bible.getVerses();
+    }
+
+    @Test
+    public void testVerses() {
+        Bible bible = swordLibrary.getBible(ID_SCHLACHTER);
+        BibleWrap b = new BibleWrap(bible.getId(), bible);
+        VerseWrap verse = b.getBooks(swordLibrary).getFirst().getChapters().getFirst().getVerses(swordLibrary).getFirst();
+        for (int i = 0; i < 100; i++) {
+            assertThat(verse.getTeXTLong()).isNotEmpty();
+            verse = verse.stepVerses(1, swordLibrary);
+        }
+        for (int i = 0; i < 10; i++) {
+            System.out.println(verse.getTeXTLong());
+            assertThat(verse.getTeXTLong()).isNotEmpty();
+            verse = verse.stepVerses(-6, swordLibrary);
+        }
     }
 }

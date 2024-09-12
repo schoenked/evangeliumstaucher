@@ -1,14 +1,10 @@
 package de.evangeliumstaucher.app.viewmodel;
 
-import de.evangeliumstaucher.app.model.BibleWrap;
-import de.evangeliumstaucher.app.model.BookWrap;
-import de.evangeliumstaucher.app.model.ChapterWrap;
 import de.evangeliumstaucher.app.model.VerseWrap;
 import de.evangeliumstaucher.app.service.QuizService;
 import de.evangeliumstaucher.entity.GameSessionEntity;
 import de.evangeliumstaucher.entity.QuestionEntity;
 import de.evangeliumstaucher.entity.UserQuestionEntity;
-import de.evangeliumstaucher.repo.model.Verse;
 import de.evangeliumstaucher.repo.service.Library;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
@@ -46,23 +42,6 @@ public class RunningQuestion {
     private int countQuestions;
     private long indexQuestion;
 
-    public static VerseWrap getVerse(String id, BibleWrap bibleWrap, Library library) {
-        Verse v = bibleWrap.getBible().getVerse(id);
-        ChapterWrap c = null;
-        for (BookWrap book : bibleWrap.getBooks(library)) {
-            if (id.startsWith(book.getBook().getName())) {
-                id = id.substring(book.getBook().getName().length() + 1);
-                id = id.split(":")[0];
-                for (ChapterWrap chapter : book.getChapters()) {
-                    if (id.equals(chapter.getChapter().getNumber())) {
-                        c = chapter;
-                    }
-                }
-            }
-        }
-        return new VerseWrap(c, v);
-    }
-
     public int getDiffVerses(Library library) {
         if (diffVerses == null) {
             diffVerses = verse.diffVerses(selectedVerse, library);
@@ -71,7 +50,7 @@ public class RunningQuestion {
     }
 
     public void setSelectedVerse(String verseId, Library library) {
-        VerseWrap set = getVerse(verseId, verse.getChapter().getBook().getBible(), library);
+        VerseWrap set = VerseWrap.getVerse(verseId, verse.getChapter().getBook().getBible(), library);
         if (set != null) {
             setSelectedVerse(set);
         } else {

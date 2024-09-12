@@ -15,7 +15,7 @@ public class BookWrap {
     private final BibleBook book;
     private final BibleWrap bible;
     @ToString.Exclude
-    List<ChapterWrap> chapters;
+    private List<ChapterWrap> chapters;
 
     public static int diffVerses(VerseWrap from, VerseWrap to, Library library) {
         int diff = 0;
