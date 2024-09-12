@@ -146,7 +146,6 @@ public class QuizService {
         BibleWrap bible = quizModel.getBible(library);
         VerseWrap verse = VerseWrap.getVerse(question.getVerseId(), bible, library);
 
-        q.setVerse(verse);
         List<? extends BibleBook> books = verse.getChapter().getBook()
                 .getBible()
                 .getBooks(library)

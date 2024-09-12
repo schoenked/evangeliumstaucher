@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
+import java.util.Objects;
 
 @Data
 @RequiredArgsConstructor
@@ -27,6 +28,7 @@ public class VerseWrap {
                 }
             }
         }
+        Objects.requireNonNull(c, v.toString());
         return new VerseWrap(c, v);
     }
 
