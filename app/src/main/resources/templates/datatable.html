@@ -25,7 +25,7 @@
             columns: [
                 [(${model.columnsText})]
             ],
-            serverSide: true,
+            true,
             autoWidth: true
         })
 
@@ -36,5 +36,22 @@
                 window.location = data.location;
             }
         });
+    </script>
+
+    <!--reload in intervals (interval raising like fibonacci)-->
+    <script>
+        function sleep(millis) {
+            return new Promise(resolve => setTimeout(resolve, millis));
+        }
+        async function reloader() {
+            waiting = 2000;
+            while (true) {
+                await sleep(waiting);
+                waiting = waiting * 1.61;
+                console.log("reloading datatable");
+                t[[${model.javascriptId}]].ajax.reload();
+            }
+        }
+        reloader();
     </script>
 </div>
