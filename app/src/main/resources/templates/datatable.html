@@ -47,7 +47,7 @@
             waiting = 2000;
             while (true) {
                 await sleep(waiting);
-                waiting = waiting * 1.61;
+                waiting = waiting * 1.2;
                 console.log("reloading datatable");
                 t[[${model.javascriptId}]].ajax.reload();
             }
