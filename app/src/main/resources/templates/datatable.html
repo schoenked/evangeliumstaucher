@@ -44,9 +44,10 @@
             return new Promise(resolve => setTimeout(resolve, millis));
         }
         async function reloader() {
-            waiting = 2000;
+            waiting = 4000;
             while (true) {
                 await sleep(waiting);
+                //Fibonacci 1.6 becomes to long
                 waiting = waiting * 1.2;
                 console.log("reloading datatable");
                 t[[${model.javascriptId}]].ajax.reload();
