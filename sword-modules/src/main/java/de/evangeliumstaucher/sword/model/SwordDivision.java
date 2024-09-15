@@ -15,8 +15,8 @@ public class SwordDivision implements Division {
             "primary",
             "secondary",
             "third",
-            "fifth",
             "fourth",
+            "fifth",
             "seventh",
             "sixth"
     );
