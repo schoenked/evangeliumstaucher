@@ -3,56 +3,61 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <head th:insert="~{head.html :: head}"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/parallax/3.1.0/parallax.min.js"></script>
     <title>evangeliumstaucher</title>
 </head>
 <body>
 <div class="bg-image"></div>
 <!-- Importing NavBar -->
 <div th:insert="navbar.html :: navbar"></div>
-
 <!-- Main Container Start -->
 <div class="container min-vh-100">
-    <div class="image-box">
-        <img alt="image" class="img-fluid" th:src="@{/images/diver.jpg}">
-    </div>
-    <div class="container" id="start">
+    <div id="scene">
 
-        <div class="card text-bg-dark mb-5 bg-opacity-25 text-center ">
-            <div class="card-body">
-                <h1 class="mb-5 text-primary text-center">Ein Sprung in die Tiefen der Bibel</h1>
-                <p class="card-text">Es ist Zeit deine Kenntnis der Bibel zu prüfen und zu erweitern. Fordere dich
-                    selber
-                    heraus.</p>
-                <a class="btn btn-lg btn-block btn-secondary text-white" href="/quiz/">Tauchgang starten</a>
+        <div class="image-box " data-depth="0.2">
+            <img alt="image" class="img-fluid" th:src="@{/images/diver.jpg}">
+        </div>
+        <div class="container" id="start" data-depth="0.6">
+
+            <div class="card text-bg-dark mb-5 bg-opacity-25 text-center ">
+                <div class="card-body">
+                    <h1 class="mb-5 text-primary text-center">Ein Sprung in die Tiefen der Bibel</h1>
+                    <p class="card-text">Es ist Zeit deine Kenntnis der Bibel zu prüfen und zu erweitern. Fordere dich
+                        selber
+                        heraus.</p>
+                    <a class="btn btn-lg btn-block btn-secondary text-white" href="/quiz/">Tauchgang starten</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="container" id="why" data-depth="0.6">
+
+            <div class="card text-bg-dark mb-5 bg-opacity-25 text-center ">
+                <div class="card-header">
+                    Joh 6,68
+                </div>
+                <div class="card-body">
+                    <p class="card-title">"Du hast
+                    <h1>Worte des ewigen Lebens"</h1></p>
+                    <p class="card-text">sagt Petrus zu Jesus Christus</p>
+                </div>
+            </div>
+            <div class="card text-bg-dark mb-5 bg-opacity-25 text-center ">
+                <div class="card-header">
+                    Ps 19,11
+                </div>
+                <div class="card-body">
+                    <p class="card-text">Gottes Rechtsbestimmungen sind</p>
+                    <h1 class="card-title">wertvoller als Gold</h1>
+                </div>
             </div>
         </div>
     </div>
-
-    <div class="container" id="why">
-
-        <div class="card text-bg-dark mb-5 bg-opacity-25 text-center ">
-            <div class="card-header">
-                Joh 6,68
-            </div>
-            <div class="card-body">
-                <p class="card-title">"Du hast
-                <h1>Worte des ewigen Lebens"</h1></p>
-                <p class="card-text">sagt Petrus zu Jesus Christus</p>
-            </div>
-        </div>
-        <div class="card text-bg-dark mb-5 bg-opacity-25 text-center ">
-            <div class="card-header">
-                Ps 19,11
-            </div>
-            <div class="card-body">
-                <p class="card-text">Gottes Rechtsbestimmungen sind</p>
-                <h1 class="card-title">wertvoller als Gold</h1>
-            </div>
-        </div>
-    </div>
-
 </div>
-
+<script>
+    var scene = document.getElementById('scene');
+    var parallaxInstance = new Parallax(scene);
+</script>
 <!-- Importing Footer -->
 <div th:insert="footer.html :: footer"></div>
 </body>
