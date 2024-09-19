@@ -93,14 +93,14 @@
             console.log("top " + top);
             if (top < 0) return;
             // Calculate the new height based on the scroll position
-            let newpadding = top * 75 / window.innerHeight;
+            let newpadding = top * 20 / window.innerHeight;
             //newpadding = Math.round(newpadding);
             console.log("newpadding " + newpadding);
             newpadding = newpadding > 2 ? newpadding : 0;
             let newpaddingText = `${newpadding}%`;
             console.log("newpaddingText " + newpaddingText)
             // Update the container's height
-            if (container.style.paddingTop.substring(0, 2) != newpaddingText.substring(0, 2)) {
+            if (container.style.paddingTop.substring(0, 3) != newpaddingText.substring(0, 3)) {
                 container.style.paddingTop = newpaddingText;
                 container.offsetTop = container.offsetTop;
             }
