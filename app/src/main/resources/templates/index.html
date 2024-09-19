@@ -16,6 +16,10 @@
             background-repeat: no-repeat;
             background-size: cover;
         }
+
+        .speedscroll {
+            padding-top: 100%
+        }
     </style>
     <head th:insert="~{head.html :: head}"/>
     <title>evangeliumstaucher</title>
@@ -27,42 +31,22 @@
 
 <!-- Main Container Start -->
 <div class="container min-vh-100 p-0 parallax">
-    <script>
-
-        // Function to update the container's height
-        function updateContainerHeight() {
-            // Get the current scroll position
-            $(".pasdf").each(function (ind, container) {
-                    let top = container.getBoundingClientRect().top; //container.offsetTop;
-                    console.log("top " + top);
-                    if (top < 0 ) return;
-                    // Calculate the new height based on the scroll position
-                    let newpadding = top * 100 / window.innerHeight;
-                    //newpadding = Math.round(newpadding);
-                    console.log("newpadding " + newpadding);
-                    newpadding = newpadding > 2 ? newpadding : 0;
-                    let newpaddingText = `${newpadding}%`;
-                    console.log("newpaddingText " + newpaddingText)
-                    // Update the container's height
-                    if (container.style.paddingTop.substring(0,2) != newpaddingText.substring(0,2)) {
-                        container.style.paddingTop = newpaddingText;
-                        container.offsetTop = container.offsetTop;
-                    }
-                }
-
-        )
-
-        }
-
-        // Listen for the scroll event
-        window.addEventListener('scroll', updateContainerHeight);
-
-    </script>
-
-    <div class="container pasdf mt-8" id="start" style="padding-top: 10%">
-        <div class="card text-bg-dark mb-5 bg-opacity-25 text-center ">
+    <div class="container speedscroll" id="spacer">
+    </div>
+    <div class="container speedscroll" id="spacer">
+    </div>
+    <div class="container speedscroll " id="start">
+        <div class="card text-bg-dark mb-5 bg-opacity-75 text-center ">
             <div class="card-body">
-                <h1 class="mb-5 text-primary text-center">Ein Sprung in die Tiefen der Bibel</h1>
+                <h1 class="mb-5 text-primary text-center">Ein <span class="display-1">Sprung in die</span><br>Tiefen der
+                    <span class="display-1"><br>Bibel</span></h1>
+            </div>
+        </div>
+    </div>
+
+    <div class="container speedscroll " id="start">
+        <div class="card text-bg-dark mb-5 bg-opacity-75 text-center ">
+            <div class="card-body">
                 <p class="card-text">Es ist Zeit deine Kenntnis der Bibel zu prüfen und zu erweitern. Fordere dich
                     selber
                     heraus.</p>
@@ -70,28 +54,26 @@
             </div>
         </div>
     </div>
-
-    <div class="container py-6" id="why" style="padding-top: 10%">
-        <div class="pasdf">
-            <div class="card text-bg-dark mb-5 bg-opacity-25 text-center ">
-                <div class="card-header">
-                    Joh 6,68
-                </div>
-                <div class="card-body">
+    <div class="container py-6" id="why">
+        <div class="speedscroll">
+            <div class="card text-bg-dark mb-5 bg-opacity-75 text-center ">
+                <div class="card-body blockquote">
                     <p class="card-title">"Du hast
                     <h1>Worte des ewigen Lebens"</h1></p>
-                    <p class="card-text">sagt Petrus zu Jesus Christus</p>
+                    <figcaption class="blockquote-footer">
+                        Petrus zu Jesus Christus <cite title="Source Title">Joh 6,68</cite>
+                    </figcaption>
                 </div>
             </div>
         </div>
-        <div class="pasdf">
-            <div class=" card text-bg-dark mb-5 bg-opacity-25 text-center ">
-                <div class="card-header">
-                    Ps 19,11
-                </div>
+        <div class="speedscroll ">
+            <div class=" card text-bg-dark mb-5 bg-opacity-75 text-center ">
                 <div class="card-body">
                     <p class="card-text">Gottes Rechtsbestimmungen sind</p>
                     <h1 class="card-title">wertvoller als Gold</h1>
+                    <figcaption class="blockquote-footer">
+                        König David<cite title="Source Title">Ps 19,11</cite>
+                    </figcaption>
                 </div>
             </div>
         </div>
@@ -99,6 +81,35 @@
 
 </div>
 <!-- Importing Footer -->
-<div th:insert="footer.html :: footer"></div>
+<div class="mt-5" th:insert="footer.html :: footer"></div>
 </body>
+<script>
+
+    // Function to update the container's height
+    function updateContainerHeight() {
+        // Get the current scroll position
+        $(".speedscroll").each(function (ind, container) {
+            let top = container.getBoundingClientRect().top; //container.offsetTop;
+            console.log("top " + top);
+            if (top < 0) return;
+            // Calculate the new height based on the scroll position
+            let newpadding = top * 75 / window.innerHeight;
+            //newpadding = Math.round(newpadding);
+            console.log("newpadding " + newpadding);
+            newpadding = newpadding > 2 ? newpadding : 0;
+            let newpaddingText = `${newpadding}%`;
+            console.log("newpaddingText " + newpaddingText)
+            // Update the container's height
+            if (container.style.paddingTop.substring(0, 2) != newpaddingText.substring(0, 2)) {
+                container.style.paddingTop = newpaddingText;
+                container.offsetTop = container.offsetTop;
+            }
+        })
+    }
+
+    // Listen for the scroll event
+    window.addEventListener('scroll', updateContainerHeight);
+    updateContainerHeight()
+</script>
+
 </html>
