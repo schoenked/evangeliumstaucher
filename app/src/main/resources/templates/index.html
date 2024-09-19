@@ -38,8 +38,8 @@
     <div class="container speedscroll " id="start">
         <div class="card text-bg-dark mb-5 bg-opacity-75 text-center ">
             <div class="card-body">
-                <h1 class="mb-5 text-primary text-center">Ein <span class="display-1">Sprung in die</span><br>Tiefen der
-                    <span class="display-1"><br>Bibel</span></h1>
+                <h1 class="text-primary text-center">Ein<br><span class="display-3">Sprung in die</span><br>Tiefen der
+                    <br><span class="display-1 font-weight-bold text-uppercase"  style="width: fit-content">Bibel</span></h1>
             </div>
         </div>
     </div>
@@ -71,7 +71,7 @@
                 <div class="card-body">
                     <p class="card-text">Gottes Rechtsbestimmungen sind</p>
                     <h1 class="card-title">wertvoller als Gold</h1>
-                    <figcaption class="blockquote-footer">
+                    <figcaption class="blockquote-footer py-2">
                         König David<cite title="Source Title">Ps 19,11</cite>
                     </figcaption>
                 </div>
@@ -93,7 +93,7 @@
             console.log("top " + top);
             if (top < 0) return;
             // Calculate the new height based on the scroll position
-            let newpadding = top * 20 / window.innerHeight;
+            let newpadding = top * 30 / window.innerHeight;
             //newpadding = Math.round(newpadding);
             console.log("newpadding " + newpadding);
             newpadding = newpadding > 2 ? newpadding : 0;
