@@ -33,17 +33,26 @@
         function updateContainerHeight() {
             // Get the current scroll position
             $(".pasdf").each(function (ind, container) {
-                let top = container.getBoundingClientRect().top; //container.offsetTop;
-                console.log("top " + top);
-                // Calculate the new height based on the scroll position
-                let newpadding = top * 100 / window.innerHeight;
-                newpadding = Math.round (newpadding);
-                console.log("newpadding " + newpadding);
-                let newpaddingText = `${newpadding}%`;
-                console.log("newpaddingText " + newpaddingText)
-                // Update the container's height
-                container.style.paddingTop = newpaddingText;
-            });
+                    let top = container.getBoundingClientRect().top; //container.offsetTop;
+                    console.log("top " + top);
+                    if (top < 0 ) return;
+                    // Calculate the new height based on the scroll position
+                    let newpadding = top * 100 / window.innerHeight;
+                    newpadding = Math.round(newpadding);
+                    console.log("newpadding " + newpadding);
+                    newpadding = newpadding > 2 ? newpadding : 0;
+                    let newpaddingText = `${newpadding}%`;
+                    console.log("newpaddingText " + newpaddingText)
+                    // Update the container's height
+                    container.style.paddingTop = newpaddingText;
+                    if (container.style.paddingTop != newpaddingText) {
+                        container.style.paddingTop = newpaddingText;
+                        container.offsetTop = container.offsetTop;
+                    }
+                }
+
+        )
+
         }
 
         // Listen for the scroll event
@@ -51,7 +60,7 @@
 
     </script>
 
-    <div class="container pasdf " id="start" style="padding-top: 10%">
+    <div class="container pasdf mt-8" id="start" style="padding-top: 10%">
         <div class="card text-bg-dark mb-5 bg-opacity-25 text-center ">
             <div class="card-body">
                 <h1 class="mb-5 text-primary text-center">Ein Sprung in die Tiefen der Bibel</h1>
@@ -63,24 +72,28 @@
         </div>
     </div>
 
-    <div class="container  " id="why" style="padding-top: 10%">
-        <div class="card text-bg-dark mb-5 bg-opacity-25 text-center ">
-            <div class="card-header">
-                Joh 6,68
-            </div>
-            <div class="card-body">
-                <p class="card-title">"Du hast
-                <h1>Worte des ewigen Lebens"</h1></p>
-                <p class="card-text">sagt Petrus zu Jesus Christus</p>
+    <div class="container py-6" id="why" style="padding-top: 10%">
+        <div class="pasdf">
+            <div class="card text-bg-dark mb-5 bg-opacity-25 text-center ">
+                <div class="card-header">
+                    Joh 6,68
+                </div>
+                <div class="card-body">
+                    <p class="card-title">"Du hast
+                    <h1>Worte des ewigen Lebens"</h1></p>
+                    <p class="card-text">sagt Petrus zu Jesus Christus</p>
+                </div>
             </div>
         </div>
-        <div class="card text-bg-dark mb-5 bg-opacity-25 text-center ">
-            <div class="card-header">
-                Ps 19,11
-            </div>
-            <div class="card-body">
-                <p class="card-text">Gottes Rechtsbestimmungen sind</p>
-                <h1 class="card-title">wertvoller als Gold</h1>
+        <div class="pasdf">
+            <div class=" card text-bg-dark mb-5 bg-opacity-25 text-center ">
+                <div class="card-header">
+                    Ps 19,11
+                </div>
+                <div class="card-body">
+                    <p class="card-text">Gottes Rechtsbestimmungen sind</p>
+                    <h1 class="card-title">wertvoller als Gold</h1>
+                </div>
             </div>
         </div>
     </div>
