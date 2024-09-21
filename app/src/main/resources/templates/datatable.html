@@ -25,9 +25,9 @@
             columns: [
                 [(${model.columnsText})]
             ],
-            true,
+            serverSide: true,
             autoWidth: true
-        })
+        });
 
         t[[${model.javascriptId}]].on('click', 'tbody tr', function () {
             let data = t[[${model.javascriptId}]].row(this).data();
