@@ -1,5 +1,5 @@
 cache: true
-hostname: http://evangeliumstaucher.nobler.tech
+hostname: https://evangeliumstaucher.nobler.tech
 logging:
     level:
         de:
