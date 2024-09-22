@@ -18,7 +18,7 @@
         }
 
         .speedscroll {
-            padding-top: 100%
+            padding-top: 110%
         }
     </style>
     <head th:insert="~{head.html :: head}"/>
@@ -31,21 +31,22 @@
 
 <!-- Main Container Start -->
 <div class="container min-vh-100 p-0 parallax">
-    <div class="container speedscroll" id="spacer">
+    <div class="container speedscroll" id="spacer1">
     </div>
-    <div class="container speedscroll" id="spacer">
+    <div class="container speedscroll " id="spacer2">
     </div>
-    <div class="container speedscroll " id="start">
-        <div class="card text-bg-dark mb-5 bg-opacity-75 text-center ">
+    <div class="container speedscroll " id="title">
+        <div class="card text-bg-dark bg-opacity-75 text-center ">
             <div class="card-body">
                 <h1 class="text-primary text-center">Ein<br><span class="display-3">Sprung in die</span><br>Tiefen der
-                    <br><span class="display-1 font-weight-bold text-uppercase"  style="width: fit-content">Bibel</span></h1>
+                    <br><span class="display-1 font-weight-bold text-uppercase" style="width: fit-content">Bibel</span>
+                </h1>
             </div>
         </div>
     </div>
 
     <div class="container speedscroll " id="start">
-        <div class="card text-bg-dark mb-5 bg-opacity-75 text-center ">
+        <div class="card text-bg-dark bg-opacity-75 text-center ">
             <div class="card-body">
                 <p class="card-text">Es ist Zeit deine Kenntnis der Bibel zu prüfen und zu erweitern. Fordere dich
                     selber
@@ -55,8 +56,8 @@
         </div>
     </div>
     <div class="container py-6" id="why">
-        <div class="speedscroll">
-            <div class="card text-bg-dark mb-5 bg-opacity-75 text-center ">
+        <div class="speedscroll" id="petercitate">
+            <div class="card text-bg-dark  bg-opacity-75 text-center ">
                 <div class="card-body blockquote">
                     <p class="card-title">"Du hast
                     <h1>Worte des ewigen Lebens"</h1></p>
@@ -66,8 +67,8 @@
                 </div>
             </div>
         </div>
-        <div class="speedscroll ">
-            <div class=" card text-bg-dark mb-5 bg-opacity-75 text-center ">
+        <div class="speedscroll " id="kingdavidcitate">
+            <div class=" card text-bg-dark bg-opacity-75 text-center ">
                 <div class="card-body">
                     <p class="card-text">Gottes Rechtsbestimmungen sind</p>
                     <h1 class="card-title">wertvoller als Gold</h1>
@@ -78,7 +79,8 @@
             </div>
         </div>
     </div>
-
+    <div class="container speedscroll" id="spacer3">
+    </div>
 </div>
 <!-- Importing Footer -->
 <div class="mt-5" th:insert="footer.html :: footer"></div>
@@ -90,17 +92,18 @@
         // Get the current scroll position
         $(".speedscroll").each(function (ind, container) {
             let top = container.getBoundingClientRect().top; //container.offsetTop;
-            console.log("top " + top);
+            console.log(container.id+ ": top " + top);
             if (top < 0) return;
             // Calculate the new height based on the scroll position
             let newpadding = top * 30 / window.innerHeight;
+            newpadding += 10;
             //newpadding = Math.round(newpadding);
-            console.log("newpadding " + newpadding);
+            console.log(container.id+ ": newpadding " + newpadding);
             newpadding = newpadding > 2 ? newpadding : 0;
             let newpaddingText = `${newpadding}%`;
-            console.log("newpaddingText " + newpaddingText)
+            console.log(container.id+ ": newpaddingText " + newpaddingText)
             // Update the container's height
-            if (container.style.paddingTop.substring(0, 3) != newpaddingText.substring(0, 3)) {
+            if (container.style.paddingTop != newpaddingText) {
                 container.style.paddingTop = newpaddingText;
                 container.offsetTop = container.offsetTop;
             }
