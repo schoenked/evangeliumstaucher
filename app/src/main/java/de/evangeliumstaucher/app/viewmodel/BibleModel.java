@@ -21,9 +21,7 @@ public class BibleModel extends BaseModel {
                 .url(bibleSummary.getId() + "/")
                 .language(bibleSummary.getLanguage())
                 .languageCode(bibleSummary.getLanguageCode())
-                .label(bibleSummary.getAbbreviation() +
-                        " - " + bibleSummary.getName() +
-                        " - " + bibleSummary.getDescription());
+                .label(bibleSummary.getName());
         return builder.build();
     }
 
