@@ -2,6 +2,7 @@ package de.evangeliumstaucher.app.viewmodel;
 
 import de.evangeliumstaucher.repo.model.Bible;
 import lombok.*;
+import org.apache.commons.lang3.RandomUtils;
 
 @Data
 @With
@@ -16,6 +17,7 @@ public class BibleModel extends BaseModel {
     private String languageCode;
 
     public static BibleModel from(Bible bibleSummary) {
+        RandomUtils.nextInt(0, 100);
         BibleModelBuilder builder = BibleModel.builder()
                 .id(bibleSummary.getId())
                 .url(bibleSummary.getId() + "/")

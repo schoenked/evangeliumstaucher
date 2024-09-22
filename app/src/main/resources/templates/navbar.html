@@ -29,7 +29,7 @@
                         <a class="nav-link" href="/quiz/">Spielen</a>
                     </li>
 
-                    <li class="nav-item" th:if="question">
+                    <li class="nav-item" th:if="${quiz}">
                         <button class="nav-link" data-bs-target="#qrCodeModal" data-bs-toggle="modal" id="share-btn">
                             Teilen <i class="fas fa-solid fa-share-nodes"></i>
                         </button>
@@ -40,7 +40,7 @@
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="qrCodeModalLabel">QR-Code</h5>
+                                    <h5 class="modal-title" id="qrCodeModalLabel">Teile dieses Spiel mit anderen</h5>
                                     <button aria-label="Close" class="btn-close" data-bs-dismiss="modal"
                                             type="button"></button>
                                 </div>

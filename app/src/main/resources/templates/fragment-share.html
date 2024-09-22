@@ -12,31 +12,33 @@
            type="button">
             <i class="fab fa-whatsapp"></i>&nbsp;
             Whatsapp</a>
-        <button class="btn m-2 btn-outline-dark" id="copy-btn"
-                th:data-clipboard-text="${quizService.getShareUrl(quiz)}">
-            <i class="fas fa-copy"></i>&nbsp;
-            Link kopieren
-        </button>
-        <button class="btn m-2 gen-qr-btn btn-outline-dark">
-            <i class="fas fa-qrcode"></i>&nbsp;
-            QR-Code
-        </button>
+        <th:block th:with="randomId=${T(java.lang.Math).round(T(java.lang.Math).random() * 89999 + 10000)}">
 
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
-        <script>
-            var clipboard = new ClipboardJS('#copy-btn');
+            <button class="btn m-2 btn-outline-dark" th:data-clipboard-text="${quizService.getShareUrl(quiz)}"
+                    th:id="|copy-btn-${randomId}|">
+                <i class="fas fa-copy"></i>&nbsp;
+                Link kopieren
+            </button>
+            <button class="btn m-2 gen-qr-btn btn-outline-dark">
+                <i class="fas fa-qrcode"></i>&nbsp;
+                QR-Code
+            </button>
 
-            clipboard.on('success', function (e) {
-                console.log('Action:', e.action);
-                console.log('Text:', e.text);
-                console.log('Trigger:', e.trigger);
-            });
+            <script>
+                let clipboard[[${randomId}]] = new ClipboardJS('#copy-btn-[[${randomId}]]');
 
-            clipboard.on('error', function (e) {
-                console.error('Action:', e.action);
-                console.error('Trigger:', e.trigger);
-            });
-        </script>
+                clipboard[[${randomId}]].on('success', function (e) {
+                    console.log('Action:', e.action);
+                    console.log('Text:', e.text);
+                    console.log('Trigger:', e.trigger);
+                });
+
+                clipboard[[${randomId}]].on('error', function (e) {
+                    console.error('Action:', e.action);
+                    console.error('Trigger:', e.trigger);
+                });
+            </script>
+        </th:block>
 
         <div class="qrCode d-flex justify-content-center "></div>
 
