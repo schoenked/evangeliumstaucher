@@ -160,8 +160,11 @@ public class QuizController extends BaseController {
             resultModel.setPointsSum(quizService.getSumPointsRunningGame(runningQuestion));
             resultModel.setSelectedVerse(runningQuestion.getSelectedVerse().getTeXTLong());
             resultModel.setSearchedVerse(runningQuestion.getVerse().getTeXTLong());
-            resultModel.setUrlNext(runningQuestion.getQuizModel(library).getUrl() + (qId + 1) + "/");
+            QuizModel quizModel = runningQuestion.getQuizModel(library);
+            resultModel.setUrlNext(quizModel.getUrl() + (qId + 1) + "/");
             m.addAttribute("model", resultModel);
+            m.addAttribute("quiz", quizModel);
+            m.addAttribute("quizService", quizService);
 
             DatatableViewModel questionScoreTable = getDatatableQuestionScore(id);
             m.addAttribute("questionScoreTable", questionScoreTable);

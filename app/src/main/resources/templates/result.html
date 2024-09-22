@@ -44,11 +44,15 @@
         </p>
 
         <div class="d-flex justify-content-center mt-4">
-            <a class="btn btn-outline-secondary mx-auto" role="button" th:href="${model.urlNext}"
-               type="button">weiter tauchen</a>
+            <a class="btn btn-lg btn-secondary mx-auto" role="button" th:href="${model.urlNext}"
+               type="button"><i class="fa-solid fa-forward"></i><p>weiter tauchen</p></a>
         </div>
     </div>
-    <div th:insert="datatable.html :: datatable(${questionScoreTable})"></div>
+    <div class="my-5" th:insert="datatable.html :: datatable(${questionScoreTable})"></div>
+    <div class="my-4">
+        <h3>Teile dieses Spiel mit anderen: </h3>
+        <div th:insert="fragment-share.html :: share (${quiz})"></div>
+    </div>
 </div>
 
 <!-- Importing Footer -->
