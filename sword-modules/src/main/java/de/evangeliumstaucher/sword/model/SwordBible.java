@@ -30,9 +30,11 @@ public class SwordBible implements Bible {
 
             verses = Streams.stream(getSwordBook().getGlobalKeyList().iterator())
                     .filter(key -> key instanceof org.crosswire.jsword.passage.Verse)
+                    .map(key -> (org.crosswire.jsword.passage.Verse) key)
+                    .filter(key -> key.getChapter() != 0
+                            && key.getVerse() != 0)
                     .map(key -> {
-                        org.crosswire.jsword.passage.Verse verse = (org.crosswire.jsword.passage.Verse) key;
-                        return (Verse) SwordVerse.from(verse, getId());
+                        return (Verse) SwordVerse.from(key, getId());
                     })
                     .toList();
         }
