@@ -182,7 +182,8 @@ public class QuizController extends BaseController {
                 new DatatableColumn("Spieler", "player"),
                 new DatatableColumn("Punkte", "points"),
                 new DatatableColumn("Distanz", "diffVerses"),
-                new DatatableColumn("Dauer", "duration")
+                new DatatableColumn("Dauer", "duration"),
+                new DatatableColumn("Gesamt", "gesamt")
         );
         questionScoreTable.setColumns(columns);
         questionScoreTable.setUrl("/quiz/datatable/questionscore/" + id);
