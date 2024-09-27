@@ -10,7 +10,6 @@
     </parent>
     <name>Sword-Modules</name>
     <properties>
-        <java.version>22</java.version>
     </properties>
     <dependencies>
         <dependency>

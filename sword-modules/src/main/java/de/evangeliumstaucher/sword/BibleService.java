@@ -57,7 +57,7 @@ public class BibleService {
                 //locked
                 return !book.getProperties().containsKey("CipherKey");
             }
-        } catch (Exception _) {
+        } catch (Exception e_) {
         }
         return false;
     }

@@ -10,7 +10,6 @@
     </parent>
     <name>Sword-API</name>
     <properties>
-        <java.version>22</java.version>
     </properties>
     <dependencies>
         <dependency>
