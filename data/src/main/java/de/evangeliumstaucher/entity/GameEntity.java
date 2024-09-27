@@ -36,6 +36,6 @@ public class GameEntity {
 
     @CreatedDate
     @CreationTimestamp
-    private OffsetDateTime sta;
+    private OffsetDateTime createdAt;
 
 }
