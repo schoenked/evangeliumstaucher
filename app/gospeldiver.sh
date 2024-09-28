@@ -10,25 +10,21 @@ fi
 
 start_app() {
   stop_app
-  java -jar "$APP_JAR" -Xmx473m --spring.profiles.active=$PROFILES &
+  echo deleting images
+  docker image prune -af
+  echo loading image
+  docker load -i app.tar
+  docker run --name app \
+  -e SPRING_PROFILES_ACTIVE=x \
+
+  $(docker images --format "{{.Repository}}") &
   background_pid=$!
-  echo $background_pid > gospeldiver.pid
-  echo -17 > /proc/$background_pid/oom_adj
+  echo PID: $background_pid
 }
 
 stop_app() {
-  if [ -f gospeldiver.pid ]; then
-    pid=$(cat gospeldiver.pid)
-
-    if ps -p $pid > /dev/null; then
-      kill -15 $pid
-      rm gospeldiver.pid
-    else
-      echo "PID file exists but the process is not running."
-    fi
-  else
-    echo "PID file does not exist. The application may not be running."
-  fi
+  echo killing running containers
+  docker container prune -f
 }
 
 if [ "$1" = "start" ]; then

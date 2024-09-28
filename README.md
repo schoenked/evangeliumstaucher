@@ -23,11 +23,11 @@ For installation [https://adoptium.net/de/temurin/releases/]()
 
 ## Starting the application
 
-To use the Maven wrapper run the commands with `./mvnw` (Unix) or `.\mvnw` (Windows) instead ov `mvn`
+To use the Maven wrapper run the commands with `./mvnw` (Unix) or `.\mvnw` (Windows) instead or `mvn`
 
 #### Build
 ```mvn
-mvn clean install -pl app spring-boot:run 
+mvn clean install
 ```
 - loads the libraries
 - generates custom themed bootstrap
@@ -37,16 +37,22 @@ mvn clean install -pl app spring-boot:run
 ```
 mvn -pl app spring-boot:run 
 ```
+### Install SSL certificate
+#### Using Lets encrypt
+```
+apt install certbot
+```
+Replace evangeliumstaucher.nobler.tech with your hostname
+```
+certbot certonly --standalone -d evangeliumstaucher.nobler.tech
+```
+
 
 ## TODOs
 
-* [ ]  responsive scaling
-* [ ]  selector styling
 * [ ]  copyright
-* [ ]  footer/impress
-* [ ]  database
-* [ ]  highscoring
 
 ---
 
-Have fun. God bless!
+Have fun. 
+## God bless!
