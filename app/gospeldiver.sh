@@ -28,6 +28,7 @@ start_app() {
 stop_app() {
   echo killing running containers
   docker kill $(docker ps -q)
+  docker rm $(docker ps -qa)
 }
 
 if [ "$1" = "start" ]; then
