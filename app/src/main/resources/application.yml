@@ -19,8 +19,7 @@ server:
         key-store: /home/ubuntu/myp12file.p12
         keyAlias: your_alias_name
         keyStoreType: PKCS12
-        key-password: your_pass
-    tomcat.max-threads: 4
+        key-store-password: 'your_pass'
 
 spring:
     profiles:
