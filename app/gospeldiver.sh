@@ -17,6 +17,8 @@ start_app() {
   docker run --name app \
   -e SPRING_PROFILES_ACTIVE=$PROFILES \
   -v /etc/letsencrypt/live/evangeliumstaucher.nobler.tech/myp12file.p12:/home/ubuntu/myp12file.p12 \
+  -v /root/.postgresql/root.crt:/root/.postgresql/root.crt \
+  -v /root/logs:/app/logs \
   -p 443:443 \
   $(docker images --format "{{.Repository}}") &
   background_pid=$!
@@ -25,7 +27,7 @@ start_app() {
 
 stop_app() {
   echo killing running containers
-  docker container prune -f
+  docker kill $(docker ps -q)
 }
 
 if [ "$1" = "start" ]; then
