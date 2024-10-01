@@ -16,9 +16,10 @@ security:
 server:
     port: 443
     ssl:
-        key-store: /etc/letsencrypt/live/evangeliumstaucher.nobler.tech/myp12file.p12
+        key-store: /home/ubuntu/myp12file.p12
         keyAlias: your_alias_name
         keyStoreType: PKCS12
+        key-password: your_pass
     tomcat.max-threads: 4
 
 spring:

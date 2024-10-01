@@ -1,4 +1,4 @@
-﻿#!/bin/bash
+﻿#!/bin/sh
 # -*- coding: utf-8 -*-
 
 APP_JAR=app.jar
@@ -15,8 +15,9 @@ start_app() {
   echo loading image
   docker load -i app.tar
   docker run --name app \
-  -e SPRING_PROFILES_ACTIVE=x \
-
+  -e SPRING_PROFILES_ACTIVE=$PROFILES \
+  -v /etc/letsencrypt/live/evangeliumstaucher.nobler.tech/myp12file.p12:/home/ubuntu/myp12file.p12 \
+  -p 443:443 \
   $(docker images --format "{{.Repository}}") &
   background_pid=$!
   echo PID: $background_pid

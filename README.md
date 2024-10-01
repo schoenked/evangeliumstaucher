@@ -46,7 +46,17 @@ Replace evangeliumstaucher.nobler.tech with your hostname
 ```
 certbot certonly --standalone -d evangeliumstaucher.nobler.tech
 ```
-
+#### Convert cert to pks
+```
+crontab -e
+```
+insert
+```
+0 2 * * * cd /etc/letsencrypt/live/evangeliumstaucher.nobler.tech && sh convertCert.sh >> cron.log
+```
+### Install docker
+see instruction
+https://docs.docker.com/engine/install/ubuntu/
 
 ## TODOs
 
