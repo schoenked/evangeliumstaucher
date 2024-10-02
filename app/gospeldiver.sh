@@ -18,8 +18,11 @@ start_app() {
   -e SPRING_PROFILES_ACTIVE=$PROFILES \
   -v /etc/letsencrypt/live/evangeliumstaucher.nobler.tech/myp12file.p12:/home/ubuntu/myp12file.p12 \
   -v /root/.postgresql/root.crt:/root/.postgresql/root.crt \
+  -v /root/.sword:/root/.sword \
+  -v /root/.jsword:/root/.jsword \
   -v /root/logs:/app/logs \
   -p 443:443 \
+  --restart always \
   $(docker images --format "{{.Repository}}") &
   background_pid=$!
   echo PID: $background_pid
