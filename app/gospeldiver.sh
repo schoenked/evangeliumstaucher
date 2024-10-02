@@ -20,7 +20,7 @@ start_app() {
   -v /root/.postgresql/root.crt:/root/.postgresql/root.crt \
   -v /root/.sword:/root/.sword \
   -v /root/.jsword:/root/.jsword \
-  -v /root/logs:/app/logs \
+  -v /root/logs:/logs \
   -p 443:443 \
   --restart always \
   $(docker images --format "{{.Repository}}") &
