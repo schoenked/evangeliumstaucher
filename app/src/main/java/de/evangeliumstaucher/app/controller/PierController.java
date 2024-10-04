@@ -45,7 +45,7 @@ public class PierController extends BaseController {
         List<DatatableColumn> columns = List.of(
                 new DatatableColumn("Name", "name"),
                 new DatatableColumn("von", "creator"),
-                new DatatableColumn("am", "createdAt"),
+                new DatatableColumn("am", "createdAt", "date"),
                 new DatatableColumn("Spieler", "playerCount")
         );
         modelTrending.setColumns(columns);

@@ -21,10 +21,6 @@ public class DatatableViewModel {
     @Setter
     private boolean autoReloader = false;
 
-    public String getLanguage() {
-        return getLanguage(Locale.getDefault());
-    }
-
     public static String getLanguage(Locale locale) {
         if (locale != null) {
             if (DatatableLanguages.getAvailableLanguages().contains(locale.getDisplayLanguage(Locale.ENGLISH))) {
@@ -32,6 +28,10 @@ public class DatatableViewModel {
             }
         }
         return "English";
+    }
+
+    public String getLanguage() {
+        return getLanguage(Locale.getDefault());
     }
 
     /**
@@ -47,7 +47,12 @@ public class DatatableViewModel {
 
         return columns.stream()
                 .map(c -> "{data: '" + c.getAttribute()
-                        + "', name: '" + c.getName() + "'},")
+                        + "', name: '" + c.getName()
+                        + "', type: '" + c.getType()
+                        + (c.getType().equals("date") ? "',  render: function (data, type, row) {\n" +
+                        "            return data != null ? moment(data).format('DD.MM.YYYY') : data;\n" +
+                        "        }" : "'")
+                        + "},")
                 .collect(Collectors.joining());
     }
 }
