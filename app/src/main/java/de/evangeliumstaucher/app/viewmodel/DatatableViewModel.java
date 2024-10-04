@@ -4,6 +4,7 @@ import de.evangeliumstaucher.app.utils.DatatableLanguages;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.context.i18n.LocaleContextHolder;
 
 import java.util.List;
 import java.util.Locale;
@@ -31,7 +32,7 @@ public class DatatableViewModel {
     }
 
     public String getLanguage() {
-        return getLanguage(Locale.getDefault());
+        return getLanguage(LocaleContextHolder.getLocale());
     }
 
     /**
