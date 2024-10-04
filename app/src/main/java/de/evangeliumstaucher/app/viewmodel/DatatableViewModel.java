@@ -1,10 +1,12 @@
 package de.evangeliumstaucher.app.viewmodel;
 
+import de.evangeliumstaucher.app.utils.DatatableLanguages;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -18,6 +20,19 @@ public class DatatableViewModel {
     @Getter
     @Setter
     private boolean autoReloader = false;
+
+    public String getLanguage() {
+        return getLanguage(Locale.getDefault());
+    }
+
+    public static String getLanguage(Locale locale) {
+        if (locale != null) {
+            if (DatatableLanguages.getAvailableLanguages().contains(locale.getDisplayLanguage(Locale.ENGLISH))) {
+                return locale.getDisplayLanguage(Locale.ENGLISH);
+            }
+        }
+        return "English";
+    }
 
     /**
      * Javascript variables can't have -
