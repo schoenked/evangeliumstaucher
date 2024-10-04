@@ -15,6 +15,9 @@ public class DatatableViewModel {
     private List<DatatableColumn> columns;
     @Setter
     private String url;
+    @Getter
+    @Setter
+    private boolean autoReloader = false;
 
     /**
      * Javascript variables can't have -

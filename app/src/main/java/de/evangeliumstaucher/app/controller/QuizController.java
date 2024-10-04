@@ -187,6 +187,7 @@ public class QuizController extends BaseController {
         );
         questionScoreTable.setColumns(columns);
         questionScoreTable.setUrl("/quiz/datatable/questionscore/" + id);
+        questionScoreTable.setAutoReloader(true);
         return questionScoreTable;
     }
 
