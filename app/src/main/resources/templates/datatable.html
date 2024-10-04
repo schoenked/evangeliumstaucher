@@ -9,7 +9,6 @@
         </tr>
         </thead>
     </table>
-    <script src="https://cdn.datatables.net/plug-ins/1.10.20/i18n/[[${model.language}]].json"></script>
 
     <script>
         let t[[${model.javascriptId}]] = $('table#[[${model.id}]]').DataTable({
@@ -25,7 +24,7 @@
                 }
             },
 
-            language: { "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/German.json",},
+            language: { "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/[[${model.language}]].json",},
 
             columns: [
                 [(${model.columnsText})]
