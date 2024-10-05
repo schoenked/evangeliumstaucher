@@ -45,7 +45,7 @@ public class PierController extends BaseController {
         List<DatatableColumn> columns = List.of(
                 new DatatableColumn("Name", "name"),
                 new DatatableColumn("von", "creator"),
-                new DatatableColumn("am", "createdAt", "date"),
+                new DatatableColumn("Datum", "createdAt", "date"),
                 new DatatableColumn("Spieler", "playerCount")
         );
         modelTrending.setColumns(columns);
@@ -55,7 +55,7 @@ public class PierController extends BaseController {
         DatatableViewModel modelMyDives = new DatatableViewModel();
         List<DatatableColumn> columnsMyDives = List.of(
                 new DatatableColumn("Name", "name"),
-                new DatatableColumn("Start", "startedAt", "datetime"),
+                new DatatableColumn("Startzeit", "startedAt", "datetime"),
                 new DatatableColumn("Fortschritt", "progress")
         );
         modelMyDives.setColumns(columnsMyDives);

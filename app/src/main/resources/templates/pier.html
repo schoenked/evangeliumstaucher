@@ -3,7 +3,7 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <head th:insert="~{head.html :: head}"/>
-    <title>Lies die Bibel</title>
+    <title>evangeliumstaucher - Pier</title>
     <link href="https://cdn.datatables.net/2.0.7/css/dataTables.dataTables.min.css" rel="stylesheet"></link>
     <script src="https://cdn.datatables.net/2.0.7/js/dataTables.min.js"></script>
     <script src="https://momentjs.com/downloads/moment.js"></script>
@@ -51,6 +51,21 @@
     </div>
 
 </div>
+<script>
+    // click on tab button
+    $('#my-tab, #trend-tab').on('click', function () {
+        // refresh the responsive datatable layout
+        // Get all DataTables instances
+        var tables = $.fn.dataTable.tables();
+        if (typeof mDatatables != 'undefined') {
+            mDatatables.forEach((table) => {
+                if (table.responsive) {
+                    table.responsive.recalc();
+                }
+            });
+        }
+    });
+</script>
 
 <!-- Importing Footer -->
 <div th:insert="footer.html :: footer"></div>

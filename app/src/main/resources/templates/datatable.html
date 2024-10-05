@@ -32,7 +32,8 @@
             serverSide: true,
             autoWidth: true,
             scrollX: true,
-            dom: 'tfp'
+            dom: 'tfp',
+            responsive: true
         });
 
         t[[${model.javascriptId}]].on('click', 'tbody tr', function () {
@@ -42,6 +43,10 @@
                 window.location = data.location;
             }
         });
+        if (typeof mDatatables === 'undefined') {
+            mDatatables = [];
+        }
+        mDatatables.push(t[[${model.javascriptId}]]);
     </script>
 
     <!--reload in intervals (interval raising like fibonacci)-->
@@ -59,6 +64,7 @@
                 t[[${model.javascriptId}]].ajax.reload();
             }
         }
+        // start reloader if autoReloader is set active in model
         if ([[${model.autoReloader}]]) {
             reloader();
         }
