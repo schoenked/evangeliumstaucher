@@ -55,7 +55,7 @@ public class PierController extends BaseController {
         DatatableViewModel modelMyDives = new DatatableViewModel();
         List<DatatableColumn> columnsMyDives = List.of(
                 new DatatableColumn("Name", "name"),
-                new DatatableColumn("gespielt/gestartet am", "startedAt", "date"),
+                new DatatableColumn("Start", "startedAt", "datetime"),
                 new DatatableColumn("Fortschritt", "progress")
         );
         modelMyDives.setColumns(columnsMyDives);

@@ -43,17 +43,31 @@ public class DatatableViewModel {
     public String getJavascriptId() {
         return StringUtils.remove(id, "-");
     }
-
     public String getColumnsText() {
-
         return columns.stream()
-                .map(c -> "{data: '" + c.getAttribute()
-                        + "', name: '" + c.getName()
-                        + "', type: '" + c.getType()
-                        + (c.getType().equals("date") ? "',  render: function (data, type, row) {\n" +
-                        "            return data != null ? moment(data).format('DD.MM.YYYY') : data;\n" +
-                        "        }" : "'")
-                        + "},")
+                .map(this::getColumnText)
                 .collect(Collectors.joining());
+    }
+
+    private String getColumnText(DatatableColumn c) {
+        StringBuilder columnText = new StringBuilder();
+        columnText.append("{data: '").append(c.getAttribute()).append("', ");
+        columnText.append("name: '").append(c.getName()).append("', ");
+        columnText.append("type: '").append(c.getType()).append("'");
+
+        if (c.getType().equals("date")) {
+            columnText.append(", render: function (data, type, row) {");
+            columnText.append("return data != null ? moment(data).format('DD.MM.YYYY') : data;");
+            columnText.append("}");
+        }
+
+        if (c.getType().equals("datetime")) {
+            columnText.append(", render: function (data, type, row) {");
+            columnText.append("return data != null ? moment(data).format('DD.MM.YYYY HH:mm') : data;");
+            columnText.append("}");
+        }
+
+        columnText.append("},");
+        return columnText.toString();
     }
 }
