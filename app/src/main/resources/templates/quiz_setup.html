@@ -9,47 +9,41 @@
 <!-- Importing NavBar -->
 <div th:insert="~{navbar.html :: navbar}"></div>
 <div class="container mt-5">
-    <h1 class="text-primary">evangeliumstaucher - Editor</h1>
+    <h1 class="text-primary"><i class="fa fa-plus-square" aria-hidden="true"></i> Erstelle einen neuen Tauchgang</h1>
 
     <form method="post" th:action="@{create}" th:object="${quizSetupModel}">
-        <div class="mb-3">
-            <label class="form-label" for="quizName">Name</label>
-            <input class="form-control" id="quizName" required th:field="*{name}" type="text">
+        <div class="input-group input-group-lg mb-3">
+            <span class="form-label input-group-text" id="label-name">Name</span>
+            <input class="form-control " id="quizName" required th:field="*{name}" type="text" aria-describedby="label-name">
         </div>
 
         <div class="mb-3">
             <label class="form-label" for="timeAttr">Bewertung der abgelaufenen Zeit (%)</label>
-            <input class="form-range" id="timeAttr" max="500" min="0" oninput="this.nextElementSibling.value = this.value" step="1" th:field="*{timeAttribute}"
-                   type="range">
-            <output th:text="*{timeAttribute}"></output> <!-- Default value -->
+            <input class="form-range" id="timeAttr" max="500" min="0" oninput="this.nextElementSibling.value = this.value" step="1" th:field="*{timeAttribute}" type="range">
+            <output class="form-control-plaintext" th:text="${timeAttribute}">0</output> <!-- Default value -->
         </div>
 
         <div class="mb-3">
             <label class="form-label" for="distanceAttr">Bewertung der Distanz (%)</label>
-            <input class="form-range" id="distanceAttr" max="500" min="0" oninput="this.nextElementSibling.value = this.value" step="1"
-                   th:field="*{distanceAttribute}"
-                   type="range">
-            <output th:text="*{distanceAttribute}"></output> <!-- Default value -->
+            <input class="form-range" id="distanceAttr" max="500" min="0" oninput="this.nextElementSibling.value = this.value" step="1" th:field="*{distanceAttribute}" type="range">
+            <output class="form-control-plaintext" th:text="${distanceAttribute}">0</output> <!-- Default value -->
         </div>
 
         <div class="mb-3">
             <label class="form-label" for="description">Beschreibung</label>
-            <textarea class="form-control" id="description" placeholder="Beschreibe den neuen Tauchgang..." rows="4"
-                      th:field="*{description}"></textarea>
+            <textarea class="form-control" id="description" placeholder="Beschreibe den neuen Tauchgang..." rows="4" th:field="*{description}"></textarea>
         </div>
 
         <div class="mb-3">
             <label class="form-label" for="tags">Tags</label>
-            <input class="form-control" id="tags" placeholder="#solusChristus,..." th:field="*{tags}"
-                   type="text"></text>
+            <input class="form-control" id="tags" placeholder="#solusChristus,..." th:field="*{tags}" type="text">
         </div>
 
-        <div class="form-group">
+        <div class="form-group ">
             <label>Passagen:</label>
             <div th:each="passage : ${availablePassages}">
                 <div class="form-check">
-                    <input class="form-check-input" id="passage-${passage.id}" th:field="*{passages}" th:value="${passage.id}"
-                           type="checkbox"/>
+                    <input class="form-check-input" id="passage-${passage.id}" th:field="*{passages}" th:value="${passage.id}" type="checkbox"/>
                     <label class="form-check-label" th:for="'passage-' + ${passage.id}">[[${passage.title}]]</label>
                 </div>
             </div>
