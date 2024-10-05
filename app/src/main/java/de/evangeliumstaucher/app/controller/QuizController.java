@@ -54,31 +54,6 @@ public class QuizController extends BaseController {
         return new RedirectView("/quiz/pier/");
     }
 
-    @GetMapping("/quiz/create/")
-    public String getQuizCreate(Model m) {
-        return super.getBible(m);
-    }
-
-    /**
-     * Creates new Quiz for the given bible
-     *
-     * @param bibleId
-     * @param m
-     * @return
-     */
-    @GetMapping("/quiz/create/{bibleId}/")
-    public RedirectView getQuiz(@PathVariable String bibleId, Model m, @ModelAttribute PlayerModel playerModel) throws ServiceUnavailableException {
-        try {
-            QuizModel quizModel = quizService.createQuiz(bibleId, playerModel);
-            return new RedirectView(quizModel.getUrl());
-        } catch (Exception e) {
-            log.info("failed", e);
-            addWarning(m);
-            handleUnavailable();
-        }
-        return null;
-    }
-
     @GetMapping("/quiz/{quizId}/")
     public String getQuestion(@PathVariable UUID quizId, Model m) {
         QuizModel quiz = quizService.get(quizId);
