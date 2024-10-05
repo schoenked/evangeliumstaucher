@@ -23,21 +23,28 @@ import org.springframework.data.annotation.Immutable;
                           EXTRACT(EPOCH FROM (uqe2.answered_at - uqe2.started_at)) duration,
                            (select SUM(points) from (SELECT uqe3.points
                                 FROM user_question_entity uqe3
+                                INNER JOIN question_entity qe2
+                                    ON uqe3.question_id = qe2.id
+                                        AND qe2.question_index <= qe.question_index
                                 INNER JOIN
                                     game_session_entity gse2
-                                ON gse2.id = uqe3.game_session_id
-                                    AND gse2.game_id = gse.game_id
+                                    ON gse2.id = uqe3.game_session_id
+                                        AND gse2.game_id = gse.game_id                                    
                                 INNER JOIN
                                     player_entity pe2
                                 ON pe2.id = gse2.player_id
                                     AND pe2.id = pe.id
                                 WHERE
-                                    uqe3.points > 0) points) as gesamt,
+                                    uqe3.points > 0
+                                ) points) as gesamt,
+                                    
                           uqe.id userquestionentityid
                       FROM
                           user_question_entity uqe
                       JOIN user_question_entity uqe2
                           ON uqe.question_id = uqe2.question_id
+                      JOIN question_entity qe 
+                          ON uqe.question_id = qe.id
                       JOIN
                           game_session_entity gse
                           ON gse.id = uqe2.game_session_id
