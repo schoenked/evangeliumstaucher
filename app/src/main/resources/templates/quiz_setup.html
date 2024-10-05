@@ -1,56 +1,61 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Create Quiz</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <head th:insert="~{head.html :: head}"></head>
+    <title>evangeliumstaucher</title>
 </head>
 <body>
+<!-- Importing NavBar -->
+<div th:insert="~{navbar.html :: navbar}"></div>
 <div class="container mt-5">
     <h1 class="text-primary">evangeliumstaucher - Editor</h1>
 
-    <form th:action="@{create}" method="post" th:object="${quizSetupModel}">
+    <form method="post" th:action="@{create}" th:object="${quizSetupModel}">
         <div class="mb-3">
-            <label for="quizName" class="form-label">Name</label>
-            <input type="text" class="form-control" id="quizName" th:field="*{name}" required>
+            <label class="form-label" for="quizName">Name</label>
+            <input class="form-control" id="quizName" required th:field="*{name}" type="text">
         </div>
 
         <div class="mb-3">
-            <label for="timeAttr" class="form-label">Bewertung der abgelaufenen Zeit (%)</label>
-            <input type="range" class="form-range" id="timeAttr" th:field="*{timeAttribute}" min="0" max="500" step="1"
-                   oninput="this.nextElementSibling.value = this.value">
+            <label class="form-label" for="timeAttr">Bewertung der abgelaufenen Zeit (%)</label>
+            <input class="form-range" id="timeAttr" max="500" min="0" oninput="this.nextElementSibling.value = this.value" step="1" th:field="*{timeAttribute}"
+                   type="range">
             <output th:text="*{timeAttribute}"></output> <!-- Default value -->
         </div>
 
         <div class="mb-3">
-            <label for="distanceAttr" class="form-label">Bewertung der Distanz (%)</label>
-            <input type="range" class="form-range" id="distanceAttr" th:field="*{distanceAttribute}" min="0" max="500" step="1"
-                   oninput="this.nextElementSibling.value = this.value">
+            <label class="form-label" for="distanceAttr">Bewertung der Distanz (%)</label>
+            <input class="form-range" id="distanceAttr" max="500" min="0" oninput="this.nextElementSibling.value = this.value" step="1"
+                   th:field="*{distanceAttribute}"
+                   type="range">
             <output th:text="*{distanceAttribute}"></output> <!-- Default value -->
         </div>
 
         <div class="mb-3">
-            <label for="description" class="form-label">Beschreibung</label>
-            <textarea class="form-control" id="description" th:field="*{description}" rows="4" placeholder="Beschreibe den neuen Tauchgang..."></textarea>
+            <label class="form-label" for="description">Beschreibung</label>
+            <textarea class="form-control" id="description" placeholder="Beschreibe den neuen Tauchgang..." rows="4"
+                      th:field="*{description}"></textarea>
         </div>
 
         <div class="mb-3">
-            <label for="tags" class="form-label">Tags</label>
-            <input type="text" class="form-control" id="tags" th:field="*{tags}"  placeholder="#solusChristus,..."></text>
+            <label class="form-label" for="tags">Tags</label>
+            <input class="form-control" id="tags" placeholder="#solusChristus,..." th:field="*{tags}"
+                   type="text"></text>
         </div>
 
         <div class="form-group">
             <label>Passagen:</label>
             <div th:each="passage : ${availablePassages}">
                 <div class="form-check">
-                    <input type="checkbox" th:field="*{passages}" th:value="${passage.id}" class="form-check-input" id="passage-${passage.id}" />
+                    <input class="form-check-input" id="passage-${passage.id}" th:field="*{passages}" th:value="${passage.id}"
+                           type="checkbox"/>
                     <label class="form-check-label" th:for="'passage-' + ${passage.id}">[[${passage.title}]]</label>
                 </div>
             </div>
         </div>
 
-        <button type="submit" class="btn btn-primary">Erstellen</button>
+        <button class="btn btn-primary my-2" type="submit">Erstellen</button>
     </form>
 </div>
 </body>
