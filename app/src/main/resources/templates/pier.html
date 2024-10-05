@@ -56,12 +56,9 @@
     $('#my-tab, #trend-tab').on('click', function () {
         // refresh the responsive datatable layout
         // Get all DataTables instances
-        var tables = $.fn.dataTable.tables();
         if (typeof mDatatables != 'undefined') {
             mDatatables.forEach((table) => {
-                if (table.responsive) {
-                    table.responsive.recalc();
-                }
+                table.columns.adjust();
             });
         }
     });
