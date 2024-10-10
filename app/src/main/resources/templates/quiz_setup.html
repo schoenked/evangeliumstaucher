@@ -14,7 +14,8 @@
     <form method="post" th:action="@{create}" th:object="${quizSetupModel}">
         <div class="input-group input-group-lg mb-3">
             <span class="form-label input-group-text" id="label-name">Name</span>
-            <input aria-describedby="label-name" class="form-control" id="quizName" placeholder="Fass es kurz zusammen..."
+            <input aria-describedby="label-name" class="form-control" id="quizName"
+                   placeholder="Fass es kurz zusammen..."
                    required
                    th:field="*{name}" type="text">
         </div>
@@ -29,34 +30,53 @@
             <span class="form-label input-group-text" id="label-tags">Tags</span>
             <input class="form-control" id="tags" placeholder="#solusChristus,..." th:field="*{tags}" type="text">
         </div>
+        <div class="accordion" id="accordionExample">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingOne">
+                    <button aria-controls="collapseOne" aria-expanded="false" class="accordion-button collapsed"
+                            data-bs-target="#collapseOne" data-bs-toggle="collapse" type="button">
+                        Erweiterte Konfiguration
+                    </button>
+                </h2>
+                <div aria-labelledby="headingOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample"
+                     id="collapseOne">
+                    <div class="accordion-body">
 
-        <div class="input-group d-flex flex-nowrap mb-3">
-            <span class="form-label input-group-text" id="label-timeAttr">Bewertung der abgelaufenen Zeit (%)</span>
-            <div clas="p-2 d-flex w-100 flex-grow-1 justify-content-center">
-                <input class="form-range" id="timeAttr" max="500" min="0"
-                       oninput="this.nextElementSibling.value = this.value" step="1" th:field="*{timeAttribute}"
-                       type="range">
-            </div>
-            <output class="form-control-plaintext" th:text="${quizSetupModel.timeAttribute}">0</output>
-            <!-- Default value -->
-        </div>
+                        <div class="input-group d-flex flex-nowrap mb-3">
+                            <span class="form-label input-group-text" id="label-timeAttr">Bewertung der abgelaufenen Zeit (%)</span>
+                            <div clas="p-2 d-flex w-100 flex-grow-1 justify-content-center">
+                                <input class="form-range" id="timeAttr" max="500" min="0"
+                                       oninput="this.nextElementSibling.value = this.value" step="1"
+                                       th:field="*{timeAttribute}"
+                                       type="range">
+                            </div>
+                            <output class="form-control-plaintext" th:text="${quizSetupModel.timeAttribute}">0</output>
+                            <!-- Default value -->
+                        </div>
 
-        <div class="input-group d-flex w-100 mb-3">
-            <span class="form-label input-group-text" id="label-distanceAttr">Bewertung der Distanz (%)</span>
-            <input class=" form-control flex-grow-1  form-range" id="distanceAttr" max="500" min="0"
-                   oninput="this.nextElementSibling.value = this.value" step="1" th:field="*{distanceAttribute}"
-                   type="range">
-            <output class=" form-control form-control-plaintext" th:text="${quizSetupModel.distanceAttribute}">0
-            </output> <!-- Default value -->
-        </div>
+                        <div class="input-group d-flex w-100 mb-3">
+                            <span class="form-label input-group-text"
+                                  id="label-distanceAttr">Bewertung der Distanz (%)</span>
+                            <input class=" form-control flex-grow-1  form-range" id="distanceAttr" max="500" min="0"
+                                   oninput="this.nextElementSibling.value = this.value" step="1"
+                                   th:field="*{distanceAttribute}"
+                                   type="range">
+                            <output class=" form-control form-control-plaintext"
+                                    th:text="${quizSetupModel.distanceAttribute}">0
+                            </output> <!-- Default value -->
+                        </div>
 
-        <div class="form-group mb-3">
-            <label>Passagen:</label>
-            <div th:each="passage : ${availablePassages}">
-                <div class="form-check">
-                    <input class="form-check-input" id="passage-${passage.id}" th:field="*{passages}"
-                           th:value="${passage.id}" type="checkbox"/>
-                    <label class="form-check-label" th:for="'passage-' + ${passage.id}">[[${passage.title}]]</label>
+                        <div class="form-group mb-3">
+                            <label>Passagen:</label>
+                            <div th:each="passage : ${availablePassages}">
+                                <div class="form-check">
+                                    <input class="form-check-input" id="passage-${passage.id}" th:field="*{passages}"
+                                           th:value="${passage.id}" type="checkbox"/>
+                                    <label class="form-check-label" th:for="'passage-' + ${passage.id}">[[${passage.title}]]</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

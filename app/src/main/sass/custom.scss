@@ -41,9 +41,11 @@ $theme-colors: (
         "gray-700": $gray-700
 );
 
+$component-active-bg: $light;
 $nav-link-color: $seventh;
 $nav-pills-link-active-color: $white;
 $nav-pills-link-active-bg: $seventh;
+$accordion-button-active-bg: $light;
 
 @font-face {
   font-family: 'ThemeFont';
@@ -79,4 +81,5 @@ h1 {
 // Import Bootstrap
 @import "bootstrap-5.3.2/scss/bootstrap";
 @import "bootstrap-5.3.2/scss/bootstrap-utilities";
+@import "bootstrap-5.3.2/scss/_accordion";
 
