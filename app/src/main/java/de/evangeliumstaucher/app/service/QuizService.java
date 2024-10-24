@@ -210,6 +210,7 @@ public class QuizService {
     public int getSumPointsRunningGame(RunningQuestion runningQuestion) {
         int sum = userQuestionRepository.findByGameSessionId(runningQuestion.getGameSessionEntity().getId()).stream()
                 .mapToInt(UserQuestionEntity::getPoints)
+                .filter(Objects::nonNull)
                 .sum();
         return sum;
     }
