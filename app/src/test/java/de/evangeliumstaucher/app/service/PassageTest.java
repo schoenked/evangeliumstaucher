@@ -56,4 +56,13 @@ public class PassageTest {
             verse = verse.stepVerses(-6, swordLibrary);
         }
     }
+
+    @Test
+    public void testVersesNoChapter() {
+        Bible bible = swordLibrary.getBible(ID_SCHLACHTER);
+        BibleWrap b = new BibleWrap(bible.getId(), bible);
+        //Judas has only 1 chapter this key is "Ch 1" verse 3
+        VerseWrap.getVerse("Judas 3", b, swordLibrary);
+    }
+
 }

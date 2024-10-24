@@ -22,7 +22,9 @@ public class VerseWrap {
                 id = id.substring(book.getBook().getName().length() + 1);
                 id = id.split(":")[0];
                 for (ChapterWrap chapter : book.getChapters()) {
-                    if (id.equals(chapter.getChapter().getNumber())) {
+                    if (id.equals(chapter.getChapter().getNumber())
+                            // book with single chapter
+                            || book.getChapters().size() == 1) {
                         c = chapter;
                     }
                 }
