@@ -65,4 +65,11 @@ public class PassageTest {
         VerseWrap.getVerse("Judas 3", b, swordLibrary);
     }
 
+    @Test
+    public void testVersesx() {
+        Bible bible = swordLibrary.getBible(ID_SCHLACHTER);
+        BibleWrap b = new BibleWrap(bible.getId(), bible);
+        VerseWrap.getVerse("Matthäus 24:28", b, swordLibrary);
+    }
+
 }
