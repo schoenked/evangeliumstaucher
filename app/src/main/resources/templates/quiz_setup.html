@@ -13,21 +13,21 @@
 
     <form method="post" th:action="@{create}" th:object="${quizSetupModel}">
         <div class="input-group input-group-lg mb-3">
-            <span class="form-label input-group-text" id="label-name">Name</span>
+            <span class=" input-group-text" id="label-name">Name</span>
             <input aria-describedby="label-name" class="form-control" id="quizName"
-                   placeholder="Fass es kurz zusammen..."
+                   placeholder="Beschreibe es kurz"
                    required
                    th:field="*{name}" type="text">
         </div>
 
         <div class="input-group mb-3">
-            <span class="form-label input-group-text" id="label-description">Beschreibung</span>
-            <textarea class="form-control" id="description" placeholder="Beschreibe den neuen Tauchgang..." rows="4"
+            <span class=" input-group-text" id="label-description">Beschreibung</span>
+            <textarea class="form-control" id="description" placeholder="Beschreibe hier den neuen Tauchgang etwas genauer" rows="4"
                       th:field="*{description}"></textarea>
         </div>
 
         <div class="input-group mb-3">
-            <span class="form-label input-group-text" id="label-tags">Tags</span>
+            <span class=" input-group-text" id="label-tags">Tags</span>
             <input class="form-control" id="tags" placeholder="#solusChristus,..." th:field="*{tags}" type="text">
         </div>
         <div class="accordion" id="accordionExample">
@@ -43,7 +43,7 @@
                     <div class="accordion-body">
 
                         <div class="input-group d-flex flex-nowrap mb-3">
-                            <span class="form-label input-group-text" id="label-timeAttr">Bewertung der abgelaufenen Zeit (%)</span>
+                            <span class=" input-group-text" id="label-timeAttr">Bewertung der abgelaufenen Zeit (%)</span>
                             <div clas="p-2 d-flex w-100 flex-grow-1 justify-content-center">
                                 <input class="form-range" id="timeAttr" max="500" min="0"
                                        oninput="this.nextElementSibling.value = this.value" step="1"
@@ -54,7 +54,7 @@
                             <!-- Default value -->
                         </div>
 
-                            <span class="form-label input-group-text"
+                            <span class=" input-group-text"
                                   id="label-distanceAttr">Bewertung der Distanz (%)</span>
                         <div class="input-group d-flex w-100 mb-3">
                             <input class=" form-control flex-grow-1  form-range" id="distanceAttr" max="500" min="0"
