@@ -22,7 +22,8 @@
 
         <div class="input-group mb-3">
             <span class=" input-group-text" id="label-description">Beschreibung</span>
-            <textarea class="form-control" id="description" placeholder="Beschreibe hier den neuen Tauchgang etwas genauer" rows="4"
+            <textarea class="form-control" id="description"
+                      placeholder="Beschreibe hier den neuen Tauchgang etwas genauer" rows="4"
                       th:field="*{description}"></textarea>
         </div>
 
@@ -41,9 +42,13 @@
                 <div aria-labelledby="headingOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample"
                      id="collapseOne">
                     <div class="accordion-body">
-
+                        <p>
+                            An den nächsten 2 REglern kannst du genauer festlegen, wie stark die verstrichene Zeit und
+                            die Entfernung der Auswahl bewertet werden sollen.
+                        </p>
                         <div class="input-group d-flex flex-nowrap mb-3">
-                            <span class=" input-group-text" id="label-timeAttr">Bewertung der abgelaufenen Zeit (%)</span>
+                            <span class=" input-group-text"
+                                  id="label-timeAttr">Bewertung der abgelaufenen Zeit (%)</span>
                             <div clas="p-2 d-flex w-100 flex-grow-1 justify-content-center">
                                 <input class="form-range" id="timeAttr" max="500" min="0"
                                        oninput="this.nextElementSibling.value = this.value" step="1"
@@ -53,15 +58,14 @@
                             <output class="form-control-plaintext" th:text="${quizSetupModel.timeAttribute}">0</output>
                             <!-- Default value -->
                         </div>
-
-                            <span class=" input-group-text"
-                                  id="label-distanceAttr">Bewertung der Distanz (%)</span>
-                        <div class="input-group d-flex w-100 mb-3">
-                            <input class=" form-control flex-grow-1  form-range" id="distanceAttr" max="500" min="0"
+                        <div class="input-group input-group-text d-flex w-100 mb-3">
+                            <label  id="label-distanceAttr" for="distanceAttr">Bewertung der Distanz (%)</label>
+                            <input class="form-conrol form-range"
+                                   id="distanceAttr" max="500" min="0"
                                    oninput="this.nextElementSibling.value = this.value" step="1"
                                    th:field="*{distanceAttribute}"
                                    type="range">
-                            <output class=" form-control form-control-plaintext"
+                            <output class="form-control form-control-plaintext"
                                     th:text="${quizSetupModel.distanceAttribute}">0
                             </output> <!-- Default value -->
                         </div>
