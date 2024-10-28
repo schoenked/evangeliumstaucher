@@ -1,7 +1,7 @@
 // Import Bootstrap functions and variables
-@import "bootstrap-5.3.2/scss/functions";
-@import "bootstrap-5.3.2/scss/variables";
-@import "bootstrap-5.3.2/scss/mixins";
+@import "functions";
+@import "variables";
+@import "mixins";
 
 $primary: #c99d82; // set the $primary variable
 $secondary: #6ab99c;
@@ -79,7 +79,7 @@ h1 {
 }
 
 // Import Bootstrap
-@import "bootstrap-5.3.2/scss/bootstrap";
-@import "bootstrap-5.3.2/scss/bootstrap-utilities";
-@import "bootstrap-5.3.2/scss/_accordion";
+@import "bootstrap";
+@import "bootstrap-utilities";
+@import "_accordion";
 

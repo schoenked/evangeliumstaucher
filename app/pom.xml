@@ -68,6 +68,11 @@
             <artifactId>commons-lang3</artifactId>
             <version>3.15.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.webjars.bower</groupId>
+            <artifactId>bootstrap</artifactId>
+            <version>5.3.3</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -76,6 +81,31 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.7.1</version>
+                <executions>
+                    <execution>
+                        <id>download-bootstrap</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>org.webjars.bower</groupId>
+                                    <artifactId>bootstrap</artifactId>
+                                    <version>5.3.3</version>
+                                    <outputDirectory>${project.build.directory}/bootstrap-copy/</outputDirectory>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
             <plugin>
                 <groupId>io.github.cleydyr</groupId>
                 <artifactId>dart-sass-maven-plugin</artifactId>
@@ -91,6 +121,9 @@
                 </executions>
                 <configuration>
                     <outputFolder>target/classes/static/css</outputFolder>
+                    <loadPaths>
+                        <loadPath>target/bootstrap-copy/META-INF/resources/webjars/bootstrap/5.3.3/scss/</loadPath>
+                    </loadPaths>
                 </configuration>
             </plugin>
         </plugins>
