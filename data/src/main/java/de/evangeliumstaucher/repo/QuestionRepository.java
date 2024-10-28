@@ -9,5 +9,6 @@ import java.util.UUID;
 
 @Repository
 public interface QuestionRepository extends JpaRepository<QuestionEntity, UUID> {
-    Optional<QuestionEntity> findByGameEntityIdAndQuestionIndex(UUID gameId, Long questionIndex);
+    Optional<QuestionEntity> findByGameEntityIdAndQuestionIndex(UUID gameEntity_id, Integer questionIndex);
+    Integer countByGameEntityId(UUID gameEntity_id);
 }

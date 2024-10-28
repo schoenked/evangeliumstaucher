@@ -63,7 +63,7 @@ public class QuizController extends BaseController {
     }
 
     @GetMapping("/quiz/{quizId}/{qId}/")
-    public String getQuestion(@PathVariable UUID quizId, @PathVariable Long qId, @ModelAttribute PlayerModel playerModel, Model m) throws BadRequestException, ServiceUnavailableException {
+    public String getQuestion(@PathVariable UUID quizId, @PathVariable Integer qId, @ModelAttribute PlayerModel playerModel, Model m) throws BadRequestException, ServiceUnavailableException {
         try {
             RunningQuestion runningQuestion = quizService.getQuestion(playerModel.getId(), quizId, qId);
             m.addAttribute("question", runningQuestion);
@@ -77,7 +77,7 @@ public class QuizController extends BaseController {
     }
 
     @GetMapping("/quiz/{quizId}/{qId}/{part}")
-    public String getQuizPost(@PathVariable UUID quizId, @PathVariable Long qId, @PathVariable Part part, @ModelAttribute PlayerModel playerModel, Model m) {
+    public String getQuizPost(@PathVariable UUID quizId, @PathVariable Integer qId, @PathVariable Part part, @ModelAttribute PlayerModel playerModel, Model m) {
         try {
             Passage passage = quizService.getPassage(playerModel.getId(), quizId, qId, part);
             PassageModel model = PassageModel.from(passage);
@@ -117,7 +117,7 @@ public class QuizController extends BaseController {
     }
 
     @GetMapping("/quiz/{quizId}/{qId}/select/{verseId}")
-    public String selectVerseGetResult(@PathVariable UUID quizId, @PathVariable Long qId, @PathVariable String verseId, @ModelAttribute PlayerModel playerModel, Model m) throws BadRequestException, ServiceUnavailableException {
+    public String selectVerseGetResult(@PathVariable UUID quizId, @PathVariable Integer qId, @PathVariable String verseId, @ModelAttribute PlayerModel playerModel, Model m) throws BadRequestException, ServiceUnavailableException {
         try {
             log.debug("selectVerseGetResult() called with: quizId = [" + quizId + "], qId = [" + qId + "], verseId = [" + verseId + "], m = [" + m + "]");
 

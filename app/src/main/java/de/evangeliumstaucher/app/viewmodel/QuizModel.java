@@ -19,7 +19,6 @@ import java.util.UUID;
 @AllArgsConstructor
 @RequiredArgsConstructor
 public class QuizModel {
-    private static final int QUESTION_COUNT = 10;
     private final String bibleId;
     private final PlayerModel creator;
     private UUID id;
@@ -28,7 +27,6 @@ public class QuizModel {
     private Date createdAt;
     @Getter(AccessLevel.PRIVATE)
     private BibleWrap bible;
-    @Getter(AccessLevel.PRIVATE)
     private List<Verse> verses = new ArrayList<>();
 
     public static QuizModel from(GameEntity gameEntity, Library library) {
@@ -45,13 +43,13 @@ public class QuizModel {
         return bible;
     }
 
-    public List<Verse> getVerses(QuizService quizService)   {
+    public List<Verse> createVerses(QuizService quizService, int countVerses) {
         if (verses == null) {
             verses = new ArrayList<>();
-            for (int i = 0; i < QUESTION_COUNT; i++) {
-                Verse q = quizService.getQuestionVerse(this);
-                verses.add(q);
-            }
+        }
+        for (int i = 0; i < countVerses; i++) {
+            Verse q = quizService.getQuestionVerse(this);
+            verses.add(q);
         }
         return verses;
     }
@@ -72,4 +70,5 @@ public class QuizModel {
                 new PlayerEntity().withId(creator.getId()),
                 null);
     }
+
 }

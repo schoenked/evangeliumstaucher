@@ -45,7 +45,7 @@ public class QuizService {
     private String hostname;
 
     @Nonnull
-    private static String getQuestionId(Long userId, UUID quizId, Long questionindex) {
+    private static String getQuestionId(Long userId, UUID quizId, Integer questionindex) {
         String questionId = String.join(".", quizId.toString(), userId.toString(), questionindex.toString());
         return questionId;
     }
@@ -54,7 +54,7 @@ public class QuizService {
         return hostname + quizModel.getUrl();
     }
 
-    public QuizModel createQuiz(String bibleId, PlayerModel creator) {
+    public QuizModel createQuiz(String bibleId, QuizSetupModel quizSetupModel, PlayerModel creator) {
         QuizModel quizModel = null;
         BibleWrap bible = new BibleWrap(bibleId, library.getBible(bibleId));
 
@@ -62,17 +62,20 @@ public class QuizService {
                 .bible(bible)
                 .creator(creator)
                 .bibleId(bibleId)
+                .name(quizSetupModel.getName())
+                .description(quizSetupModel.getDescription())
                 .build();
-        quizModel.getVerses(this);
+        List<Verse> verses =   quizModel.createVerses(this,quizSetupModel.getCountVerses());
         GameEntity e = gameRepository.save(quizModel.getEntity());
         //apply generated uuid
         quizModel.setId(e.getId());
         LinkedList<QuestionEntity> questionEntities = Lists.newLinkedList();
-        for (long i = 0; i < quizModel.getVerses(this).size(); i++) {
-            Verse vers = quizModel.getVerses(this).get((int) i);
+        for (int i = 0; i < verses.size(); i++) {
+            Verse vers = verses.get(i);
             QuestionEntity verseEntity = new QuestionEntity(null, e, i, vers.getId());
             questionEntities.add(verseEntity);
         }
+
         questionRepository.saveAll(questionEntities);
 
         return quizModel;
@@ -127,7 +130,7 @@ public class QuizService {
         return library.getPassage(q.getVerse().getVerse().getBibleId(), passageId);
     }
 
-    public RunningQuestion getQuestion(Long userId, UUID quizId, Long qId) throws BadRequestException {
+    public RunningQuestion getQuestion(Long userId, UUID quizId, Integer qId) throws BadRequestException {
         Optional<GameSessionEntity> gamesessionoptional = gameSessionRepository.findByPlayerIdAndGameId(userId, quizId);
         GameSessionEntity gamesession;
         gamesession = gamesessionoptional.orElseGet(() -> createGameSession(userId, quizId));
@@ -141,7 +144,8 @@ public class QuizService {
         }
         question = questionEntityWrap.get();
         RunningQuestion q = new RunningQuestion(question, gamesession);
-        q.setCountQuestions(quizModel.getVerses(this).size());
+        Integer countVerses = questionRepository.countByGameEntityId(quizId);
+        q.setCountQuestions(countVerses);
         q.setIndexQuestion(qId + 1);
         BibleWrap bible = quizModel.getBible(library);
         VerseWrap verse = VerseWrap.getVerse(question.getVerseId(), bible, library);
@@ -185,7 +189,7 @@ public class QuizService {
         return QuizModel.from(gameRepository.findById(quizId).get(), library);
     }
 
-    public Passage getPassage(Long userId, UUID quizId, Long qId, Part part) {
+    public Passage getPassage(Long userId, UUID quizId, Integer qId, Part part) {
         return getPassage(runningQuestionHashMap.get(getQuestionId(userId, quizId, qId)), part);
     }
 

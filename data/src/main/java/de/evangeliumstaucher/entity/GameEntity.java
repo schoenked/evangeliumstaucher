@@ -23,6 +23,7 @@ public class GameEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
+    @Column(unique = true) // Set the name field to be unique
     private String name;
 
     private String description;

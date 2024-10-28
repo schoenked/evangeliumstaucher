@@ -11,7 +11,7 @@
 <div class="container mt-5">
     <h1 class="text-primary"><i aria-hidden="true" class="fa fa-plus-square"></i> Erstelle einen neuen Tauchgang</h1>
 
-    <form method="post" th:action="@{create}" th:object="${quizSetupModel}">
+    <form method="post" th:action="submit" th:object="${quizSetupModel}">
         <div class="input-group input-group-lg mb-3">
             <span class=" input-group-text" id="label-name">Name</span>
             <input aria-describedby="label-name" class="form-control" id="quizName"
@@ -42,9 +42,29 @@
                 <div aria-labelledby="headingOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample"
                      id="collapseOne">
                     <div class="accordion-body">
+
+                        <div class="input-group input-group-text d-flex w-100 mb-3">
+                            <label
+                                    for="countVerses"
+                                    id="label-countVerses"
+                            >Anzahl der Verse</label>
+                            <input class="form-conrol form-range mt-2"
+                                   id="countVerses"
+                                   max="100"
+                                   min="1"
+                                   oninput="this.nextElementSibling.value = this.value" step="1"
+                                   th:field="*{countVerses}"
+                                   type="range">
+                            <output
+                                    class="form-control form-control-plaintext"
+                                    th:text="${quizSetupModel.countVerses}">10
+                            </output>
+                            <!-- Default value -->
+                        </div>
+                        <h6>Bewertung</h6>
                         <p>
-                            An den nächsten 2 REglern kannst du genauer festlegen, wie stark die verstrichene Zeit und
-                            die Entfernung der Auswahl bewertet werden sollen.
+                            An den nächsten 2 Reglern kann genauer festgelegt werden, wie stark die abgelaufene Zeit und
+                            die Entfernung der Auswahl bewertet wird.
                         </p>
                         <div class="input-group input-group-text d-flex w-100 mb-3">
                             <label
@@ -80,7 +100,8 @@
                         </div>
 
                         <div class="form-group mb-3">
-                            <label>Passagen:</label>
+                            <label>Passagen: </label>
+                            <span class="fst-italic">coming soon</span>
                             <div th:each="passage : ${availablePassages}">
                                 <div class="form-check">
                                     <input class="form-check-input" id="passage-${passage.id}" th:field="*{passages}"

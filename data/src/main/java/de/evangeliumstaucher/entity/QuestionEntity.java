@@ -19,7 +19,7 @@ public class QuestionEntity {
     @JoinColumn(name = "game_entity_id", nullable = false)
     private GameEntity gameEntity;
 
-    private Long questionIndex;
+    private Integer questionIndex;
 
     private String verseId;
 }

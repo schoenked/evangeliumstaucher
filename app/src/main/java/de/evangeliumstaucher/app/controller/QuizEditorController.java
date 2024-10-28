@@ -3,10 +3,12 @@ package de.evangeliumstaucher.app.controller;
 import de.evangeliumstaucher.app.service.QuizService;
 import de.evangeliumstaucher.app.service.UserService;
 import de.evangeliumstaucher.app.viewmodel.PlayerModel;
+import de.evangeliumstaucher.app.viewmodel.QuizModel;
 import de.evangeliumstaucher.app.viewmodel.QuizSetupModel;
 import de.evangeliumstaucher.repo.service.Library;
 import de.evangeliumstaucher.repoDatatables.TrendingGamesDatatablesRepository;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -22,6 +24,7 @@ import javax.naming.ServiceUnavailableException;
 
 @Controller
 @Slf4j
+@Valid
 public class QuizEditorController extends BaseController {
     private final QuizService quizService;
     private final UserService userService;
@@ -65,20 +68,20 @@ public class QuizEditorController extends BaseController {
         return null;
     }
 
+    @PostMapping("/quiz/create/{bibleId}/submit")
+    public RedirectView submitQuiz(@PathVariable String bibleId, @Valid @ModelAttribute QuizSetupModel quizSetupModel, Model m,@ModelAttribute PlayerModel playerModel) {
+        // Process the quiz creation logic here
+        // e.g., save quizModel to the database
+        QuizModel quizModel = quizService.createQuiz(bibleId, quizSetupModel, playerModel);
+        return new RedirectView(quizModel.getUrl());
+    }
+
     public void addWarning(Model m) {
         m.addAttribute("warning", "An error occurred while creating the quiz. Please try again.");
     }
 
     private void handleUnavailable() throws ServiceUnavailableException {
         throw new ServiceUnavailableException("Service temporarily unavailable.");
-    }
-
-    @PostMapping("/quiz/create/submit")
-    public RedirectView submitQuiz(@ModelAttribute QuizSetupModel quizSetupModel, Model m) {
-        // Process the quiz creation logic here
-        // e.g., save quizModel to the database
-
-        return new RedirectView("/quiz/success"); // Redirect to a success page or appropriate action
     }
 }
 
