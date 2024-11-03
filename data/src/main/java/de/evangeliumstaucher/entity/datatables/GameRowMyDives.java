@@ -54,7 +54,7 @@ public class GameRowMyDives {
     UUID id;
     @Column
     @JsonView
-    Integer name;
+    String name;
     @Column(name = "location")
     @JsonView
     String location;
