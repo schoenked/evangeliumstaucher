@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.ui.Model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,7 +27,7 @@ public class BaseController {
         try {
             List<Bible> bibles = library.getBibles();
 
-            List<DatatableRow> books = bibles.stream()
+            List<BibleModel> books = bibles.stream()
                     .map(BibleModel::from)
                     .peek(b -> b.setUrl(b.getUrl()))
                     .collect(groupingBy(BibleModel::getLanguageCode))
@@ -38,26 +39,33 @@ public class BaseController {
                         return o1.getKey().compareTo(o2.getKey());
                     })
                     .flatMap(g -> g.getValue().stream())
-                    .map(e -> {
-                        DatatableRow row = DatatableRow.builder()
-                                .cells(List.of(
-                                        new DatatableCell(e.getLanguage()),
-                                        new DatatableCell(e.getLabel()),
-                                        new DatatableCell("<a role=\"button\" class=\"btn btn-secondary\" href=\"" + e.getUrl() + "\">Auswählen</a>", true))
-                                )
-                                .build();
-                        return row;
-                    })
+
                     .collect(Collectors.toList());
 
+            ArrayList<DatatableRow> rows = new ArrayList<DatatableRow>();
+
+            for (int i = 0; i < books.size(); i++) {
+                BibleModel book = books.get(i);
+                DatatableRow row = DatatableRow.builder()
+                        .cells(List.of(
+                                new DatatableCell(Integer.toString(i)),
+                                new DatatableCell(book.getLanguage()),
+                                new DatatableCell(book.getLabel()),
+                                new DatatableCell("<a role=\"button\" class=\"btn btn-secondary\" href=\"" + book.getUrl() + "\">Auswählen</a>", true))
+                        )
+                        .build();
+
+                rows.add(row);
+            }
             DatatableViewModel booksTable = new DatatableViewModel();
             List<DatatableColumn> columns = List.of(
+                    new DatatableColumn("Order", "order","num", false),
                     new DatatableColumn("Sprache", "language"),
                     new DatatableColumn("Übersetzung", "bible"),
                     new DatatableColumn("", "select")
             );
             booksTable.setColumns(columns);
-            booksTable.setRows(books);
+            booksTable.setRows(rows);
             m.addAttribute("booksTable", booksTable);
         } catch (Exception e) {
             log.error("failed", e);

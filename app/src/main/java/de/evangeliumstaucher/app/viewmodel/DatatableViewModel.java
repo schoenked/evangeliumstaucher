@@ -55,7 +55,8 @@ public class DatatableViewModel {
         StringBuilder columnText = new StringBuilder();
         columnText.append("{data: '").append(c.getAttribute()).append("', ");
         columnText.append("name: '").append(c.getName()).append("', ");
-        columnText.append("type: '").append(c.getType()).append("'");
+        columnText.append("type: '").append(c.getType()).append("', ");
+        columnText.append("visible: ").append(c.isVisible());
 
         if (c.getType().equals("date")) {
             columnText.append(", render: function (data, type, row) {");
