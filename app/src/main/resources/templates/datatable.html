@@ -8,7 +8,15 @@
             </th:block>
         </tr>
         </thead>
-    </table>
+        <tbody>
+            <tr th:each="row : ${model.rows}">
+                <td th:each="cell : ${row.cells}">
+                    <span th:if="${cell.rendered}" th:utext="${cell.text}"></span>
+                    <span th:unless="${cell.rendered}" th:text="${cell.text}"></span>
+                </td>
+            </tr>
+        </tbody>
+</table>
 
     <script>
         let t[[${model.javascriptId}]] = $('table#[[${model.id}]]').DataTable({
@@ -29,7 +37,7 @@
             columns: [
                 [(${model.columnsText})]
             ],
-            serverSide: true,
+            serverSide:  [(${model.serverside})],
             autoWidth: true,
             scrollX: true,
             dom: 'tfp',

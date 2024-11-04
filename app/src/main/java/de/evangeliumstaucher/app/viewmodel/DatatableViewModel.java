@@ -1,8 +1,7 @@
 package de.evangeliumstaucher.app.viewmodel;
 
 import de.evangeliumstaucher.app.utils.DatatableLanguages;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.i18n.LocaleContextHolder;
 
@@ -11,16 +10,14 @@ import java.util.Locale;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-@Getter
+@Data
 public class DatatableViewModel {
     private final String id = UUID.randomUUID().toString();
-    @Setter
     private List<DatatableColumn> columns;
-    @Setter
     private String url;
-    @Getter
-    @Setter
     private boolean autoReloader = false;
+    private List<DatatableRow> rows;
+
 
     public static String getLanguage(Locale locale) {
         if (locale != null) {
@@ -35,6 +32,10 @@ public class DatatableViewModel {
         return getLanguage(LocaleContextHolder.getLocale());
     }
 
+    public boolean getServerside() {
+        return StringUtils.isNotEmpty(getUrl());
+    }
+
     /**
      * Javascript variables can't have -
      *
@@ -43,6 +44,7 @@ public class DatatableViewModel {
     public String getJavascriptId() {
         return StringUtils.remove(id, "-");
     }
+
     public String getColumnsText() {
         return columns.stream()
                 .map(this::getColumnText)

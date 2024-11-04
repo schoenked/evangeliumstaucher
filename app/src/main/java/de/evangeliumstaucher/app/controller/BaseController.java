@@ -1,6 +1,6 @@
 package de.evangeliumstaucher.app.controller;
 
-import de.evangeliumstaucher.app.viewmodel.BibleModel;
+import de.evangeliumstaucher.app.viewmodel.*;
 import de.evangeliumstaucher.repo.model.Bible;
 import de.evangeliumstaucher.repo.service.Library;
 import lombok.RequiredArgsConstructor;
@@ -9,7 +9,6 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.ui.Model;
 
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.groupingBy;
@@ -27,7 +26,7 @@ public class BaseController {
         try {
             List<Bible> bibles = library.getBibles();
 
-            List<Map.Entry<String, List<BibleModel>>> groups = bibles.stream()
+            List<DatatableRow> books = bibles.stream()
                     .map(BibleModel::from)
                     .peek(b -> b.setUrl(b.getUrl()))
                     .collect(groupingBy(BibleModel::getLanguageCode))
@@ -38,11 +37,28 @@ public class BaseController {
                         if (o2.getKey().equals(LocaleContextHolder.getLocale().getLanguage())) return 1;
                         return o1.getKey().compareTo(o2.getKey());
                     })
+                    .flatMap(g -> g.getValue().stream())
+                    .map(e -> {
+                        DatatableRow row = DatatableRow.builder()
+                                .cells(List.of(
+                                        new DatatableCell(e.getLanguage()),
+                                        new DatatableCell(e.getLabel()),
+                                        new DatatableCell("<a href=" + e.getUrl() + ">Auswählen</a>", true))
+                                )
+                                .build();
+                        return row;
+                    })
                     .collect(Collectors.toList());
-            groups = groups.subList(0, 10);
 
-
-            m.addAttribute("languages", groups);
+            DatatableViewModel booksTable = new DatatableViewModel();
+            List<DatatableColumn> columns = List.of(
+                    new DatatableColumn("Sprache", "language"),
+                    new DatatableColumn("Übersetzung", "bible"),
+                    new DatatableColumn("", "select")
+            );
+            booksTable.setColumns(columns);
+            booksTable.setRows(books);
+            m.addAttribute("booksTable", booksTable);
         } catch (Exception e) {
             log.error("failed", e);
             addWarning(m);
