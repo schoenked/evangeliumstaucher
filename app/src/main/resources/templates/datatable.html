@@ -11,29 +11,36 @@
         <tbody>
             <tr th:each="row : ${model.rows}">
                 <td th:each="cell : ${row.cells}">
-                    <span th:if="${cell.rendered}" th:utext="${cell.text}"></span>
+                    <div th:if="${cell.rendered}" th:utext="${cell.text}"></div>
                     <span th:unless="${cell.rendered}" th:text="${cell.text}"></span>
                 </td>
             </tr>
         </tbody>
 </table>
+    <script>
+        let ajax = null;
+    </script>
+
+    <script th:if="${model.serverside}">
+        //set ajax by model
+
+        ajax = {
+            contentType: 'application/json',
+            url: '[(${model.Url})]',
+            type: 'POST',
+            headers: {
+                'X-XSRF-TOKEN': '[[${_csrf.token}]]'
+            },
+            data: function (d) {
+                return JSON.stringify(d);
+            }
+        };
+    </script>
 
     <script>
         let t[[${model.javascriptId}]] = $('table#[[${model.id}]]').DataTable({
-            ajax: {
-                contentType: 'application/json',
-                url: '[(${model.Url})]',
-                type: 'POST',
-                headers: {
-                    'X-XSRF-TOKEN': '[[${_csrf.token}]]'
-                },
-                data: function (d) {
-                    return JSON.stringify(d);
-                }
-            },
-
+            ajax: ajax,
             language: { "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/[[${model.language}]].json",},
-
             columns: [
                 [(${model.columnsText})]
             ],
