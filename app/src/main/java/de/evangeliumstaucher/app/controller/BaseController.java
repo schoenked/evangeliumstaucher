@@ -43,7 +43,7 @@ public class BaseController {
                                 .cells(List.of(
                                         new DatatableCell(e.getLanguage()),
                                         new DatatableCell(e.getLabel()),
-                                        new DatatableCell("<a href=" + e.getUrl() + ">Auswählen</a>", true))
+                                        new DatatableCell("<a role=\"button\" class=\"btn btn-secondary\" href=\"" + e.getUrl() + "\">Auswählen</a>", true))
                                 )
                                 .build();
                         return row;
