@@ -51,7 +51,7 @@ public class BaseController {
                                 new DatatableCell(Integer.toString(i)),
                                 new DatatableCell(book.getLanguage()),
                                 new DatatableCell(book.getLabel()),
-                                new DatatableCell("<a role=\"button\" class=\"btn btn-secondary\" href=\"" + book.getUrl() + "\">Auswählen</a>", true))
+                                new DatatableCell("<a role=\"button\" class=\"btn btn-secondary\" href=\"" + book.getUrl() + "\"><i class=\"fa-solid fa-arrow-right\"></i></a>", true))
                         )
                         .build();
 
