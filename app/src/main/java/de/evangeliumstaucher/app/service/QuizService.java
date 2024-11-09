@@ -227,7 +227,7 @@ public class QuizService {
 
         int diffPoints = DoNotJudge.getDiffPoints(runningQuestion.getDiffVerses(library));
         //apply factor
-        diffPoints -= diffPoints * runningQuestion.getGameSessionEntity().getGame().getDistanceRatingFactor() / 100;
+        diffPoints = diffPoints * runningQuestion.getGameSessionEntity().getGame().getDistanceRatingFactor() / 100;
         //limit 0-100
         points -= diffPoints;
         points = Math.min(points, 100);
