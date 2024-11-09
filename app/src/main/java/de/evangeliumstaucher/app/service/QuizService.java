@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 import de.evangeliumstaucher.app.model.BibleWrap;
 import de.evangeliumstaucher.app.model.BookWrap;
 import de.evangeliumstaucher.app.model.VerseWrap;
-import de.evangeliumstaucher.app.utils.DontJudge;
+import de.evangeliumstaucher.app.utils.DoNotJudge;
 import de.evangeliumstaucher.app.utils.Fibonacci;
 import de.evangeliumstaucher.app.utils.ListUtils;
 import de.evangeliumstaucher.app.viewmodel.*;
@@ -87,8 +87,8 @@ public class QuizService {
 
     /**
      * Returns Tags from Tag-String in list
-     * @param tags tags separated by #,whitespace, or comma... I don't care.
      *
+     * @param tags tags separated by #,whitespace, or comma... I don't care.
      * @return Tags in list
      */
     private List<String> getTags(String tags) {
@@ -220,10 +220,14 @@ public class QuizService {
         }
         int points = 100;
 
-        long timePoints = DontJudge.getTimePointsSubtract(runningQuestion.getDuration());
+        int timePoints = DoNotJudge.getTimePointsSubtract(runningQuestion.getDuration());
+        //apply factor
+        timePoints = timePoints * runningQuestion.getGameSessionEntity().getGame().getTimeRatingFactor() / 100;
         points -= timePoints;
 
-        int diffPoints = DontJudge.getDiffPoints(runningQuestion.getDiffVerses(library));
+        int diffPoints = DoNotJudge.getDiffPoints(runningQuestion.getDiffVerses(library));
+        //apply factor
+        diffPoints -= diffPoints * runningQuestion.getGameSessionEntity().getGame().getDistanceRatingFactor() / 100;
         //limit 0-100
         points -= diffPoints;
         points = Math.min(points, 100);

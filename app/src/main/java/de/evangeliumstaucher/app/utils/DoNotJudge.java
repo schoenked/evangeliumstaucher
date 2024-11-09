@@ -5,15 +5,15 @@ import java.time.Duration;
 /**
  * You shall not judge, but...
  */
-public class DontJudge {
+public class DoNotJudge {
 
-    public static long getTimePointsSubtract(Duration duration) {
-        long sec = duration.getSeconds();
+    public static int getTimePointsSubtract(Duration duration) {
+        int sec = (int) duration.getSeconds();
         if (duration.getSeconds() > 100) {
             //linear
             return sec;
         }
-        return (long) (48 + 50 * Math.sin(0.0280756 * sec - 1.448));
+        return (int) (48 + 50 * Math.sin(0.0280756 * sec - 1.448));
     }
 
     public static int getDiffPoints(int diff) {

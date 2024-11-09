@@ -5,10 +5,10 @@ import org.junit.Test;
 import java.time.Duration;
 
 import static com.google.common.truth.Truth.assertThat;
-import static de.evangeliumstaucher.app.utils.DontJudge.getDiffPoints;
-import static de.evangeliumstaucher.app.utils.DontJudge.getTimePointsSubtract;
+import static de.evangeliumstaucher.app.utils.DoNotJudge.getDiffPoints;
+import static de.evangeliumstaucher.app.utils.DoNotJudge.getTimePointsSubtract;
 
-public class DontJudgeTest {
+public class DoNotJudgeTest {
 
     @Test
     public void testTime() {
