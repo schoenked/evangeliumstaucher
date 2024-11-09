@@ -28,6 +28,10 @@ public class QuizModel {
     @Getter(AccessLevel.PRIVATE)
     private BibleWrap bible;
     private List<Verse> verses = new ArrayList<>();
+    private List<String> tags;
+    private int distanceRatingFactor;
+    private int timeRatingFactor;
+
 
     public static QuizModel from(GameEntity gameEntity, Library library) {
         return QuizModel.builder()
@@ -68,7 +72,11 @@ public class QuizModel {
                 description,
                 bibleId,
                 new PlayerEntity().withId(creator.getId()),
-                null);
+                null,
+                tags,
+                distanceRatingFactor,
+                timeRatingFactor
+                );
     }
 
 }

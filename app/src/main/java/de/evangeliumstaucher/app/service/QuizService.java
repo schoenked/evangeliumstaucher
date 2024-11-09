@@ -27,6 +27,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.regex.Pattern;
 
 import static org.springframework.web.client.HttpClientErrorException.BadRequest;
 
@@ -64,8 +65,11 @@ public class QuizService {
                 .bibleId(bibleId)
                 .name(quizSetupModel.getName())
                 .description(quizSetupModel.getDescription())
+                .distanceRatingFactor(quizSetupModel.getDistanceAttribute())
+                .timeRatingFactor(quizSetupModel.getTimeAttribute())
+                .tags(getTags(quizSetupModel.getTags()))
                 .build();
-        List<Verse> verses =   quizModel.createVerses(this,quizSetupModel.getCountVerses());
+        List<Verse> verses = quizModel.createVerses(this, quizSetupModel.getCountVerses());
         GameEntity e = gameRepository.save(quizModel.getEntity());
         //apply generated uuid
         quizModel.setId(e.getId());
@@ -79,6 +83,22 @@ public class QuizService {
         questionRepository.saveAll(questionEntities);
 
         return quizModel;
+    }
+
+    /**
+     * Returns Tags from Tag-String in list
+     * @param tags tags separated by #,whitespace, or comma... I don't care.
+     *
+     * @return Tags in list
+     */
+    private List<String> getTags(String tags) {
+        Pattern pattern = Pattern.compile("\\w{2,50}");
+
+        return pattern
+                .matcher(tags)
+                .results()
+                .map(Object::toString).
+                toList();
     }
 
     private Verse getRandomVerse(BibleWrap bible) {
