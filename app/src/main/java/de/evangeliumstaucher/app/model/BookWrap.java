@@ -98,7 +98,7 @@ public class BookWrap {
 
     public List<PassageTree> getPassageTree(Library library) {
         List<PassageTree> trees = getChapters().stream()
-                .map(chapterWrap -> new PassageTree(chapterWrap.toString(), chapterWrap.getPassageTree(library)))
+                .map(chapterWrap -> new PassageTree(chapterWrap.getChapter().getId(),, chapterWrap.getPassageTree(library)))
                 .toList();
         return trees;
     }
