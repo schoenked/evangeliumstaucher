@@ -191,4 +191,17 @@ public class QuizServiceTest {
         assertThat(runningQuestion.getDiffVerses(library)).isEqualTo(151);
     }
 
+    @Test
+    void getTags() {
+        List<String> tags = QuizService.getTags("  asdf fdsa,bär,12,2,345x;ws/bible#blessed");
+        assertThat(tags).isEqualTo(List.of(
+                "asdf",
+                "fdsa",
+                "12",
+                "345x",
+                "ws",
+                "bible",
+                "blessed"
+        ));
+    }
 }

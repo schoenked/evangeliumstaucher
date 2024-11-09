@@ -51,6 +51,22 @@ public class QuizService {
         return questionId;
     }
 
+    /**
+     * Returns Tags from Tag-String in list
+     *
+     * @param tags tags separated by #,whitespace, or comma... I don't care.
+     * @return Tags in list
+     */
+    public static List<String> getTags(String tags) {
+        Pattern pattern = Pattern.compile("\\w{2,50}");
+
+        return pattern
+                .matcher(tags)
+                .results()
+                .map(matchResult -> matchResult.group()).
+                toList();
+    }
+
     public String getShareUrl(QuizModel quizModel) {
         return hostname + quizModel.getUrl();
     }
@@ -83,22 +99,6 @@ public class QuizService {
         questionRepository.saveAll(questionEntities);
 
         return quizModel;
-    }
-
-    /**
-     * Returns Tags from Tag-String in list
-     *
-     * @param tags tags separated by #,whitespace, or comma... I don't care.
-     * @return Tags in list
-     */
-    private List<String> getTags(String tags) {
-        Pattern pattern = Pattern.compile("\\w{2,50}");
-
-        return pattern
-                .matcher(tags)
-                .results()
-                .map(Object::toString).
-                toList();
     }
 
     private Verse getRandomVerse(BibleWrap bible) {
