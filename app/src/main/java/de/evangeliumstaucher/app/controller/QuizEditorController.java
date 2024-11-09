@@ -5,11 +5,13 @@ import de.evangeliumstaucher.app.service.UserService;
 import de.evangeliumstaucher.app.viewmodel.PlayerModel;
 import de.evangeliumstaucher.app.viewmodel.QuizModel;
 import de.evangeliumstaucher.app.viewmodel.QuizSetupModel;
+import de.evangeliumstaucher.repo.GameRepository;
 import de.evangeliumstaucher.repo.service.Library;
 import de.evangeliumstaucher.repoDatatables.TrendingGamesDatatablesRepository;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.coyote.BadRequestException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
@@ -18,7 +20,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.servlet.view.RedirectView;
 
 import javax.naming.ServiceUnavailableException;
 
@@ -29,12 +30,16 @@ public class QuizEditorController extends BaseController {
     private final QuizService quizService;
     private final UserService userService;
     private final HttpSession session;
+    private final GameRepository gameRepository;
+    private final TrendingGamesDatatablesRepository trendingGamesDatatablesRepository;
 
-    public QuizEditorController(Library library, QuizService quizService, UserService userService, HttpSession session, TrendingGamesDatatablesRepository gameRepository) {
+    public QuizEditorController(Library library, QuizService quizService, UserService userService, HttpSession session, TrendingGamesDatatablesRepository trendingGamesDatatablesRepository, GameRepository gameRepository) {
         super(library);
         this.quizService = quizService;
         this.userService = userService;
         this.session = session;
+        this.gameRepository = gameRepository;
+        this.trendingGamesDatatablesRepository = trendingGamesDatatablesRepository;
     }
 
     @ModelAttribute("playerModel")
@@ -69,11 +74,17 @@ public class QuizEditorController extends BaseController {
     }
 
     @PostMapping("/quiz/create/{bibleId}/submit")
-    public RedirectView submitQuiz(@PathVariable String bibleId, @Valid @ModelAttribute QuizSetupModel quizSetupModel, Model m,@ModelAttribute PlayerModel playerModel) {
-        // Process the quiz creation logic here
-        // e.g., save quizModel to the database
+    public String submitQuiz(@PathVariable String bibleId, @Valid @ModelAttribute QuizSetupModel quizSetupModel, Model m, @ModelAttribute PlayerModel playerModel) throws BadRequestException {
+
+        if (gameRepository.existsByName(quizSetupModel.getName())) {
+            //check if unique name
+            String message = "Es gibt bereits ein Spiel mit diesem Namen";
+            m.addAttribute("quizSetupModel", quizSetupModel);
+            m.addAttribute("error", message);
+            return "quiz_setup.html";
+        }
         QuizModel quizModel = quizService.createQuiz(bibleId, quizSetupModel, playerModel);
-        return new RedirectView(quizModel.getUrl());
+        return "redirect:" + quizModel.getUrl();
     }
 
     public void addWarning(Model m) {
