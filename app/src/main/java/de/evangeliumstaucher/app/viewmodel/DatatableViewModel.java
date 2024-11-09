@@ -17,7 +17,15 @@ public class DatatableViewModel {
     private String url;
     private boolean autoReloader = false;
     private List<DatatableRow> rows;
+    private int pageLength = 20;
 
+    public int getPageLength() {
+        return pageLength;
+    }
+
+    public void setPageLength(int pageLength) {
+        this.pageLength = pageLength;
+    }
 
     public static String getLanguage(Locale locale) {
         if (locale != null) {

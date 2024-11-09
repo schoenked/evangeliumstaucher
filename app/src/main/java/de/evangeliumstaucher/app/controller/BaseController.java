@@ -65,6 +65,7 @@ public class BaseController {
                     new DatatableColumn("", "select")
             );
             booksTable.setColumns(columns);
+            booksTable.setPageLength(50);
             booksTable.setRows(rows);
             m.addAttribute("booksTable", booksTable);
         } catch (Exception e) {
