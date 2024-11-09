@@ -193,7 +193,7 @@ public class QuizServiceTest {
 
     @Test
     void getTags() {
-        List<String> tags = QuizService.getTags("  asdf fdsa,bär,12,2,345x;ws/bible#blessed");
+        List<String> tags = QuizService.getTags("  asdf fdsa,bär,12,2,345x;ws/bible#x#blessed");
         assertThat(tags).isEqualTo(List.of(
                 "asdf",
                 "fdsa",
