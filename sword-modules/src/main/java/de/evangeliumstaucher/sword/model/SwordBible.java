@@ -7,12 +7,16 @@ import de.evangeliumstaucher.sword.SwordVerse;
 import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
 import org.crosswire.jsword.book.sword.SwordBook;
+import org.crosswire.jsword.passage.NoSuchVerseException;
+import org.crosswire.jsword.passage.PassageTally;
 
 import java.util.List;
 
 @Builder
 @Data
+@Slf4j
 public class SwordBible implements Bible {
     private final SwordBook swordBook;
     String language;
@@ -24,6 +28,11 @@ public class SwordBible implements Bible {
     @ToString.Exclude
     private List<Verse> verses;
 
+    private static boolean filterVerses(org.crosswire.jsword.passage.Verse key) {
+        return key.getChapter() != 0
+                && key.getVerse() != 0;
+    }
+
     @Override
     public List<Verse> getVerses() {
         if (verses == null) {
@@ -31,8 +40,7 @@ public class SwordBible implements Bible {
             verses = Streams.stream(getSwordBook().getGlobalKeyList().iterator())
                     .filter(key -> key instanceof org.crosswire.jsword.passage.Verse)
                     .map(key -> (org.crosswire.jsword.passage.Verse) key)
-                    .filter(key -> key.getChapter() != 0
-                            && key.getVerse() != 0)
+                    .filter(SwordBible::filterVerses)
                     .map(key -> {
                         return (Verse) SwordVerse.from(key, getId());
                     })
@@ -50,5 +58,14 @@ public class SwordBible implements Bible {
             throw new RuntimeException(e);
         }
         return SwordVerse.from(key, getId());
+    }
+
+    @Override
+    public boolean containsPassage(String id) {
+        try {
+            return swordBook.contains(new PassageTally(getSwordBook().getVersification(),id));
+        } catch (NoSuchVerseException e) {
+        }
+        return false;
     }
 }

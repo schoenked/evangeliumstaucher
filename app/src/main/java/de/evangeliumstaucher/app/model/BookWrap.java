@@ -95,4 +95,11 @@ public class BookWrap {
     public ChapterWrap getLast() {
         return getChapters().get(getChapters().size() - 1);
     }
+
+    public List<PassageTree> getPassageTree(Library library) {
+        List<PassageTree> trees = getChapters().stream()
+                .map(chapterWrap -> new PassageTree(chapterWrap.toString(), chapterWrap.getPassageTree(library)))
+                .toList();
+        return trees;
+    }
 }

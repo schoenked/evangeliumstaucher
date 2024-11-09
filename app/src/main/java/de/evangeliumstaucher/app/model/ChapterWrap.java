@@ -118,4 +118,11 @@ public class ChapterWrap {
     public int getVersesCount(Library library) {
         return getVerses(library).size();
     }
+
+    public List<PassageTree> getPassageTree(Library library) {
+        List<PassageTree> trees = getVerses(library).stream()
+                .map(v -> new PassageTree(v.toString(), null))
+                .toList();
+        return trees;
+    }
 }

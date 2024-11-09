@@ -37,4 +37,13 @@ public class BibleWrap {
     public BookWrap getLast(Library library) {
         return getBooks().get(getBooks().size() - 1);
     }
+
+    public PassageTree getPassageTree(Library library) {
+        List<PassageTree> passageTree = getBooks(library).stream()
+                .filter(bookWrap -> bible.containsPassage(bookWrap.getBook().getId()))
+                .map(bookWrap -> new PassageTree( bookWrap.getBook().getId(), bookWrap.getPassageTree(library)))
+                .toList();
+
+        return new PassageTree(bible.getName(), passageTree);
+    }
 }

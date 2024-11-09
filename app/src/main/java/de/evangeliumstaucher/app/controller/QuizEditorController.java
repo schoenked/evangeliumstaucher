@@ -1,5 +1,6 @@
 package de.evangeliumstaucher.app.controller;
 
+import de.evangeliumstaucher.app.model.BibleWrap;
 import de.evangeliumstaucher.app.service.QuizService;
 import de.evangeliumstaucher.app.service.UserService;
 import de.evangeliumstaucher.app.viewmodel.PlayerModel;
@@ -63,6 +64,8 @@ public class QuizEditorController extends BaseController {
     public String createQuiz(@PathVariable String bibleId, Model m, @ModelAttribute PlayerModel playerModel) throws ServiceUnavailableException {
         try {
             QuizSetupModel quizSetupModel = new QuizSetupModel();
+            BibleWrap bibleWrap = new BibleWrap(bibleId, library.getBible(bibleId));
+            bibleWrap.getPassageTree(library);
             m.addAttribute("quizSetupModel", quizSetupModel);
             return "quiz_setup.html";
         } catch (Exception e) {
