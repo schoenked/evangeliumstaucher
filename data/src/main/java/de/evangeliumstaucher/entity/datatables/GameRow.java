@@ -30,7 +30,7 @@ public class GameRow {
 
     @Column
     @JsonView
-    Integer name;
+    String name;
 
     @Column(name = "player_count")
     @JsonView

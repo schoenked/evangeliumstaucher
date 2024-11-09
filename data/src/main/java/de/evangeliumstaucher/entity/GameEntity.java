@@ -26,10 +26,12 @@ public class GameEntity {
     private UUID id;
 
     @Column(unique = true) // Set the name field to be unique
+    @NotNull
     private String name;
 
     private String description;
 
+    @NotNull
     private String bibleId;
 
     @ManyToOne
