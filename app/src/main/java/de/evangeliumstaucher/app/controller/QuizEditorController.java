@@ -78,7 +78,7 @@ public class QuizEditorController extends BaseController {
 
         if (gameRepository.existsByName(quizSetupModel.getName())) {
             //check if unique name
-            String message = "Es gibt bereits ein Spiel mit diesem Namen";
+            String message = "Es gibt bereits einen Tauchgang mit diesem Namen";
             m.addAttribute("quizSetupModel", quizSetupModel);
             m.addAttribute("error", message);
             return "quiz_setup.html";
