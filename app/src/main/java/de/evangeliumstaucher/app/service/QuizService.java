@@ -206,7 +206,10 @@ public class QuizService {
     }
 
     public QuizModel get(UUID quizId) {
-        return QuizModel.from(gameRepository.findById(quizId).get(), library);
+        GameEntity gameEntity = gameRepository.findById(quizId).get();
+
+        QuizModel from = QuizModel.from(gameEntity, library);
+        return from;
     }
 
     public Passage getPassage(Long userId, UUID quizId, Integer qId, Part part) {

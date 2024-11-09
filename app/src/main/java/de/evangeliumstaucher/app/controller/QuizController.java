@@ -55,7 +55,7 @@ public class QuizController extends BaseController {
     }
 
     @GetMapping("/quiz/{quizId}/")
-    public String getQuestion(@PathVariable UUID quizId, Model m) {
+    public String getInfo(@PathVariable UUID quizId, Model m) {
         QuizModel quiz = quizService.get(quizId);
         m.addAttribute("quiz", quiz);
         m.addAttribute("quizService", quizService);

@@ -37,6 +37,11 @@ public class QuizModel {
         return QuizModel.builder()
                 .id(gameEntity.getId())
                 .bibleId(gameEntity.getBibleId())
+                .name(gameEntity.getName())
+                .description(gameEntity.getDescription())
+                .tags(gameEntity.getTags())
+                .distanceRatingFactor(gameEntity.getDistanceRatingFactor())
+                .timeRatingFactor(gameEntity.getTimeRatingFactor())
                 .build();
     }
 

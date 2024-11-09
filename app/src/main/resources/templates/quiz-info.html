@@ -10,8 +10,13 @@
 <div th:insert="navbar.html :: navbar"></div>
 <!--/*@thymesVar id="quiz" type="de.evangeliumstaucher.app.viewmodel.QuizModel"*/-->
 <div class="container min-vh-100  py-5 px-4">
-    <h1 th:text="${quiz.name}"/>
+    <h1>Tauchgang</h1>
+    <h2 th:text="${quiz.name}"/>
     <p th:text="${quiz.description}"/>
+    <h4>Tags</h4>
+    <th:block th:each="tag : ${quiz.tags}">
+        <p class="m-0" th:text="|#${tag}|"></p>
+    </th:block>
     <div class="d-grid mb-4 mt-4 ">
         <a class="btn  btn-secondary m-6 text-white  btn-lg btn-block" th:href="${quiz.startUrl}">Eintauchen</a>
     </div>
