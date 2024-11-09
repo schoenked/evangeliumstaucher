@@ -1,0 +1,19 @@
+<!-- Root container for PassageTree rendering -->
+<!--/*@thymesVar id="passageTree" type="de.evangeliumstaucher.app.model.PassageTree"*/-->
+<div th:fragment="renderPassageTree(passageTree)"
+     th:if="${passageTree != null}">
+    <ul>
+        <li>
+            <!-- Display the current PassageTree id -->
+            <span th:text="${passageTree.id}">Passage ID</span>
+
+            <!-- Check if there are child PassageTrees and render them recursively -->
+            <ul th:if="${passageTree.passageTrees != null}">
+                <li th:each="child : ${passageTree.passageTrees}">
+                    <!-- Recursive call to render each child PassageTree -->
+                    <div th:replace="this::renderPassageTree(${child})"></div>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</div>

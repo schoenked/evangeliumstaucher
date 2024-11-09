@@ -1,5 +1,6 @@
 package de.evangeliumstaucher.app.viewmodel;
 
+import de.evangeliumstaucher.app.model.PassageTree;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
@@ -33,5 +34,6 @@ public class QuizSetupModel {
 
     @Size(max = 500)
     private String tags;
+    private PassageTree passageTree;
 
 }

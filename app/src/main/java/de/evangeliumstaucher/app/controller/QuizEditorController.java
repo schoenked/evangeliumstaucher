@@ -65,7 +65,7 @@ public class QuizEditorController extends BaseController {
         try {
             QuizSetupModel quizSetupModel = new QuizSetupModel();
             BibleWrap bibleWrap = new BibleWrap(bibleId, library.getBible(bibleId));
-            bibleWrap.getPassageTree(library);
+            quizSetupModel.setPassageTree(bibleWrap.getPassageTree(library));
             m.addAttribute("quizSetupModel", quizSetupModel);
             return "quiz_setup.html";
         } catch (Exception e) {
