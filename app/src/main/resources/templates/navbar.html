@@ -29,8 +29,8 @@
                         <a class="nav-link" href="/quiz/">Spielen</a>
                     </li>
 
-                    <li class="nav-item" th:if="${quiz}">
-                        <button class="nav-link" data-bs-target="#qrCodeModal" data-bs-toggle="modal" id="share-btn">
+                    <li class="nav-item d-grid" th:if="${quiz}">
+                        <button class="nav-link btn text-start" data-bs-target="#qrCodeModal" data-bs-toggle="modal" id="share-btn">
                             Teilen <i class="fas fa-solid fa-share-nodes"></i>
                         </button>
                     </li>
