@@ -37,7 +37,7 @@ public class SwordBible implements Bible {
     @Override
     public String getCopyright() {
         if (copyright == null) {
-            copyright = (String) swordBook.getBookMetaData().getProperty("About");
+            copyright = (String) swordBook.getBookMetaData().getProperty("ShortCopyright");
         }
         return copyright;
     }
