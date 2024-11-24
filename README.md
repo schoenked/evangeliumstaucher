@@ -3,23 +3,30 @@
 This is the project for the evangeliumsTaucher game.
 It's a web application that uses
 
-- Spring Boot
-- Thymeleaf
-- Bootstrap
-- Hibernate (coming)
-- Sword
+| Framework/Project | Link |
+|-------------------|------|
+| Spring Boot       |   https://spring.io/projects/spring-boot |
+| Thymeleaf         |   https://www.thymeleaf.org |
+| Bootstrap         |   https://getbootstrap.com  |
+| Hibernate         |   https://hibernate.org   |
+| Sword             |   https://www.crosswire.org/sword |
 
-Get started
-
----
 
 ## Getting started
 
 #### System requirements
 
-- Java
+##### Java
 
 For installation [https://adoptium.net/de/temurin/releases/]()
+
+##### Database
+
+By using Hibernate ORM, the project is high flexible at this point.
+The empty database can be set up by the property on startup
+```
+spring.jpa.hibernate.ddl-auto: create
+```
 
 ## Starting the application
 
