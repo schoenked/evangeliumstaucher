@@ -13,6 +13,7 @@
                     data-bs-toggle="collapse"
                     role="button"
                     th:aria-controls="|${book.htmlId}|"
+                    th:data-target-id="|${book.htmlId}|"
                     th:data-bs-target="|#${book.htmlId}|"
                     th:text="${book.abbreviationShort}">
             </button>
@@ -53,11 +54,19 @@
     </th:block>
 
     <script type="text/javascript">
+        function scrollTo(id) {
+            const targetElement = document.getElementById(id);
+            if (targetElement) {
+                targetElement.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
         function loadVersesAjax(loaderid, versesUrl) {
             $.ajax({
                 url: versesUrl,
                 success: function (data) {
                     $('#' + loaderid).html(data);
+                    scrollTo(loaderid);
                 }
             });
         }
@@ -66,6 +75,16 @@
             console.log("beforeunload");
             $('#modalLoading').modal('show');
         })
+
+        document.addEventListener('DOMContentLoaded', function () {
+            // Attach click event to buttons with `data-target-id`
+            document.querySelectorAll('[data-target-id]').forEach(function (button) {
+                button.addEventListener('click', function () {
+                    const targetId = this.getAttribute('data-target-id');
+                    scrollTo(targetId);
+                });
+            });
+        });
     </script>
     <!--loading-->
     <div
