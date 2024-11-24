@@ -25,12 +25,21 @@ public class SwordBible implements Bible {
     String name;
     String description;
     String id;
+    String copyright;
     @ToString.Exclude
     private List<Verse> verses;
 
     private static boolean filterVerses(org.crosswire.jsword.passage.Verse key) {
         return key.getChapter() != 0
                 && key.getVerse() != 0;
+    }
+
+    @Override
+    public String getCopyright() {
+        if (copyright == null) {
+            copyright = (String) swordBook.getBookMetaData().getProperty("About");
+        }
+        return copyright;
     }
 
     @Override
@@ -63,7 +72,7 @@ public class SwordBible implements Bible {
     @Override
     public boolean containsPassage(String id) {
         try {
-            return swordBook.contains(new PassageTally(getSwordBook().getVersification(),id));
+            return swordBook.contains(new PassageTally(getSwordBook().getVersification(), id));
         } catch (NoSuchVerseException e) {
         }
         return false;

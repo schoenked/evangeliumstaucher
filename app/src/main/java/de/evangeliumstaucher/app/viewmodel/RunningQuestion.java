@@ -5,6 +5,7 @@ import de.evangeliumstaucher.app.service.QuizService;
 import de.evangeliumstaucher.entity.GameSessionEntity;
 import de.evangeliumstaucher.entity.QuestionEntity;
 import de.evangeliumstaucher.entity.UserQuestionEntity;
+import de.evangeliumstaucher.repo.model.Bible;
 import de.evangeliumstaucher.repo.service.Library;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
@@ -56,6 +57,10 @@ public class RunningQuestion {
         } else {
             throw new IllegalArgumentException("verseId is not valid " + verseId);
         }
+    }
+
+    public Bible getBible() {
+        return verse.getBible();
     }
 
     public String getTimespan() {

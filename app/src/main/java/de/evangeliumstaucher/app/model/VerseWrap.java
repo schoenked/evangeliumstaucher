@@ -1,5 +1,6 @@
 package de.evangeliumstaucher.app.model;
 
+import de.evangeliumstaucher.repo.model.Bible;
 import de.evangeliumstaucher.repo.model.Verse;
 import de.evangeliumstaucher.repo.service.Library;
 import lombok.Data;
@@ -87,4 +88,7 @@ public class VerseWrap {
         return verse.getTeXTLong().replace(":", ",");
     }
 
+    public Bible getBible() {
+        return chapter.getBible();
+    }
 }

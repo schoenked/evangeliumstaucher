@@ -19,4 +19,6 @@ public interface Bible extends Model {
     Verse getVerse(String verseId);
 
     boolean containsPassage(String id);
+
+    String getCopyright();
 }

@@ -1,5 +1,6 @@
 package de.evangeliumstaucher.app.model;
 
+import de.evangeliumstaucher.repo.model.Bible;
 import de.evangeliumstaucher.repo.model.Chapter;
 import de.evangeliumstaucher.repo.model.Verse;
 import de.evangeliumstaucher.repo.service.Library;
@@ -124,5 +125,9 @@ public class ChapterWrap {
                 .map(v -> new PassageTree(v.getVerse().getId(), null))
                 .toList();
         return trees;
+    }
+
+    public Bible getBible() {
+        return book.getBible().getBible();
     }
 }
