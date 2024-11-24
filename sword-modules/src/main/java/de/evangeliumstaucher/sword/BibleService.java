@@ -50,7 +50,7 @@ public class BibleService {
         return null;
     }
 
-    private boolean filterBibles(Book book) {
+    public static boolean filterBibles(Book book) {
         try {
             //error in sword lib
             if (book.getBookCategory() != null && book.getBookCategory() == BookCategory.BIBLE) {
@@ -62,7 +62,7 @@ public class BibleService {
         return false;
     }
 
-    private Bible toBible(@Nullable Book book) {
+    public static Bible toBible(@Nullable Book book) {
         if (book instanceof SwordBook swordBook) {
 
             SwordBible swordBible = SwordBible
@@ -84,7 +84,7 @@ public class BibleService {
         return new String(Base64.getDecoder().decode(name));
     }
 
-    private String encodeName(String coded) {
+    private static String encodeName(String coded) {
         return Base64.getEncoder().encodeToString(coded.getBytes());
     }
 
@@ -139,8 +139,8 @@ public class BibleService {
             List<Book> books = installer.getBooks();
             bibleStream = books
                     .stream()
-                    .filter(this::filterBibles)
-                    .map(this::toBible);
+                    .filter(BibleService::filterBibles)
+                    .map(BibleService::toBible);
         } catch (Exception e) {
             //   log.error(e.getMessage(), e);
         }

@@ -1,6 +1,9 @@
 package de.evangeliumstaucher.sword;
 
-import org.crosswire.jsword.book.*;
+import org.crosswire.jsword.book.BookData;
+import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.Books;
+import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.book.install.InstallException;
 import org.crosswire.jsword.book.install.InstallManager;
 import org.crosswire.jsword.book.install.Installer;
@@ -17,11 +20,13 @@ import static com.google.common.truth.Truth.assertThat;
 public class SwordTest {
 
     @Test
-    public void testLoaqdModule() throws NoSuchKeyException, BookException, InstallException, InterruptedException {
+    public void testLoadModule() throws NoSuchKeyException, BookException, InstallException, InterruptedException {
         InstallManager imanager = new InstallManager();
         Installer i = imanager.getInstaller("CrossWire");
-        List<SwordBook> books = i.getBooks(BookFilters.getBibles())
-                .stream().filter(b -> b instanceof SwordBook)
+        List<SwordBook> books = i.getBooks()
+                .stream()
+                .filter(BibleService::filterBibles)
+                .filter(b -> b instanceof SwordBook)
                 .map(book -> (SwordBook) book)
                 .filter(swordBook -> {
                     return swordBook.getBookMetaData().getName().equals("Neue evangelistische Übersetzung");
@@ -64,5 +69,21 @@ public class SwordTest {
             throw new RuntimeException(e);
         }
 
+    }
+
+    @Test
+    public void testCopyright() {
+        new InstallManager().getInstaller("CrossWire")
+                .getBooks()
+                .stream()
+                .filter(b -> b instanceof SwordBook)
+                .filter(BibleService::filterBibles)
+                .map(book -> (SwordBook) book)
+                .map(swordBook -> BibleService.toBible(swordBook))
+                .map(bible -> {
+                    System.out.println("testCopyright " + bible.getCopyright());
+                    return  bible;
+                }).toList();
+                //.allMatch(bible -> bible.getCopyright().length() > 2);
     }
 }
