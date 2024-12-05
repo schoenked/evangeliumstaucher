@@ -13,7 +13,9 @@
     <name>parent</name>
     <packaging>pom</packaging>
     <properties>
-        <java.version>22</java.version>
+        <java.version>23</java.version>
+        <!--do annotation processing (needed since Java 23-->
+        <maven.compiler.proc>full</maven.compiler.proc>
     </properties>
     <modules>
         <module>data</module>

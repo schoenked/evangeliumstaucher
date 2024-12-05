@@ -151,7 +151,7 @@
                         <configuration>
                             <from>
                                 <image>
-                                    eclipse-temurin:22-jre
+                                    eclipse-temurin:23-jre-alpine
                                 </image>
                             </from>
                             <to>
