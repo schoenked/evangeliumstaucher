@@ -4,12 +4,16 @@
      th:if="${passageTree != null}">
     <ul>
         <li>
+            <input class="btn-check p-0"  type="checkbox" value="" th:id="|add_${passageTree.id}|">
+            <label class="btn btn-outline-success" th:for="|add_${passageTree.id}|">+</label>
+            <input class="btn-check p-0"  type="checkbox" value="" th:id="|sub_${passageTree.id}|">
+            <label class="btn btn-outline-danger" th:for="|sub_${passageTree.id}|">-</label>
             <!-- Display the current PassageTree id -->
-            <span th:text="${passageTree.id}">Passage ID</span>
+            <span class="form-check-label" th:for="|add_${passageTree.id}|" th:text="${passageTree.id}">Passage ID</span>
 
             <!-- Check if there are child PassageTrees and render them recursively -->
-            <ul th:if="${passageTree.passageTrees != null}">
-                <li th:each="child : ${passageTree.passageTrees}">
+            <ul th:if="${passageTree.passageTrees != null}" class="list-group">
+                <li th:each="child : ${passageTree.passageTrees}" class="list-group-item">
                     <!-- Recursive call to render each child PassageTree -->
                     <div th:replace="this::renderPassageTree(${child})"></div>
                 </li>
