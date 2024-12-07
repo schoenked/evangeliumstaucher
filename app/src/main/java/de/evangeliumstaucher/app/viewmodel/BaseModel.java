@@ -16,6 +16,8 @@ public class BaseModel {
 
     public String getHtmlIdEscaped() {
         String outreturn = StringUtils.replace(getHtmlId(), ".", "\\.");
+        outreturn = StringUtils.replace(outreturn, "(", "\\(");
+        outreturn = StringUtils.replace(outreturn, ")", "\\)");
         return outreturn;
     }
 
