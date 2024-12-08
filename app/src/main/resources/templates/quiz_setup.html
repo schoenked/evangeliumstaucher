@@ -11,55 +11,55 @@
 <div class="container mt-5">
     <h1 class="text-primary"><i aria-hidden="true" class="fa fa-plus-square"></i> Erstelle einen neuen Tauchgang</h1>
     <!--/*@thymesVar id="quizSetupModel" type="de.evangeliumstaucher.app.viewmodel.QuizSetupModel"*/-->
-        <form method="post" th:action="submit" th:object="${quizSetupModel}">
-            <div class="input-group input-group-lg mb-3">
-                <span class=" input-group-text" id="label-name">Name</span>
-                <input aria-describedby="label-name" class="form-control" id="quizName"
-                       placeholder="Beschreibe es kurz"
-                       required
-                       th:field="*{name}" type="text">
-            </div>
+    <form method="post" th:action="submit" th:object="${quizSetupModel}">
+        <div class="input-group input-group-lg mb-3">
+            <span class=" input-group-text" id="label-name">Name</span>
+            <input aria-describedby="label-name" class="form-control" id="quizName"
+                   placeholder="Beschreibe es kurz"
+                   required
+                   th:field="*{name}" type="text">
+        </div>
 
-            <div class="input-group mb-3">
-                <span class=" input-group-text" id="label-description">Beschreibung</span>
-                <textarea class="form-control" id="description"
-                          placeholder="Beschreibe hier den neuen Tauchgang etwas genauer" rows="4"
-                          th:field="*{description}"></textarea>
-            </div>
+        <div class="input-group mb-3">
+            <span class=" input-group-text" id="label-description">Beschreibung</span>
+            <textarea class="form-control" id="description"
+                      placeholder="Beschreibe hier den neuen Tauchgang etwas genauer" rows="4"
+                      th:field="*{description}"></textarea>
+        </div>
 
-            <div class="input-group mb-3">
-                <span class=" input-group-text" id="label-tags">Tags</span>
-                <input class="form-control" id="tags" placeholder="#solusChristus,..." th:field="*{tags}" type="text">
-            </div>
-            <div class="accordion" id="accordionExample">
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="headingOne">
-                        <button aria-controls="collapseOne" aria-expanded="false" class="accordion-button collapsed"
-                                data-bs-target="#collapseOne" data-bs-toggle="collapse" type="button">
-                            Erweiterte Konfiguration
-                        </button>
-                    </h2>
-                    <div aria-labelledby="headingOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample"
-                         id="collapseOne">
-                        <div class="accordion-body">
+        <div class="input-group mb-3">
+            <span class=" input-group-text" id="label-tags">Tags</span>
+            <input class="form-control" id="tags" placeholder="#solusChristus,..." th:field="*{tags}" type="text">
+        </div>
+        <div class="accordion" id="accordionExample">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingOne">
+                    <button aria-controls="collapseOne" aria-expanded="false" class="accordion-button collapsed"
+                            data-bs-target="#collapseOne" data-bs-toggle="collapse" type="button">
+                        Erweiterte Konfiguration
+                    </button>
+                </h2>
+                <div aria-labelledby="headingOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample"
+                     id="collapseOne">
+                    <div class="accordion-body">
 
-                            <div class="input-group input-group-text d-flex w-100 mb-3">
-                                <label
-                                        for="countVerses"
-                                        id="label-countVerses"
-                                >Anzahl der Verse</label>
-                                <input class="form-conrol form-range mt-2"
-                                       id="countVerses"
-                                       max="100"
-                                       min="1"
-                                       oninput="this.nextElementSibling.value = this.value" step="1"
-                                       th:field="*{countVerses}"
-                                       type="range">
-                                <output
-                                        class="form-control form-control-plaintext"
-                                        th:text="${quizSetupModel.countVerses}">10
-                                </output>
-                                <!-- Default value -->
+                        <div class="input-group input-group-text d-flex w-100 mb-3">
+                            <label
+                                    for="countVerses"
+                                    id="label-countVerses"
+                            >Anzahl der Verse</label>
+                            <input class="form-conrol form-range mt-2"
+                                   id="countVerses"
+                                   max="100"
+                                   min="1"
+                                   oninput="this.nextElementSibling.value = this.value" step="1"
+                                   th:field="*{countVerses}"
+                                   type="range">
+                            <output
+                                    class="form-control form-control-plaintext"
+                                    th:text="${quizSetupModel.countVerses}">10
+                            </output>
+                            <!-- Default value -->
                         </div>
                         <h6>Bewertung</h6>
                         <p>
@@ -101,10 +101,12 @@
 
                         <div class="form-group mb-3">
                             <label>Passagen: </label>
-
-                            <!-- Use the fragment to render a PassageTree instance passed as model -->
-                            <div th:replace="fragment_passageTree.html :: renderPassageTree(${quizSetupModel.passageTree})"></div>
-
+                            <ul class="tree">
+                                <li>
+                                    <!-- Use the fragment to render a PassageTree instance passed as model -->
+                                    <div th:replace="fragment_passageTree.html :: renderPassageTree(${quizSetupModel.passageTree})"></div>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </div>
