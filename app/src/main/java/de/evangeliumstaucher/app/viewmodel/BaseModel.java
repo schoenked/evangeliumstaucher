@@ -1,5 +1,6 @@
 package de.evangeliumstaucher.app.viewmodel;
 
+import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,6 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 @NoArgsConstructor
 public class BaseModel {
 
+    @NotEmpty
     public String id;
 
     public String getHtmlIdEscaped() {

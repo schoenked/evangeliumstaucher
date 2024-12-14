@@ -15,9 +15,9 @@
     </summary>
     <!-- Check if there are child PassageTrees and render them recursively -->
     <ul class="list-group" th:if="${passageTree.passageTrees != null}">
-        <li class="list-group-item" th:each="child : ${passageTree.passageTrees}">
-            <!-- Recursive call to render each child PassageTree -->
-            <div th:replace="this::renderPassageTree(${child})"></div>
+        <li class="list-group-item" th:each="child : ${passageTree.passageTrees}"
+            th:data-passages="|${child.json}|">
+
         </li>
     </ul>
 </details>

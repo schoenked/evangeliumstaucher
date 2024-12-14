@@ -107,6 +107,34 @@
                                     <div th:replace="fragment_passageTree.html :: renderPassageTree(${quizSetupModel.passageTree})"></div>
                                 </li>
                             </ul>
+
+                            <script>
+                                document.addEventListener("DOMContentLoaded", function () {
+                                    document.querySelectorAll(".list-group-item").forEach(summary => {
+                                        summary.addEventListener("click", async function () {
+                                            const data = this.dataset.passages ;
+
+                                            // Check if already loaded
+                                            if (this.innerHTML.trim() !== "") return;
+
+                                            // Fetch child nodes via AJAX
+                                            const response = (await fetch(`/quiz/create/passagetree`, {
+                                                method: "POST",
+                                                headers: {
+                                                    'Content-Type': 'application/json',
+                                                    'X-XSRF-TOKEN': '[[${_csrf.token}]]'
+                                                },
+                                                body: data
+                                            }));
+                                            if (response.ok) {
+                                                this.innerHTML = await response.text();
+                                            } else {
+                                                this.innerHTML = `<li class="list-group-item text-danger">Fehler beim Laden aufgetreten.</li>`;
+                                            }
+                                        });
+                                    });
+                                });
+                            </script>
                         </div>
                     </div>
                 </div>

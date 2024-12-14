@@ -43,6 +43,9 @@ public class GameEntity {
     @CreationTimestamp
     private OffsetDateTime createdAt;
 
+    @ElementCollection(fetch = FetchType.LAZY)
+    @CollectionTable(name = "game_tags", joinColumns = @JoinColumn(name = "game_id"))
+    @Column(name = "tag")
     private List<String> tags;
     @NotNull
     private int distanceRatingFactor;

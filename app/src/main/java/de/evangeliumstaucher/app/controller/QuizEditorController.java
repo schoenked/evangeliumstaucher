@@ -1,6 +1,7 @@
 package de.evangeliumstaucher.app.controller;
 
 import de.evangeliumstaucher.app.model.BibleWrap;
+import de.evangeliumstaucher.app.model.PassageTree;
 import de.evangeliumstaucher.app.service.QuizService;
 import de.evangeliumstaucher.app.service.UserService;
 import de.evangeliumstaucher.app.viewmodel.PlayerModel;
@@ -17,10 +18,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.naming.ServiceUnavailableException;
 
@@ -88,6 +86,12 @@ public class QuizEditorController extends BaseController {
         }
         QuizModel quizModel = quizService.createQuiz(bibleId, quizSetupModel, playerModel);
         return "redirect:" + quizModel.getUrl();
+    }
+
+    @PostMapping("/quiz/create/passagetree")
+    public String renderPassageTree( @RequestBody PassageTree passageTree, Model m) {
+        m.addAttribute("passageTree", passageTree);
+        return "fragment_passageTree.html";
     }
 
     public void addWarning(Model m) {
