@@ -109,40 +109,51 @@
                             </ul>
 
                             <script>
-$(document).ready(function () {
-    // Use event delegation on a specific container
-    $('summary').on('click', async function () {
-        const summary = $(this);
-        console.log("clicked in tree");
-        const parent = summary.parent();
-        parent.find('ul > .list-group-item').each(function () {
-            const loader = $(this);
-            console.log("selected loader " + loader.html());
-            const data = JSON.stringify(loader.data().passages);
+                                function bindSummaryClick() {
+                                    // Use event delegation on a specific container if necessary
+                                    $('summary').off('click').on('click', async function () {
+                                        const summary = $(this);
+                                        console.log("clicked in tree");
+                                        const parent = summary.parent();
+                                        parent.find('ul > .list-group-item').each(function () {
+                                            const loader = $(this);
+                                            console.log("selected loader " + loader.html());
+                                            const data = JSON.stringify(loader.data().passages);
 
-            // Check if already loaded
-            if (loader.html().trim() !== "") return;
+                                            // Check if already loaded
+                                            if (loader.html().trim() !== "") return;
 
-            // Fetch child nodes via AJAX
-            $.ajax({
-                url: '/quiz/create/passagetree',
-                method: 'POST',
-                contentType: 'application/json',
-                headers: {
-                    'X-XSRF-TOKEN': '[[${_csrf.token}]]'
-                },
-                data: data,
-                success: function (html) {
-                    loader.html(html);
-                },
-                error: function () {
-                    loader.html('<li class="list-group-item text-danger">Fehler beim Laden aufgetreten.</li>');
-                    console.error("Error fetching data:", error);
-                }
-            });
-        });
-    });
-});
+                                            // Fetch child nodes via AJAX
+                                            $.ajax({
+                                                url: '/quiz/create/passagetree',
+                                                method: 'POST',
+                                                contentType: 'application/json',
+                                                headers: {
+                                                    'X-XSRF-TOKEN': '[[${_csrf.token}]]'
+                                                },
+                                                data: data,
+                                                success: function (html) {
+                                                    loader.html(html);
+                                                    updateTree()
+                                                },
+                                                error: function () {
+                                                    loader.html('<li class="list-group-item text-danger">Fehler beim Laden aufgetreten.</li>');
+                                                    console.error("Error fetching data:", error);
+                                                }
+                                            });
+                                        });
+                                    });
+                                }
+
+                                // Initialize listeners when the page loads
+                                $(document).ready(function () {
+                                    bindSummaryClick();
+                                });
+
+                                // Example of rebinding after setting innerHTML
+                                function updateTree() {
+                                    bindSummaryClick(); // Rebind listeners
+                                }
                             </script>
                         </div>
                     </div>
