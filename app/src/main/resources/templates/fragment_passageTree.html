@@ -1,18 +1,18 @@
 <!-- Root container for PassageTree rendering -->
 <!--/*@thymesVar id="passageTree" type="de.evangeliumstaucher.app.model.PassageTree"*/-->
 <details th:fragment="renderPassageTree(passageTree)"
-         th:if="${passageTree != null}">
+         th:if="${passageTree != null}" class="list-group-details">
     <summary>
+        <!-- Display the current PassageTree id -->
+        <span class="ms-1 form-check-label" th:for="|add_${passageTree.id}|"
+              th:text="${passageTree.id}">Passage ID</span>
         <input class="btn-check p-0" th:id="|add_${passageTree.id}|" th:name="|add_${passageTree.id}|" type="checkbox"
                value="">
         <label class="btn btn-outline-success" th:for="|add_${passageTree.id}|">+</label>
         <input class="btn-check p-0" th:id="|sub_${passageTree.id}|" th:name="|sub_${passageTree.id}|" type="checkbox"
                value="">
         <label class="btn btn-outline-danger" th:for="|sub_${passageTree.id}|">-</label>
-        <!-- Display the current PassageTree id -->
-        <span class="form-check-label" th:for="|add_${passageTree.id}|"
-              th:text="${passageTree.id}">Passage ID</span>
-    </summary>
+       </summary>
     <!-- Check if there are child PassageTrees and render them recursively -->
     <ul class="list-group" th:if="${passageTree.passageTrees != null}">
         <li class="list-group-item" th:each="child : ${passageTree.passageTrees}"

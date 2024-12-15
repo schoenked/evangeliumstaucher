@@ -90,6 +90,7 @@ public class QuizEditorController extends BaseController {
 
     @PostMapping("/quiz/create/passagetree")
     public String renderPassageTree( @RequestBody PassageTree passageTree, Model m) {
+        log.trace("renderPassageTree rendering " + passageTree.getId());
         m.addAttribute("passageTree", passageTree);
         return "fragment_passageTree.html";
     }

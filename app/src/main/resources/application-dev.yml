@@ -13,4 +13,5 @@ spring:
             ddl-auto: update
 logging:
     level:
+        de.evangeliumstaucher: trace
         web: trace
