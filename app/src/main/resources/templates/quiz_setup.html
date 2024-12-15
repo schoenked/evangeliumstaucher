@@ -114,39 +114,32 @@ $(document).ready(function () {
     $('summary').on('click', async function () {
         const summary = $(this);
         console.log("clicked in tree");
-
-        // Find the parent and query its descendants
         const parent = summary.parent();
-        parent.find('ul > .list-group-item').each(async function () {
+        parent.find('ul > .list-group-item').each(function () {
             const loader = $(this);
             console.log("selected loader " + loader.html());
-            const data = loader.data('passages');
-            console.log("rendering: " + data);
+            const data = JSON.stringify(loader.data().passages);
 
             // Check if already loaded
             if (loader.html().trim() !== "") return;
 
             // Fetch child nodes via AJAX
-            try {
-                const response = await fetch(`/quiz/create/passagetree`, {
-                    method: "POST",
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-XSRF-TOKEN': '[[${_csrf.token}]]'
-                    },
-                    body: data
-                });
-
-                if (response.ok) {
-                    const html = await response.text();
+            $.ajax({
+                url: '/quiz/create/passagetree',
+                method: 'POST',
+                contentType: 'application/json',
+                headers: {
+                    'X-XSRF-TOKEN': '[[${_csrf.token}]]'
+                },
+                data: data,
+                success: function (html) {
                     loader.html(html);
-                } else {
+                },
+                error: function () {
                     loader.html('<li class="list-group-item text-danger">Fehler beim Laden aufgetreten.</li>');
+                    console.error("Error fetching data:", error);
                 }
-            } catch (error) {
-                console.error("Error fetching data:", error);
-                loader.html('<li class="list-group-item text-danger">Fehler beim Laden aufgetreten.</li>');
-            }
+            });
         });
     });
 });
