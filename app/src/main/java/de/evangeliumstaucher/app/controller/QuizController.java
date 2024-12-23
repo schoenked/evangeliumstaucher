@@ -61,10 +61,10 @@ public class QuizController extends BaseController {
         m.addAttribute("quizService", quizService);
         DatatableViewModel scoreTableModel = new DatatableViewModel();
         List<DatatableColumn> columns = List.of(
-                new DatatableColumn("Punkte", "points"),
+                new DatatableColumn("Punkte", "points", "num"),
                 new DatatableColumn("Spieler", "player"),
-                new DatatableColumn("Fortschritt", "progress"),
-                new DatatableColumn("am", "date")
+                new DatatableColumn("Fortschritt", "progress", "num-fmt"),
+                new DatatableColumn("am", "date","date")
         );
         scoreTableModel.setColumns(columns);
         scoreTableModel.setAutoReloader(true);
@@ -167,10 +167,10 @@ public class QuizController extends BaseController {
         DatatableViewModel questionScoreTable = new DatatableViewModel();
         List<DatatableColumn> columns = List.of(
                 new DatatableColumn("Spieler", "player"),
-                new DatatableColumn("Punkte", "points"),
-                new DatatableColumn("Distanz", "diffVerses"),
-                new DatatableColumn("Dauer", "duration"),
-                new DatatableColumn("Gesamt", "gesamt")
+                new DatatableColumn("Punkte", "points", "num"),
+                new DatatableColumn("Distanz", "diffVerses","num" ),
+                new DatatableColumn("Dauer", "duration","num"),
+                new DatatableColumn("Gesamt", "gesamt","num")
         );
         questionScoreTable.setColumns(columns);
         questionScoreTable.setUrl("/quiz/datatable/questionscore/" + id);

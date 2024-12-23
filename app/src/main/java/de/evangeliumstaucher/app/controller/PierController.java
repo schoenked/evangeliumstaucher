@@ -46,7 +46,7 @@ public class PierController extends BaseController {
                 new DatatableColumn("Name", "name"),
                 new DatatableColumn("von", "creator"),
                 new DatatableColumn("Datum", "createdAt", "date"),
-                new DatatableColumn("Spieler", "playerCount")
+                new DatatableColumn("Spieler", "playerCount","num")
         );
         modelTrending.setColumns(columns);
         modelTrending.setUrl("/quiz/datatable/trending");
@@ -56,7 +56,7 @@ public class PierController extends BaseController {
         List<DatatableColumn> columnsMyDives = List.of(
                 new DatatableColumn("Name", "name"),
                 new DatatableColumn("Startzeit", "startedAt", "datetime"),
-                new DatatableColumn("Fortschritt", "progress")
+                new DatatableColumn("Fortschritt", "progress","num-fmt" )
         );
         modelMyDives.setColumns(columnsMyDives);
         modelMyDives.setUrl("/quiz/datatable/myDives");
