@@ -70,7 +70,6 @@ public class QuizService {
     }
 
     public String getShareUrl(QuizModel quizModel) {
-        log.warn("hostname: {}", hostname);
         return hostname + quizModel.getUrl();
     }
 

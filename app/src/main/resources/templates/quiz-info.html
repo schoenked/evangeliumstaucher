@@ -4,6 +4,10 @@
 <head>
     <head th:insert="~{head.html :: head}"/>
     <title>evangeliumstaucher</title>
+
+    <link href="https://cdn.datatables.net/2.0.7/css/dataTables.dataTables.min.css" rel="stylesheet"></link>
+    <script src="https://cdn.datatables.net/2.0.7/js/dataTables.min.js"></script>
+    <script src="https://momentjs.com/downloads/moment.js"></script>
 </head>
 <body>
 <!-- Importing NavBar -->
@@ -22,12 +26,22 @@
     <div class="d-grid mb-4 mt-4 ">
         <a class="btn  btn-secondary m-6 text-white  btn-lg btn-block" th:href="${quiz.startUrl}">Eintauchen</a>
     </div>
+
     <div class="card">
         <div class="card-header">
             <span class="card-title">Teilen</span>
         </div>
         <div class="card-body">
             <div th:insert="fragment-share.html :: share (${quiz})"></div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <span class="card-title">Scores</span>
+        </div>
+        <div class="card-body">
+            <div th:insert="datatable.html :: datatable (${scoreTable})"></div>
         </div>
     </div>
 </div>
