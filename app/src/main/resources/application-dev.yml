@@ -1,4 +1,4 @@
-hostname: https://reinaldus.fritz.box:8443
+myHostname: https://reinaldus.fritz.box:8443
 server:
     port: 8443
     ssl:

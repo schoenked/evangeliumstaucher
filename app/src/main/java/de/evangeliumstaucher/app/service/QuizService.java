@@ -20,6 +20,7 @@ import de.evangeliumstaucher.repo.service.Library;
 import jakarta.annotation.Nonnull;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.Nullable;
@@ -33,6 +34,7 @@ import static org.springframework.web.client.HttpClientErrorException.BadRequest
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class QuizService {
     public static final int COUNT_CONTEXT_EXTENSIONS = 6;
     private final Library library;
@@ -42,7 +44,7 @@ public class QuizService {
     private final UserQuestionRepository userQuestionRepository;
     private final GameSessionRepository gameSessionRepository;
     private final HashMap<String, RunningQuestion> runningQuestionHashMap = new HashMap<>();
-    @Value("${hostname}")
+    @Value("${myHostname}")
     private String hostname;
 
     @Nonnull
@@ -68,6 +70,7 @@ public class QuizService {
     }
 
     public String getShareUrl(QuizModel quizModel) {
+        log.warn("hostname: {}", hostname);
         return hostname + quizModel.getUrl();
     }
 
