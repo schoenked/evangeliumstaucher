@@ -37,7 +37,7 @@ import java.util.UUID;
                                / 
                                (   SELECT COUNT (*) 
                                FROM question_entity qe
-                               WHERE qe.game_entity_id = g.id)
+                               WHERE qe.game_entity_id = gse.game_id)
                                 * 100) AS INT) || '%' 
                           progress,
                           gse.game_id quizId,
@@ -86,7 +86,7 @@ public class QuizScores {
 
     @Column
     @JsonView
-    private Integer progress;
+    private String progress;
 
     @Column
     @JsonView

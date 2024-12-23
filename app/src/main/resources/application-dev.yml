@@ -14,4 +14,4 @@ spring:
 logging:
     level:
         de.evangeliumstaucher: trace
-        web: trace
+        web: info
