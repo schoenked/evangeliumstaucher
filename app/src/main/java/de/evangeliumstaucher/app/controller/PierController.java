@@ -24,14 +24,12 @@ public class PierController extends BaseController {
     private final QuizService quizService;
     private final UserService userService;
     private final HttpSession session;
-    private final TrendingGamesDatatablesRepository gameRepository;
 
     public PierController(Library library, QuizService quizService, UserService userService, HttpSession session, TrendingGamesDatatablesRepository gameRepository) {
         super(library);
         this.quizService = quizService;
         this.userService = userService;
         this.session = session;
-        this.gameRepository = gameRepository;
     }
 
     @ModelAttribute("playerModel")
@@ -43,6 +41,7 @@ public class PierController extends BaseController {
     public String get(Model m) {
         DatatableViewModel modelTrending = new DatatableViewModel();
         List<DatatableColumn> columns = List.of(
+                new DatatableColumn("Pos.", "position", "num"),
                 new DatatableColumn("Name", "name"),
                 new DatatableColumn("von", "creator"),
                 new DatatableColumn("Datum", "createdAt", "date"),
