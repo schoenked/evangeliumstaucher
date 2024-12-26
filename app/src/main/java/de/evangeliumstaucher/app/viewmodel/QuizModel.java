@@ -31,6 +31,8 @@ public class QuizModel {
     private List<String> tags;
     private int distanceRatingFactor;
     private int timeRatingFactor;
+    private String whitelist;
+    private String blacklist;
 
 
     public static QuizModel from(GameEntity gameEntity, Library library) {
@@ -52,7 +54,7 @@ public class QuizModel {
         return bible;
     }
 
-    public List<Verse> createVerses(QuizService quizService, int countVerses) {
+    public List<Verse> createVerses(QuizService quizService, int countVerses, String whitelist, String blacklist) {
         if (verses == null) {
             verses = new ArrayList<>();
         }
@@ -80,7 +82,9 @@ public class QuizModel {
                 null,
                 tags,
                 distanceRatingFactor,
-                timeRatingFactor
+                timeRatingFactor,
+                whitelist,
+                blacklist
                 );
     }
 

@@ -51,4 +51,6 @@ public class GameEntity {
     private int distanceRatingFactor;
     @NotNull
     private int timeRatingFactor;
+    private String whitelist;
+    private String blacklist;
 }

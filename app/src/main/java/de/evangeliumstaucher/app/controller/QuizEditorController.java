@@ -13,6 +13,7 @@ import de.evangeliumstaucher.repoDatatables.TrendingGamesDatatablesRepository;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.coyote.BadRequestException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -21,6 +22,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.naming.ServiceUnavailableException;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 @Slf4j
@@ -75,7 +78,7 @@ public class QuizEditorController extends BaseController {
     }
 
     @PostMapping("/quiz/create/{bibleId}/submit")
-    public String submitQuiz(@PathVariable String bibleId, @Valid @ModelAttribute QuizSetupModel quizSetupModel, Model m, @ModelAttribute PlayerModel playerModel) throws BadRequestException {
+    public String submitQuiz(@PathVariable String bibleId, @Valid @ModelAttribute QuizSetupModel quizSetupModel, @RequestParam Map<String, String> allRequestParams, Model m, @ModelAttribute PlayerModel playerModel) throws BadRequestException {
 
         if (gameRepository.existsByName(quizSetupModel.getName())) {
             //check if unique name
@@ -84,12 +87,21 @@ public class QuizEditorController extends BaseController {
             m.addAttribute("error", message);
             return "quiz_setup.html";
         }
-        QuizModel quizModel = quizService.createQuiz(bibleId, quizSetupModel, playerModel);
+        String whitelist = allRequestParams.entrySet().stream()
+                .filter(e -> e.getKey().startsWith("add_") && e.getValue().equals("true"))
+                .map(e -> StringUtils.substring(e.getKey(), 4))
+                .collect(Collectors.joining(","));
+        String blacklist = allRequestParams.entrySet().stream()
+                .filter(e -> e.getKey().startsWith("sub_") && e.getValue().equals("true"))
+                .map(e -> StringUtils.substring(e.getKey(), 4))
+                .collect(Collectors.joining(","));
+
+        QuizModel quizModel = quizService.createQuiz(bibleId, quizSetupModel, playerModel, whitelist, blacklist);
         return "redirect:" + quizModel.getUrl();
     }
 
     @PostMapping("/quiz/create/passagetree")
-    public String renderPassageTree( @RequestBody PassageTree passageTree, Model m) {
+    public String renderPassageTree(@RequestBody PassageTree passageTree, Model m) {
         log.trace("renderPassageTree rendering " + passageTree.getId());
         m.addAttribute("passageTree", passageTree);
         return "fragment_passageTree.html";

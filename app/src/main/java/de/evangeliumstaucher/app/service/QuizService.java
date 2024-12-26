@@ -73,7 +73,7 @@ public class QuizService {
         return hostname + quizModel.getUrl();
     }
 
-    public QuizModel createQuiz(String bibleId, QuizSetupModel quizSetupModel, PlayerModel creator) {
+    public QuizModel createQuiz(String bibleId, QuizSetupModel quizSetupModel, PlayerModel creator, String whitelist, String blacklist) {
         QuizModel quizModel = null;
         BibleWrap bible = new BibleWrap(bibleId, library.getBible(bibleId));
 
@@ -86,8 +86,10 @@ public class QuizService {
                 .distanceRatingFactor(quizSetupModel.getDistanceAttribute())
                 .timeRatingFactor(quizSetupModel.getTimeAttribute())
                 .tags(getTags(quizSetupModel.getTags()))
+                .whitelist(whitelist)
+                .blacklist(blacklist)
                 .build();
-        List<Verse> verses = quizModel.createVerses(this, quizSetupModel.getCountVerses());
+        List<Verse> verses = quizModel.createVerses(this, quizSetupModel.getCountVerses(),whitelist,blacklist);
         GameEntity e = gameRepository.save(quizModel.getEntity());
         //apply generated uuid
         quizModel.setId(e.getId());

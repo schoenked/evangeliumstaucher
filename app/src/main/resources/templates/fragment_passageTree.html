@@ -7,10 +7,10 @@
         <span class="ms-1 form-check-label" th:for="|add_${passageTree.id}|"
               th:text="${passageTree.id}">Passage ID</span>
         <input class="btn-check p-0" th:id="|add_${passageTree.id}|" th:name="|add_${passageTree.id}|" type="checkbox"
-               value="">
+               value="true">
         <label class="btn btn-outline-success" th:for="|add_${passageTree.id}|">+</label>
         <input class="btn-check p-0" th:id="|sub_${passageTree.id}|" th:name="|sub_${passageTree.id}|" type="checkbox"
-               value="">
+               value="true">
         <label class="btn btn-outline-danger" th:for="|sub_${passageTree.id}|">-</label>
        </summary>
     <!-- Check if there are child PassageTrees and render them recursively -->

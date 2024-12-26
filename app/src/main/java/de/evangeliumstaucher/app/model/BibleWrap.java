@@ -44,6 +44,6 @@ public class BibleWrap {
                 .map(bookWrap -> new PassageTree( bookWrap.getBook().getId(), bookWrap.getPassageTree(library)))
                 .toList();
 
-        return new PassageTree(bible.getName(), passageTree);
+        return new PassageTree("Buchverzeichnis", passageTree);
     }
 }

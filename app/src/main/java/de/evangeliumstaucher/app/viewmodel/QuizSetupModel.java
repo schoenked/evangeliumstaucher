@@ -1,5 +1,6 @@
 package de.evangeliumstaucher.app.viewmodel;
 
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import de.evangeliumstaucher.app.model.PassageTree;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -7,7 +8,9 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Data
 public class QuizSetupModel {
@@ -30,10 +33,21 @@ public class QuizSetupModel {
     private int countVerses = 10;
 
     @Size(max = 10000000)
+
     private List<String> passages;
 
     @Size(max = 500)
     private String tags;
     private PassageTree passageTree;
 
+    public Map<String,Object> unknownProperties = new HashMap<>();
+
+    // Method to capture unknown properties
+    @JsonAnySetter
+    public void setUnknownProperty(String key, Object value) {
+        unknownProperties.put(key, value);
+    }
 }
+
+
+
