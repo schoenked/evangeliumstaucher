@@ -64,9 +64,8 @@ public class QuizEditorController extends BaseController {
     @GetMapping("/quiz/create/{bibleId}/")
     public String createQuiz(@PathVariable String bibleId, Model m, @ModelAttribute PlayerModel playerModel) throws ServiceUnavailableException {
         try {
-            QuizSetupModel quizSetupModel = new QuizSetupModel();
             BibleWrap bibleWrap = new BibleWrap(bibleId, library.getBible(bibleId));
-            quizSetupModel.setPassageTree(bibleWrap.getPassageTree(library));
+            QuizSetupModel quizSetupModel = QuizSetupModel.from(bibleWrap, library);
             m.addAttribute("quizSetupModel", quizSetupModel);
             return "quiz_setup.html";
         } catch (Exception e) {

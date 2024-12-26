@@ -9,9 +9,11 @@ import lombok.Data;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import org.crosswire.jsword.book.sword.SwordBook;
+import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.PassageTally;
 
+import java.util.Collections;
 import java.util.List;
 
 @Builder
@@ -43,17 +45,21 @@ public class SwordBible implements Bible {
     }
 
     @Override
-    public List<Verse> getVerses() {
+    public List<Verse> getVerses(String whitelist, String blacklist) {
         if (verses == null) {
 
-            verses = Streams.stream(getSwordBook().getGlobalKeyList().iterator())
-                    .filter(key -> key instanceof org.crosswire.jsword.passage.Verse)
-                    .map(key -> (org.crosswire.jsword.passage.Verse) key)
-                    .filter(SwordBible::filterVerses)
-                    .map(key -> {
-                        return (Verse) SwordVerse.from(key, getId());
-                    })
-                    .toList();
+            try {
+                verses = Streams.stream(getSwordBook().getKey(whitelist).iterator())
+                        .filter(key -> key instanceof org.crosswire.jsword.passage.Verse)
+                        .map(key -> (org.crosswire.jsword.passage.Verse) key)
+                        .filter(SwordBible::filterVerses)
+                        .map(key -> {
+                            return (Verse) SwordVerse.from(key, getId());
+                        })
+                        .toList();
+            } catch (NoSuchKeyException e) {
+                return verses = Collections.emptyList();
+            }
         }
         return verses;
     }

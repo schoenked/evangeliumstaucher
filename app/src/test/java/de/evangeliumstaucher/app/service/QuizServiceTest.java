@@ -1,20 +1,33 @@
 package de.evangeliumstaucher.app.service;
 
-import de.evangeliumstaucher.app.model.BibleWrap;
-import de.evangeliumstaucher.app.model.BookWrap;
-import de.evangeliumstaucher.app.model.ChapterWrap;
-import de.evangeliumstaucher.app.model.VerseWrap;
+import de.evangeliumstaucher.app.model.*;
+import de.evangeliumstaucher.app.utils.ListUtils;
+import de.evangeliumstaucher.app.viewmodel.PlayerModel;
+import de.evangeliumstaucher.app.viewmodel.QuizModel;
+import de.evangeliumstaucher.app.viewmodel.QuizSetupModel;
 import de.evangeliumstaucher.app.viewmodel.RunningQuestion;
 import de.evangeliumstaucher.entity.GameSessionEntity;
 import de.evangeliumstaucher.entity.QuestionEntity;
+import de.evangeliumstaucher.repo.GameRepository;
+import de.evangeliumstaucher.repo.GameSessionRepository;
+import de.evangeliumstaucher.repo.QuestionRepository;
+import de.evangeliumstaucher.repo.UserQuestionRepository;
 import de.evangeliumstaucher.repo.model.BibleBook;
 import de.evangeliumstaucher.repo.model.Chapter;
 import de.evangeliumstaucher.repo.model.Division;
 import de.evangeliumstaucher.repo.model.Verse;
 import de.evangeliumstaucher.repo.service.Library;
 import jakarta.annotation.Nonnull;
+import org.crosswire.jsword.passage.NoSuchVerseException;
+import org.crosswire.jsword.passage.PassageTally;
+import org.crosswire.jsword.versification.Versification;
+import org.crosswire.jsword.versification.system.SystemGerman;
+import org.crosswire.jsword.versification.system.Versifications;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
+import org.mockito.Answers;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -31,6 +44,15 @@ public class QuizServiceTest {
     private static BibleWrap bible;
     @Autowired
     public Library library;
+
+    @Mock(answer = Answers.RETURNS_MOCKS)
+    private GameRepository gameRepository;
+    @Mock(answer = Answers.RETURNS_MOCKS)
+    private QuestionRepository questionRepository;
+    @Mock(answer = Answers.RETURNS_MOCKS)
+    private GameSessionRepository gameSessionRepository;
+    @Mock(answer = Answers.RETURNS_MOCKS)
+    private UserQuestionRepository userQuestionRepository;
 
     private static BookWrap createBook(int iBook, BibleWrap bible) {
 
@@ -130,7 +152,7 @@ public class QuizServiceTest {
 
     @BeforeEach
     public void setup() {
-        quizService = new QuizService(library, null, null, null, null);
+        quizService = new QuizService(library, gameRepository, questionRepository, userQuestionRepository, gameSessionRepository);
         bible = new BibleWrap("", library.getBible(""));
         List<BookWrap> books = IntStream.range(1, 10)
                 .mapToObj(iBook -> createBook(iBook, bible))
@@ -204,4 +226,26 @@ public class QuizServiceTest {
                 "blessed"
         ));
     }
+
+    @RepeatedTest(100)
+    public void testBlackAndWhiteli() throws NoSuchVerseException {
+        BibleWrap biblewrap = PassageTest.getBibleWrap(library);
+        QuizSetupModel model = QuizSetupModel.from(biblewrap, library);
+        model.setTags("");
+        String whitelist = getRandomPassage(model.getPassageTree());
+        String blacklist = "";
+        QuizModel response = quizService.createQuiz(biblewrap.getId(), model, new PlayerModel(), whitelist, blacklist);
+        Versification versification = Versifications.instance().getVersification(SystemGerman.V11N_NAME);
+        boolean filterCorrect = new org.crosswire.jsword.passage.PassageTally(versification, whitelist)
+                .contains(new PassageTally(versification, response.getVerses().get(0).getId()));
+        assertThat(filterCorrect).isTrue();
+    }
+
+    private String getRandomPassage(PassageTree passageTree) {
+        if (passageTree.getPassageTrees() == null || passageTree.getPassageTrees().isEmpty()) {
+            return passageTree.getId();
+        }
+        return getRandomPassage(ListUtils.randomItem(passageTree.getPassageTrees()));
+    }
+
 }

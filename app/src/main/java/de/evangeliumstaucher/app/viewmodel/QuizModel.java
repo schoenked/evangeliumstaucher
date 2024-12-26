@@ -59,7 +59,7 @@ public class QuizModel {
             verses = new ArrayList<>();
         }
         for (int i = 0; i < countVerses; i++) {
-            Verse q = quizService.getQuestionVerse(this);
+            Verse q = quizService.getQuestionVerse(this, whitelist,blacklist);
             verses.add(q);
         }
         return verses;

@@ -5,6 +5,7 @@ import de.evangeliumstaucher.app.model.VerseWrap;
 import de.evangeliumstaucher.repo.model.Bible;
 import de.evangeliumstaucher.repo.model.Passage;
 import de.evangeliumstaucher.repo.model.Verse;
+import de.evangeliumstaucher.repo.service.Library;
 import de.evangeliumstaucher.sword.SwordLibrary;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,13 +39,13 @@ public class PassageTest {
     public void testBooks() {
         Bible bible = swordLibrary.getBible(ID_SCHLACHTER);
 
-        List<Verse> verses = bible.getVerses();
+        String whitelist ="";
+        List<Verse> verses = bible.getVerses(whitelist, "");
     }
 
     @Test
     public void testVerses() {
-        Bible bible = swordLibrary.getBible(ID_SCHLACHTER);
-        BibleWrap b = new BibleWrap(bible.getId(), bible);
+        BibleWrap b = getBibleWrap(swordLibrary);
         VerseWrap verse = b.getBooks(swordLibrary).getFirst().getChapters().getFirst().getVerses(swordLibrary).getFirst();
         for (int i = 0; i < 100; i++) {
             assertThat(verse.getTeXTLong()).isNotEmpty();
@@ -57,18 +58,22 @@ public class PassageTest {
         }
     }
 
-    @Test
-    public void testVersesNoChapter() {
+    public static BibleWrap getBibleWrap(Library swordLibrary ) {
         Bible bible = swordLibrary.getBible(ID_SCHLACHTER);
         BibleWrap b = new BibleWrap(bible.getId(), bible);
+        return b;
+    }
+
+    @Test
+    public void testVersesNoChapter() {
+        BibleWrap b = getBibleWrap(swordLibrary);
         //Judas has only 1 chapter this key is "Ch 1" verse 3
         VerseWrap.getVerse("Judas 3", b, swordLibrary);
     }
 
     @Test
     public void testVersesx() {
-        Bible bible = swordLibrary.getBible(ID_SCHLACHTER);
-        BibleWrap b = new BibleWrap(bible.getId(), bible);
+        BibleWrap b = getBibleWrap(swordLibrary);
         VerseWrap.getVerse("Matthäus 24:28", b, swordLibrary);
     }
 

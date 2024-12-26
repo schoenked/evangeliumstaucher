@@ -1,7 +1,9 @@
 package de.evangeliumstaucher.app.viewmodel;
 
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import de.evangeliumstaucher.app.model.BibleWrap;
 import de.evangeliumstaucher.app.model.PassageTree;
+import de.evangeliumstaucher.repo.service.Library;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
@@ -41,6 +43,12 @@ public class QuizSetupModel {
     private PassageTree passageTree;
 
     public Map<String,Object> unknownProperties = new HashMap<>();
+
+    public static QuizSetupModel from(BibleWrap bibleWrap, Library library) {
+        QuizSetupModel quizSetupModel = new QuizSetupModel();
+        quizSetupModel.setPassageTree(bibleWrap.getPassageTree(library));
+        return quizSetupModel;
+    }
 
     // Method to capture unknown properties
     @JsonAnySetter

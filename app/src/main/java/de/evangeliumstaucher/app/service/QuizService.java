@@ -105,13 +105,13 @@ public class QuizService {
         return quizModel;
     }
 
-    private Verse getRandomVerse(BibleWrap bible) {
-        Verse verse = ListUtils.randomItem(bible.getBible().getVerses());
+    private Verse getRandomVerse(BibleWrap bible, String whitelist, String blacklist) {
+        Verse verse = ListUtils.randomItem(bible.getBible().getVerses(whitelist,blacklist));
         return verse;
     }
 
-    public Verse getQuestionVerse(QuizModel quizModel) throws BadRequest {
-        return getRandomVerse(quizModel.getBible(library));
+    public Verse getQuestionVerse(QuizModel quizModel, String whitelist, String blacklist) throws BadRequest {
+        return getRandomVerse(quizModel.getBible(library),whitelist,blacklist);
     }
 
     @Nullable

@@ -14,7 +14,7 @@ public interface Bible extends Model {
 
     String getDescription();
 
-    List<Verse> getVerses();
+    List<Verse> getVerses(String whitelist, String blacklist);
 
     Verse getVerse(String verseId);
 
