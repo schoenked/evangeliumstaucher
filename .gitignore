@@ -41,3 +41,4 @@ cache/
 **/application-accounts.yaml
 
 gd.p12
+/ollama/
