@@ -11,25 +11,38 @@ import java.util.List;
 
 @Data
 public class PassageTree extends BaseModel {
+    public static final Gson gson = new Gson();
     @Getter
     @Setter
     @Nullable
     private final List<PassageTree> passageTrees;
-    public static final Gson gson = new Gson();
+    private String displayText;
 
-    @Override
-    public void setId(String id) {
-        super.setId(id);
+    public PassageTree(String id, List<PassageTree> passageTrees) {
+        super();
+        this.id = id;
+        this.passageTrees = passageTrees;
+    }
+
+    public PassageTree(String name, String displayText, List<PassageTree> passageTrees) {
+        this(name, passageTrees);
+        this.displayText = displayText;
+    }
+
+    public String getDisplayText() {
+        if (displayText == null) {
+            return id;
+        }
+        return displayText;
     }
 
     public String getId() {
         return id;
     }
 
-    public PassageTree(String id, List<PassageTree> passageTrees) {
-        super();
-        this.id = id;
-        this.passageTrees = passageTrees;
+    @Override
+    public void setId(String id) {
+        super.setId(id);
     }
 
     public String getJson() {

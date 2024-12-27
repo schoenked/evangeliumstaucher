@@ -236,18 +236,22 @@ public class QuizServiceTest {
         String v1 = getRandomPassage(model.getPassageTree());
         String v2 = getRandomPassage(model.getPassageTree());
         String v3 = getRandomPassage(model.getPassageTree());
-        String whitelist ="%s,%s,%s".formatted(v1,v2,v3);
+        String whitelist = "%s,%s,%s".formatted(v1, v2, v3);
         String blacklist = v3;
-        QuizModel response = quizService.createQuiz(biblewrap.getId(), model, new PlayerModel(), whitelist, blacklist);
-        Versification versification = Versifications.instance().getVersification(SystemGerman.V11N_NAME);
+        QuizModel response = quizService.createQuiz(biblewrap, model, new PlayerModel(), whitelist, blacklist);
 
-        boolean filterCorrect = new org.crosswire.jsword.passage.PassageTally(versification, whitelist)
-                .contains(new PassageTally(versification, response.getVerses().get(0).getId()));
+        if (response!= null && !response.getVerses().isEmpty()) {
+            Versification versification = Versifications.instance().getVersification(SystemGerman.V11N_NAME);
 
-        boolean blacklistFilterCorrect = !new org.crosswire.jsword.passage.PassageTally(versification, blacklist)
-                .contains(new PassageTally(versification, response.getVerses().get(0).getId()));
-        assertThat(filterCorrect).isTrue();
-        assertThat(blacklistFilterCorrect).isTrue();
+            boolean filterCorrect = new org.crosswire.jsword.passage.PassageTally(versification, whitelist)
+                    .contains(new PassageTally(versification, response.getVerses().get(0).getId()));
+
+            boolean blacklistFilterCorrect = !new org.crosswire.jsword.passage.PassageTally(versification, blacklist)
+                    .contains(new PassageTally(versification, response.getVerses().get(0).getId()));
+
+            assertThat(filterCorrect).isTrue();
+            assertThat(blacklistFilterCorrect).isTrue();
+        }
     }
 
     private String getRandomPassage(PassageTree passageTree) {

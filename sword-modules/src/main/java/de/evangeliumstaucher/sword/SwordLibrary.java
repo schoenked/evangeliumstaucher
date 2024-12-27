@@ -2,13 +2,11 @@ package de.evangeliumstaucher.sword;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Streams;
-import de.evangeliumstaucher.repo.model.Bible;
-import de.evangeliumstaucher.repo.model.BibleBook;
-import de.evangeliumstaucher.repo.model.Passage;
-import de.evangeliumstaucher.repo.model.Verse;
+import de.evangeliumstaucher.repo.model.*;
 import de.evangeliumstaucher.repo.service.Library;
 import de.evangeliumstaucher.sword.model.SwordBible;
 import de.evangeliumstaucher.sword.model.SwordBibleBook;
+import de.evangeliumstaucher.sword.model.SwordDivision;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.crosswire.jsword.book.BookData;
@@ -20,9 +18,12 @@ import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.PassageTally;
 import org.crosswire.jsword.versification.BookName;
+import org.crosswire.jsword.versification.DivisionName;
 import org.crosswire.jsword.versification.Versification;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -111,6 +112,16 @@ public class SwordLibrary implements Library {
             return books;
         }
         return null;
+    }
+
+    @Override
+    public List<? extends Division> getDivisions(Bible bible) {
+        if (bible instanceof SwordBible swordBible && swordBible.getSwordBook() instanceof SwordBook swordBook) {
+            return Arrays.stream(DivisionName.values())
+                    .map(SwordDivision::new)
+                    .toList();
+        }
+        return Collections.emptyList();
     }
 
     private SwordBibleBook fromBook(org.crosswire.jsword.versification.BibleBook bibleBook, Bible

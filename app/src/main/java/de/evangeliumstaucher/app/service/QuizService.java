@@ -73,14 +73,13 @@ public class QuizService {
         return hostname + quizModel.getUrl();
     }
 
-    public QuizModel createQuiz(String bibleId, QuizSetupModel quizSetupModel, PlayerModel creator, String whitelist, String blacklist) {
+    public  @Nullable QuizModel createQuiz(BibleWrap bible , QuizSetupModel quizSetupModel, PlayerModel creator, String whitelist, String blacklist) {
         QuizModel quizModel = null;
-        BibleWrap bible = new BibleWrap(bibleId, library.getBible(bibleId));
 
         quizModel = QuizModel.builder()
                 .bible(bible)
                 .creator(creator)
-                .bibleId(bibleId)
+                .bibleId(bible.getId())
                 .name(quizSetupModel.getName())
                 .description(quizSetupModel.getDescription())
                 .distanceRatingFactor(quizSetupModel.getDistanceAttribute())
@@ -89,29 +88,32 @@ public class QuizService {
                 .whitelist(whitelist)
                 .blacklist(blacklist)
                 .build();
-        List<Verse> verses = quizModel.createVerses(this, quizSetupModel.getCountVerses(),whitelist,blacklist);
-        GameEntity e = gameRepository.save(quizModel.getEntity());
-        //apply generated uuid
-        quizModel.setId(e.getId());
-        LinkedList<QuestionEntity> questionEntities = Lists.newLinkedList();
-        for (int i = 0; i < verses.size(); i++) {
-            Verse vers = verses.get(i);
-            QuestionEntity verseEntity = new QuestionEntity(null, e, i, vers.getId());
-            questionEntities.add(verseEntity);
+        List<Verse> verses = quizModel.createVerses(this, quizSetupModel.getCountVerses(), whitelist, blacklist);
+
+        if (!verses.isEmpty()) {
+            GameEntity e = gameRepository.save(quizModel.getEntity());
+            //apply generated uuid
+            quizModel.setId(e.getId());
+            LinkedList<QuestionEntity> questionEntities = Lists.newLinkedList();
+            for (int i = 0; i < verses.size(); i++) {
+                Verse vers = verses.get(i);
+                QuestionEntity verseEntity = new QuestionEntity(null, e, i, vers.getId());
+                questionEntities.add(verseEntity);
+            }
+
+            questionRepository.saveAll(questionEntities);
+            return quizModel;
         }
-
-        questionRepository.saveAll(questionEntities);
-
-        return quizModel;
+        return null;
     }
 
     private Verse getRandomVerse(BibleWrap bible, String whitelist, String blacklist) {
-        Verse verse = ListUtils.randomItem(bible.getBible().getVerses(whitelist,blacklist));
+        Verse verse = ListUtils.randomItem(bible.getBible().getVerses(whitelist, blacklist));
         return verse;
     }
 
     public Verse getQuestionVerse(QuizModel quizModel, String whitelist, String blacklist) throws BadRequest {
-        return getRandomVerse(quizModel.getBible(library),whitelist,blacklist);
+        return getRandomVerse(quizModel.getBible(library), whitelist, blacklist);
     }
 
     @Nullable

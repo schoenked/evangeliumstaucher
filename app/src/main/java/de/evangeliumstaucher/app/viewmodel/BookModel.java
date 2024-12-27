@@ -42,7 +42,7 @@ public class BookModel extends BaseModel {
         String color = "black";
         Optional<Division> smallest = book.getDivisions().stream().min((o1, o2) -> Integer.compare(o1.getSize(), o2.getSize()));
         if (smallest.isPresent()) {
-color = smallest.get().getColor();
+            color = smallest.get().getColor();
         }
         bookModel.setColor(color);
         return bookModel;

@@ -6,6 +6,7 @@ import de.evangeliumstaucher.entity.GameEntity;
 import de.evangeliumstaucher.entity.PlayerEntity;
 import de.evangeliumstaucher.repo.model.Verse;
 import de.evangeliumstaucher.repo.service.Library;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -54,13 +55,15 @@ public class QuizModel {
         return bible;
     }
 
-    public List<Verse> createVerses(QuizService quizService, int countVerses, String whitelist, String blacklist) {
+    public @NotNull List<Verse> createVerses(QuizService quizService, int countVerses, String whitelist, String blacklist) {
         if (verses == null) {
             verses = new ArrayList<>();
         }
         for (int i = 0; i < countVerses; i++) {
-            Verse q = quizService.getQuestionVerse(this, whitelist,blacklist);
-            verses.add(q);
+            Verse q = quizService.getQuestionVerse(this, whitelist, blacklist);
+            if (q != null) {
+                verses.add(q);
+            }
         }
         return verses;
     }
@@ -85,7 +88,7 @@ public class QuizModel {
                 timeRatingFactor,
                 whitelist,
                 blacklist
-                );
+        );
     }
 
 }

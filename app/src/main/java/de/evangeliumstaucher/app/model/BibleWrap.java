@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,9 +42,17 @@ public class BibleWrap {
     public PassageTree getPassageTree(Library library) {
         List<PassageTree> passageTree = getBooks(library).stream()
                 .filter(bookWrap -> bible.containsPassage(bookWrap.getBook().getId()))
-                .map(bookWrap -> new PassageTree( bookWrap.getBook().getId(), bookWrap.getPassageTree(library)))
-                .toList();
+                .map(bookWrap -> new PassageTree(bookWrap.getBook().getId(), bookWrap.getPassageTree(library)))
+                .collect(Collectors.toList());
 
-        return new PassageTree("Buchverzeichnis", passageTree);
+        passageTree.addAll(0, getPassageTreeDivisions(library));
+
+        return new PassageTree("Passagen", passageTree);
+    }
+
+    private Collection<? extends PassageTree> getPassageTreeDivisions(Library library) {
+        return library.getDivisions(bible).stream()
+                .map(s -> new PassageTree(s.getRange(),s.getName(), null))
+                .toList();
     }
 }

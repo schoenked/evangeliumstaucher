@@ -38,7 +38,12 @@ public class SwordDivision implements Division {
 
     @Override
     public String getName() {
-        return divisionName.getName();
+        return divisionName.toString();
+    }
+
+    @Override
+    public String getRange() {
+        return divisionName.getRange();
     }
 
     @Override

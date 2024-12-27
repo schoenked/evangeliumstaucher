@@ -5,7 +5,7 @@
     <summary>
         <!-- Display the current PassageTree id -->
         <span class="ms-1 form-check-label" th:for="|add_${passageTree.id}|"
-              th:text="${passageTree.id}">Passage ID</span>
+              th:text="${passageTree.displayText}">Passage ID</span>
         <input class="btn-check p-0" th:id="|add_${passageTree.id}|" th:name="|add_${passageTree.id}|" type="checkbox"
                value="true">
         <label class="btn btn-outline-success" th:for="|add_${passageTree.id}|">+</label>

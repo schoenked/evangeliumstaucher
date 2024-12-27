@@ -78,14 +78,6 @@ public class QuizEditorController extends BaseController {
 
     @PostMapping("/quiz/create/{bibleId}/submit")
     public String submitQuiz(@PathVariable String bibleId, @Valid @ModelAttribute QuizSetupModel quizSetupModel, @RequestParam Map<String, String> allRequestParams, Model m, @ModelAttribute PlayerModel playerModel) throws BadRequestException {
-
-        if (gameRepository.existsByName(quizSetupModel.getName())) {
-            //check if unique name
-            String message = "Es gibt bereits einen Tauchgang mit diesem Namen";
-            m.addAttribute("quizSetupModel", quizSetupModel);
-            m.addAttribute("error", message);
-            return "quiz_setup.html";
-        }
         String whitelist = allRequestParams.entrySet().stream()
                 .filter(e -> e.getKey().startsWith("add_") && e.getValue().equals("true"))
                 .map(e -> StringUtils.substring(e.getKey(), 4))
@@ -94,8 +86,25 @@ public class QuizEditorController extends BaseController {
                 .filter(e -> e.getKey().startsWith("sub_") && e.getValue().equals("true"))
                 .map(e -> StringUtils.substring(e.getKey(), 4))
                 .collect(Collectors.joining(","));
+        BibleWrap bible = new BibleWrap(bibleId, library.getBible(bibleId));
 
-        QuizModel quizModel = quizService.createQuiz(bibleId, quizSetupModel, playerModel, whitelist, blacklist);
+        quizSetupModel.setPassageTree(bible.getPassageTree(library));
+
+        if (gameRepository.existsByName(quizSetupModel.getName())) {
+            //check if unique name
+            String message = "Es gibt bereits einen Tauchgang mit diesem Namen";
+            m.addAttribute("quizSetupModel", quizSetupModel);
+            m.addAttribute("error", message);
+            return "quiz_setup.html";
+        }
+
+        QuizModel quizModel = quizService.createQuiz(bible, quizSetupModel, playerModel, whitelist, blacklist);
+        if (quizModel == null) {
+            String message = "Das Spiel konnte nicht erstellt werden.";
+            m.addAttribute("quizSetupModel", quizSetupModel);
+            m.addAttribute("error", message);
+            return "quiz_setup.html";
+        }
         return "redirect:" + quizModel.getUrl();
     }
 
