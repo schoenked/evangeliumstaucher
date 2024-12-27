@@ -1,5 +1,12 @@
 # evangeliumsTaucher
 
+## Demo
+The game is provided at:
+
+https://evangeliumstaucher.nobler.tech
+
+## Description
+
 This is the project for the evangeliumsTaucher game.
 It's a web application that uses
 
