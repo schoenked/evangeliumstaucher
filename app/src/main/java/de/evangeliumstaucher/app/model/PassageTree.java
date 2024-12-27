@@ -5,17 +5,21 @@ import de.evangeliumstaucher.app.viewmodel.BaseModel;
 import jakarta.annotation.Nullable;
 import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
 
 @Data
+@NoArgsConstructor(force = true)
 public class PassageTree extends BaseModel {
     public static final Gson gson = new Gson();
+
     @Getter
     @Setter
     @Nullable
     private final List<PassageTree> passageTrees;
+
     private String displayText;
 
     public PassageTree(String id, List<PassageTree> passageTrees) {
