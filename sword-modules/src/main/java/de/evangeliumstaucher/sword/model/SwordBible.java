@@ -51,6 +51,13 @@ public class SwordBible implements Bible {
             try {
                 verses = Streams.stream(getSwordBook().getKey(whitelist).iterator())
                         .filter(key -> key instanceof org.crosswire.jsword.passage.Verse)
+                        .filter(key -> {
+                            try {
+                                return !key.contains(new PassageTally(getSwordBook().getVersification(),blacklist));
+                            } catch (NoSuchVerseException e) {
+                                return true;
+                            }
+                        })
                         .map(key -> (org.crosswire.jsword.passage.Verse) key)
                         .filter(SwordBible::filterVerses)
                         .map(key -> {

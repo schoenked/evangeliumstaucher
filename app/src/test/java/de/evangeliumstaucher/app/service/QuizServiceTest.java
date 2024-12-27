@@ -231,14 +231,23 @@ public class QuizServiceTest {
     public void testBlackAndWhiteli() throws NoSuchVerseException {
         BibleWrap biblewrap = PassageTest.getBibleWrap(library);
         QuizSetupModel model = QuizSetupModel.from(biblewrap, library);
+        model.setCountVerses(1);
         model.setTags("");
-        String whitelist = getRandomPassage(model.getPassageTree());
-        String blacklist = "";
+        String v1 = getRandomPassage(model.getPassageTree());
+        String v2 = getRandomPassage(model.getPassageTree());
+        String v3 = getRandomPassage(model.getPassageTree());
+        String whitelist ="%s,%s,%s".formatted(v1,v2,v3);
+        String blacklist = v3;
         QuizModel response = quizService.createQuiz(biblewrap.getId(), model, new PlayerModel(), whitelist, blacklist);
         Versification versification = Versifications.instance().getVersification(SystemGerman.V11N_NAME);
+
         boolean filterCorrect = new org.crosswire.jsword.passage.PassageTally(versification, whitelist)
                 .contains(new PassageTally(versification, response.getVerses().get(0).getId()));
+
+        boolean blacklistFilterCorrect = !new org.crosswire.jsword.passage.PassageTally(versification, blacklist)
+                .contains(new PassageTally(versification, response.getVerses().get(0).getId()));
         assertThat(filterCorrect).isTrue();
+        assertThat(blacklistFilterCorrect).isTrue();
     }
 
     private String getRandomPassage(PassageTree passageTree) {
