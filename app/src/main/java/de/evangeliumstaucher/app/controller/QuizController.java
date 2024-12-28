@@ -61,7 +61,7 @@ public class QuizController extends BaseController {
         m.addAttribute("quizService", quizService);
         DatatableViewModel scoreTableModel = new DatatableViewModel();
         List<DatatableColumn> columns = List.of(
-                new DatatableColumn("Punkte", "points", "num"),
+                new DatatableColumn("Punkte", "points", "num").withOrder(DatatableColumn.Order.DESC),
                 new DatatableColumn("Spieler", "player"),
                 new DatatableColumn("Fortschritt", "progress", "num-fmt"),
                 new DatatableColumn("am", "date","date")
@@ -167,7 +167,7 @@ public class QuizController extends BaseController {
         DatatableViewModel questionScoreTable = new DatatableViewModel();
         List<DatatableColumn> columns = List.of(
                 new DatatableColumn("Spieler", "player"),
-                new DatatableColumn("Punkte", "points", "num"),
+                new DatatableColumn("Punkte", "points", "num").withOrder(DatatableColumn.Order.DESC),
                 new DatatableColumn("Distanz", "diffVerses","num" ),
                 new DatatableColumn("Dauer", "duration","num"),
                 new DatatableColumn("Gesamt", "gesamt","num")

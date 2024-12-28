@@ -20,6 +20,7 @@ import java.util.UUID;
             g.id id,
             g.name name,
             gse.started_at started_at,
+            gse.player_id player_id,
             '/quiz/' || g.id || '/' location,
             CAST(   ((  SELECT COUNT(*)
                 FROM user_question_entity uqe
@@ -39,14 +40,9 @@ import java.util.UUID;
         parameters = @ParamDef(name = "playerID", type = Long.class))
 @Filter(name = "startedDivesPlayedFilter", condition = """
         (
-        SELECT COUNT(*)
-        FROM game_session_entity gse
-        WHERE
-            gse.game_id = id
-        AND
-            gse.player_id = :playerID
+        player_id = :playerID
         )
-        > 0""")
+        """)
 public class GameRowMyDives {
 
     @Id

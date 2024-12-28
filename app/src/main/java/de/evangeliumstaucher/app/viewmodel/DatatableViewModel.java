@@ -2,6 +2,7 @@ package de.evangeliumstaucher.app.viewmodel;
 
 import de.evangeliumstaucher.app.utils.DatatableLanguages;
 import lombok.Data;
+import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.i18n.LocaleContextHolder;
 
@@ -18,14 +19,10 @@ public class DatatableViewModel {
     private boolean autoReloader = false;
     private List<DatatableRow> rows;
     private int pageLength = 20;
-
-    public int getPageLength() {
-        return pageLength;
-    }
-
-    public void setPageLength(int pageLength) {
-        this.pageLength = pageLength;
-    }
+    @Getter
+    private String order;
+    @Getter
+    private String orderColumn;
 
     public static String getLanguage(Locale locale) {
         if (locale != null) {
@@ -34,6 +31,25 @@ public class DatatableViewModel {
             }
         }
         return "English";
+    }
+
+    public void setColumns(List<DatatableColumn> columns) {
+        this.columns = columns;
+        for (DatatableColumn column : columns) {
+            if (column.getOrder() != null) {
+                this.orderColumn = column.getName();
+                this.order = column.getOrder().toString().toLowerCase();
+                return;
+            }
+        }
+    }
+
+    public int getPageLength() {
+        return pageLength;
+    }
+
+    public void setPageLength(int pageLength) {
+        this.pageLength = pageLength;
     }
 
     public String getLanguage() {

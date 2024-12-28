@@ -44,6 +44,10 @@
             columns: [
                 [(${model.columnsText})]
             ],
+            order: {
+                name: '[(${model.orderColumn})]',
+                dir: '[(${model.order})]'
+            },
             serverSide:  [(${model.serverside})],
             pageLength: [(${model.pageLength})],
             autoWidth: true,

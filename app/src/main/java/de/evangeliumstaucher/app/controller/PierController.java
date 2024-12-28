@@ -41,7 +41,7 @@ public class PierController extends BaseController {
     public String get(Model m) {
         DatatableViewModel modelTrending = new DatatableViewModel();
         List<DatatableColumn> columns = List.of(
-                new DatatableColumn("Pos.", "position", "num"),
+                new DatatableColumn("Pos.", "position", "num").withOrder(DatatableColumn.Order.ASC),
                 new DatatableColumn("Name", "name"),
                 new DatatableColumn("von", "creator"),
                 new DatatableColumn("Datum", "createdAt", "date"),
@@ -54,7 +54,7 @@ public class PierController extends BaseController {
         DatatableViewModel modelMyDives = new DatatableViewModel();
         List<DatatableColumn> columnsMyDives = List.of(
                 new DatatableColumn("Name", "name"),
-                new DatatableColumn("Startzeit", "startedAt", "datetime"),
+                new DatatableColumn("Startzeit", "startedAt", "datetime").withOrder(DatatableColumn.Order.DESC),
                 new DatatableColumn("Fortschritt", "progress","num-fmt" )
         );
         modelMyDives.setColumns(columnsMyDives);

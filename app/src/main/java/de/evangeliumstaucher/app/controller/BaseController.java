@@ -48,10 +48,10 @@ public class BaseController {
                 BibleModel book = books.get(i);
                 DatatableRow row = DatatableRow.builder()
                         .cells(List.of(
-                                new DatatableCell(Integer.toString(i)),
-                                new DatatableCell("<a role=\"button\" class=\"btn btn-secondary\" href=\"" + book.getUrl() + "\"><i class=\"fa-solid fa-arrow-right\"></i></a>", true),
-                                new DatatableCell(book.getLanguage()),
-                                new DatatableCell(book.getLabel())
+                                        new DatatableCell(Integer.toString(i)),
+                                        new DatatableCell("<a role=\"button\" class=\"btn btn-secondary\" href=\"" + book.getUrl() + "\"><i class=\"fa-solid fa-arrow-right\"></i></a>", true),
+                                        new DatatableCell(book.getLanguage()),
+                                        new DatatableCell(book.getLabel())
                                 )
                         )
                         .build();
@@ -60,7 +60,7 @@ public class BaseController {
             }
             DatatableViewModel booksTable = new DatatableViewModel();
             List<DatatableColumn> columns = List.of(
-                    new DatatableColumn("Order", "order","num", false),
+                    new DatatableColumn("Order", "order", "num", false),
                     new DatatableColumn("", "select"),
                     new DatatableColumn("Sprache", "language"),
                     new DatatableColumn("Übersetzung", "bible")
