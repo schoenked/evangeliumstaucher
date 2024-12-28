@@ -63,14 +63,15 @@
                         </div>
                         <h6>Bewertung</h6>
                         <p>
-                            An den nächsten 2 Reglern kann genauer festgelegt werden, wie stark die abgelaufene Zeit und
+                            An den nächsten 2 Reglern kann genauer festgelegt werden, wie stark die verstrichene Zeit
+                            und
                             die Entfernung der Auswahl bewertet wird.
                         </p>
                         <div class="input-group input-group-text d-flex w-100 mb-3">
                             <label
                                     for="timeAttr"
                                     id="label-timeAttr"
-                            >Bewertung der abgelaufenen Zeit (%)</label>
+                            >Bewertung der verstrichenen Zeit (%)</label>
                             <input class="form-conrol form-range mt-2"
                                    id="timeAttr"
                                    max="500"
@@ -101,13 +102,34 @@
 
                         <div class="form-group mb-3">
                             <label>Passagen: </label>
+                            <p>Im folgenden Abschnitt hast du die Möglichkeit den Bereich der Bibelverse auszuwählen.
+                                Auswählen lassen sich hier
+                            <ul>
+                                <li>
+                                    Buchkategorien
+                                </li>
+                                <li>Bücher</li>
+                                <li>Kapitel</li>
+                                <li>einzelne Verse</li>
+                            </ul>
+                            Durch das <b>+</b> wird der Bereich dem Auswahlspektrum hinzugefügt. Durch das <b>-</b> wird
+                            ein Bereich jedenfalls ausgeschlossen.
+                            <p><i>Ein Beispiel:<br>
+                                + Die ganze Bibel<br>
+                                - Ps<br>
+                                - Titus<br>
+                                Die Versauswahl findet in allen Büchern der Bibel mit Ausnahme von Psalmen und Titus
+                                statt.
+                            </i>
+                            </p>
+                            <p>
                             <ul class="tree">
                                 <li>
                                     <!-- Use the fragment to render a PassageTree instance passed as model -->
                                     <div th:replace="fragment_passageTree.html :: renderPassageTree(${quizSetupModel.passageTree})"></div>
                                 </li>
                             </ul>
-
+                            </p>
                             <script>
                                 function bindSummaryClick() {
                                     // Use event delegation on a specific container if necessary
