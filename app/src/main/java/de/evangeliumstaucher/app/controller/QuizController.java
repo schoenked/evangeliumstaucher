@@ -64,7 +64,7 @@ public class QuizController extends BaseController {
                 new DatatableColumn("Punkte", "points", "num").withOrder(DatatableColumn.Order.DESC),
                 new DatatableColumn("Spieler", "player"),
                 new DatatableColumn("Fortschritt", "progress", "num-fmt"),
-                new DatatableColumn("am", "date","date")
+                new DatatableColumn("am", "date", "date")
         );
         scoreTableModel.setColumns(columns);
         scoreTableModel.setAutoReloader(true);
@@ -74,10 +74,13 @@ public class QuizController extends BaseController {
         return "quiz-info.html";
     }
 
-    @GetMapping("/quiz/{quizId}/{qId}/")
-    public String getQuestion(@PathVariable UUID quizId, @PathVariable Integer qId, @ModelAttribute PlayerModel playerModel, Model m) throws BadRequestException, ServiceUnavailableException {
+    @GetMapping("/quiz/{quizId}/next")
+    public String getQuestion(@PathVariable UUID quizId, @ModelAttribute PlayerModel playerModel, Model m) throws BadRequestException, ServiceUnavailableException {
         try {
-            RunningQuestion runningQuestion = quizService.getQuestion(playerModel.getId(), quizId, qId);
+            RunningQuestion runningQuestion = quizService.getQuestion(playerModel.getId(), quizId, null);
+            if (runningQuestion == null) {
+                return "redirect:.";
+            }
             m.addAttribute("question", runningQuestion);
             return "quiz.html";
         } catch (Exception e) {
@@ -88,7 +91,7 @@ public class QuizController extends BaseController {
         return null;
     }
 
-    @GetMapping("/quiz/{quizId}/{qId}/{part}")
+    @GetMapping("/quiz/{quizId}/{next}/{qId}/{part}")
     public String getQuizPost(@PathVariable UUID quizId, @PathVariable Integer qId, @PathVariable Part part, @ModelAttribute PlayerModel playerModel, Model m) {
         try {
             Passage passage = quizService.getPassage(playerModel.getId(), quizId, qId, part);
@@ -115,6 +118,7 @@ public class QuizController extends BaseController {
 
             PassageModel model = new PassageModel();
             model.setContent("");
+
             model.setPath(part.name());
             if (part == Part.origin) {
                 model.setHtmlClasses("border-secondary border-2 my-4");
@@ -139,7 +143,7 @@ public class QuizController extends BaseController {
             Long id = runningQuestion.syncEntity(quizService, library);
 
             ResultModel resultModel = new ResultModel();
-            resultModel.setIndexQuestion(runningQuestion.getIndexQuestion());
+            resultModel.setIndexQuestion(runningQuestion.getIndexQuestion() + 1);
             resultModel.setCountQuestions(runningQuestion.getCountQuestions());
             resultModel.setVerseDiff(runningQuestion.getDiffVerses(library));
             resultModel.setTimespan(runningQuestion.getTimespan());
@@ -148,7 +152,7 @@ public class QuizController extends BaseController {
             resultModel.setSelectedVerse(runningQuestion.getSelectedVerse().getTeXTLong());
             resultModel.setSearchedVerse(runningQuestion.getVerse().getTeXTLong());
             QuizModel quizModel = runningQuestion.getQuizModel(library);
-            resultModel.setUrlNext(quizModel.getUrl() + (qId + 1) + "/");
+            resultModel.setUrlNext(runningQuestion.getUrl());
             m.addAttribute("model", resultModel);
             m.addAttribute("quiz", quizModel);
             m.addAttribute("quizService", quizService);
@@ -168,9 +172,9 @@ public class QuizController extends BaseController {
         List<DatatableColumn> columns = List.of(
                 new DatatableColumn("Spieler", "player"),
                 new DatatableColumn("Punkte", "points", "num").withOrder(DatatableColumn.Order.DESC),
-                new DatatableColumn("Distanz", "diffVerses","num" ),
-                new DatatableColumn("Dauer", "duration","num"),
-                new DatatableColumn("Gesamt", "gesamt","num")
+                new DatatableColumn("Distanz", "diffVerses", "num"),
+                new DatatableColumn("Dauer", "duration", "num"),
+                new DatatableColumn("Gesamt", "gesamt", "num")
         );
         questionScoreTable.setColumns(columns);
         questionScoreTable.setUrl("/quiz/datatable/questionscore/" + id);

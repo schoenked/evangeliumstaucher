@@ -38,6 +38,7 @@ public class RunningQuestion {
     private List<BookModel> books;
     @Getter(AccessLevel.NONE)
     private Integer diffVerses;
+    @Setter
     private String url;
     private Integer points;
     private int countQuestions;
@@ -89,10 +90,6 @@ public class RunningQuestion {
             points = quizService.calcPoints(this);
         }
         return points;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
     }
 
     public Long syncEntity(QuizService quizservice, Library library) {

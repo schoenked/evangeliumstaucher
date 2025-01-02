@@ -43,6 +43,7 @@ public class QuizService {
     @Getter
     private final UserQuestionRepository userQuestionRepository;
     private final GameSessionRepository gameSessionRepository;
+    // TODO get it cluster reaey (stateless)
     private final HashMap<String, RunningQuestion> runningQuestionHashMap = new HashMap<>();
     @Value("${myHostname}")
     private String hostname;
@@ -73,7 +74,7 @@ public class QuizService {
         return hostname + quizModel.getUrl();
     }
 
-    public  @Nullable QuizModel createQuiz(BibleWrap bible , QuizSetupModel quizSetupModel, PlayerModel creator, String whitelist, String blacklist) {
+    public @Nullable QuizModel createQuiz(BibleWrap bible, QuizSetupModel quizSetupModel, PlayerModel creator, String whitelist, String blacklist) {
         QuizModel quizModel = null;
 
         quizModel = QuizModel.builder()
@@ -161,18 +162,25 @@ public class QuizService {
         GameSessionEntity gamesession;
         gamesession = gamesessionoptional.orElseGet(() -> createGameSession(userId, quizId));
         QuizModel quizModel = get(quizId);
-        String questionId = getQuestionId(userId, quizId, qId);
-        Optional<QuestionEntity> questionEntityWrap;
+        Optional<QuestionEntity> questionEntityWrap = Optional.empty();
         QuestionEntity question;
-        questionEntityWrap = questionRepository.findByGameEntityIdAndQuestionIndex(quizId, qId);
-        if (!questionEntityWrap.isPresent()) {
-            throw new BadRequestException("Ungültige Fragennummer");
+        if (qId != null) {
+            questionEntityWrap = questionRepository.findByGameEntityIdAndQuestionIndex(quizId, qId);
+            if (!questionEntityWrap.isPresent()) {
+                throw new BadRequestException("Ungültige Fragennummer");
+            }
+        } else {
+            questionEntityWrap = gameSessionRepository.findFirstBy(gamesession.getId());
+            if (!questionEntityWrap.isPresent()) {
+                return null;
+            }
         }
+
         question = questionEntityWrap.get();
         RunningQuestion q = new RunningQuestion(question, gamesession);
         Integer countVerses = questionRepository.countByGameEntityId(quizId);
         q.setCountQuestions(countVerses);
-        q.setIndexQuestion(qId + 1);
+        q.setIndexQuestion(questionEntityWrap.get().getQuestionIndex());
         BibleWrap bible = quizModel.getBible(library);
         VerseWrap verse = VerseWrap.getVerse(question.getVerseId(), bible, library);
 
@@ -181,11 +189,13 @@ public class QuizService {
                 .getBooks(library)
                 .stream().map(BookWrap::getBook)
                 .toList();
-        q.setBooks(BookModel.from(books, "select", library));
-        q.setUrl(quizModel.getUrl() + qId + "/");
+        q.setBooks(BookModel.from(books, q.getIndexQuestion() + "/select", library));
+        q.setUrl(quizModel.getUrl() + "next");
         q.setVerse(verse);
         q.setContextStartVerse(verse);
         q.setContextEndVerse(verse);
+
+        String questionId = getQuestionId(userId, quizId, question.getQuestionIndex());
         runningQuestionHashMap.put(questionId, q);
 
         Optional<UserQuestionEntity> userQestionEntityWrap = userQuestionRepository.findByGameSessionIdAndQuestionId(gamesession.getId(), q.getQuestionEntity().getId());
@@ -246,7 +256,9 @@ public class QuizService {
 
     public int getSumPointsRunningGame(RunningQuestion runningQuestion) {
         int sum = userQuestionRepository.findByGameSessionId(runningQuestion.getGameSessionEntity().getId()).stream()
-                .mapToInt(UserQuestionEntity::getPoints)
+                .map(UserQuestionEntity::getPoints)
+                .filter(Objects::nonNull)
+                .mapToInt(Integer::intValue)
                 .filter(Objects::nonNull)
                 .sum();
         return sum;

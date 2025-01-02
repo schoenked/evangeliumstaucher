@@ -13,8 +13,9 @@
 
     <script>
         function loadPassageAjax(path) {
+            urlLoad = window.location.pathname + '/' + [(${question.indexQuestion})] + '/' + path;
             $.ajax({
-                url: path,
+                url: urlLoad,
                 success: function (data) {
                     $('#waiting' + path).replaceWith(data);
                 }
