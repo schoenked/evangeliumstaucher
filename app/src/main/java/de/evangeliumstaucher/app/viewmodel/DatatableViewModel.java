@@ -6,6 +6,7 @@ import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.i18n.LocaleContextHolder;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
@@ -76,25 +77,27 @@ public class DatatableViewModel {
     }
 
     private String getColumnText(DatatableColumn c) {
-        StringBuilder columnText = new StringBuilder();
-        columnText.append("{data: '").append(c.getAttribute()).append("', ");
-        columnText.append("name: '").append(c.getName()).append("', ");
-        columnText.append("type: '").append(c.getType()).append("', ");
-        columnText.append("visible: ").append(c.isVisible());
+        List<String> columnAttributes = new ArrayList<>();
+        columnAttributes.add("data: '" + c.getAttribute() + "'");
+        columnAttributes.add("name: '" + c.getName() + "'");
+        columnAttributes.add("type: '" + c.getType() + "'");
+        columnAttributes.add("visible: " + c.isVisible());
+
+        boolean searchable = c.getType().startsWith("string");
+        columnAttributes.add("searchable: " + Boolean.toString(searchable));
 
         if (c.getType().equals("date")) {
-            columnText.append(", render: function (data, type, row) {");
-            columnText.append("return data != null ? moment(data).format('DD.MM.YYYY') : data;");
-            columnText.append("}");
+            columnAttributes.add("render: function (data, type, row) {"
+                    + "return data != null ? moment(data).format('DD.MM.YYYY') : data;"
+                    + "}");
         }
 
         if (c.getType().equals("datetime")) {
-            columnText.append(", render: function (data, type, row) {");
-            columnText.append("return data != null ? moment(data).format('DD.MM.YYYY HH:mm') : data;");
-            columnText.append("}");
+            columnAttributes.add("render: function (data, type, row) {"
+                    + "return data != null ? moment(data).format('DD.MM.YYYY HH:mm') : data;"
+                    + "}");
         }
 
-        columnText.append("},");
-        return columnText.toString();
+        return "{" + String.join(", ", columnAttributes) + "},";
     }
 }
