@@ -14,7 +14,7 @@
 <div th:insert="navbar.html :: navbar"></div>
 <!--/*@thymesVar id="quiz" type="de.evangeliumstaucher.app.viewmodel.QuizModel"*/-->
 <div class="container min-vh-100  py-5 px-4">
-    <h1>Tauchgang</h1>
+    <h1>Tauchgang:</h1>
     <h2 th:text="${quiz.name}"/>
     <p th:text="${quiz.description}"/>
     <div th:if="${quiz.tags.empty == false}">
@@ -23,8 +23,17 @@
             <p class="m-0" th:text="|#${tag}|"></p>
         </th:block>
     </div>
-    <div class="d-grid mb-4 mt-4 ">
+    <div class="d-grid mb-5 mt-4 ">
         <a class="btn  btn-secondary m-6 text-white  btn-lg btn-block" th:href="${quiz.startUrl}">Eintauchen</a>
+        <div class="row mt-1">
+            <div class="col">
+                <a class="btn btn-outline-secondary m-6 btn-block w-100" href="/quiz/pier/">zum Pier</a>
+            </div>
+            <div class="col">
+                <!--add copy game link-->
+                <!--<a class="btn btn-outline-secondary m-6 btn-block w-100" href="/quiz/pier/">zum Pier</a>-->
+            </div>
+        </div>
     </div>
 
     <div class="card">
