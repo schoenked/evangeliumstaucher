@@ -73,7 +73,7 @@ public class QuizModel {
     }
 
     public String getStartUrl() {
-        return getUrl() + "0/";
+        return getUrl() + "next";
     }
 
     public GameEntity getEntity() {
