@@ -15,8 +15,8 @@
 <!--/*@thymesVar id="model" type="de.evangeliumstaucher.app.viewmodel.ResultModel"*/-->
 
 <!-- Main Container Start -->
-<div class="container min-vh-100 py-5 px-4">
-    <div class="card bg-dark text-light py-5 px-4 mx-auto">
+<div class="container min-vh-100 py-5 px-0">
+    <div class="card bg-dark text-light py-5 px-4 my-auto mx-2">
         <p>Passage <span th:text="${model.indexQuestion}"></span> von <span th:text="${model.countQuestions}"></span>
         </p>
         <p>
@@ -56,7 +56,7 @@
         </div>
     </div>
     <div class="my-5" th:insert="datatable.html :: datatable(${questionScoreTable})"></div>
-    <div class="my-4">
+    <div class="my-4 mx-2">
         <h3>Teile dieses Spiel mit anderen: </h3>
         <div th:insert="fragment-share.html :: share (${quiz})"></div>
     </div>
