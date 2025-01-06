@@ -4,65 +4,123 @@
 <head>
     <head th:insert="~{head.html :: head}"/>
     <title>evangeliumstaucher - Ergebnis</title>
+    <link href="/css/paralax.css" rel="stylesheet"/>
+
     <link href="https://cdn.datatables.net/2.0.7/css/dataTables.dataTables.min.css" rel="stylesheet"></link>
     <script src="https://cdn.datatables.net/2.0.7/js/dataTables.min.js"></script>
     <script src="https://momentjs.com/downloads/moment.js"></script>
 </head>
 <body>
+<div class="bg-image"></div>
 
 <!-- Importing NavBar -->
 <div th:insert="~{navbar.html :: navbar}"></div>
 <!--/*@thymesVar id="model" type="de.evangeliumstaucher.app.viewmodel.ResultModel"*/-->
 
 <!-- Main Container Start -->
-<div class="container min-vh-100 py-5 px-0">
-    <div class="card bg-dark text-light py-5 px-4 my-auto mx-2">
-        <p>Passage <span th:text="${model.indexQuestion}"></span> von <span th:text="${model.countQuestions}"></span>
-        </p>
-        <p>
-            Deine Antwort liegt
-        <h1 th:text="${model.verseDiff}"></h1>
-        Verse daneben.
-        </p>
-        <p>
-            Gesucht war nämlich
-        <h1 class="text-primary" th:text="${model.searchedVerse}"></h1>
-        und du hast <h3 th:text="${model.selectedVerse}"></h3> ausgewählt.
-        </p>
-        <p>
-            Deine benötigte Zeit:
-        <h2 th:text="${model.timespan}"></h2>
-        </p>
-        <p>
-            Du hast
-        <h1 th:text="${model.points}"></h1>
-        <h2>Punkte</h2>
-        erreicht.
-        </p>
-        <p>
-            Summe:
-        <h1 th:text="${model.pointsSum}"></h1>
-        </p>
+<div class="container min-vh-100 p-0 parallax">
 
-        <div class="d-grid justify-content-center mt-4">
-            <a class="btn btn-lg btn-secondary mx-auto" role="button" th:href="${model.urlNext}"
-               type="button"><i class="fa-solid fa-forward"></i><p>weiter tauchen</p></a>
-            <div class="row mt-1">
-                <div class="col">
-                    <a class="btn btn-outline-secondary m-6 btn-block w-100" th:href="${quiz.url}">zurück zur Übersicht</a>
-                    <a class="btn btn-outline-secondary m-6 mt-1 btn-block w-100" href="/quiz/pier/">zurück zum Pier</a>
+    <div class="container speedscroll" id="spacer1">
+    </div>
+
+    <div class="container speedscroll ">
+
+        <div class="card text-bg-dark bg-opacity-75 text-center ">
+            <div class="card-body">
+                <p class="text-white text-opacity-50">Passage <span th:text="${model.indexQuestion}"></span> von <span
+                        th:text="${model.countQuestions}"></span>
+                </p>
+                <p>
+                    Deine Antwort liegt
+                <h1 th:text="${model.verseDiff}"></h1>
+                Verse daneben.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container speedscroll ">
+
+        <div class="card text-bg-dark bg-opacity-75 text-center ">
+            <div class="card-body">
+                <p>
+                    Gesucht war nämlich
+                <h1 class="text-primary display-1" th:text="${model.searchedVerse}"></h1>
+                und du hast <h3 th:text="${model.selectedVerse}"></h3> ausgewählt.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container speedscroll ">
+
+        <div class="card text-bg-dark bg-opacity-75 text-center ">
+            <div class="card-body">
+                <p>
+                    Deine benötigte Zeit:
+                <h2 th:text="${model.timespan}"></h2>
+                </p>
+                <p>
+                    Du hast
+                <h1 th:text="${model.points}"></h1>
+                <h2>Punkte</h2>
+                erreicht.
+                </p>
+                <p>
+                    Summe:
+                <h1 th:text="${model.pointsSum}"></h1>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container speedscroll ">
+
+        <div class="card text-bg-dark bg-opacity-75 text-center ">
+            <div class="card-body">
+                <div class="d-grid justify-content-center">
+                    <a class="btn btn-lg btn-secondary mx-auto" role="button" th:href="${model.urlNext}"
+                       type="button"><i class="fa-solid fa-forward"></i>
+                        <p class="fs-3">weiter tauchen</p></a>
+                    <div class="row mt-1">
+                        <div class="col">
+                            <a class="btn btn-outline-secondary m-6 btn-block w-100" th:href="${quiz.url}">zurück
+                                zur
+                                Übersicht</a>
+                            <a class="btn btn-outline-secondary m-6 mt-1 btn-block w-100" href="/quiz/pier/">zurück
+                                zum
+                                Pier</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="my-5" th:insert="datatable.html :: datatable(${questionScoreTable})"></div>
-    <div class="my-4 mx-2">
-        <h3>Teile dieses Spiel mit anderen: </h3>
-        <div th:insert="fragment-share.html :: share (${quiz})"></div>
+
+    <div class="container speedscroll ">
+        <div class="card text-center ">
+            <div class="card-body">
+                <h2 class="card-title">Scoretable</h2>
+                <div class="" th:insert="datatable.html :: datatable(${questionScoreTable})"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container speedscroll ">
+
+        <div class="card text-center ">
+            <div class="card-body">
+                <div class="my-4">
+                    <h3>Teile dieses Spiel mit anderen: </h3>
+                    <div th:insert="fragment-share.html :: share (${quiz})"></div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
 <!-- Importing Footer -->
 <div th:insert="~{footer.html :: footer}"></div>
 </body>
+<script src="/js/paralax.js"></script>
 </html>
