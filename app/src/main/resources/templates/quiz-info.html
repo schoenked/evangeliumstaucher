@@ -4,53 +4,76 @@
 <head>
     <head th:insert="~{head.html :: head}"/>
     <title>evangeliumstaucher</title>
+    <link href="/css/paralax.css" rel="stylesheet"/>
 
     <link href="https://cdn.datatables.net/2.0.7/css/dataTables.dataTables.min.css" rel="stylesheet"></link>
     <script src="https://cdn.datatables.net/2.0.7/js/dataTables.min.js"></script>
     <script src="https://momentjs.com/downloads/moment.js"></script>
 </head>
 <body>
+<div class="bg-image"></div>
 <!-- Importing NavBar -->
 <div th:insert="navbar.html :: navbar"></div>
 <!--/*@thymesVar id="quiz" type="de.evangeliumstaucher.app.viewmodel.QuizModel"*/-->
-<div class="container min-vh-100  py-5 px-4">
-    <h1>Tauchgang:</h1>
-    <h2 th:text="${quiz.name}"/>
-    <p th:text="${quiz.description}"/>
-    <div th:if="${quiz.tags.empty == false}">
-        <h4>Tags</h4>
-        <th:block th:each="tag : ${quiz.tags}">
-            <p class="m-0" th:text="|#${tag}|"></p>
-        </th:block>
+<div class="container min-vh-100 p-0 parallax">
+    <div class="container speedscroll" id="spacer1">
     </div>
-    <div class="d-grid mb-5 mt-4 ">
-        <a class="btn  btn-secondary m-6 text-white  btn-lg btn-block" th:href="${quiz.startUrl}">Eintauchen</a>
-        <div class="row mt-1">
-            <div class="col">
-                <a class="btn btn-outline-secondary m-6 btn-block text-black w-100" href="/quiz/pier/">zum Pier</a>
-            </div><!--
+
+    <div class="container speedscroll " id="title">
+        <div class="card text-bg-dark bg-opacity-75 text-center ">
+            <div class="card-body">
+
+                <h1>Tauchgang:</h1>
+                <h2 th:text="${quiz.name}"/>
+                <p th:text="${quiz.description}"/>
+                <div th:if="${quiz.tags.empty == false}">
+                    <h4>Tags</h4>
+                    <th:block th:each="tag : ${quiz.tags}">
+                        <p class="m-0" th:text="|#${tag}|"></p>
+                    </th:block>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container speedscroll ">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-grid">
+                    <a class="btn  btn-secondary  text-white  btn-lg btn-block"
+                       th:href="${quiz.startUrl}">Eintauchen</a>
+                    <div class="row mt-1">
+                        <div class="col">
+                            <a class="btn btn-outline-secondary  btn-block text-black w-100" href="/quiz/pier/">zum
+                                Pier</a>
+                        </div><!--
             <div class="col">
                 &lt;!&ndash;add copy game link&ndash;&gt;
                 &lt;!&ndash;<a class="btn btn-outline-secondary m-6 btn-block w-100" href="/quiz/pier/">zum Pier</a>&ndash;&gt;
             </div>-->
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+    <div class="container speedscroll ">
 
-    <div class="card">
-        <div class="card-header">
-            <span class="card-title">Teilen</span>
+        <div class="card bg-white bg-opacity-75">
+            <div class="card-body">
+                <h2 class="card-title">Teilen</h2>
+                <div th:insert="fragment-share.html :: share (${quiz})"></div>
+            </div>
         </div>
-        <div class="card-body">
-            <div th:insert="fragment-share.html :: share (${quiz})"></div>
-        </div>
+
     </div>
 
-    <div class="card">
-        <div class="card-header">
-            <span class="card-title">Scores</span>
-        </div>
-        <div class="card-body">
-            <div th:insert="datatable.html :: datatable (${scoreTable})"></div>
+    <div class="container speedscroll pb-5">
+
+        <div class="card bg-white bg-opacity-75">
+            <div class="card-body">
+                <h2 class="card-title">Scoretable</h2>
+
+                <div th:insert="datatable.html :: datatable (${scoreTable})"></div>
+            </div>
         </div>
     </div>
 </div>
@@ -58,4 +81,5 @@
 <!-- Importing Footer -->
 <div th:insert="footer.html :: footer"></div>
 </body>
+<script src="/js/paralax.js"></script>
 </html>
