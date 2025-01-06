@@ -5,14 +5,15 @@
     <div th:replace="passage_phrase.html :: passagetext(model=${model}, path='origin')"></div>
     <a class="btn w-100" role="button" th:href="|#${model.hashcode}tag|" th:if="${model.path != 'origin'}"
        th:onclick="|showPassage(this, ${model.hashcode})|">
-        <p class="w-100 p-2 ">
+        <p class="w-100 p-2 fs-6">
             <span class="placeholder col-1"></span>
             <span class="placeholder col-3"></span>
             <span class="placeholder col-2"></span>
-            <span class="placeholder col-4"></span>
+            <span class="placeholder col-4"></span><br>
             <span class="placeholder col-2"></span>
             <span class="placeholder col-2"></span>
-            <span class="placeholder col-4"></span>
+            <span class="col-4 opacity-50">mehr anzeigen</span>
+            <span class="placeholder col-3"></span>
             <span class="placeholder col-5"></span>
             <span class="placeholder col-1"></span>
             <span class="placeholder"></span>
