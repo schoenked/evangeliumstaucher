@@ -7,8 +7,8 @@ https://evangeliumstaucher.nobler.tech
 
 ## Description
 
-This is the project for the evangeliumsTaucher game.
-It's a web application that uses
+evangeliumsTaucher is a web game.
+It's a web application server that uses
 
 | Framework/Project | Link |
 |-------------------|------|
