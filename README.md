@@ -72,11 +72,6 @@ insert
 see instruction
 https://docs.docker.com/engine/install/ubuntu/
 
-## TODOs
-
-* [ ]  copyright
 
 ---
-
-Have fun. 
 ## God bless!
