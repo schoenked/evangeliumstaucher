@@ -15,6 +15,7 @@
 <!-- Importing NavBar -->
 <div th:insert="navbar.html :: navbar"></div>
 <!--/*@thymesVar id="quiz" type="de.evangeliumstaucher.app.viewmodel.QuizModel"*/-->
+<!--/*@thymesVar id="playerStatus" type="de.evangeliumstaucher.entity.GameSessionStatus"*/-->
 <div class="container min-vh-100 p-0 parallax">
     <div class="container speedscroll" id="spacer1">
     </div>
@@ -40,7 +41,20 @@
             <div class="card-body">
                 <div class="d-grid">
                     <a class="btn  btn-secondary  text-white  btn-lg btn-block"
-                       th:href="${quiz.startUrl}">Eintauchen</a>
+                       th:if="${playerStatus.name() == 'NotStarted' or playerStatus.name() == 'InProgress'}"
+                       th:href="${quiz.startUrl}"
+                       th:text="${playerStatus.name() == 'NotStarted' ? 'Eintauchen' : 'Fortfahren'}"
+                    >Eintauchen</a>
+                    <div
+                            th:if="${playerStatus.name() == 'Finished'}"
+                        >
+                        <p>Sie haben den Tauchgang abgeschlossen. Sie können einen neuen erstellen:</p>
+                        <a class="btn btn-lg btn-primary w-100 my-4"
+                            href="/quiz/create/"
+                            role="button"
+                        >🤿 Neuen Tauchgang
+                            erstellen</a>
+                    </div>
                     <div class="row mt-1">
                         <div class="col">
                             <a class="btn btn-outline-secondary  btn-block text-black w-100" href="/quiz/pier/">zum

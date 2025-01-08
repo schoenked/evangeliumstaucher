@@ -1,6 +1,7 @@
 package de.evangeliumstaucher.repo;
 
 import de.evangeliumstaucher.entity.GameSessionEntity;
+import de.evangeliumstaucher.entity.GameSessionStatus;
 import de.evangeliumstaucher.entity.QuestionEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -30,4 +31,27 @@ public interface GameSessionRepository extends JpaRepository<GameSessionEntity, 
 
     Optional<GameSessionEntity> findByPlayerIdAndGameId(Long playerId, UUID gameId);
 
+    @Query(
+            """
+                        Select
+                               CASE
+                                   WHEN g IS NULL THEN 'NotStarted'
+                                   WHEN COUNT(q) = 0 THEN 'Finished'
+                                   ELSE 'InProgress'
+                               END
+                        from GameSessionEntity g
+                        left join QuestionEntity q
+                            on q.gameEntity.id = g.game.id
+                                and q.id not in (SElECT question.id
+                                    from
+                                        UserQuestionEntity
+                                    where gameSession.id = g.id
+                                       and selectedVerse is not null )
+                        where g.game.id = :quizId
+                                            and g.player.id = :playerId
+                                or g is null
+                        GROUP BY g
+                    """
+    )
+    GameSessionStatus getGameStatus(UUID quizId, Long playerId);
 }

@@ -3,6 +3,8 @@ package de.evangeliumstaucher.app.controller;
 import de.evangeliumstaucher.app.service.QuizService;
 import de.evangeliumstaucher.app.service.UserService;
 import de.evangeliumstaucher.app.viewmodel.*;
+import de.evangeliumstaucher.entity.GameSessionStatus;
+import de.evangeliumstaucher.repo.GameSessionRepository;
 import de.evangeliumstaucher.repo.model.Passage;
 import de.evangeliumstaucher.repo.service.Library;
 import de.evangeliumstaucher.repoDatatables.TrendingGamesDatatablesRepository;
@@ -31,13 +33,15 @@ public class QuizController extends BaseController {
     private final UserService userService;
     private final HttpSession session;
     private final TrendingGamesDatatablesRepository gameRepository;
+    private final GameSessionRepository gameSessionRepository;
 
-    public QuizController(Library library, QuizService quizService, UserService userService, HttpSession session, TrendingGamesDatatablesRepository gameRepository) {
+    public QuizController(Library library, QuizService quizService, UserService userService, HttpSession session, TrendingGamesDatatablesRepository gameRepository, GameSessionRepository gameSessionRepository) {
         super(library);
         this.quizService = quizService;
         this.userService = userService;
         this.session = session;
         this.gameRepository = gameRepository;
+        this.gameSessionRepository = gameSessionRepository;
     }
 
     private static void handleUnavailable() throws ServiceUnavailableException {
@@ -55,10 +59,15 @@ public class QuizController extends BaseController {
     }
 
     @GetMapping("/quiz/{quizId}/")
-    public String getInfo(@PathVariable UUID quizId, Model m) {
+    public String getInfo(@PathVariable UUID quizId, Model m, @ModelAttribute PlayerModel playerModel) {
         QuizModel quiz = quizService.get(quizId);
         m.addAttribute("quiz", quiz);
         m.addAttribute("quizService", quizService);
+        GameSessionStatus gameStatus = gameSessionRepository.getGameStatus(quizId, playerModel.getId());
+        if (gameStatus == null) {
+            gameStatus =GameSessionStatus.NotStarted;
+        }
+        m.addAttribute("playerStatus", gameStatus);
         DatatableViewModel scoreTableModel = new DatatableViewModel();
         List<DatatableColumn> columns = List.of(
                 new DatatableColumn("Punkte", "points", "num").withOrder(DatatableColumn.Order.DESC),
