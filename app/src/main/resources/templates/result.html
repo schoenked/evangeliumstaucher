@@ -80,8 +80,13 @@
             <div class="card-body">
                 <div class="d-grid justify-content-center">
                     <a class="btn btn-lg btn-secondary mx-auto" role="button" th:href="${model.urlNext}"
+                       th:if="${model.indexQuestion != model.countQuestions}"
                        type="button"><i class="fa-solid fa-forward"></i>
                         <p class="fs-3">weiter tauchen</p></a>
+                    <p
+                            th:if="${model.indexQuestion == model.countQuestions}"
+
+                    >Sie haben den Tauchgang abgeschlossen.</p>
                     <div class="row mt-1">
                         <div class="col">
                             <a class="btn btn-outline-secondary m-6 btn-block w-100" th:href="${quiz.url}">zurück
