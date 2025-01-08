@@ -26,7 +26,7 @@
                 <h1>Tauchgang:</h1>
                 <h2 th:text="${quiz.name}"/>
                 <p th:text="${quiz.description}"/>
-                <div th:if="${quiz.tags.empty == false}">
+                <div class="opacity-50" th:if="${quiz.tags.empty == false}">
                     <h4>Tags</h4>
                     <th:block th:each="tag : ${quiz.tags}">
                         <p class="m-0" th:text="|#${tag}|"></p>
