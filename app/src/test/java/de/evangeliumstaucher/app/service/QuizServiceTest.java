@@ -97,16 +97,6 @@ public class QuizServiceTest {
                                 }
 
                                 @Override
-                                public String getText() {
-                                    return "";
-                                }
-
-                                @Override
-                                public BibleBook getBibleBook() {
-                                    return null;
-                                }
-
-                                @Override
                                 public String getId() {
                                     return iBook + "." + iChapter;
                                 }

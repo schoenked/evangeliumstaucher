@@ -53,6 +53,15 @@ public class BookWrap {
         return diff;
     }
 
+    private  PassageTree getPassageTree(Library library, ChapterWrap chapterWrap) {
+        return PassageTree
+                .builder()
+                .id(chapterWrap.getChapter().getId())
+                .displayText(book.getName() + " " + chapterWrap.getChapter().getNumber())
+                .passageTrees(chapterWrap.getPassageTree(library))
+                .build();
+    }
+
     public int getIndex(Library library) {
         return bible.getBooks(library).indexOf(this);
     }
@@ -98,7 +107,8 @@ public class BookWrap {
 
     public List<PassageTree> getPassageTree(Library library) {
         List<PassageTree> trees = getChapters().stream()
-                .map(chapterWrap -> new PassageTree(chapterWrap.getChapter().getId(), chapterWrap.getPassageTree(library)))
+                .map(chapterWrap -> getPassageTree(library, chapterWrap)
+                )
                 .toList();
         return trees;
     }

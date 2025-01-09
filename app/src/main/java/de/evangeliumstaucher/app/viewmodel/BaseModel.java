@@ -4,14 +4,14 @@ import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.With;
+import lombok.experimental.SuperBuilder;
 import org.apache.commons.lang3.StringUtils;
 
 @Data
-@With
 @AllArgsConstructor
 @NoArgsConstructor
-public class BaseModel {
+@SuperBuilder
+public abstract class BaseModel {
 
     @NotEmpty
     public String id;
@@ -27,7 +27,7 @@ public class BaseModel {
         if (id == null) {
             return null;
         }
-        String outreturn = StringUtils.left(id,1)
+        String outreturn = StringUtils.left(id, 1)
                 .replace("1", "first")
                 .replace("2", "second")
                 .replace("3", "third")

@@ -72,6 +72,12 @@ public class ChapterWrap {
         return diff;
     }
 
+    private static PassageTree getPassageTree(VerseWrap v) {
+        return PassageTree.builder()
+                .id(v.getVerse().getId())
+                .build();
+    }
+
     public int getIndex() {
         return book.getChapters().indexOf(this);
     }
@@ -122,7 +128,8 @@ public class ChapterWrap {
 
     public List<PassageTree> getPassageTree(Library library) {
         List<PassageTree> trees = getVerses(library).stream()
-                .map(v -> new PassageTree(v.getVerse().getId(), null))
+                .map(ChapterWrap::getPassageTree
+                )
                 .toList();
         return trees;
     }

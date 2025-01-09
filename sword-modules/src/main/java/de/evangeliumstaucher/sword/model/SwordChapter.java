@@ -11,11 +11,11 @@ public class SwordChapter implements Chapter {
     private String number;
 
     private String id;
-
+/*
     @Override
     public String getText() {
         return bibleBook.getName() + " " + number;
-    }
+    }*/
 
     private BibleBook bibleBook;
 }

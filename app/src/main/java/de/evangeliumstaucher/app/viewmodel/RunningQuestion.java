@@ -17,7 +17,6 @@ import java.util.Locale;
 
 @Data
 @With
-@Builder
 @AllArgsConstructor
 @RequiredArgsConstructor
 @Slf4j

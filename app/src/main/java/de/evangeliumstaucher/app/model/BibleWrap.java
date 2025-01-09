@@ -42,17 +42,27 @@ public class BibleWrap {
     public PassageTree getPassageTree(Library library) {
         List<PassageTree> passageTree = getBooks(library).stream()
                 .filter(bookWrap -> bible.containsPassage(bookWrap.getBook().getId()))
-                .map(bookWrap -> new PassageTree(bookWrap.getBook().getId(), bookWrap.getPassageTree(library)))
+                .map(bookWrap -> PassageTree.builder()
+                        .id(bookWrap.getBook().getId())
+                        .displayText(bookWrap.getBook().getName())
+                        .passageTrees(bookWrap.getPassageTree(library))
+                        .build())
                 .collect(Collectors.toList());
 
         passageTree.addAll(0, getPassageTreeDivisions(library));
-
-        return new PassageTree("Passagen", passageTree);
+        return PassageTree.builder()
+                .id("Passagen")
+                .passageTrees(passageTree)
+                .build();
     }
 
     private Collection<? extends PassageTree> getPassageTreeDivisions(Library library) {
         return library.getDivisions(bible).stream()
-                .map(s -> new PassageTree(s.getRange(),s.getName(), null))
+                .map(s -> PassageTree
+                        .builder()
+                        .id(s.getRange())
+                        .displayText(s.getName())
+                        .build())
                 .toList();
     }
 }

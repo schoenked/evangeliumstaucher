@@ -3,15 +3,18 @@ package de.evangeliumstaucher.app.model;
 import com.google.gson.Gson;
 import de.evangeliumstaucher.app.viewmodel.BaseModel;
 import jakarta.annotation.Nullable;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.util.List;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor(force = true)
+@RequiredArgsConstructor
+@AllArgsConstructor
+@With
+@SuperBuilder
 public class PassageTree extends BaseModel {
     public static final Gson gson = new Gson();
 
@@ -21,17 +24,6 @@ public class PassageTree extends BaseModel {
     private final List<PassageTree> passageTrees;
 
     private String displayText;
-
-    public PassageTree(String id, List<PassageTree> passageTrees) {
-        super();
-        this.id = id;
-        this.passageTrees = passageTrees;
-    }
-
-    public PassageTree(String name, String displayText, List<PassageTree> passageTrees) {
-        this(name, passageTrees);
-        this.displayText = displayText;
-    }
 
     public String getDisplayText() {
         if (displayText == null) {
@@ -52,4 +44,9 @@ public class PassageTree extends BaseModel {
     public String getJson() {
         return gson.toJson(this);
     }
+
+    public static PassageTreeBuilder<?, ?> builder() {
+        return new PassageTreeBuilderImpl();
+    }
+
 }
