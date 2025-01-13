@@ -19,22 +19,22 @@ public class PassageTree extends BaseModel {
     public static final Gson gson = new Gson();
 
     @Nullable
-    private final List<PassageTree> passageTrees;
+    private final List<PassageTree> tree;
 
-    private String displayText;
-    private boolean collapsed = true;
-    private boolean activeWhitelist = false;
-    private boolean activeBlacklist = false;
+    private String displ;
+    private boolean coll = true;
+    private boolean actWhi = false;
+    private boolean actBl = false;
 
     public static PassageTreeBuilder<?, ?> builder() {
-        return new PassageTreeBuilderImpl().collapsed(true);
+        return new PassageTreeBuilderImpl().coll(true);
     }
 
-    public String getDisplayText() {
-        if (displayText == null) {
+    public String getDispl() {
+        if (displ == null) {
             return id;
         }
-        return displayText;
+        return displ;
     }
 
     public String getId() {

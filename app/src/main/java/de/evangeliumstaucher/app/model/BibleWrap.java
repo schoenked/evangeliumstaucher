@@ -44,16 +44,20 @@ public class BibleWrap {
                 .filter(bookWrap -> bible.containsPassage(bookWrap.getBook().getId()))
                 .map(bookWrap -> PassageTree.builder()
                         .id(bookWrap.getBook().getId())
-                        .displayText(bookWrap.getBook().getName())
-                        .passageTrees(bookWrap.getPassageTree(library))
+                        .displ(bookWrap.getBook().getName())
+                        .tree(bookWrap.getPassageTree(library))
                         .build())
                 .collect(Collectors.toList());
 
-        passageTree.addAll(0, getPassageTreeDivisions(library));
+        passageTree.addAll(0, getPassageTreeDivisions(library).stream()
+                .filter(item -> passageTree.stream()
+                        .noneMatch(p-> p.getId().equals(item.getId())))
+                .toList()
+        );
         return PassageTree.builder()
                 .id("")
-                .collapsed(false)
-                .passageTrees(passageTree)
+                .coll(false)
+                .tree(passageTree)
                 .build();
     }
 
@@ -62,9 +66,9 @@ public class BibleWrap {
                 .map(s -> PassageTree
                         .builder()
                         .id(s.getRange())
-                        .displayText(s.getName())
+                        .displ(s.getName())
                         //Activate Whole Bible
-                        .activeWhitelist(s.getRange().equals("Gen-Rev"))
+                        .actWhi(s.getRange().equals("Gen-Rev"))
                         .build())
                 .toList();
     }

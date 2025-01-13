@@ -35,7 +35,7 @@ public abstract class BaseModel {
                 .replace("5", "fifth")
                 + StringUtils.substring(id, 1);
         outreturn = StringUtils.deleteWhitespace(outreturn);
-
+        outreturn = StringUtils.remove(outreturn, ",");
         return outreturn;
     }
 }

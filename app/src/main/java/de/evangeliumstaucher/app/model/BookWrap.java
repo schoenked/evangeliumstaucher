@@ -57,8 +57,8 @@ public class BookWrap {
         return PassageTree
                 .builder()
                 .id(chapterWrap.getChapter().getId())
-                .displayText(book.getName() + " " + chapterWrap.getChapter().getNumber())
-                .passageTrees(chapterWrap.getPassageTree(library))
+                .displ(book.getName() + " " + chapterWrap.getChapter().getNumber())
+                .tree(chapterWrap.getPassageTree(library))
                 .build();
     }
 

@@ -3,30 +3,30 @@
 <details th:fragment="renderPassageTree(passageTree)"
          th:if="${passageTree != null}"
          class="list-group-details"
-         th:attr="open=${!passageTree.collapsed ? 'open' : null}">
+         th:attr="open=${!passageTree.coll ? 'open' : null}">
 
 <summary>
-        <div th:if="${passageTree.displayText != null && !passageTree.displayText.isEmpty()}">
+        <div th:if="${passageTree.displ != null && !passageTree.displ.isEmpty()}">
             <!-- Display the current PassageTree id -->
             <span class="ms-1 form-check-label" th:for="|add_${passageTree.id}|"
-                  th:text="${passageTree.displayText}">Passage ID</span>
+                  th:text="${passageTree.displ}">Passage ID</span>
             <input class="btn-check p-0" th:id="|add_${passageTree.id}|" th:name="|add_${passageTree.id}|"
-                   th:attr="checked=${passageTree.activeWhitelist ? 'checked' : null}"
+                   th:attr="checked=${passageTree.actWhi ? 'checked' : null}"
                    type="checkbox">
             <label class="btn btn-outline-success" th:for="|add_${passageTree.id}|">+</label>
             <input class="btn-check p-0" th:id="|sub_${passageTree.id}|" th:name="|sub_${passageTree.id}|"
-                   th:attr="checked=${passageTree.activeBlacklist ? 'checked' : null}"
+                   th:attr="checked=${passageTree.actBl ? 'checked' : null}"
                    type="checkbox">
             <label class="btn btn-outline-danger" th:for="|sub_${passageTree.id}|">-</label>
         </div>
     </summary>
     <!-- Check if there are child PassageTrees and render them recursively -->
-    <ul class="list-group" th:if="${passageTree.passageTrees != null}">
+    <ul class="list-group" th:if="${passageTree.tree != null}">
         <li th:id="${child.htmlId}"
             class="list-group-item" th:data-passages="|${child.json}|"
-            th:each="child : ${passageTree.passageTrees}">
-            <script th:if="${!passageTree.collapsed}">
-                var isCollapsed = /*[[${passageTree.collapsed}]]*/ false; // Default to false if not set
+            th:each="child : ${passageTree.tree}">
+            <script th:if="${!passageTree.coll}">
+                var isCollapsed = /*[[${passageTree.coll}]]*/ false; // Default to false if not set
                 if (!isCollapsed) {
                     //$("#[[${child.htmlId}]]").click();
                     loadPassage($("#[[${child.htmlId}]]"));

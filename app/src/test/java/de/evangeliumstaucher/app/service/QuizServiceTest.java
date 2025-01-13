@@ -245,10 +245,10 @@ public class QuizServiceTest {
     }
 
     private String getRandomPassage(PassageTree passageTree) {
-        if (passageTree.getPassageTrees() == null || passageTree.getPassageTrees().isEmpty()) {
+        if (passageTree.getTree() == null || passageTree.getTree().isEmpty()) {
             return passageTree.getId();
         }
-        return getRandomPassage(ListUtils.randomItem(passageTree.getPassageTrees()));
+        return getRandomPassage(ListUtils.randomItem(passageTree.getTree()));
     }
 
 }
