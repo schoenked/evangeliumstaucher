@@ -18,12 +18,17 @@ import java.util.List;
 public class PassageTree extends BaseModel {
     public static final Gson gson = new Gson();
 
-    @Getter
-    @Setter
     @Nullable
     private final List<PassageTree> passageTrees;
 
     private String displayText;
+    private boolean collapsed = true;
+    private boolean activeWhitelist = false;
+    private boolean activeBlacklist = false;
+
+    public static PassageTreeBuilder<?, ?> builder() {
+        return new PassageTreeBuilderImpl().collapsed(true);
+    }
 
     public String getDisplayText() {
         if (displayText == null) {
@@ -43,10 +48,6 @@ public class PassageTree extends BaseModel {
 
     public String getJson() {
         return gson.toJson(this);
-    }
-
-    public static PassageTreeBuilder<?, ?> builder() {
-        return new PassageTreeBuilderImpl();
     }
 
 }

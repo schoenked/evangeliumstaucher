@@ -51,7 +51,8 @@ public class BibleWrap {
 
         passageTree.addAll(0, getPassageTreeDivisions(library));
         return PassageTree.builder()
-                .id("Passagen")
+                .id("")
+                .collapsed(false)
                 .passageTrees(passageTree)
                 .build();
     }
