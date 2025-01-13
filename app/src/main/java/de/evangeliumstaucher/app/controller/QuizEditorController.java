@@ -79,11 +79,11 @@ public class QuizEditorController extends BaseController {
     @PostMapping("/quiz/create/{bibleId}/submit")
     public String submitQuiz(@PathVariable String bibleId, @Valid @ModelAttribute QuizSetupModel quizSetupModel, @RequestParam Map<String, String> allRequestParams, Model m, @ModelAttribute PlayerModel playerModel) throws BadRequestException {
         String whitelist = allRequestParams.entrySet().stream()
-                .filter(e -> e.getKey().startsWith("add_") && e.getValue().equals("true"))
+                .filter(e -> e.getKey().startsWith("add_") && e.getValue().equals("on"))
                 .map(e -> StringUtils.substring(e.getKey(), 4))
                 .collect(Collectors.joining(","));
         String blacklist = allRequestParams.entrySet().stream()
-                .filter(e -> e.getKey().startsWith("sub_") && e.getValue().equals("true"))
+                .filter(e -> e.getKey().startsWith("sub_") && e.getValue().equals("on"))
                 .map(e -> StringUtils.substring(e.getKey(), 4))
                 .collect(Collectors.joining(","));
         BibleWrap bible = new BibleWrap(bibleId, library.getBible(bibleId));

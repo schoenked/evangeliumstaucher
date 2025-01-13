@@ -11,11 +11,11 @@
             <span class="ms-1 form-check-label" th:for="|add_${passageTree.id}|"
                   th:text="${passageTree.displayText}">Passage ID</span>
             <input class="btn-check p-0" th:id="|add_${passageTree.id}|" th:name="|add_${passageTree.id}|"
-                   th:value="${passageTree.activeWhitelist}"
+                   th:attr="checked=${passageTree.activeWhitelist ? 'checked' : null}"
                    type="checkbox">
             <label class="btn btn-outline-success" th:for="|add_${passageTree.id}|">+</label>
             <input class="btn-check p-0" th:id="|sub_${passageTree.id}|" th:name="|sub_${passageTree.id}|"
-                   th:value="${passageTree.activeBlacklist}"
+                   th:attr="checked=${passageTree.activeBlacklist ? 'checked' : null}"
                    type="checkbox">
             <label class="btn btn-outline-danger" th:for="|sub_${passageTree.id}|">-</label>
         </div>

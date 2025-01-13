@@ -63,6 +63,8 @@ public class BibleWrap {
                         .builder()
                         .id(s.getRange())
                         .displayText(s.getName())
+                        //Activate Whole Bible
+                        .activeWhitelist(s.getRange().equals("Gen-Rev"))
                         .build())
                 .toList();
     }
