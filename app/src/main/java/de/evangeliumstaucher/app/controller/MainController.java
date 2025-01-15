@@ -19,7 +19,7 @@ public class MainController {
         return "index.html";
     }
 
-    @RequestMapping(value = {"/robots.txt", "/robot.txt"})
+    //@RequestMapping(value = {"/robots.txt", "/robot.txt"})
     @ResponseBody
     public String getRobotsTxt() {
         return "User-agent: *\n" +
