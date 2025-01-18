@@ -39,6 +39,27 @@
                 <div class="card-body">
 
                     <div class="d-grid">
+                        <button type="button" class="btn rounded btn-outline-primary" data-bs-toggle="modal" data-bs-target="#introduction">
+                            i
+                        </button>
+
+                        <!-- Introduction Modal -->
+                        <div class="modal modal-xl fade" id="introduction" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-scrollable">
+                                <div class="modal-content text-start bg-black bg-opacity-75">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="staticBackdropLabel">Wie spiele ich den evangeliumstaucher?</h5>
+                                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <pre style="font-family: var(--bs-font-sans-serif)" th:text="${T(de.evangeliumstaucher.app.viewmodel.Introduction).TEXT}"></pre>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-primary w-100">Ich bin bereit</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <a class="btn btn-secondary  text-white  btn-lg btn-block"
                            th:href="${quiz.startUrl}"
                            th:if="${playerStatus.name() == 'NotStarted' or playerStatus.name() == 'InProgress'}"
