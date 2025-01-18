@@ -35,32 +35,44 @@
         </div>
     </div>
     <div class="container speedscroll ">
-            <div class="card text-bg-dark bg-opacity-75 text-center ">
-                <div class="card-body">
+        <div class="card text-bg-dark bg-opacity-75 text-center ">
+            <div class="card-body">
 
-                    <div class="d-grid">
-                        <button type="button" class="btn rounded btn-outline-primary" data-bs-toggle="modal" data-bs-target="#introduction">
-                            i
+                <div class="d-grid">
+                    <div class="row align-items-center">
+                    <div class="col col-auto">
+                        <button class="btn center rounded-circle btn-lg btn-outline-secondary "
+                                data-bs-target="#introduction" data-bs-toggle="modal"
+                                style="width: 50px; height: 50px; font-size: 1rem;" type="button">
+                            <i class="fas fa-info"></i>
                         </button>
 
                         <!-- Introduction Modal -->
-                        <div class="modal modal-xl fade" id="introduction" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                        <div aria-hidden="true" aria-labelledby="staticBackdropLabel" class="modal modal-xl fade"
+                             data-bs-keyboard="false"
+                             id="introduction" tabindex="-1">
                             <div class="modal-dialog modal-dialog-scrollable">
                                 <div class="modal-content text-start bg-black bg-opacity-75">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="staticBackdropLabel">Wie spiele ich den evangeliumstaucher?</h5>
-                                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        <h5 class="modal-title" id="staticBackdropLabel">Wie spiele ich den
+                                            evangeliumstaucher?</h5>
+                                        <button aria-label="Close" class="btn-close btn-close-white"
+                                                data-bs-dismiss="modal"
+                                                type="button"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <pre style="font-family: var(--bs-font-sans-serif)" th:text="${T(de.evangeliumstaucher.app.viewmodel.Introduction).TEXT}"></pre>
+                                        <pre style="font-family: var(--bs-font-sans-serif)"
+                                             th:text="${T(de.evangeliumstaucher.app.viewmodel.Introduction).TEXT}"></pre>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-primary w-100">Ich bin bereit</button>
+                                        <button class="btn btn-primary w-100"  data-bs-dismiss="modal" type="button">Ich bin bereit</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <a class="btn btn-secondary  text-white  btn-lg btn-block"
+                    </div>
+                    <div class="col">
+                        <a class="btn btn-secondary text-white btn-lg btn-block w-100"
                            th:href="${quiz.startUrl}"
                            th:if="${playerStatus.name() == 'NotStarted' or playerStatus.name() == 'InProgress'}"
                            th:text="${playerStatus.name() == 'NotStarted' ? 'Eintauchen' : 'Fortfahren'}"
@@ -87,7 +99,9 @@
                 </div>-->
                         </div>
                     </div>
+                    </div>
                 </div>
+            </div>
         </div>
     </div>
     <div class="container speedscroll ">
