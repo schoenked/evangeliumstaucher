@@ -33,15 +33,13 @@ public class QuizController extends BaseController {
     private final UserService userService;
     private final HttpSession session;
     private final TrendingGamesDatatablesRepository gameRepository;
-    private final GameSessionRepository gameSessionRepository;
 
     public QuizController(Library library, QuizService quizService, UserService userService, HttpSession session, TrendingGamesDatatablesRepository gameRepository, GameSessionRepository gameSessionRepository) {
-        super(library);
+        super(library,gameSessionRepository);
         this.quizService = quizService;
         this.userService = userService;
         this.session = session;
         this.gameRepository = gameRepository;
-        this.gameSessionRepository = gameSessionRepository;
     }
 
     private static void handleUnavailable() throws ServiceUnavailableException {

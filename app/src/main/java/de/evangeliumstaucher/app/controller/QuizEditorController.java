@@ -8,6 +8,7 @@ import de.evangeliumstaucher.app.viewmodel.PlayerModel;
 import de.evangeliumstaucher.app.viewmodel.QuizModel;
 import de.evangeliumstaucher.app.viewmodel.QuizSetupModel;
 import de.evangeliumstaucher.repo.GameRepository;
+import de.evangeliumstaucher.repo.GameSessionRepository;
 import de.evangeliumstaucher.repo.service.Library;
 import de.evangeliumstaucher.repoDatatables.TrendingGamesDatatablesRepository;
 import jakarta.servlet.http.HttpSession;
@@ -35,8 +36,10 @@ public class QuizEditorController extends BaseController {
     private final GameRepository gameRepository;
     private final TrendingGamesDatatablesRepository trendingGamesDatatablesRepository;
 
-    public QuizEditorController(Library library, QuizService quizService, UserService userService, HttpSession session, TrendingGamesDatatablesRepository trendingGamesDatatablesRepository, GameRepository gameRepository) {
-        super(library);
+    public QuizEditorController(Library library, QuizService quizService, UserService userService, HttpSession session, TrendingGamesDatatablesRepository trendingGamesDatatablesRepository,
+                                GameRepository gameRepository,
+                                GameSessionRepository gameSessionRepository) {
+        super(library, gameSessionRepository);
         this.quizService = quizService;
         this.userService = userService;
         this.session = session;

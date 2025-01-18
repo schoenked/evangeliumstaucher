@@ -4,6 +4,7 @@ import de.evangeliumstaucher.app.config.AccountConfig;
 import de.evangeliumstaucher.app.model.Player;
 import de.evangeliumstaucher.app.service.UserService;
 import de.evangeliumstaucher.entity.PlayerEntity;
+import de.evangeliumstaucher.repo.GameSessionRepository;
 import de.evangeliumstaucher.repo.service.Library;
 import jakarta.annotation.Nonnull;
 import jakarta.servlet.http.HttpSession;
@@ -36,8 +37,8 @@ public class AccountController extends BaseController {
     @Autowired
     AccountConfig accountConfig;
 
-    public AccountController(Library library) {
-        super(library);
+    public AccountController(Library library, GameSessionRepository gameSessionRepository) {
+        super(library, gameSessionRepository);
     }
 
     @PostMapping("/createuser")

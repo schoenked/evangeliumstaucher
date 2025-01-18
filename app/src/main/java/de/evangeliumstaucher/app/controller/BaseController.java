@@ -1,6 +1,7 @@
 package de.evangeliumstaucher.app.controller;
 
 import de.evangeliumstaucher.app.viewmodel.*;
+import de.evangeliumstaucher.repo.GameSessionRepository;
 import de.evangeliumstaucher.repo.model.Bible;
 import de.evangeliumstaucher.repo.service.Library;
 import lombok.RequiredArgsConstructor;
@@ -9,8 +10,8 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.ui.Model;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.groupingBy;
 
@@ -18,6 +19,7 @@ import static java.util.stream.Collectors.groupingBy;
 @RequiredArgsConstructor
 public class BaseController {
     final Library library;
+    public final GameSessionRepository gameSessionRepository;
 
     protected void addWarning(Model m) {
         m.addAttribute("warning", "Leider kann die Bibel zurzeit nicht geladen werden. Versuch es bitte gleich nochmal.");
@@ -26,10 +28,13 @@ public class BaseController {
     protected String getBible(Model m) {
         try {
             List<Bible> bibles = library.getBibles();
-
+            List<String> bibleUsages = gameSessionRepository.getBibleUsages();
+            //List<Bible> x = bibleUsages.stream().map(library::getBible).toList().reversed();
             List<BibleModel> books = bibles.stream()
                     .map(BibleModel::from)
                     .peek(b -> b.setUrl(b.getUrl()))
+                    //sort by usage count
+                    .sorted(Comparator.comparingInt(o -> bibleUsages.indexOf(o.getId())))
                     .collect(groupingBy(BibleModel::getLanguageCode))
                     .entrySet().stream()
                     .sorted((o1, o2) -> {
@@ -38,9 +43,8 @@ public class BaseController {
                         if (o2.getKey().equals(LocaleContextHolder.getLocale().getLanguage())) return 1;
                         return o1.getKey().compareTo(o2.getKey());
                     })
-                    .flatMap(g -> g.getValue().stream())
-
-                    .collect(Collectors.toList());
+                    .flatMap(g -> g.getValue().reversed().stream())
+                    .toList();
 
             ArrayList<DatatableRow> rows = new ArrayList<DatatableRow>();
 

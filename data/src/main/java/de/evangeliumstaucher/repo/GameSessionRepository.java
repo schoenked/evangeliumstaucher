@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -54,4 +55,15 @@ public interface GameSessionRepository extends JpaRepository<GameSessionEntity, 
                     """
     )
     GameSessionStatus getGameStatus(UUID quizId, Long playerId);
+
+    /**
+     * Returns all used bibles. Ordered by usage.
+     */
+    @Query("""
+            Select g.bibleId
+            from GameEntity g
+            group by g.bibleId
+            order by count(*) asc
+            """)
+    List<String> getBibleUsages();
 }

@@ -1,5 +1,6 @@
 package de.evangeliumstaucher.app.controller;
 
+import de.evangeliumstaucher.repo.GameSessionRepository;
 import de.evangeliumstaucher.repo.service.Library;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -15,8 +16,8 @@ import java.nio.charset.StandardCharsets;
 @Slf4j
 public class ErrorController extends BaseController {
 
-    public ErrorController(Library library) {
-        super(library);
+    public ErrorController(Library library, GameSessionRepository gameSessionRepository) {
+        super(library, gameSessionRepository);
     }
 
     @GetMapping("/error/403")

@@ -5,6 +5,7 @@ import de.evangeliumstaucher.app.utils.ListUtils;
 import de.evangeliumstaucher.app.viewmodel.BookModel;
 import de.evangeliumstaucher.app.viewmodel.PassageModel;
 import de.evangeliumstaucher.app.viewmodel.VerseModel;
+import de.evangeliumstaucher.repo.GameSessionRepository;
 import de.evangeliumstaucher.repo.model.BibleBook;
 import de.evangeliumstaucher.repo.model.Passage;
 import de.evangeliumstaucher.repo.model.Verse;
@@ -23,8 +24,8 @@ import java.util.stream.Collectors;
 @Slf4j
 public class BibleController extends BaseController {
 
-    public BibleController(Library library) {
-        super(library);
+    public BibleController(Library library, GameSessionRepository gameSessionRepository) {
+        super(library, gameSessionRepository);
     }
 
     @GetMapping("/bible/")
