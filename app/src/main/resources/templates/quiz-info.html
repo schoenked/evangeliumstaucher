@@ -35,36 +35,38 @@
         </div>
     </div>
     <div class="container speedscroll ">
-        <div class="card">
-            <div class="card-body">
-                <div class="d-grid">
-                    <a class="btn  btn-secondary  text-white  btn-lg btn-block"
-                       th:if="${playerStatus.name() == 'NotStarted' or playerStatus.name() == 'InProgress'}"
-                       th:href="${quiz.startUrl}"
-                       th:text="${playerStatus.name() == 'NotStarted' ? 'Eintauchen' : 'Fortfahren'}"
-                    >Eintauchen</a>
-                    <div
-                            th:if="${playerStatus.name() == 'Finished'}"
+            <div class="card text-bg-dark bg-opacity-75 text-center ">
+                <div class="card-body">
+
+                    <div class="d-grid">
+                        <a class="btn btn-secondary  text-white  btn-lg btn-block"
+                           th:href="${quiz.startUrl}"
+                           th:if="${playerStatus.name() == 'NotStarted' or playerStatus.name() == 'InProgress'}"
+                           th:text="${playerStatus.name() == 'NotStarted' ? 'Eintauchen' : 'Fortfahren'}"
+                        >Eintauchen</a>
+                        <div
+                                th:if="${playerStatus.name() == 'Finished'}"
                         >
-                        <p>Sie haben den Tauchgang abgeschlossen. Sie können einen neuen erstellen:</p>
-                        <a class="btn btn-lg btn-primary w-100 my-4"
-                            href="/quiz/create/"
-                            role="button"
-                        >🤿 Neuen Tauchgang
-                            erstellen</a>
-                    </div>
-                    <div class="row mt-1">
-                        <div class="col">
-                            <a class="btn btn-outline-secondary  btn-block text-black w-100" href="/quiz/pier/">zum
-                                Pier</a>
-                        </div><!--
-            <div class="col">
-                &lt;!&ndash;add copy game link&ndash;&gt;
-                &lt;!&ndash;<a class="btn btn-outline-secondary m-6 btn-block w-100" href="/quiz/pier/">zum Pier</a>&ndash;&gt;
-            </div>-->
+                            <p>Sie haben den Tauchgang abgeschlossen. Sie können einen neuen erstellen:</p>
+                            <a class="btn btn-lg btn-primary w-100 my-4"
+                               href="/quiz/create/"
+                               role="button"
+                            >🤿 Neuen Tauchgang
+                                erstellen</a>
+                        </div>
+                        <div class="row mt-1">
+                            <div class="col">
+                                <a class="btn btn-outline-secondary btn-block text-light w-100" href="/quiz/pier/">zum
+                                    Pier</a>
+                            </div>
+                            <!--
+                <div class="col">
+                    &lt;!&ndash;add copy game link&ndash;&gt;
+                    &lt;!&ndash;<a class="btn btn-outline-secondary m-6 btn-block w-100" href="/quiz/pier/">zum Pier</a>&ndash;&gt;
+                </div>-->
+                        </div>
                     </div>
                 </div>
-            </div>
         </div>
     </div>
     <div class="container speedscroll ">
