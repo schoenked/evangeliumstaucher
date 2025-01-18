@@ -9,7 +9,7 @@
     </parent>
     <groupId>de.evangeliumstaucher</groupId>
     <artifactId>parent</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0</version>
     <name>parent</name>
     <packaging>pom</packaging>
     <properties>
@@ -29,27 +29,27 @@
             <dependency>
                 <groupId>de.evangeliumstaucher</groupId>
                 <artifactId>app</artifactId>
-                <version>0.0.1-beta</version>
+                <version>1.0.0</version>
             </dependency>
             <dependency>
                 <groupId>de.evangeliumstaucher</groupId>
                 <artifactId>data</artifactId>
-                <version>0.0.1-SNAPSHOT</version>
+                <version>1.0.0</version>
             </dependency>
             <dependency>
                 <groupId>de.evangeliumstaucher</groupId>
                 <artifactId>sword-api</artifactId>
-                <version>0.0.1-SNAPSHOT</version>
+                <version>1.0.0</version>
             </dependency>
             <dependency>
                 <groupId>de.evangeliumstaucher</groupId>
                 <artifactId>sword-modules</artifactId>
-                <version>0.0.1-SNAPSHOT</version>
+                <version>1.0.0</version>
             </dependency>
             <dependency>
                 <groupId>de.evangeliumstaucher</groupId>
                 <artifactId>bible-repo</artifactId>
-                <version>0.0.1-SNAPSHOT</version>
+                <version>1.0.0</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

@@ -3,11 +3,11 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <artifactId>app</artifactId>
-    <version>0.0.1-beta</version>
+    <version>1.0.0</version>
     <parent>
         <groupId>de.evangeliumstaucher</groupId>
         <artifactId>parent</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>1.0.0</version>
     </parent>
     <name>App</name>
     <properties>
@@ -59,12 +59,12 @@
         <dependency>
             <groupId>de.evangeliumstaucher</groupId>
             <artifactId>data</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>1.0.0</version>
         </dependency>
         <dependency>
             <groupId>de.evangeliumstaucher</groupId>
             <artifactId>sword-modules</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>1.0.0</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
