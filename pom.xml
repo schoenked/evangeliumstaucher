@@ -51,6 +51,21 @@
                 <artifactId>bible-repo</artifactId>
                 <version>1.0.0</version>
             </dependency>
+            <dependency>
+                <groupId>com.github.darrachequesne</groupId>
+                <artifactId>spring-data-jpa-datatables</artifactId>
+                <version>6.0.4</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>3.15.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.webjars.bower</groupId>
+                <artifactId>bootstrap</artifactId>
+                <version>5.3.3</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
     <dependencies>
@@ -99,5 +114,25 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-dependency-plugin</artifactId>
+                    <version>3.7.1</version>
+                </plugin>
+                <plugin>
+                    <groupId>io.github.cleydyr</groupId>
+                    <artifactId>dart-sass-maven-plugin</artifactId>
+                    <version>1.1.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>com.google.cloud.tools</groupId>
+                    <artifactId>jib-maven-plugin</artifactId>
+                    <version>3.4.3</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
 </project>
