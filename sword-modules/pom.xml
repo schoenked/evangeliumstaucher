@@ -15,12 +15,10 @@
         <dependency>
             <groupId>de.evangeliumstaucher</groupId>
             <artifactId>bible-repo</artifactId>
-            <version>1.0.0</version>
         </dependency>
         <dependency>
             <groupId>de.evangeliumstaucher</groupId>
             <artifactId>sword-api</artifactId>
-            <version>1.0.0</version>
         </dependency>
     </dependencies>
     <build>

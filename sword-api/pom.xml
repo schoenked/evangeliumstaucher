@@ -15,7 +15,6 @@
         <dependency>
             <groupId>com.github.crosswire</groupId>
             <artifactId>jsword</artifactId>
-            <version>2.1</version>
         </dependency>
     </dependencies>
     <build>
