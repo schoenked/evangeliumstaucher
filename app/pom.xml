@@ -120,6 +120,7 @@
     </build>
     <profiles>
         <profile>
+            <!--use profile buildImage "mvn [...] -P buildImage" to build the container image by jib plugin-->
             <id>buildImage</id>
             <build>
                 <plugins>
