@@ -15,8 +15,8 @@
 <div th:insert="~{navbar.html :: navbar}"></div>
 
 <!-- Main Container Start -->
-<div class="container min-vh-100 p-4">
-    <h1>Wähle deine Übersetzung</h1>
+<div class="container min-vh-100 py-3 px-1">
+    <h1 class="m-3">Wähle deine Übersetzung</h1>
 
     <div class="my-5" th:insert="datatable.html :: datatable(${booksTable})"></div>
 
