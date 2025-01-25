@@ -9,7 +9,7 @@ logging:
             springframework:
                 security: INFO
             thymeleaf: ERROR
-        root: INFO
+        root: warn
         web: INFO
 security:
     require-ssl: true
