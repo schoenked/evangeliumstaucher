@@ -83,6 +83,10 @@ public class SwordLibrary implements Library {
             Versification versification = swordBible.getSwordBook().getVersification();
             try {
                 PassageTally p = new PassageTally(versification, chapterId);
+                if (p.countVerses() == 1) {
+                    //book with single chapter
+                    p = new PassageTally(versification, p.getRootName());
+                }
                 output = Streams.stream(p.iterator())
                         .map(key -> (org.crosswire.jsword.passage.Verse) key)
                         .filter(key -> key.getVerse() > 0 && key.getChapter() > 0)
