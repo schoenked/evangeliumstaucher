@@ -2,7 +2,7 @@
 <!--/*@thymesVar id="passageTree" type="de.evangeliumstaucher.app.model.PassageTree"*/-->
 <details th:fragment="renderPassageTree(passageTree)"
          th:if="${passageTree != null}"
-         class="list-group-details"
+         class="list-group-details pe-0"
          th:attr="open=${!passageTree.coll ? 'open' : null}">
 
 <summary>
@@ -23,7 +23,7 @@
     <!-- Check if there are child PassageTrees and render them recursively -->
     <ul class="list-group" th:if="${passageTree.tree != null}">
         <li th:id="${child.htmlId}"
-            class="list-group-item" th:data-passages="|${child.json}|"
+            class="list-group-item pe-0" th:data-passages="|${child.json}|"
             th:each="child : ${passageTree.tree}">
             <script th:if="${!passageTree.coll}">
                 var isCollapsed = /*[[${passageTree.coll}]]*/ false; // Default to false if not set
