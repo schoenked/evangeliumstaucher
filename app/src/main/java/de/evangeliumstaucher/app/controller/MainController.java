@@ -2,6 +2,7 @@ package de.evangeliumstaucher.app.controller;
 
 import de.evangeliumstaucher.app.service.QuizService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +20,8 @@ public class MainController {
         return "index.html";
     }
 
-    //@RequestMapping(value = {"/robots.txt", "/robot.txt"})
+    @RequestMapping(value = {"/robots.txt", "/robot.txt"},
+            produces = {MediaType.TEXT_PLAIN_VALUE})
     @ResponseBody
     public String getRobotsTxt() {
         return "User-agent: *\n" +
