@@ -33,16 +33,16 @@ public class BibleService {
     }
 
     public Bible getBible(String name) {
-        log.trace("loading bible {}", name);
+        //log.trace("loading bible {}", name);
         if (name.startsWith(PREFIX)) {
             //trim prefix
             name = name.substring(PREFIX.length());
             String swordName = decodeName(name);
-            log.trace("bible name {}", swordName);
+            //log.trace("bible name {}", swordName);
             Book book = Books.installed().getBook(swordName);
 
             if (book == null) {
-                log.trace("bible not installed yet");
+                log.debug("bible not installed yet");
                 book = install(swordName);
             }
             return toBible(book);

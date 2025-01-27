@@ -8,11 +8,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.crosswire.jsword.book.sword.SwordBook;
+import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.PassageTally;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 @Builder
@@ -27,6 +29,9 @@ public class SwordBible implements Bible {
     String description;
     String id;
     String copyright;
+    //whitelist and verses
+    private HashMap<String, List<Key>> verses;
+    private HashMap<String, Key> keys;
 
     private static boolean filterVerses(org.crosswire.jsword.passage.Verse key) {
         return key.getChapter() != 0
@@ -46,14 +51,15 @@ public class SwordBible implements Bible {
 
         List<Verse> verses;
         try {
-            verses = Streams.stream(getSwordBook().getKey(whitelist).iterator())
+            verses = getVerses(whitelist)
+                    .stream()
                     .filter(key -> key instanceof org.crosswire.jsword.passage.Verse)
                     // blacklist filter
                     .filter(key -> {
                         try {
-                            PassageTally blacklistkey = new PassageTally(getSwordBook().getVersification(), blacklist);
+                            Key blacklistkey = getKey(blacklist);
                             return !blacklistkey.contains(key);
-                        } catch (NoSuchVerseException e) {
+                        } catch (NoSuchKeyException e) {
                             return false;
                         }
                     })
@@ -70,15 +76,42 @@ public class SwordBible implements Bible {
         return verses;
     }
 
+    private List<Key> getVerses(String whitelist) throws NoSuchKeyException {
+        if (verses == null) {
+            verses = new HashMap<>();
+        }
+        if (verses.containsKey(whitelist)) {
+            return verses.get(whitelist);
+        } else {
+            List<Key> v = Streams.stream(getKey(whitelist).iterator())
+                    .toList();
+            verses.put(whitelist, v);
+            return v;
+        }
+    }
+
     @Override
     public Verse getVerse(String verseId) {
         org.crosswire.jsword.passage.Verse key;
         try {
-            key = (org.crosswire.jsword.passage.Verse) getSwordBook().getKey(verseId).get(0);
+            key = (org.crosswire.jsword.passage.Verse) getKey(verseId).get(0);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
         return SwordVerse.from(key, getId());
+    }
+
+    private Key getKey(String id) throws NoSuchKeyException {
+        if (keys == null) {
+            keys = new HashMap<>();
+        }
+        if (keys.containsKey(id)) {
+            return keys.get(id);
+        } else {
+            Key k = getSwordBook().getKey(id);
+            keys.put(id, k);
+            return k;
+        }
     }
 
     @Override
