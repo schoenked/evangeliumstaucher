@@ -18,6 +18,7 @@ import de.evangeliumstaucher.repo.model.Division;
 import de.evangeliumstaucher.repo.model.Verse;
 import de.evangeliumstaucher.repo.service.Library;
 import jakarta.annotation.Nonnull;
+import jakarta.validation.constraints.NotNull;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.PassageTally;
 import org.crosswire.jsword.versification.Versification;
@@ -220,9 +221,7 @@ public class QuizServiceTest {
     @RepeatedTest(100)
     public void testBlackAndWhiteli() throws NoSuchVerseException {
         BibleWrap biblewrap = PassageTest.getBibleWrap(library);
-        QuizSetupModel model = QuizSetupModel.from(biblewrap, library);
-        model.setCountVerses(1);
-        model.setTags("");
+        QuizSetupModel model = getSetupModel(biblewrap, 1);
         String v1 = getRandomPassage(model.getPassageTree());
         String v2 = getRandomPassage(model.getPassageTree());
         String v3 = getRandomPassage(model.getPassageTree());
@@ -230,7 +229,7 @@ public class QuizServiceTest {
         String blacklist = v3;
         QuizModel response = quizService.createQuiz(biblewrap, model, new PlayerModel(), whitelist, blacklist);
 
-        if (response!= null && !response.getVerses().isEmpty()) {
+        if (response != null && !response.getVerses().isEmpty()) {
             Versification versification = Versifications.instance().getVersification(SystemGerman.V11N_NAME);
 
             boolean filterCorrect = new org.crosswire.jsword.passage.PassageTally(versification, whitelist)
@@ -244,6 +243,13 @@ public class QuizServiceTest {
         }
     }
 
+    private QuizSetupModel getSetupModel(BibleWrap biblewrap, int countVerses) {
+        QuizSetupModel model = QuizSetupModel.from(biblewrap, library);
+        model.setCountVerses(countVerses);
+        model.setTags("");
+        return model;
+    }
+
     private String getRandomPassage(PassageTree passageTree) {
         if (passageTree.getTree() == null || passageTree.getTree().isEmpty()) {
             return passageTree.getId();
@@ -251,4 +257,29 @@ public class QuizServiceTest {
         return getRandomPassage(ListUtils.randomItem(passageTree.getTree()));
     }
 
+    /**
+     * Test that verses are not repeated before all are used
+     */
+    @Test
+    void createVerses() {
+        //new QuizModel()
+        BibleWrap bibleWrap = PassageTest.getBibleWrap(library);
+        String whitelist = "Rom 1:1 , Rom 1:2 ,  Rom 1:3";
+        String blacklist = "Rom 1:4";
+        QuizModel model = quizService.createQuiz(bibleWrap,
+                getSetupModel(bibleWrap, 21),
+                new PlayerModel(), whitelist, blacklist);
+
+        @NotNull List<Verse> verses = model.getVerses();
+        assertThat(verses.stream()
+                .filter(verse -> verse.getId().equals("Römer 1:1"))
+                .count()).isEqualTo(7);
+        assertThat(verses.stream()
+                .filter(verse -> verse.getId().equals("Römer 1:2"))
+                .count()).isEqualTo(7);
+        assertThat(verses.stream()
+                .filter(verse -> verse.getId().equals("Römer 1:3"))
+                .count()).isEqualTo(7);
+
+    }
 }

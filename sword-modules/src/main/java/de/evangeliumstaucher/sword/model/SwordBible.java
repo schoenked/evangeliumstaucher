@@ -6,7 +6,6 @@ import de.evangeliumstaucher.repo.model.Verse;
 import de.evangeliumstaucher.sword.SwordVerse;
 import lombok.Builder;
 import lombok.Data;
-import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import org.crosswire.jsword.book.sword.SwordBook;
 import org.crosswire.jsword.passage.NoSuchKeyException;
@@ -28,8 +27,6 @@ public class SwordBible implements Bible {
     String description;
     String id;
     String copyright;
-    @ToString.Exclude
-    private List<Verse> verses;
 
     private static boolean filterVerses(org.crosswire.jsword.passage.Verse key) {
         return key.getChapter() != 0
@@ -46,30 +43,30 @@ public class SwordBible implements Bible {
 
     @Override
     public List<Verse> getVerses(String whitelist, String blacklist) {
-        if (verses == null) {
 
-            try {
-                verses = Streams.stream(getSwordBook().getKey(whitelist).iterator())
-                        .filter(key -> key instanceof org.crosswire.jsword.passage.Verse)
-                        // blacklist filter
-                        .filter(key -> {
-                            try {
-                                PassageTally blacklistkey = new PassageTally(getSwordBook().getVersification(), blacklist);
-                                return !blacklistkey.contains(key);
-                            } catch (NoSuchVerseException e) {
-                                return false;
-                            }
-                        })
-                        .map(key -> (org.crosswire.jsword.passage.Verse) key)
-                        .filter(SwordBible::filterVerses)
-                        .map(key -> {
-                            return (Verse) SwordVerse.from(key, getId());
-                        })
-                        .toList();
-            } catch (NoSuchKeyException e) {
-                return verses = Collections.emptyList();
-            }
+        List<Verse> verses;
+        try {
+            verses = Streams.stream(getSwordBook().getKey(whitelist).iterator())
+                    .filter(key -> key instanceof org.crosswire.jsword.passage.Verse)
+                    // blacklist filter
+                    .filter(key -> {
+                        try {
+                            PassageTally blacklistkey = new PassageTally(getSwordBook().getVersification(), blacklist);
+                            return !blacklistkey.contains(key);
+                        } catch (NoSuchVerseException e) {
+                            return false;
+                        }
+                    })
+                    .map(key -> (org.crosswire.jsword.passage.Verse) key)
+                    .filter(SwordBible::filterVerses)
+                    .map(key -> {
+                        return (Verse) SwordVerse.from(key, getId());
+                    })
+                    .toList();
+        } catch (NoSuchKeyException e) {
+            return verses = Collections.emptyList();
         }
+
         return verses;
     }
 

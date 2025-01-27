@@ -59,8 +59,19 @@ public class QuizModel {
         if (verses == null) {
             verses = new ArrayList<>();
         }
+        //prvent verse loops
+        StringBuilder previousVerses = new StringBuilder();
         for (int i = 0; i < countVerses; i++) {
-            Verse q = quizService.getQuestionVerse(this, whitelist, blacklist);
+            Verse q = quizService.getQuestionVerse(this, whitelist, blacklist + previousVerses);
+            if (q == null) {
+                //reset extension of blacklist
+                previousVerses = new StringBuilder();
+                q = quizService.getQuestionVerse(this, whitelist, blacklist);
+            }
+            if (q != null) {
+                //add the verse to blacklist
+                previousVerses.append(", ").append(q.getId());
+            }
             if (q != null) {
                 verses.add(q);
             }
