@@ -1,6 +1,9 @@
 package de.evangeliumstaucher.app.service;
 
-import de.evangeliumstaucher.entity.datatables.*;
+import de.evangeliumstaucher.entity.datatables.GameRowMyDives;
+import de.evangeliumstaucher.entity.datatables.GameRowTrend;
+import de.evangeliumstaucher.entity.datatables.QuestionScores;
+import de.evangeliumstaucher.entity.datatables.QuizScores;
 import de.evangeliumstaucher.repoDatatables.MyGamesDatatablesRepository;
 import de.evangeliumstaucher.repoDatatables.QuestionScoresDatatablesRepository;
 import de.evangeliumstaucher.repoDatatables.QuizScoresDatatablesRepository;
@@ -16,10 +19,7 @@ import org.springframework.data.jpa.datatables.mapping.DataTablesInput;
 import org.springframework.data.jpa.datatables.mapping.DataTablesOutput;
 import org.springframework.stereotype.Service;
 
-import java.util.Comparator;
-import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -36,15 +36,6 @@ public class DatatableService {
         Filter f = session.enableFilter("notAlreadyPlayedFilter");
         f.setParameter("playerID", playerId);
         DataTablesOutput<GameRowTrend> all = trendingGamesDatatablesRepository.findAll(input);
-
-        //set position
-        List<GameRow> copy = all.getData().stream()
-                .sorted(Comparator.comparing(GameRow::getRanking).reversed())
-                .collect(Collectors.toList());
-
-        for (int i = 0; i < copy.size(); i++) {
-            copy.get(i).setPosition(i + 1);
-        }
 
         return all;
     }

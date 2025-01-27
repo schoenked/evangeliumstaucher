@@ -42,7 +42,7 @@ public class PierController extends BaseController {
     public String get(Model m) {
         DatatableViewModel modelTrending = new DatatableViewModel();
         List<DatatableColumn> columns = List.of(
-                new DatatableColumn("Pos.", "position", "num").withOrder(DatatableColumn.Order.ASC),
+                new DatatableColumn("Pos.", "ranking", "num", false).withOrder(DatatableColumn.Order.DESC),
                 new DatatableColumn("Name", "name"),
                 new DatatableColumn("von", "creator"),
                 new DatatableColumn("Datum", "createdAt", "date"),

@@ -12,10 +12,11 @@ import java.util.UUID;
 
 @MappedSuperclass
 public class GameRow {
+
     public static final String SUBSELECT = """
             SELECT
                 (CAST(
-                     (SELECT COUNT(*)
+                     (SELECT COUNT(*) + 1
                       FROM game_session_entity gse
                       WHERE gse.game_id = g.id) AS float
                 ) / EXTRACT(EPOCH FROM (NOW() - g.created_at))) AS ranking,
