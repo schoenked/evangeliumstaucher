@@ -24,7 +24,7 @@ public class QuizSetupModel {
     @Max(500)
     private int distanceAttribute = 100;    // Percentage for distance attribute (0 to 500)
 
-    @Size(max = 2000)
+    @Size(max = 200)
     private String description;       // Additional description
 
     @Min(1)
