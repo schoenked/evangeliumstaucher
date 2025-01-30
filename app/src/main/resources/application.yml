@@ -20,7 +20,10 @@ server:
         keyAlias: your_alias_name
         keyStoreType: PKCS12
         key-store-password: 'your_pass'
-
+    compression:
+        enabled: true
+        mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json
+        min-response-size: 2048
 spring:
     profiles:
         default: default,db,creds,accounts,logging

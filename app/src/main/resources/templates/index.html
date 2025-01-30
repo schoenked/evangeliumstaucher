@@ -1,8 +1,12 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+<html
+    lang="de"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:th="http://www.thymeleaf.org">
 <head>
+    <link rel="preload" as="image" href="/images/diver.jpg">
     <link href="/css/paralax.css" rel="stylesheet"/>
+    <meta name="description" content="Online-Game für Bibelfreunde.">
     <head th:insert="~{head.html :: head}"/>
     <title>evangeliumstaucher</title>
 </head>
@@ -32,7 +36,7 @@
                 <p class="card-text">Es ist Zeit deine Kenntnis der Bibel zu prüfen und zu erweitern. Fordere dich
                     selber
                     heraus.</p>
-                <a class="btn btn-lg btn-block btn-secondary text-white" href="/quiz/">Tauchgang starten</a>
+                <a class="btn btn-lg btn-block btn-secondary" href="/quiz/">Tauchgang starten</a>
             </div>
         </div>
     </div>
