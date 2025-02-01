@@ -44,9 +44,9 @@ public class PierController extends BaseController {
         List<DatatableColumn> columns = List.of(
                 new DatatableColumn("Pos.", "ranking", "num", false).withOrder(DatatableColumn.Order.DESC),
                 new DatatableColumn("Name", "name"),
-                new DatatableColumn("von", "creator"),
+                new DatatableColumn("Spieler", "playerCount", "num"),
                 new DatatableColumn("Datum", "createdAt", "date"),
-                new DatatableColumn("Spieler", "playerCount","num")
+                new DatatableColumn("von", "creator")
         );
         modelTrending.setColumns(columns);
         modelTrending.setUrl("/quiz/datatable/trending");
@@ -55,8 +55,8 @@ public class PierController extends BaseController {
         DatatableViewModel modelMyDives = new DatatableViewModel();
         List<DatatableColumn> columnsMyDives = List.of(
                 new DatatableColumn("Name", "name"),
-                new DatatableColumn("Startzeit", "startedAt", "datetime").withOrder(DatatableColumn.Order.DESC),
-                new DatatableColumn("Fortschritt", "progress","num-fmt" )
+                new DatatableColumn("Fortschritt", "progress", "num-fmt"),
+                new DatatableColumn("Startzeit", "startedAt", "datetime").withOrder(DatatableColumn.Order.DESC)
         );
         modelMyDives.setColumns(columnsMyDives);
         modelMyDives.setUrl("/quiz/datatable/myDives");
