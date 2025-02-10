@@ -25,6 +25,7 @@ public class GameEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
+    //todo set varchar columns length
     @Column(unique = true) // Set the name field to be unique
     @NotNull
     private String name;
