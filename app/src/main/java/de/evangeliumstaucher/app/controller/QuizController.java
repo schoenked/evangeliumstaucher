@@ -100,6 +100,7 @@ public class QuizController extends BaseController {
 
     @GetMapping("/quiz/{quizId}/{next}/{qId}/{part}")
     public String getQuizPost(@PathVariable UUID quizId, @PathVariable Integer qId, @PathVariable Part part, @ModelAttribute PlayerModel playerModel, Model m) {
+        //todo check gen1:1 behaviour
         try {
             Passage passage = quizService.getPassage(playerModel.getId(), quizId, qId, part);
             PassageModel model = PassageModel.from(passage);

@@ -52,6 +52,7 @@ public class VerseWrap {
                 List<VerseWrap> prevVerses = previous.getVerses(library);
                 return prevVerses.get(prevVerses.size() - 1).stepVerses(++steps, library);
             } else {
+                //todo IndexOutOfBoundsException
                 return chapter.getVerses(library).get(myIndex - 1).stepVerses(++steps, library);
             }
         } else if (steps > 0) {

@@ -222,6 +222,7 @@ public class QuizService {
     }
 
     public QuizModel get(UUID quizId) {
+        //todo exception handling
         GameEntity gameEntity = gameRepository.findById(quizId).get();
 
         QuizModel from = QuizModel.from(gameEntity, library);
