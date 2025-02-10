@@ -11,6 +11,8 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
 
+//todo check entity indexes
+
 @Entity
 @Getter
 @Setter
