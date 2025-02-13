@@ -16,10 +16,10 @@ public class LocaleConfig {
         final AcceptHeaderLocaleResolver resolver = new AcceptHeaderLocaleResolver();
         resolver.setSupportedLocales(Arrays.asList(
                 Locale.GERMANY,
-                Locale.ENGLISH,
-                Locale.US
+                Locale.GERMAN
         ));
-        resolver.setDefaultLocale(Locale.ENGLISH);
+        //todo support english (problem bible keys are locale based stored in db)
+        resolver.setDefaultLocale(Locale.GERMANY);
         return resolver;
     }
 }
