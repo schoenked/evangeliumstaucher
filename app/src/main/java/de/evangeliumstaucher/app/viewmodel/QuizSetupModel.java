@@ -1,3 +1,4 @@
+
 package de.evangeliumstaucher.app.viewmodel;
 
 import de.evangeliumstaucher.app.model.BibleWrap;
@@ -14,6 +15,7 @@ import java.util.List;
 @Data
 public class QuizSetupModel {
     @NotEmpty
+    @Size(max = 500)
     private String name;      // Name of the quiz
 
     @Min(0)
@@ -24,7 +26,7 @@ public class QuizSetupModel {
     @Max(500)
     private int distanceAttribute = 100;    // Percentage for distance attribute (0 to 500)
 
-    @Size(max = 200)
+    @Size(max = 2000)
     private String description;       // Additional description
 
     @Min(1)
