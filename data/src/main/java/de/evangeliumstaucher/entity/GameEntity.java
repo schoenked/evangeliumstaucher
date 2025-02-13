@@ -28,10 +28,11 @@ public class GameEntity {
     private UUID id;
 
     //todo set varchar columns length
-    @Column(unique = true) // Set the name field to be unique
+    @Column(unique = true, length = 500) // Set the name field to be unique
     @NotNull
     private String name;
 
+    @Column(length = 2000)
     private String description;
 
     @NotNull
@@ -54,6 +55,8 @@ public class GameEntity {
     private int distanceRatingFactor;
     @NotNull
     private int timeRatingFactor;
+    @Column(length = 2000)
     private String whitelist;
+    @Column(length = 2000)
     private String blacklist;
 }
