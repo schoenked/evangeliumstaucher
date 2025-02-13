@@ -26,4 +26,4 @@ server:
         min-response-size: 2048
 spring:
     profiles:
-        default: default,db,creds,accounts,logging
+        default: default,db,creds,prodDB,accounts,logging

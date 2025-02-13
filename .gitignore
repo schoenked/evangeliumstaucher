@@ -39,6 +39,7 @@ build/
 
 cache/
 **/application-creds.yml
+**/application-prodDB.yml
 **/application-accounts.yaml
 
 gd.p12
