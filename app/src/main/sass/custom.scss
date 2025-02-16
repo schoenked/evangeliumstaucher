@@ -69,7 +69,7 @@ h1 {
   width: 120%;
   height: 120%;
   left: -35px;
-  top: -35px;
+  top: -35px; // todo try   top: env(safe-area-inset-top-33px, -33px);
   z-index: -7;
   position: fixed;
   background-position: center;
