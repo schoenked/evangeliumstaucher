@@ -1,5 +1,4 @@
 ﻿#!/bin/sh
-# -*- coding: utf-8 -*-
 
 APP_JAR=app.jar
 if [ "$2" = "public" ]; then

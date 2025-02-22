@@ -1,4 +1,6 @@
 #!/bin/sh
+# -*- coding: utf-8 -*-
+
 dir=$(dirname $0)
 IP=$1
 scp "$dir"/app/gospeldiver.sh root@$IP:
