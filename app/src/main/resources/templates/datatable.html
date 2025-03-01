@@ -18,13 +18,13 @@
         </tbody>
 </table>
     <script>
-        let ajax = null;
+        let ajax[[${model.javascriptId}]] = null;
     </script>
 
     <script th:if="${model.serverside}">
         //set ajax by model
 
-        ajax = {
+        ajax[[${model.javascriptId}]] = {
             contentType: 'application/json',
             url: '[(${model.Url})]',
             type: 'POST',
@@ -39,7 +39,7 @@
 
     <script>
         let t[[${model.javascriptId}]] = $('table#[[${model.id}]]').DataTable({
-            ajax: ajax,
+            ajax: ajax[[${model.javascriptId}]],
             language: { "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/[[${model.language}]].json",},
             columns: [
                 [(${model.columnsText})]
