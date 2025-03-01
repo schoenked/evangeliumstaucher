@@ -76,7 +76,7 @@
                         <a class="btn btn-secondary text-white btn-lg btn-block w-100"
                            th:href="${quiz.startUrl}"
                            th:if="${playerStatus.name() == 'NotStarted' or playerStatus.name() == 'InProgress'}"
-                           th:text="${playerStatus.name() == 'NotStarted' ? 'Eintauchen' : 'Fortfahren'}"
+                           th:text="${playerStatus.name() == 'NotStarted' ? 'Eintauchen' : 'Fortsetzen'}"
                         >Eintauchen</a>
                         <div
                                 th:if="${playerStatus.name() == 'Finished'}"
