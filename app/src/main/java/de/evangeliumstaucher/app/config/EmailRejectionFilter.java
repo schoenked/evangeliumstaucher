@@ -9,7 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher;
 
 import java.io.IOException;
 
@@ -18,7 +18,7 @@ public class EmailRejectionFilter extends AbstractAuthenticationProcessingFilter
     private final AccountConfig accountConfig;
 
     public EmailRejectionFilter(AccountConfig accountConfig) throws Exception {
-        super(new AntPathRequestMatcher("/login/oauth2/code/*"));
+        super(PathPatternRequestMatcher.withDefaults().matcher("/login/oauth2/code/*"));
         this.accountConfig = accountConfig;
     }
 
