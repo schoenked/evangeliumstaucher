@@ -28,8 +28,18 @@ public class MainController {
                 "Disallow: /quiz/\n";
     }
 
-    @RequestMapping(value = {"/about.html"})
+    @RequestMapping(value = {"/about"})
     public String about() {
         return "about.html";
+    }
+
+    @RequestMapping(value = {"/privacy"})
+    public String privacy() {
+        return "privacy.html";
+    }
+
+    @RequestMapping(value = {"/terms-of-use"})
+    public String termsOfUse() {
+        return "terms-of-use.html";
     }
 }
