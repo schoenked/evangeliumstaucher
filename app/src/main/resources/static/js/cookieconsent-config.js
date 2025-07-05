@@ -16,7 +16,7 @@ CookieConsent.run({
             de: {
                 consentModal: {
                     title: 'Herzlich willkommen beim evangeliumstaucher',
-                    description: 'Wir setzen Cookies und Tracking-Technologien ein. Diese sind für die Funktionalität erforderlich. Bei einer Verknüpfung mit Ihrem Google-Konto, wird die E-Mail-Adresse für die Verwaltung Ihres Spielerprofils gespeichert.',
+                    description: 'Wir setzen Cookies und Tracking-Technologien ein. Nähere Informationen zum Datenschutz finden Sie unter <a href="privacy" target="_blank">unserer Datenschutzerklärung</a>. Cookies sind für die Funktionalität erforderlich. Bei einer Verknüpfung mit Ihrem Google-Konto, wird die E-Mail-Adresse für die Verwaltung Ihres Spielerprofils gespeichert.',
                     acceptNecessaryBtn: 'Zustimmen',
                 }
             }
