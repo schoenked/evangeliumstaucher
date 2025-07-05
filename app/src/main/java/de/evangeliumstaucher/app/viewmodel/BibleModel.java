@@ -6,6 +6,7 @@ import org.apache.commons.lang3.RandomUtils;
 
 @Data
 @With
+@EqualsAndHashCode(callSuper = true)
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
