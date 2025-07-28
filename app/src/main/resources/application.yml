@@ -3,14 +3,14 @@ myHostname: https://evangeliumstaucher.nobler.tech
 logging:
     level:
         de:
-            evangeliumstaucher: DEBUG
+            evangeliumstaucher: WARN
         org:
             crosswire: off
             springframework:
-                security: INFO
+                security: WARN
             thymeleaf: ERROR
         root: warn
-        web: INFO
+        web: WARN
 security:
     require-ssl: true
 server:
