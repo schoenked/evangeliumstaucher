@@ -35,7 +35,10 @@ public class PierController extends BaseController {
 
     @ModelAttribute("playerModel")
     public PlayerModel PlayerModelAttribute(@AuthenticationPrincipal OAuth2User oidcUser) {
-        return PlayerModel.from(userService.getByEMail(oidcUser.getAttribute("email")).get());
+        if (oidcUser != null) {
+            return PlayerModel.from(userService.getByEMail(oidcUser.getAttribute("email")).get());
+        }
+        return null;
     }
 
     @GetMapping("/quiz/pier/")

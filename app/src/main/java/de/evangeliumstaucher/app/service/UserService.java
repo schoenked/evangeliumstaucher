@@ -2,12 +2,14 @@ package de.evangeliumstaucher.app.service;
 
 import de.evangeliumstaucher.app.config.AccountConfig;
 import de.evangeliumstaucher.app.model.Player;
+import de.evangeliumstaucher.app.viewmodel.PlayerModel;
 import de.evangeliumstaucher.entity.PlayerEntity;
 import de.evangeliumstaucher.repo.PlayerRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -47,4 +49,15 @@ public class UserService {
     public Optional<PlayerEntity> getByEMail(String email) {
         return playerRepository.findByEmail(email);
     }
+
+    public PlayerModel getPlayerModel(OAuth2User oidcUser, UserService userService) {
+        if (oidcUser != null) {
+            Optional<PlayerEntity> entity = userService.getByEMail(oidcUser.getAttribute("email"));
+            if (entity.isPresent()) {
+                return PlayerModel.from(entity.get());
+            }
+        }
+        return null;
+    }
+
 }

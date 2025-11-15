@@ -9,6 +9,7 @@ import de.evangeliumstaucher.repo.model.Passage;
 import de.evangeliumstaucher.repo.service.Library;
 import de.evangeliumstaucher.repoDatatables.TrendingGamesDatatablesRepository;
 import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.BadRequestException;
@@ -35,7 +36,7 @@ public class QuizController extends BaseController {
     private final TrendingGamesDatatablesRepository gameRepository;
 
     public QuizController(Library library, QuizService quizService, UserService userService, HttpSession session, TrendingGamesDatatablesRepository gameRepository, GameSessionRepository gameSessionRepository) {
-        super(library,gameSessionRepository);
+        super(library, gameSessionRepository);
         this.quizService = quizService;
         this.userService = userService;
         this.session = session;
@@ -47,8 +48,9 @@ public class QuizController extends BaseController {
     }
 
     @ModelAttribute("playerModel")
-    public PlayerModel PlayerModelAttribute(@AuthenticationPrincipal OAuth2User oidcUser) {
-        return PlayerModel.from(userService.getByEMail(oidcUser.getAttribute("email")).get());
+    @Nullable
+    public PlayerModel PlayerModelAttribute(@AuthenticationPrincipal @Nullable OAuth2User oidcUser) {
+        return userService.getPlayerModel(oidcUser, userService);
     }
 
     @GetMapping("/quiz/")
@@ -57,13 +59,16 @@ public class QuizController extends BaseController {
     }
 
     @GetMapping("/quiz/{quizId}/")
-    public String getInfo(@PathVariable UUID quizId, Model m, @ModelAttribute PlayerModel playerModel) {
+    public String getInfo(@PathVariable UUID quizId, Model m, @ModelAttribute @Nullable PlayerModel playerModel) {
         QuizModel quiz = quizService.get(quizId);
         m.addAttribute("quiz", quiz);
         m.addAttribute("quizService", quizService);
-        GameSessionStatus gameStatus = gameSessionRepository.getGameStatus(quizId, playerModel.getId());
+        GameSessionStatus gameStatus = null;
+        if (playerModel != null) {
+            gameStatus = gameSessionRepository.getGameStatus(quizId, playerModel.getId());
+        }
         if (gameStatus == null) {
-            gameStatus =GameSessionStatus.NotStarted;
+            gameStatus = GameSessionStatus.NotStarted;
         }
         m.addAttribute("playerStatus", gameStatus);
         DatatableViewModel scoreTableModel = new DatatableViewModel();
@@ -82,9 +87,12 @@ public class QuizController extends BaseController {
     }
 
     @GetMapping("/quiz/{quizId}/next")
-    public String getQuestion(@PathVariable UUID quizId, @ModelAttribute PlayerModel playerModel, Model m) throws BadRequestException, ServiceUnavailableException {
+    public String getQuestion(@PathVariable UUID quizId, @ModelAttribute @Nullable PlayerModel playerModel, Model m) throws ServiceUnavailableException {
         try {
-            RunningQuestion runningQuestion = quizService.getQuestion(playerModel.getId(), quizId, null);
+            RunningQuestion runningQuestion = null;
+            if (playerModel != null) {
+                runningQuestion = quizService.getQuestion(playerModel.getId(), quizId, null);
+            }
             if (runningQuestion == null) {
                 return "redirect:.";
             }
@@ -99,10 +107,13 @@ public class QuizController extends BaseController {
     }
 
     @GetMapping("/quiz/{quizId}/{next}/{qId}/{part}")
-    public String getQuizPost(@PathVariable UUID quizId, @PathVariable Integer qId, @PathVariable Part part, @ModelAttribute PlayerModel playerModel, Model m) {
+    public String getQuizPost(@PathVariable UUID quizId, @PathVariable Integer qId, @PathVariable Part part, @ModelAttribute @Nullable PlayerModel playerModel, Model m) {
         //todo check gen1:1 behaviour
         try {
-            Passage passage = quizService.getPassage(playerModel.getId(), quizId, qId, part);
+            Passage passage = null;
+            if (playerModel != null) {
+                passage = quizService.getPassage(playerModel.getId(), quizId, qId, part);
+            }
             PassageModel model = PassageModel.from(passage);
             model.setPath(part.name());
             if (part == Part.origin) {
@@ -141,11 +152,16 @@ public class QuizController extends BaseController {
     }
 
     @GetMapping("/quiz/{quizId}/{qId}/select/{verseId}")
-    public String selectVerseGetResult(@PathVariable UUID quizId, @PathVariable Integer qId, @PathVariable String verseId, @ModelAttribute PlayerModel playerModel, Model m) throws BadRequestException, ServiceUnavailableException {
+    public String selectVerseGetResult(@PathVariable UUID quizId, @PathVariable Integer qId, @PathVariable String verseId, @ModelAttribute @Nullable PlayerModel playerModel, Model m) throws ServiceUnavailableException {
         try {
             log.debug("selectVerseGetResult() called with: quizId = [" + quizId + "], qId = [" + qId + "], verseId = [" + verseId + "], m = [" + m + "]");
 
-            RunningQuestion runningQuestion = quizService.getQuestion(playerModel.getId(), quizId, qId);
+            RunningQuestion runningQuestion;
+            if (playerModel != null) {
+                runningQuestion = quizService.getQuestion(playerModel.getId(), quizId, qId);
+            } else {
+                throw new BadRequestException("There is no user session.");
+            }
             runningQuestion.setAnsweredAt(LocalDateTime.now());
             runningQuestion.setSelectedVerse(verseId, library);
             Long id = runningQuestion.syncEntity(quizService, library);

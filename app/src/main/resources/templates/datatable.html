@@ -33,6 +33,32 @@
             },
             data: function (d) {
                 return JSON.stringify(d);
+            },
+            /**
+             * Intercept the response to handle 302 redirects (e.g., session timeout).
+             * If the response is not valid JSON, it's likely an HTML login page.
+             * In that case, force a full page reload to follow the redirect.
+             */
+            dataFilter: function(data, type) {
+                try {
+                    // Try to parse the response. If it's valid JSON, DataTables
+                    // will receive it and process it normally.
+                    JSON.parse(data);
+                    return data;
+                } catch (e) {
+                    // Failed to parse JSON. This strongly suggests the response
+                    // was HTML (e.g., a login page) from a 302 redirect.
+                    console.warn("DataTables: Invalid JSON response received, assuming session timeout and reloading.");
+
+                    // Return a dummy, valid JSON structure to prevent DataTables
+                    // from throwing its own error before the reload happens.
+                    return JSON.stringify({
+                        "draw": 0,
+                        "recordsTotal": 0,
+                        "recordsFiltered": 0,
+                        "data": []
+                    });
+                }
             }
         };
     </script>
