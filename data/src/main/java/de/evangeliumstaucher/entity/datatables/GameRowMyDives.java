@@ -25,12 +25,11 @@ import java.util.UUID;
             CAST(   ((  SELECT COUNT(*)
                 FROM user_question_entity uqe
                 WHERE uqe.game_session_id = gse.id
-                    AND uqe.answered_at IS NOT NULL)
+                    AND uqe.answered_at IS NOT NULL) * 100
                 / 
                 (   SELECT COUNT (*) 
                 FROM question_entity qe
-                WHERE qe.game_entity_id = g.id)
-                * 100) AS INT) || '%' progress
+                WHERE qe.game_entity_id = g.id)) AS INT) || '%' progress
         FROM 
             game_entity g
         JOIN game_session_entity gse

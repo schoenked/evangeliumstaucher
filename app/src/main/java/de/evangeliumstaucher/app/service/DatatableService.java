@@ -8,6 +8,7 @@ import de.evangeliumstaucher.repoDatatables.MyGamesDatatablesRepository;
 import de.evangeliumstaucher.repoDatatables.QuestionScoresDatatablesRepository;
 import de.evangeliumstaucher.repoDatatables.QuizScoresDatatablesRepository;
 import de.evangeliumstaucher.repoDatatables.TrendingGamesDatatablesRepository;
+import jakarta.annotation.Nullable;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.validation.Valid;
@@ -27,11 +28,11 @@ public class DatatableService {
     private final TrendingGamesDatatablesRepository trendingGamesDatatablesRepository;
     private final MyGamesDatatablesRepository myGamesDatatablesRepository;
     private final QuestionScoresDatatablesRepository questionScoresDatatablesRepository;
+    private final QuizScoresDatatablesRepository quizScoresDatatablesRepluginspository;
     @PersistenceContext
     private EntityManager entityManager;
-    private final QuizScoresDatatablesRepository quizScoresDatatablesRepluginspository;
 
-    public DataTablesOutput<GameRowTrend> getTrendingGames(DataTablesInput input, Long playerId) {
+    public DataTablesOutput<GameRowTrend> getTrendingGames(DataTablesInput input, @Nullable Long playerId) {
         Session session = entityManager.unwrap(Session.class);
         Filter f = session.enableFilter("notAlreadyPlayedFilter");
         f.setParameter("playerID", playerId);
@@ -40,21 +41,21 @@ public class DatatableService {
         return all;
     }
 
-    public DataTablesOutput<GameRowMyDives> getMyDives(DataTablesInput input, Long playerId) {
+    public DataTablesOutput<GameRowMyDives> getMyDives(DataTablesInput input, @Nullable Long playerId) {
         Session session = entityManager.unwrap(Session.class);
         Filter f = session.enableFilter("startedDivesPlayedFilter");
         f.setParameter("playerID", playerId);
         return myGamesDatatablesRepository.findAll(input);
     }
 
-    public DataTablesOutput<QuestionScores> getQuestoinScores(DataTablesInput input, Long questionId, Long playerId) {
+    public DataTablesOutput<QuestionScores> getQuestoinScores(DataTablesInput input, Long questionId, @Nullable Long playerId) {
         Session session = entityManager.unwrap(Session.class);
         Filter f = session.enableFilter("userquestionentityid");
         f.setParameter("userquestionentityid", questionId);
         return questionScoresDatatablesRepository.findAll(input);
     }
 
-    public DataTablesOutput<QuizScores> getQuizScores(@Valid DataTablesInput input, @NotNull UUID quizid, Long playerId) {
+    public DataTablesOutput<QuizScores> getQuizScores(@Valid DataTablesInput input, @NotNull UUID quizid, @Nullable Long playerId) {
         Session session = entityManager.unwrap(Session.class);
         Filter f_playerID = session.enableFilter("playerId");
         f_playerID.setParameter("playerId", playerId);

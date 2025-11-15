@@ -11,6 +11,7 @@ import de.evangeliumstaucher.repo.GameRepository;
 import de.evangeliumstaucher.repo.GameSessionRepository;
 import de.evangeliumstaucher.repo.service.Library;
 import de.evangeliumstaucher.repoDatatables.TrendingGamesDatatablesRepository;
+import jakarta.annotation.Nullable;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -48,8 +49,9 @@ public class QuizEditorController extends BaseController {
     }
 
     @ModelAttribute("playerModel")
+    @Nullable
     public PlayerModel PlayerModelAttribute(@AuthenticationPrincipal OAuth2User oidcUser) {
-        return PlayerModel.from(userService.getByEMail(oidcUser.getAttribute("email")).get());
+        return userService.getPlayerModel(oidcUser, userService);
     }
 
     @GetMapping("/quiz/create/")
@@ -65,7 +67,7 @@ public class QuizEditorController extends BaseController {
      * @return
      */
     @GetMapping("/quiz/create/{bibleId}/")
-    public String createQuiz(@PathVariable String bibleId, Model m, @ModelAttribute PlayerModel playerModel) throws ServiceUnavailableException {
+    public String createQuiz(@PathVariable String bibleId, Model m, @ModelAttribute @Nullable PlayerModel playerModel) throws ServiceUnavailableException {
         try {
             BibleWrap bibleWrap = new BibleWrap(bibleId, library.getBible(bibleId));
             QuizSetupModel quizSetupModel = QuizSetupModel.from(bibleWrap, library);
@@ -80,7 +82,7 @@ public class QuizEditorController extends BaseController {
     }
 
     @PostMapping("/quiz/create/{bibleId}/submit")
-    public String submitQuiz(@PathVariable String bibleId, @Valid @ModelAttribute QuizSetupModel quizSetupModel, @RequestParam Map<String, String> allRequestParams, Model m, @ModelAttribute PlayerModel playerModel) throws BadRequestException {
+    public String submitQuiz(@PathVariable String bibleId, @Valid @ModelAttribute QuizSetupModel quizSetupModel, @RequestParam Map<String, String> allRequestParams, Model m, @ModelAttribute @Nullable PlayerModel playerModel) throws BadRequestException {
         String whitelist = allRequestParams.entrySet().stream()
                 .filter(e -> e.getKey().startsWith("add_") && e.getValue().equals("on"))
                 .map(e -> StringUtils.substring(e.getKey(), 4))
