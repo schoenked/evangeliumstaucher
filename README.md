@@ -73,5 +73,11 @@ see instruction
 https://docs.docker.com/engine/install/ubuntu/
 
 
+# TODO
+- [ ] validate warning:  Die Ganze Bibel + others
+- [ ] Gast-Anmeldung
+- [ ] pier und quizzes sichtbar für alle
+
+
 ---
 ## God bless!
