@@ -46,8 +46,8 @@ public class UserService {
         return playerRepository.existsPlayerEntityByUsername(name);
     }
 
-    public Optional<PlayerEntity> getByEMail(String email) {
-        return playerRepository.findByEmail(email);
+    public Optional<PlayerEntity> getByEMail(String globalId) {
+        return playerRepository.findByGlobalId(globalId);
     }
 
     public PlayerModel getPlayerModel(OAuth2User oidcUser, UserService userService) {

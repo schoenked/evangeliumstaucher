@@ -1,29 +1,33 @@
 cache: true
 myHostname: https://evangeliumstaucher.nobler.tech
 logging:
-    level:
-        de:
-            evangeliumstaucher: WARN
-        org:
-            crosswire: off
-            springframework:
-                security: WARN
-            thymeleaf: ERROR
-        root: warn
-        web: WARN
-security:
-    require-ssl: true
+  level:
+    de:
+      evangeliumstaucher: WARN
+    org:
+      crosswire: off
+      springframework:
+        security: WARN
+      thymeleaf: ERROR
+    root: warn
+    web: WARN
+
+spring.ssl.bundle.jks:
+  server:
+    reload-on-update: true
+    key.alias: your_alias_name
+    keystore:
+      location: /home/ubuntu/myp12file.p12
+      type: PKCS12
+      password: 'your_pass'
 server:
-    port: 443
-    ssl:
-        key-store: /home/ubuntu/myp12file.p12
-        keyAlias: your_alias_name
-        keyStoreType: PKCS12
-        key-store-password: 'your_pass'
-    compression:
-        enabled: true
-        mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json
-        min-response-size: 2048
+  port: 443
+  compression:
+    enabled: true
+    mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json
+    min-response-size: 2048
+  ssl:
+    bundle: server
 spring:
-    profiles:
-        default: default,db,creds,prodDB,accounts,logging
+  profiles:
+    default: default,db,creds,prodDB,accounts,logging

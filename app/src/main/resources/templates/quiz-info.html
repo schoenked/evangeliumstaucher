@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-    <link rel="preload" as="image" href="/images/diver.jpg">
+    <link as="image" href="/images/diver.jpg" rel="preload">
     <head th:insert="~{head.html :: head}"/>
     <title>evangeliumstaucher</title>
     <link href="/css/paralax.css" rel="stylesheet"/>
@@ -41,65 +41,67 @@
 
                 <div class="d-grid">
                     <div class="row align-items-center">
-                    <div class="col col-auto">
-                        <button class="btn center rounded-circle btn-lg btn-outline-secondary "
-                                data-bs-target="#introduction" data-bs-toggle="modal"
-                                style="width: 50px; height: 50px; font-size: 1rem;" type="button">
-                            <i class="fas fa-question"></i>
-                        </button>
+                        <div class="col col-auto">
+                            <button class="btn center rounded-circle btn-lg btn-outline-secondary "
+                                    data-bs-target="#introduction" data-bs-toggle="modal"
+                                    style="width: 50px; height: 50px; font-size: 1rem;" type="button">
+                                <i class="fas fa-question"></i>
+                            </button>
 
-                        <!-- Introduction Modal -->
-                        <div aria-hidden="true" aria-labelledby="staticBackdropLabel" class="modal modal-xl fade"
-                             data-bs-keyboard="false"
-                             id="introduction" tabindex="-1">
-                            <div class="modal-dialog modal-dialog-scrollable">
-                                <div class="modal-content text-start bg-black bg-opacity-75">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="staticBackdropLabel">Wie spiele ich den
-                                            evangeliumstaucher?</h5>
-                                        <button aria-label="Close" class="btn-close btn-close-white"
-                                                data-bs-dismiss="modal"
-                                                type="button"></button>
-                                    </div>
-                                    <div class="modal-body">
+                            <!-- Introduction Modal -->
+                            <div aria-hidden="true" aria-labelledby="staticBackdropLabel" class="modal modal-xl fade"
+                                 data-bs-keyboard="false"
+                                 id="introduction" tabindex="-1">
+                                <div class="modal-dialog modal-dialog-scrollable">
+                                    <div class="modal-content text-start bg-black bg-opacity-75">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="staticBackdropLabel">Wie spiele ich den
+                                                evangeliumstaucher?</h5>
+                                            <button aria-label="Close" class="btn-close btn-close-white"
+                                                    data-bs-dismiss="modal"
+                                                    type="button"></button>
+                                        </div>
+                                        <div class="modal-body">
                                         <pre style="font-family: var(--bs-font-sans-serif)"
                                              th:text="${T(de.evangeliumstaucher.app.viewmodel.Introduction).TEXT}"></pre>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button class="btn btn-primary w-100"  data-bs-dismiss="modal" type="button">Ich bin bereit</button>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button class="btn btn-primary w-100" data-bs-dismiss="modal" type="button">
+                                                Ich bin bereit
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col">
-                        <a class="btn btn-secondary text-white btn-lg btn-block w-100"
-                           th:href="${quiz.startUrl}"
-                           th:if="${playerStatus.name() == 'NotStarted' or playerStatus.name() == 'InProgress'}"
-                           th:text="${playerStatus.name() == 'NotStarted' ? 'Eintauchen' : 'Fortsetzen'}"
-                        >Eintauchen</a>
-                        <div
-                                th:if="${playerStatus.name() == 'Finished'}"
-                        >
-                            <p>Sie haben den Tauchgang abgeschlossen. Sie können einen neuen erstellen:</p>
-                            <a class="btn btn-lg btn-primary w-100 my-4"
-                               href="/quiz/create/"
-                               role="button"
-                            >🤿 Neuen Tauchgang
-                                erstellen</a>
-                        </div>
-                        <div class="row mt-1">
-                            <div class="col">
-                                <a class="btn btn-outline-secondary btn-block text-light w-100" href="/quiz/pier/">zum
-                                    Pier</a>
+                        <div class="col">
+                            <a class="btn btn-secondary text-white btn-lg btn-block w-100"
+                               th:href="${quiz.startUrl}"
+                               th:if="${playerStatus.name() == 'NotStarted' or playerStatus.name() == 'InProgress'}"
+                               th:text="${playerStatus.name() == 'NotStarted' ? 'Eintauchen' : 'Fortsetzen'}"
+                            >Eintauchen</a>
+                            <div
+                                    th:if="${playerStatus.name() == 'Finished'}"
+                            >
+                                <p>Sie haben den Tauchgang abgeschlossen. Sie können einen neuen erstellen:</p>
+                                <a class="btn btn-lg btn-primary w-100 my-4"
+                                   href="/quiz/create/"
+                                   role="button"
+                                >🤿 Neuen Tauchgang
+                                    erstellen</a>
                             </div>
-                            <!--
-                <div class="col">
-                    &lt;!&ndash;add copy game link&ndash;&gt;
-                    &lt;!&ndash;<a class="btn btn-outline-secondary m-6 btn-block w-100" href="/quiz/pier/">zum Pier</a>&ndash;&gt;
-                </div>-->
+                            <div class="row mt-1">
+                                <div class="col">
+                                    <a class="btn btn-outline-secondary btn-block text-light w-100" href="/quiz/pier/">zum
+                                        Pier</a>
+                                </div>
+                                <!--
+                    <div class="col">
+                        &lt;!&ndash;add copy game link&ndash;&gt;
+                        &lt;!&ndash;<a class="btn btn-outline-secondary m-6 btn-block w-100" href="/quiz/pier/">zum Pier</a>&ndash;&gt;
+                    </div>-->
+                            </div>
                         </div>
-                    </div>
                     </div>
                 </div>
             </div>

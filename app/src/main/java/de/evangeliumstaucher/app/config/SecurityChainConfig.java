@@ -22,8 +22,6 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class SecurityChainConfig {
 
-    public static final String LOGIN_URL = "/signup";
-    public static final String LOGIN_FAIL_URL = LOGIN_URL + "?error";
     public static final String USERNAME = "username";
     private static final String DEFAULT_SUCCESS_URL = "/";
     private final UserService sessionService;
@@ -63,14 +61,18 @@ public class SecurityChainConfig {
             c.csrfTokenRepository(csrfTokenRepository());
         });
         http.oauth2Login(oauth2Login -> oauth2Login.successHandler(new SavedRequestAwareAuthenticationSuccessHandler() {
-            @Override
-            public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws ServletException, IOException {
-                super.onAuthenticationSuccess(request, response, authentication);
-                if (!accountConfig.isValid(authentication)) {
-                    authentication.setAuthenticated(false);
-                }
-            }
-        }));
+                    @Override
+                    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws ServletException, IOException {
+                        super.onAuthenticationSuccess(request, response, authentication);
+                        if (!accountConfig.isValid(authentication)) {
+                            authentication.setAuthenticated(false);
+                        }
+                    }
+                })
+                .loginPage("/login"))
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/"));
 
         http.exceptionHandling(e -> e.accessDeniedHandler((request, response, accessDeniedException) -> {
                     String redirectUrl = "/error/403"; // Custom error page for 403 Forbidden

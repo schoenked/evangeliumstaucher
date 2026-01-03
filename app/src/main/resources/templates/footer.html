@@ -14,7 +14,11 @@
         <br/>
         <a class="link-secondary" href="/terms-of-use">Nutzungsbedingungen</a>
         <br/>
-        <a class="link-secondary" href="/logout">Abmelden</a>
+        <form class="d-inline" method="post" th:action="@{/logout}">
+            <button class="btn btn-link link-secondary p-0 border-0" type="submit">
+                Abmelden
+            </button>
+        </form>
     </footer>
 </div>
 </body>

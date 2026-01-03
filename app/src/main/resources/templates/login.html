@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html
+        lang="de"
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link as="image" href="/images/diver.jpg" rel="preload">
+    <meta content="Anmeldung für Evangeliumstaucher." name="description">
+    <head th:insert="~{head.html :: head}"/>
+    <title>Anmeldung - Evangeliumstaucher</title>
+</head>
+<body>
+
+<div class="bg-image"></div>
+
+<div th:insert="navbar.html :: navbar"></div>
+
+<div class="container min-vh-100 d-flex flex-column justify-content-center align-items-center parallax">
+
+    <div class="col-12 col-md-6 col-lg-4">
+        <div class="card text-bg-dark bg-opacity-75 text-center shadow-lg">
+            <div class="card-header border-bottom border-secondary">
+                <h2 class="text-primary my-2">⚓ Willkommen an Bord</h2>
+            </div>
+            <div class="card-body p-4">
+                <p class="card-text mb-4">Bitte melde dich an, um deine Tauchgänge zu speichern.</p>
+
+                <div class="alert alert-danger" role="alert" th:if="${param.error}">
+                    Anmeldung fehlgeschlagen. Bitte versuche es erneut.
+                </div>
+
+                <div class="alert alert-success" role="alert" th:if="${param.logout}">
+                    Du wurdest erfolgreich abgemeldet.
+                </div>
+
+                <div class="d-grid gap-2">
+                    <a class="btn btn-outline-light btn-lg  fw-bold"
+                       href="/login/guest">
+                        Als Gast fortfahren
+                    </a>
+
+                </div>
+                <div class="d-grid gap-2">
+                    <a class="btn btn-lg btn-transparent fw-bold"
+                       href="/oauth2/authorization/google">
+                        <img alt="Mit Google anmelden"
+                             src="/images/google_web_neutral_rd_ctn.svg">
+                    </a>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="" th:insert="footer.html :: footer"></div>
+
+<script src="/js/paralax.js"></script>
+</body>
+</html>

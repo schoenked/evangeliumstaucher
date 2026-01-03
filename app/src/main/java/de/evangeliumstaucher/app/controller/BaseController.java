@@ -18,7 +18,7 @@ import static java.util.stream.Collectors.groupingBy;
 @Slf4j
 @RequiredArgsConstructor
 public class BaseController {
-    final Library library;
+    public final Library library;
     public final GameSessionRepository gameSessionRepository;
 
     protected void addWarning(Model m) {

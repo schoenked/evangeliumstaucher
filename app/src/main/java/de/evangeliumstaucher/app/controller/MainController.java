@@ -1,11 +1,17 @@
 package de.evangeliumstaucher.app.controller;
 
 import de.evangeliumstaucher.app.service.QuizService;
+import de.evangeliumstaucher.app.service.UserService;
+import de.evangeliumstaucher.app.viewmodel.PlayerModel;
+import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -13,6 +19,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequiredArgsConstructor
 public class MainController {
     private final QuizService qService;
+    private final UserService userService;
+
+    @ModelAttribute("playerModel")
+    @Nullable
+    public PlayerModel PlayerModelAttribute(@AuthenticationPrincipal @Nullable OAuth2User oidcUser) {
+        return userService.getPlayerModel(oidcUser, userService);
+    }
 
     @GetMapping("/")
     public String home(Model m) {

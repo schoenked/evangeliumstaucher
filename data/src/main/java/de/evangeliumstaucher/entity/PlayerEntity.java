@@ -19,6 +19,6 @@ public class PlayerEntity {
     String username;
 
     @Column(unique = true)
-    String email;
+    String globalId;
 
 }

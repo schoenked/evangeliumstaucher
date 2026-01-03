@@ -4,7 +4,7 @@
 <body>
 <div th:fragment="navbar">
     <!--cookie consent-->
-    <script type="module" src="/js/cookieconsent-config.js"></script>
+    <script src="/js/cookieconsent-config.js" type="module"></script>
 
     <!-- Navbar Start -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -30,10 +30,15 @@
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                     <li class="nav-item">
                         <a class="nav-link" href="/quiz/">Spielen</a>
-                    </li>
 
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link bg-secondary btn text-black" href="/login" th:if="${playerModel == null}">Anmelden
+                        </a>
+                    </li>
                     <li class="nav-item d-grid" th:if="${quiz}">
-                        <button class="nav-link btn text-start" data-bs-target="#qrCodeModal" data-bs-toggle="modal" id="share-btn">
+                        <button class="nav-link btn text-start" data-bs-target="#qrCodeModal" data-bs-toggle="modal"
+                                id="share-btn">
                             Teilen <i class="fas fa-solid fa-share-nodes"></i>
                         </button>
                     </li>
