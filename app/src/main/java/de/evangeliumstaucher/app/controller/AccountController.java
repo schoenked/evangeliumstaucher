@@ -3,10 +3,12 @@ package de.evangeliumstaucher.app.controller;
 import de.evangeliumstaucher.app.config.AccountConfig;
 import de.evangeliumstaucher.app.model.Player;
 import de.evangeliumstaucher.app.service.UserService;
+import de.evangeliumstaucher.app.viewmodel.PlayerModel;
 import de.evangeliumstaucher.entity.PlayerEntity;
 import de.evangeliumstaucher.repo.GameSessionRepository;
 import de.evangeliumstaucher.repo.service.Library;
 import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -16,6 +18,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.view.RedirectView;
@@ -25,7 +28,6 @@ import java.nio.charset.StandardCharsets;
 
 @Controller
 @Slf4j
-
 public class AccountController extends BaseController {
 
     @Autowired
@@ -37,6 +39,11 @@ public class AccountController extends BaseController {
     @Autowired
     AccountConfig accountConfig;
 
+    @ModelAttribute("playerModel")
+    @Nullable
+    public PlayerModel PlayerModelAttribute(@AuthenticationPrincipal @Nullable OAuth2User oidcUser) {
+        return userService.getPlayerModel(oidcUser, userService);
+    }
     public AccountController(Library library, GameSessionRepository gameSessionRepository) {
         super(library, gameSessionRepository);
     }
@@ -105,6 +112,11 @@ public class AccountController extends BaseController {
 
         m.addAttribute("actionUrl", actionURL);
         return "signup.html";
+    }
+
+    @GetMapping("/login")
+    public String login(Model m, @RequestParam(required = false, name = "error") String error, @RequestParam(required = false, name = "forwardTo") String forwardTo) {
+        return "login";
     }
 
 }

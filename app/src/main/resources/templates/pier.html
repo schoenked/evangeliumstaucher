@@ -44,7 +44,17 @@
                 </div>
                 <div aria-labelledby="my-tab" class="tab-pane fade" id="my" role="tabpanel">
                     <h4 class="card-title">Meine Tauchgänge</h4>
-                    <div th:insert="datatable.html :: datatable(${modelMyDives})"></div>
+                    <!--/*@thymesVar id="playerModel" type="de.evangeliumstaucher.app.viewmodel.PlayerModel"*/-->
+                    <div class="p-5" th:if="${playerModel == null}">
+                        <p>
+                            Sie sind nicht angemeldet
+                        </p>
+                        <a class="btn btn-seventh text-white btn-lg btn-block w-100"
+                           href="/login"
+                           th:if="${playerModel == null}"
+                        >Jetzt anmelden</a>
+                    </div>
+                    <div th:if="${playerModel != null}" th:insert="datatable.html :: datatable(${modelMyDives})"></div>
                 </div>
             </div>
         </div>
