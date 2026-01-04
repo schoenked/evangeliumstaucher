@@ -8,6 +8,7 @@ import de.evangeliumstaucher.repo.PlayerRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.security.core.AuthenticatedPrincipal;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
@@ -46,18 +47,31 @@ public class UserService {
         return playerRepository.existsPlayerEntityByUsername(name);
     }
 
-    public Optional<PlayerEntity> getByEMail(String globalId) {
+    public Optional<PlayerEntity> getByGlobalId(String globalId) {
         return playerRepository.findByGlobalId(globalId);
     }
 
-    public PlayerModel getPlayerModel(OAuth2User oidcUser, UserService userService) {
-        if (oidcUser != null) {
-            Optional<PlayerEntity> entity = userService.getByEMail(oidcUser.getAttribute("email"));
+    public PlayerModel getPlayerModel(AuthenticatedPrincipal principal, UserService userService) {
+        String globalId = getGlobalId(principal);
+
+        if (globalId != null) {
+            Optional<PlayerEntity> entity = userService.getByGlobalId(globalId);
             if (entity.isPresent()) {
                 return PlayerModel.from(entity.get());
             }
         }
+
         return null;
     }
 
+    public String getGlobalId(AuthenticatedPrincipal principal) {
+        String globalId = null;
+
+        if (principal != null && principal instanceof OAuth2User oAuth2User) {
+            globalId = oAuth2User.getAttribute("email");
+        } else if (principal != null && principal instanceof AuthenticatedPrincipal authenticatedPrincipal) {
+            globalId = authenticatedPrincipal.getName();
+        }
+        return  globalId;
+    }
 }

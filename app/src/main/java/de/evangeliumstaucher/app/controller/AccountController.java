@@ -9,12 +9,20 @@ import de.evangeliumstaucher.repo.GameSessionRepository;
 import de.evangeliumstaucher.repo.service.Library;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticatedPrincipal;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +33,8 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.Collections;
+import java.util.UUID;
 
 @Controller
 @Slf4j
@@ -39,19 +49,20 @@ public class AccountController extends BaseController {
     @Autowired
     AccountConfig accountConfig;
 
-    @ModelAttribute("playerModel")
-    @Nullable
-    public PlayerModel PlayerModelAttribute(@AuthenticationPrincipal @Nullable OAuth2User oidcUser) {
-        return userService.getPlayerModel(oidcUser, userService);
-    }
     public AccountController(Library library, GameSessionRepository gameSessionRepository) {
         super(library, gameSessionRepository);
     }
 
+    @ModelAttribute("playerModel")
+    @Nullable
+    public PlayerModel PlayerModelAttribute(@AuthenticationPrincipal AuthenticatedPrincipal principal) {
+        return userService.getPlayerModel(principal, userService);
+    }
+
     @PostMapping("/createuser")
-    public RedirectView createuser(@AuthenticationPrincipal OAuth2User oidcUser, @RequestParam @Nonnull String username, @RequestParam(required = false, name = "forwardTo") String forwardTo, Model m) {
+    public RedirectView createuser(@AuthenticationPrincipal AuthenticatedPrincipal principal, @RequestParam @Nonnull String username, @RequestParam(required = false, name = "forwardTo") String forwardTo, Model m) {
         RedirectView out = new RedirectView();
-        Player player = new Player(null, username, oidcUser.getAttribute("email"));
+        Player player = new Player(null, username, userService.getGlobalId(principal));
         if (!userService.valid(username)) {
             out.setUrl("/signup");
             out.getAttributesMap().put("warning", "Der Name wird schon verwendet. Verwende bitte einen anderen.");
@@ -66,7 +77,7 @@ public class AccountController extends BaseController {
     @PostMapping("/changename")
     public RedirectView changename(@AuthenticationPrincipal OAuth2User oidcUser, @RequestParam @Nonnull String username, @RequestParam(required = false, name = "forwardTo") String forwardTo, Model m) {
         RedirectView out = new RedirectView();
-        PlayerEntity player = (userService.getByEMail(oidcUser.getAttribute("email")).get());
+        PlayerEntity player = (userService.getByGlobalId(userService.getGlobalId(oidcUser)).get());
 
         if (!userService.valid(username)) {
             out.setUrl("/edituser");
@@ -117,6 +128,36 @@ public class AccountController extends BaseController {
     @GetMapping("/login")
     public String login(Model m, @RequestParam(required = false, name = "error") String error, @RequestParam(required = false, name = "forwardTo") String forwardTo) {
         return "login";
+    }
+
+    @GetMapping("/login/guest")
+    public RedirectView loginAsGuest(HttpServletRequest request, @RequestParam(required = false, name = "forwardTo", defaultValue = "/") String forwardTo, Model m) {
+        // 1. Erstelle einen Gast-User (oder lade existierenden basierend auf Session/Cookie Logik)
+        // Hier als Beispiel generieren wir eine temporäre ID
+        String guestId = "guest_" + UUID.randomUUID().toString().substring(0, 8);
+
+        // Optional: Gast im UserService anlegen/speichern, damit du Daten mappen kannst
+        // userService.createGuestProfile(guestId);
+        AuthenticatedPrincipal principal = () -> guestId;
+        // 2. Erstelle das Authentication Objekt (WICHTIG: "ROLE_GUEST")
+        // Wir nutzen UsernamePasswordAuthenticationToken, da es einfach ist.
+        Authentication guestAuth = new UsernamePasswordAuthenticationToken(
+                principal, // Principal (User ID oder Objekt)
+                null,    // Credentials (keine nötig)
+                Collections.singletonList(new SimpleGrantedAuthority("ROLE_GUEST")) // Berechtigung
+        );
+
+        // 3. Manuell in den Security Context setzen
+        SecurityContext sc = SecurityContextHolder.createEmptyContext();
+        sc.setAuthentication(guestAuth);
+        SecurityContextHolder.setContext(sc);
+
+        // 4. Den Context explizit in der Session speichern
+        // Das ist notwendig, damit Spring Security den User beim nächsten Request wiedererkennt!
+        HttpSession session = request.getSession(true);
+        session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, sc);
+
+        return createuser(principal, guestId, forwardTo, m);
     }
 
 }

@@ -6,8 +6,8 @@ import de.evangeliumstaucher.app.viewmodel.PlayerModel;
 import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.AuthenticatedPrincipal;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,8 +23,8 @@ public class MainController {
 
     @ModelAttribute("playerModel")
     @Nullable
-    public PlayerModel PlayerModelAttribute(@AuthenticationPrincipal @Nullable OAuth2User oidcUser) {
-        return userService.getPlayerModel(oidcUser, userService);
+    public PlayerModel PlayerModelAttribute(@AuthenticationPrincipal AuthenticatedPrincipal principal) {
+        return userService.getPlayerModel(principal, userService);
     }
 
     @GetMapping("/")

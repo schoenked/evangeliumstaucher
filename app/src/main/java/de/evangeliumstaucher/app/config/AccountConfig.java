@@ -6,7 +6,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.List;
 
@@ -22,8 +21,10 @@ public class AccountConfig {
             return true;
         }
 
-        String email = ((OAuth2AuthenticationToken) authentication).getPrincipal().getAttribute("email").toString();
-
-        return whitelist.contains(email);
+        if (authentication instanceof OAuth2AuthenticationToken authenticationToken) {
+            String email = authenticationToken.getPrincipal().getAttribute("email").toString();
+            return whitelist.contains(email);
+        }
+        return false;
     }
 }
