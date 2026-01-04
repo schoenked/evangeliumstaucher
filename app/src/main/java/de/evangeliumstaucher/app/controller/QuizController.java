@@ -13,8 +13,8 @@ import jakarta.annotation.Nullable;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.BadRequestException;
+import org.springframework.security.core.AuthenticatedPrincipal;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -49,8 +49,8 @@ public class QuizController extends BaseController {
 
     @ModelAttribute("playerModel")
     @Nullable
-    public PlayerModel PlayerModelAttribute(@AuthenticationPrincipal @Nullable OAuth2User oidcUser) {
-        return userService.getPlayerModel(oidcUser, userService);
+    public PlayerModel PlayerModelAttribute(@AuthenticationPrincipal AuthenticatedPrincipal principal) {
+        return userService.getPlayerModel(principal, userService);
     }
 
     @GetMapping("/quiz/")

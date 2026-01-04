@@ -8,10 +8,11 @@ import de.evangeliumstaucher.app.viewmodel.PlayerModel;
 import de.evangeliumstaucher.repo.GameSessionRepository;
 import de.evangeliumstaucher.repo.service.Library;
 import de.evangeliumstaucher.repoDatatables.TrendingGamesDatatablesRepository;
+import jakarta.annotation.Nullable;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.AuthenticatedPrincipal;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,11 +35,9 @@ public class PierController extends BaseController {
     }
 
     @ModelAttribute("playerModel")
-    public PlayerModel PlayerModelAttribute(@AuthenticationPrincipal OAuth2User oidcUser) {
-        if (oidcUser != null) {
-            return PlayerModel.from(userService.getByEMail(oidcUser.getAttribute("email")).get());
-        }
-        return null;
+    @Nullable
+    public PlayerModel PlayerModelAttribute(@AuthenticationPrincipal AuthenticatedPrincipal principal) {
+        return userService.getPlayerModel(principal, userService);
     }
 
     @GetMapping("/quiz/pier/")
