@@ -17,7 +17,7 @@ logging:
       triggeringPolicy:
         class: ch.qos.logback.core.rolling.TimeBasedRollingPolicy
         fileNamePattern: log/%d{yyyy-MM-dd}.log
-        maxHistory: 30
-        totalSizeCap: 1GB
+        maxHistory: 90
+        totalSizeCap: 10GB
   file:
     name: logs/app.log

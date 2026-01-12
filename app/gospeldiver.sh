@@ -2,9 +2,9 @@
 
 APP_JAR=app.jar
 if [ "$2" = "public" ]; then
-    PROFILES=default,db,prodDB,creds,logging
+    PROFILES=default,db,prod,creds,logging
 else
-    PROFILES=default,db,prodDB,creds,accounts,logging
+    PROFILES=default,db,prod,creds,accounts,logging
 fi
 
 start_app() {

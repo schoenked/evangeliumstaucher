@@ -15,11 +15,11 @@ logging:
 spring.ssl.bundle.jks:
   server:
     reload-on-update: true
-    key.alias: your_alias_name
+    key.alias: gd
     keystore:
-      location: /home/ubuntu/myp12file.p12
+      location: ../gd.p12
       type: PKCS12
-      password: 'your_pass'
+      password: changeit
 server:
   port: 443
   compression:
@@ -30,4 +30,4 @@ server:
     bundle: server
 spring:
   profiles:
-    default: default,db,creds,prodDB,accounts,logging
+    default: default,db,creds,accounts,logging,devH2

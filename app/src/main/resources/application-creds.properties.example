@@ -1,3 +1,2 @@
 
-bibleapi.apikey=examplekey
 spring.datasource.url=jdbc:postgres://...
