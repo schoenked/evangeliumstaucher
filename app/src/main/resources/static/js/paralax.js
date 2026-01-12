@@ -8,7 +8,7 @@
         if (top < 0) return;
         // Calculate the new height based on the scroll position
         let newpadding = top * 10 / window.innerHeight;
-        newpadding += 10;
+        newpadding += 5;
         //newpadding = Math.round(newpadding);
         //console.log(container.id+ ": newpadding " + newpadding);
         newpadding = newpadding > 2 ? newpadding : 0;
