@@ -2,16 +2,6 @@ myHostname: https://reinaldus.fritz.box:8443
 server:
     port: 8443
 spring:
-    ssl:
-      bundle:
-        jks:
-          server:
-            reload-on-update: true
-            key.alias: gd
-            keystore:
-              location: ./gd.p12
-              type: PKCS12
-              password: changeit
     jpa:
         hibernate:
             ddl-auto: validate
