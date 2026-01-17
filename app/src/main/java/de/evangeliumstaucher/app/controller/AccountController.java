@@ -160,4 +160,8 @@ public class AccountController extends BaseController {
         return createuser(principal, guestId, forwardTo, m);
     }
 
+    @GetMapping("/your-account")
+    public String yourAccount(Model m) {
+        return "your-account";
+    }
 }
