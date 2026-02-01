@@ -56,7 +56,6 @@
                 <artifactId>spring-data-jpa-datatables</artifactId>
                 <version>8.0.0</version>
             </dependency>
-            todo redirect gast wriong destination
             <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
