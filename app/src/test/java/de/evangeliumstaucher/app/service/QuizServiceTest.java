@@ -27,8 +27,10 @@ import org.crosswire.jsword.versification.system.Versifications;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Answers;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -39,6 +41,7 @@ import java.util.stream.IntStream;
 import static com.google.common.truth.Truth.assertThat;
 
 @SpringBootTest
+@ExtendWith(MockitoExtension.class)
 public class QuizServiceTest {
 
     static QuizService quizService;
@@ -47,13 +50,13 @@ public class QuizServiceTest {
     public Library library;
 
     @Mock(answer = Answers.RETURNS_MOCKS)
-    private GameRepository gameRepository;
+    GameRepository gameRepository;
     @Mock(answer = Answers.RETURNS_MOCKS)
-    private QuestionRepository questionRepository;
+    QuestionRepository questionRepository;
     @Mock(answer = Answers.RETURNS_MOCKS)
-    private GameSessionRepository gameSessionRepository;
+    GameSessionRepository gameSessionRepository;
     @Mock(answer = Answers.RETURNS_MOCKS)
-    private UserQuestionRepository userQuestionRepository;
+    UserQuestionRepository userQuestionRepository;
 
     private static BookWrap createBook(int iBook, BibleWrap bible) {
 
