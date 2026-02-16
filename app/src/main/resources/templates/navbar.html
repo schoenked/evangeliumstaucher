@@ -41,11 +41,11 @@
                     </li>
 
                     <li class="nav-item" th:if="${playerModel != null}">
-                        <a class="nav-link bg-secondary btn text-black text-start ps-2" href="/your-account">
+                        <a class="nav-link bg-secondary btn text-black text-start ps-2" href="/account">
                             <div>
                                 <small class="small">Hallo, </small>
                                 <span th:text="${playerModel.name}">User</span>
-                                <br>Dein Konto
+                                <br><b>Dein Konto</b>
                             </div>
                         </a>
                     </li>

@@ -80,6 +80,10 @@ public class AccountController extends BaseController {
     @PostMapping("/changename")
     public RedirectView changename(@AuthenticationPrincipal OAuth2User oidcUser, @RequestParam @Nonnull String username, @RequestParam(required = false, name = "forwardTo") String forwardTo, Model m) {
         RedirectView out = new RedirectView();
+        if (oidcUser == null) {
+            out = new RedirectView("/?warning=" + URLEncoder.encode("Ein Gastbenutzer kann seinen Namen nicht ändern.", StandardCharsets.UTF_8));
+            return out;
+        }
         PlayerEntity player = (userService.getByGlobalId(userService.getGlobalId(oidcUser)).get());
 
         if (!userService.valid(username)) {
@@ -173,9 +177,9 @@ public class AccountController extends BaseController {
         return createuser(principal, guestId, forwardTo, m);
     }
 
-    @GetMapping("/your-account")
-    public String yourAccount(Model m) {
-        return "your-account";
+    @GetMapping("/account")
+    public String account(Model m) {
+        return "account";
     }
 
     @GetMapping("/auth-redirect")
