@@ -50,7 +50,7 @@
                             Sie sind nicht angemeldet
                         </p>
                         <a class="btn btn-seventh text-white btn-lg btn-block w-100"
-                           href="/login"
+                           th:href="@{/auth-redirect(target=${currentPath})}"
                            th:if="${playerModel == null}"
                         >Jetzt anmelden</a>
                     </div>

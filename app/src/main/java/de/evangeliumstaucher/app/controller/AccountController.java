@@ -13,7 +13,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticatedPrincipal;
 import org.springframework.security.core.Authentication;
@@ -23,6 +25,7 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
+import org.springframework.security.web.savedrequest.DefaultSavedRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -126,16 +129,26 @@ public class AccountController extends BaseController {
     }
 
     @GetMapping("/login")
-    public String login(Model m, @RequestParam(required = false, name = "error") String error, @RequestParam(required = false, name = "forwardTo") String forwardTo) {
+    public String login(HttpServletRequest request, Model m, @RequestParam(required = false, name = "error") String error, @RequestParam(required = false, name = "forwardTo") String forwardTo) {
+        m.addAttribute("actionUrl", forwardTo);
         return "login";
     }
 
     @GetMapping("/login/guest")
-    public RedirectView loginAsGuest(HttpServletRequest request, @RequestParam(required = false, name = "forwardTo", defaultValue = "/") String forwardTo, Model m) {
+    public RedirectView loginAsGuest(HttpServletRequest request, @RequestParam(required = false, name = "forwardTo") String forwardTo, Model m) {
         // 1. Erstelle einen Gast-User (oder lade existierenden basierend auf Session/Cookie Logik)
         // Hier als Beispiel generieren wir eine temporäre ID
         String guestId = "guest_" + UUID.randomUUID().toString().substring(0, 8);
-
+        if (Strings.isEmpty(forwardTo)) {
+            DefaultSavedRequest savedRequest = (DefaultSavedRequest) session.getAttribute("SPRING_SECURITY_SAVED_REQUEST");
+            if (savedRequest != null) {
+                forwardTo = savedRequest.getRequestURI();
+                // Wichtig: Query-Parameter (z.B. ?id=5) nicht vergessen!
+                if (StringUtils.isNotEmpty(savedRequest.getQueryString())) {
+                    forwardTo += "?" + savedRequest.getQueryString();
+                }
+            }
+        }
         // Optional: Gast im UserService anlegen/speichern, damit du Daten mappen kannst
         // userService.createGuestProfile(guestId);
         AuthenticatedPrincipal principal = () -> guestId;
@@ -163,5 +176,13 @@ public class AccountController extends BaseController {
     @GetMapping("/your-account")
     public String yourAccount(Model m) {
         return "your-account";
+    }
+
+    @GetMapping("/auth-redirect")
+    @PreAuthorize("isAuthenticated()")
+    public String authRedirect(@RequestParam(name = "target", defaultValue = "/") String target) {
+        // Da dieser Endpunkt geschützt ist, kommt man hier erst NACH dem Login an.
+        // Jetzt leiten wir einfach zum eigentlichen Ziel weiter.
+        return "redirect:" + target;
     }
 }

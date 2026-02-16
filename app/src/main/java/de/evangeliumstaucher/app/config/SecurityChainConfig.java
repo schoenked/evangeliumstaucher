@@ -9,6 +9,7 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.SecurityFilterChain;
@@ -20,6 +21,7 @@ import java.io.IOException;
 
 @Configuration
 @RequiredArgsConstructor
+@EnableMethodSecurity
 public class SecurityChainConfig {
 
     public static final String USERNAME = "username";
@@ -61,15 +63,15 @@ public class SecurityChainConfig {
             c.csrfTokenRepository(csrfTokenRepository());
         });
         http.oauth2Login(oauth2Login -> oauth2Login.successHandler(new SavedRequestAwareAuthenticationSuccessHandler() {
-                    @Override
-                    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws ServletException, IOException {
-                        super.onAuthenticationSuccess(request, response, authentication);
-                        if (!accountConfig.isValid(authentication)) {
-                            authentication.setAuthenticated(false);
-                        }
-                    }
-                })
-                .loginPage("/login"))
+                            @Override
+                            public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws ServletException, IOException {
+                                super.onAuthenticationSuccess(request, response, authentication);
+                                if (!accountConfig.isValid(authentication)) {
+                                    authentication.setAuthenticated(false);
+                                }
+                            }
+                        })
+                        .loginPage("/login"))
                 .logout(logout -> logout
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/"));
