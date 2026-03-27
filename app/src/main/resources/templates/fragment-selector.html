@@ -9,20 +9,27 @@
     <th:block th:each="book : ${books}">
         <div class="col-2 p-0 text-nowrap">
             <button aria-expanded="false"
-                    th:class="|btn w-100 btn-${book.color} rounded-0 m-1 px-0 text-truncate|"
                     data-bs-toggle="collapse"
                     role="button"
                     th:aria-controls="|${book.htmlId}|"
-                    th:data-target-id="|${book.htmlId}|"
+                    th:class="|btn w-100 btn-${book.color} rounded-0 m-1 px-0 text-truncate|"
                     th:data-bs-target="|#${book.htmlId}|"
+                    th:data-target-id="|${book.htmlId}|"
                     th:text="${book.abbreviationShort}">
             </button>
         </div>
         <div class="collapse "
              th:id="${book.htmlId}">
+            <a
+                    class="btn w-100 btn-outline-sky rounded-0 m-1"
+                    role="button"
+                    th:href="|${book.prefixVerses}/${book.chapters.first.firstVerse.url}|"
+                    th:text="|${book.abbreviation} auswählen (ungenau)|"></a>
+
             <p class="text-start my-2">Kapitel:</p>
             <div class="row gx-0">
                 <th:block th:each="group : ${book.chapterGroups}">
+
                     <div class="col-12 p-0 row gx-0">
                         <th:block th:each="chapter : ${group}">
                             <span class="col-2 p-1" style="width: 20%;">
@@ -41,6 +48,12 @@
                             </span>
                             <span class="collapse p-0"
                                   th:id="|${chapter.htmlId}|">
+                                <a
+                                        class="btn w-100 btn-outline-sky rounded-0 m-1"
+                                        role="button"
+                                        th:href="|${book.prefixVerses}/${chapter.firstVerse.url}|"
+                                        th:text="|${book.abbreviation} ${chapter.label} auswählen (ungenau)|"></a>
+
                                 <span th:id="|${chapter.htmlId}-loader|">
                                     <span class="spinner-grow" role="status">
                                     </span>
@@ -57,7 +70,7 @@
         function scrollTo(id) {
             const targetElement = document.getElementById(id);
             if (targetElement) {
-                targetElement.scrollIntoView({ behavior: 'smooth' });
+                targetElement.scrollIntoView({behavior: 'smooth'});
             }
         }
 
