@@ -25,37 +25,37 @@
             <div class="card-body p-4">
                 <p class="card-text mb-4">Bitte melde dich an, um deine Tauchgänge zu speichern.</p>
 
-                <div class="alert alert-danger" role="alert" th:if="${param.error}">
-                    Anmeldung fehlgeschlagen. Bitte versuche es erneut.
-                </div>
-
                 <div class="alert alert-success" role="alert" th:if="${param.logout}">
                     Du wurdest erfolgreich abgemeldet.
                 </div>
 
-                <div class="d-grid gap-2">
+                <div class="d-grid gap-2 rounded-3 border-fifth border border-3 p-2 line">
                     <a class="btn btn-outline-secondary btn-lg  fw-bold"
                        th:href="@{/login/guest}">
                         Als Gast fortfahren
                     </a>
-                    <p>
-                    <ul>
-                        <li>✅ kostenlos</li>
-                        <li>✅ unbegrenzt</li>
-                        <li>✅ anonym</li>
-                        <li>❌ Spielername frei wählbar</li>
-                        <li>❌ Spiele jederzeit pausieren und später fortsetzen</li>
+                    <ul class="list-group list-group-flush opacity-50">
+                        <li class="list-group-item">✅ kostenlos</li>
+                        <li class="list-group-item">✅ unbegrenzt</li>
+                        <li class="list-group-item">✅ anonym</li>
+                        <li class="list-group-item">❌ Spielername ist nicht frei wählbar</li>
+                        <li class="list-group-item">❌ Spiele können nicht pausiert und später fortsetzen werden</li>
                     </ul>
-                    </p>
-
                 </div>
-                <div class="d-grid gap-2">
+                <div class="mt-3 d-grid gap-2 rounded-3 border-fifth border border-3 p-2 line">
                     <a class="btn btn-lg btn-transparent fw-bold"
                        href="/oauth2/authorization/google">
                         <img alt="Mit Google anmelden"
                              src="/images/google_web_neutral_rd_ctn.svg">
                     </a>
 
+                    <ul class="list-group list-group-flush opacity-50">
+                        <li class="list-group-item">✅ kostenlos</li>
+                        <li class="list-group-item">✅ unbegrenzt</li>
+                        <li class="list-group-item">✅ Spielername frei wählen</li>
+                        <li class="list-group-item">✅ Spiele können pausiert und irgendwann fortgesetzt</li>
+                        <li class="list-group-item">✅ Historie der Spiele</li>
+                    </ul>
                 </div>
             </div>
         </div>
