@@ -1,6 +1,7 @@
 package de.evangeliumstaucher.app.viewmodel;
 
 import de.evangeliumstaucher.repo.model.Chapter;
+import de.evangeliumstaucher.repo.model.Verse;
 import de.evangeliumstaucher.repo.service.Library;
 import lombok.*;
 
@@ -19,6 +20,7 @@ public class ChapterModel extends BaseModel {
     private String label;
     private List<VerseModel> verses;
     private String bibleId;
+    private VerseModel firstVerse;
 
     public static List<ChapterModel> from(Collection<Chapter> chapters, Library library) {
         List<ChapterModel> list = new ArrayList<>();
@@ -26,6 +28,7 @@ public class ChapterModel extends BaseModel {
             ChapterModel model = from(chapter, library);
             list.add(model);
         }
+
         return list;
     }
 
@@ -33,7 +36,12 @@ public class ChapterModel extends BaseModel {
         ChapterModel chapterModel = new ChapterModel()
                 .withBibleId(chapter.getBibleId())
                 .withLabel(chapter.getNumber());
+
+        Verse firstVerse = library.getVerses(chapter.getBibleId(), chapter.getId()).getFirst();
+        chapterModel.setFirstVerse(VerseModel.from(firstVerse));
+
         chapterModel.setId(chapter.getId());
         return chapterModel;
     }
+
 }
