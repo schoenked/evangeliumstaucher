@@ -19,6 +19,13 @@
 </table>
     <script>
         let ajax[[${model.javascriptId}]] = null;
+
+        $(document).ready(function() {
+            $("td").filter(function() {
+                // Exakter Match, damit "guest_4959a29f_alt" nicht auch markiert wird
+                return $(this).text().trim() === "[[${playerModel} != null ? ${playerModel.name} : 'playerModel.namedummy' ]]";
+            }).addClass("bg-primary bg-opacity-25");
+        });
     </script>
 
     <script th:if="${model.serverside}">
@@ -89,6 +96,22 @@
                 window.location = data.location;
             }
         });
+
+        const playerName = "[[${playerModel?.name ?: 'playerModel.namedummy'}]]";
+
+        // 2. Die Highlight-Logik in eine wiederverwendbare Funktion auslagern
+        function highlightPlayerCell() {
+            $("td").filter(function() {
+                return $(this).text().trim() === playerName;
+            }).addClass("bg-primary bg-opacity-25");
+        }
+
+        // 3. Einmal beim initialen Laden der Seite ausführen
+        highlightPlayerCell();
+        t[[${model.javascriptId}]].on('draw.dt', function() {
+            highlightPlayerCell();
+        });
+
         if (typeof mDatatables === 'undefined') {
             mDatatables = [];
         }
