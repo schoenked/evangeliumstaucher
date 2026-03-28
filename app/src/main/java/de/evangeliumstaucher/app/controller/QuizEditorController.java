@@ -4,6 +4,7 @@ import de.evangeliumstaucher.app.model.BibleWrap;
 import de.evangeliumstaucher.app.model.PassageTree;
 import de.evangeliumstaucher.app.service.QuizService;
 import de.evangeliumstaucher.app.service.UserService;
+import de.evangeliumstaucher.app.utils.JsonCompressor;
 import de.evangeliumstaucher.app.viewmodel.PlayerModel;
 import de.evangeliumstaucher.app.viewmodel.QuizModel;
 import de.evangeliumstaucher.app.viewmodel.QuizSetupModel;
@@ -22,6 +23,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import tools.jackson.databind.ObjectMapper;
 
 import javax.naming.ServiceUnavailableException;
 import java.util.Map;
@@ -114,10 +116,18 @@ public class QuizEditorController extends BaseController {
     }
 
     @PostMapping("/quiz/create/passagetree")
-    public String renderPassageTree(@RequestBody PassageTree passageTree, Model m) {
-        log.trace("renderPassageTree rendering " + passageTree.getId());
-        m.addAttribute("passageTree", passageTree);
-        return "fragment_passageTree.html";
+    public String loadPassageTree(@RequestBody String compressedPayload, Model model) {
+        try {
+            String json = JsonCompressor.decompress(StringUtils.strip(compressedPayload, "\""));
+
+            ObjectMapper mapper = new ObjectMapper();
+            PassageTree childTree = mapper.readValue(json, PassageTree.class);
+            model.addAttribute("passageTree", childTree);
+            return "fragment_passageTree.html";
+        } catch (Exception e) {
+            // Fehlerbehandlung
+            throw e;
+        }
     }
 
     public void addWarning(Model m) {
