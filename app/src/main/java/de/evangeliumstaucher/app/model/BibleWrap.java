@@ -69,6 +69,7 @@ public class BibleWrap {
                         .displ(s.getName())
                         //Activate Whole Bible
                         .actWhi(s.getRange().equals("Gen-Rev"))
+                        .ensureSingle(s.getRange().equals("Gen-Rev"))
                         .build())
                 .toList();
     }
