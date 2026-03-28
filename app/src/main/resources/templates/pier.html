@@ -3,7 +3,7 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <head th:insert="~{head.html :: head}"/>
-    <title>evangeliumstaucher - Pier</title>
+    <title>Pier - evangeliumstaucher</title>
     <link href="https://cdn.datatables.net/2.0.7/css/dataTables.dataTables.min.css" rel="stylesheet"></link>
     <script src="https://cdn.datatables.net/2.0.7/js/dataTables.min.js"></script>
     <script src="https://momentjs.com/downloads/moment.js"></script>
@@ -45,8 +45,8 @@
                 <div aria-labelledby="my-tab" class="tab-pane fade" id="my" role="tabpanel">
                     <h4 class="card-title">Meine Tauchgänge</h4>
                     <!--/*@thymesVar id="playerModel" type="de.evangeliumstaucher.app.viewmodel.PlayerModel"*/-->
-                    <div class="p-5" th:if="${playerModel == null}">
-                        <p>
+                    <div class="p-5 alert alert-warning alert-heading alert-dark" role="alert" th:if="${playerModel == null}">
+                        <p >
                             Sie sind nicht angemeldet
                         </p>
                         <a class="btn btn-seventh text-white btn-lg btn-block w-100"
