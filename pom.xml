@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>4.0.2</version>
+        <version>4.0.5</version>
     </parent>
     <groupId>de.evangeliumstaucher</groupId>
     <artifactId>parent</artifactId>
@@ -57,19 +57,9 @@
                 <version>8.0.0</version>
             </dependency>
             <dependency>
-                <groupId>org.apache.commons</groupId>
-                <artifactId>commons-lang3</artifactId>
-                <version>3.19.0</version>
-            </dependency>
-            <dependency>
                 <groupId>org.webjars</groupId>
                 <artifactId>bootstrap</artifactId>
                 <version>5.3.8</version>
-            </dependency>
-            <dependency>
-                <groupId>org.postgresql</groupId>
-                <artifactId>postgresql</artifactId>
-                <version>42.7.8</version>
             </dependency>
             <dependency>
                 <groupId>com.fatboyindustrial.gson-javatime-serialisers</groupId>
@@ -132,11 +122,6 @@
     <build>
         <pluginManagement>
             <plugins>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-dependency-plugin</artifactId>
-                    <version>3.8.1</version>
-                </plugin>
                 <plugin>
                     <groupId>io.github.cleydyr</groupId>
                     <artifactId>dart-sass-maven-plugin</artifactId>

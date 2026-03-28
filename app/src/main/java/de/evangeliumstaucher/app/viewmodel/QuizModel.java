@@ -14,9 +14,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+@Builder
 @Getter
 @Setter
-@Builder
 @AllArgsConstructor
 @RequiredArgsConstructor
 public class QuizModel {
@@ -28,7 +28,7 @@ public class QuizModel {
     private Date createdAt;
     @Getter(AccessLevel.PRIVATE)
     private BibleWrap bible;
-    private List<Verse> verses = new ArrayList<>();
+    private final List<Verse> verses = new ArrayList<>();
     private List<String> tags;
     private int distanceRatingFactor;
     private int timeRatingFactor;
@@ -56,9 +56,7 @@ public class QuizModel {
     }
 
     public @NotNull List<Verse> createVerses(QuizService quizService, int countVerses, String whitelist, String blacklist) {
-        if (verses == null) {
-            verses = new ArrayList<>();
-        }
+
         //prvent verse loops
         StringBuilder previousVerses = new StringBuilder();
         for (int i = 0; i < countVerses; i++) {
