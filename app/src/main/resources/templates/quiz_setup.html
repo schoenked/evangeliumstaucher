@@ -11,7 +11,7 @@
 <div class="container mt-5">
     <h1 class="text-primary"><i aria-hidden="true" class="fa fa-plus-square"></i> Erstelle einen neuen Tauchgang</h1>
     <!--/*@thymesVar id="quizSetupModel" type="de.evangeliumstaucher.app.viewmodel.QuizSetupModel"*/-->
-    <form method="post" th:action="submit" th:object="${quizSetupModel}">
+    <form id="quizSetupForm" method="post" th:action="submit" th:object="${quizSetupModel}">
         <div class="input-group input-group-lg mb-3">
             <span class=" input-group-text" id="label-name">Name</span>
             <input aria-describedby="label-name" class="form-control" id="quizName"
@@ -123,61 +123,61 @@
                             </i>
                             </p>
                             <p>
-                            <script>
-                                function bindSummaryClick() {
-                                    // Use event delegation on a specific container if necessary
-                                    $('summary').off('click').on('click', async function () {
-                                        const summary = $(this);
-                                        summaryLoad(summary);
+                                <script>
+                                    function bindSummaryClick() {
+                                        // Use event delegation on a specific container if necessary
+                                        $('summary').off('click').on('click', async function () {
+                                            const summary = $(this);
+                                            summaryLoad(summary);
+                                        });
+                                    }
+
+                                    function summaryLoad(summary) {
+                                        console.log("clicked in tree");
+                                        const parent = summary.parent();
+                                        parent.find('ul > .list-group-item').each(function () {
+                                            const loader = $(this);
+                                            loadPassage(loader);
+                                        });
+                                    }
+
+                                    function loadPassage(loader) {
+                                        console.log("selected loader " + loader.html());
+                                        const data = JSON.stringify(loader.data().passages);
+
+                                        // Check if already loaded
+                                        //if (loader.html().trim().endsWith("\<\/script\>")) return;
+
+                                        // Fetch child nodes via AJAX
+                                        $.ajax({
+                                            url: '/quiz/create/passagetree',
+                                            method: 'POST',
+                                            contentType: 'application/json',
+                                            headers: {
+                                                'X-XSRF-TOKEN': '[[${_csrf.token}]]'
+                                            },
+                                            data: data,
+                                            success: function (html) {
+                                                loader.html(html);
+                                                updateTree()
+                                            },
+                                            error: function () {
+                                                loader.html('<li class="list-group-item text-danger">Fehler beim Laden aufgetreten.</li>');
+                                                console.error("Error fetching data:", error);
+                                            }
+                                        });
+                                    }
+
+                                    // Example of rebinding after setting innerHTML
+                                    function updateTree() {
+                                        bindSummaryClick(); // Rebind listeners
+                                    }
+
+                                    // Initialize listeners when the page loads
+                                    $(document).ready(function () {
+                                        bindSummaryClick();
                                     });
-                                }
-
-                                function summaryLoad(summary) {
-                                    console.log("clicked in tree");
-                                    const parent = summary.parent();
-                                    parent.find('ul > .list-group-item').each(function () {
-                                        const loader = $(this);
-                                        loadPassage(loader);
-                                    });
-                                }
-
-                                function loadPassage(loader) {
-                                    console.log("selected loader " + loader.html());
-                                    const data = JSON.stringify(loader.data().passages);
-
-                                    // Check if already loaded
-                                    //if (loader.html().trim().endsWith("\<\/script\>")) return;
-
-                                    // Fetch child nodes via AJAX
-                                    $.ajax({
-                                        url: '/quiz/create/passagetree',
-                                        method: 'POST',
-                                        contentType: 'application/json',
-                                        headers: {
-                                            'X-XSRF-TOKEN': '[[${_csrf.token}]]'
-                                        },
-                                        data: data,
-                                        success: function (html) {
-                                            loader.html(html);
-                                            updateTree()
-                                        },
-                                        error: function () {
-                                            loader.html('<li class="list-group-item text-danger">Fehler beim Laden aufgetreten.</li>');
-                                            console.error("Error fetching data:", error);
-                                        }
-                                    });
-                                }
-
-                                // Example of rebinding after setting innerHTML
-                                function updateTree() {
-                                    bindSummaryClick(); // Rebind listeners
-                                }
-
-                                // Initialize listeners when the page loads
-                                $(document).ready(function () {
-                                    bindSummaryClick();
-                                });
-                            </script>
+                                </script>
                             <ul class="tree p-0 list-group">
                                 <li class="list-group-item">
                                     <!-- Use the fragment to render a PassageTree instance passed as model -->
@@ -201,5 +201,56 @@
         $('#modalLoading').modal('show');
     })
 </script>
+<script>
+    $(document).ready(function () {
+
+        $('#quizSetupForm').on('submit', function (e) {
+            // Alle aktuell ausgewählten "+"-Checkboxen holen
+            const $checkedAddInputs = $('input[type="checkbox"][id^="add_"]:checked');
+
+            // Prüfen, ob unter den ausgewählten eine mit ensureSingle == true ist
+            let containsEnsureSingle = false;
+            $checkedAddInputs.each(function () {
+                if ($(this).data('ensure-single') === true) {
+                    containsEnsureSingle = true;
+                    return false; // bricht die .each() Schleife ab (Performance)
+                }
+            });
+
+            // Wenn eine ensureSingle-Auswahl dabei ist, darf in Summe nur 1 Haken gesetzt sein
+            if (containsEnsureSingle && $checkedAddInputs.length > 1) {
+                e.preventDefault(); // Submit blockieren
+                $('#validationModal').modal('show'); // Modal anzeigen
+                return false;
+            }
+        });
+    });
+
+    // Der Ladebildschirm greift weiterhin nur beim erfolgreichen Verlassen der Seite
+    window.addEventListener("beforeunload", function () {
+        console.log("beforeunload");
+        $('#modalLoading').modal('show');
+    });
+</script>
+<div aria-hidden="true" aria-labelledby="validationModalLabel" class="modal fade" id="validationModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-danger">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title" id="validationModalLabel"><i class="fas fa-exclamation-triangle"></i> Zu viele
+                    Auswahlen</h5>
+                <button aria-label="Close" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        type="button"></button>
+            </div>
+            <div class="modal-body">
+                Du hast <b>Die Ganze Bibel</b> und zusätzlich noch weitere Passagen hinzugefügt. Überprüfe deine Auswahl
+                nochmal - wahrscheinlich wolltest du nicht die ganze Bibel wählen sondern nur eingegrenzte Passagen. In
+                diesem Fall solltest du <b>Die ganze Bibel</b> aus der Auswahl rausnehmen.
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Verstanden</button>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

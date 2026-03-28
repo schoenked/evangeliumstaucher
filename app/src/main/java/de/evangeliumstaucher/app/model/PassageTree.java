@@ -26,6 +26,10 @@ public class PassageTree extends BaseModel {
         return tree;
     }
 
+    /**
+     * Passage can only be single choiced
+     */
+    private boolean ensureSingle;
     private String displ;
     private boolean coll = true;
     private boolean actWhi = false;
