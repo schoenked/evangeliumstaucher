@@ -1,5 +1,6 @@
 cache: true
-myHostname: https://evangeliumstaucher.nobler.tech
+
+myHostname: https://evangeliumstaucher.edel.gesinnt.de
 logging:
   level:
     de:

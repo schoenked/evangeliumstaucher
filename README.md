@@ -3,7 +3,7 @@
 ## Demo
 The game is provided at:
 
-https://evangeliumstaucher.nobler.tech
+https://evangeliumstaucher.edel.gesinnt.de
 
 ## Description
 

@@ -32,6 +32,14 @@
                         </a>
                     </li>
 
+                    <li class="nav-item d-grid" th:if="${quiz}">
+                        <button class="nav-link btn text-start ps-2" data-bs-target="#qrCodeModal"
+                                data-bs-toggle="modal"
+                                id="share-btn">
+                            Teilen <i class="fas fa-solid fa-share-nodes"></i>
+                        </button>
+                    </li>
+
                     <li class="nav-item" th:if="${playerModel != null}">
                         <a class="nav-link bg-secondary btn text-black text-start ps-2" href="/account">
                             <div>
@@ -42,13 +50,6 @@
                         </a>
                     </li>
 
-                    <li class="nav-item d-grid" th:if="${quiz}">
-                        <button class="nav-link btn text-start ps-2" data-bs-target="#qrCodeModal"
-                                data-bs-toggle="modal"
-                                id="share-btn">
-                            Teilen <i class="fas fa-solid fa-share-nodes"></i>
-                        </button>
-                    </li>
                     <!-- Modal dialog for displaying the QR code -->
                     <div aria-hidden="true" aria-labelledby="qrCodeModalLabel" class="modal fade" id="qrCodeModal"
                          tabindex="-1">
