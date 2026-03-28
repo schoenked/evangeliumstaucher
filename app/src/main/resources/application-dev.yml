@@ -1,12 +1,14 @@
 myHostname: https://reinaldus.fritz.box:8443
 server:
-    port: 8443
+  port: 8443
 spring:
-    jpa:
-        hibernate:
-            ddl-auto: validate
-        show-sql: false
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
 logging:
-    level:
-        de.evangeliumstaucher: debug
-        web: info
+  level:
+    de.evangeliumstaucher: debug
+    web: info
+  file:
+    name: .logs/app.log

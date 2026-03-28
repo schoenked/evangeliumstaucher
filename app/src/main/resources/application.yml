@@ -17,7 +17,7 @@ spring.ssl.bundle.jks:
     reload-on-update: true
     key.alias: gd
     keystore:
-      location: ../gd.p12
+      location: gd.p12
       type: PKCS12
       password: changeit
 server:
