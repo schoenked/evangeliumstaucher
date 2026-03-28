@@ -52,6 +52,12 @@ $accordion-button-active-bg: $light;
   src: url('/Macondo-Regular.ttf') format('truetype');
 }
 
+// Import Bootstrap
+@import "bootstrap";
+@import "bootstrap-utilities";
+@import "_accordion";
+
+//static definitions
 h1 {
   font-family: 'ThemeFont', sans-serif;
 }
@@ -103,7 +109,7 @@ h1 {
 }
 
 .tree summary {
-  display: block;
+  display: block !important; /* !important schützt vor Bootstrap-Interferenzen */
   cursor: pointer;
 }
 
@@ -140,9 +146,4 @@ details:has(ul) > summary::before {
 .tree details[open] > summary::before {
   background-position: calc(-2 * var(--radius)) 0;
 }
-
-// Import Bootstrap
-@import "bootstrap";
-@import "bootstrap-utilities";
-@import "_accordion";
 
