@@ -16,6 +16,8 @@
         <java.version>25</java.version>
         <!--do annotation processing (needed since Java 23-->
         <maven.compiler.proc>full</maven.compiler.proc>
+        <guava.version>33.5.0-jre</guava.version>
+        <truth.version>1.4.4</truth.version>
     </properties>
     <modules>
         <module>data</module>
@@ -100,12 +102,12 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>33.5.0-jre</version>
+            <version>${guava.version}</version>
         </dependency>
         <dependency>
             <groupId>com.google.truth</groupId>
             <artifactId>truth</artifactId>
-            <version>1.4.4</version>
+            <version>${truth.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
