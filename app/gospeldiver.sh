@@ -15,7 +15,7 @@ start_app() {
   docker load -i app.tar
   docker run --name app \
   -e SPRING_PROFILES_ACTIVE=$PROFILES \
-  -v /etc/letsencrypt/live/evangeliumstaucher.edel.gesinnt.de/myp12file.p12:/home/ubuntu/myp12file.p12 \
+  -v /etc/letsencrypt/live/evangeliumstaucher.nobler.tech/myp12file.p12:/home/ubuntu/myp12file.p12 \
   -v /root/.postgresql/root.crt:/root/.postgresql/root.crt \
   -v /root/.sword:/root/.sword \
   -v /root/.jsword:/root/.jsword \
