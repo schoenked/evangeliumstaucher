@@ -29,7 +29,7 @@ public class MainController {
 
     @GetMapping("/")
     public String home(Model m) {
-        //m.addAttribute("info", "Der evangeliumstaucher befindet sich noch in der Entwicklung. Daher ist er nur für ausgewählte Testnutzer verfügbar. Bewerbung als Testnutzer an nobler.tech@gmail.com.");
+        //m.addAttribute("info", "Der evangeliumstaucher befindet sich noch in der Entwicklung. Daher ist er nur für ausgewählte Testnutzer verfügbar. Bewerbung als Testnutzer an edel.gesinnt.de@gmail.com.");
         return "index.html";
     }
 

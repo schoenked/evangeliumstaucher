@@ -56,9 +56,9 @@ mvn -pl app spring-boot:run
 ```
 apt install certbot
 ```
-Replace evangeliumstaucher.nobler.tech with your hostname
+Replace evangeliumstaucher.edel.gesinnt.de with your hostname
 ```
-certbot certonly --standalone -d evangeliumstaucher.nobler.tech
+certbot certonly --standalone -d evangeliumstaucher.edel.gesinnt.de
 ```
 #### Convert cert to pks
 ```
@@ -66,7 +66,7 @@ crontab -e
 ```
 insert
 ```
-0 2 * * * cd /etc/letsencrypt/live/evangeliumstaucher.nobler.tech && sh convertCert.sh >> cron.log
+0 2 * * * cd /etc/letsencrypt/live/evangeliumstaucher.edel.gesinnt.de && sh convertCert.sh >> cron.log
 ```
 ### Install docker
 see instruction
