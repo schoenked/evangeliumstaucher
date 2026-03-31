@@ -34,7 +34,7 @@ public class GameRow {
                 (   SELECT COUNT(*)
                     FROM game_session_entity gse
                     WHERE  gse.game_id = g.id) player_count,
-                '/quiz/' || g.id || '/' location
+                '/quiz/' || g.id location
             FROM game_entity g
             JOIN player_entity pe
                 ON pe.id = g.creator_id

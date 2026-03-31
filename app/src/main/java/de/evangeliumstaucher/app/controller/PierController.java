@@ -40,7 +40,7 @@ public class PierController extends BaseController {
         return userService.getPlayerModel(principal, userService);
     }
 
-    @GetMapping("/quiz/pier/")
+    @GetMapping("/quiz/pier")
     public String get(Model m) {
         DatatableViewModel modelTrending = new DatatableViewModel();
         List<DatatableColumn> columns = List.of(

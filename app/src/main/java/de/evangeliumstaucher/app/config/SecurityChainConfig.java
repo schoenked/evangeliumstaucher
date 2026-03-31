@@ -41,13 +41,13 @@ public class SecurityChainConfig {
 
         http.authorizeHttpRequests(r ->
                 r
-                        .requestMatchers(HttpMethod.GET, "/quiz/pier/")
+                        .requestMatchers(HttpMethod.GET, "/quiz/pier")
                         .permitAll()
                         .requestMatchers(HttpMethod.POST, "/quiz/datatable/**")
                         .permitAll()
                         .requestMatchers("/quiz/create/**")
                         .authenticated()
-                        .requestMatchers(HttpMethod.GET, "/quiz/*/")
+                        .requestMatchers(HttpMethod.GET, "/quiz/*")
                         .permitAll()
                         .requestMatchers(HttpMethod.GET, "/quiz/*/**")
                         .authenticated()

@@ -53,12 +53,12 @@ public class QuizController extends BaseController {
         return userService.getPlayerModel(principal, userService);
     }
 
-    @GetMapping("/quiz/")
+    @GetMapping("/quiz")
     public RedirectView getQuiz(Model m) {
-        return new RedirectView("/quiz/pier/");
+        return new RedirectView("/quiz/pier");
     }
 
-    @GetMapping("/quiz/{quizId}/")
+    @GetMapping("/quiz/{quizId}")
     public String getInfo(@PathVariable UUID quizId, Model m, @ModelAttribute @Nullable PlayerModel playerModel) {
         QuizModel quiz = quizService.get(quizId);
         m.addAttribute("quiz", quiz);

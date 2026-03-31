@@ -21,7 +21,7 @@ public class BibleModel extends BaseModel {
         RandomUtils.nextInt(0, 100);
         BibleModelBuilder builder = BibleModel.builder()
                 .id(bibleSummary.getId())
-                .url(bibleSummary.getId() + "/")
+                .url(bibleSummary.getId())
                 .language(bibleSummary.getLanguage())
                 .languageCode(bibleSummary.getLanguageCode())
                 .label(bibleSummary.getName());

@@ -25,14 +25,14 @@ public class BaseController {
         m.addAttribute("warning", "Leider kann die Bibel zurzeit nicht geladen werden. Versuch es bitte gleich nochmal.");
     }
 
-    protected String getBible(Model m) {
+    protected String getBible(Model m, String urlPrefix, String urlSuffix) {
         try {
             List<Bible> bibles = library.getBibles();
             List<String> bibleUsages = gameSessionRepository.getBibleUsages();
             //List<Bible> x = bibleUsages.stream().map(library::getBible).toList().reversed();
             List<BibleModel> books = bibles.stream()
                     .map(BibleModel::from)
-                    .peek(b -> b.setUrl(b.getUrl()))
+                    .peek(b -> b.setUrl(urlPrefix + b.getUrl() + urlSuffix))
                     //sort by usage count
                     .sorted(Comparator.comparingInt(o -> bibleUsages.indexOf(o.getId())))
                     .collect(groupingBy(BibleModel::getLanguageCode))

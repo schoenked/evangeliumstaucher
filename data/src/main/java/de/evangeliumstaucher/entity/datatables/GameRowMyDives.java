@@ -21,7 +21,7 @@ import java.util.UUID;
             g.name name,
             gse.started_at started_at,
             gse.player_id player_id,
-            '/quiz/' || g.id || '/' location,
+            '/quiz/' || g.id location,
             CAST(   ((  SELECT COUNT(*)
                 FROM user_question_entity uqe
                 WHERE uqe.game_session_id = gse.id

@@ -28,9 +28,9 @@ public class BibleController extends BaseController {
         super(library, gameSessionRepository);
     }
 
-    @GetMapping("/bible/")
+    @GetMapping("/bible")
     public String getBible(Model m) {
-        return super.getBible(m);
+        return super.getBible(m, "/bible/", null);
     }
 
     @GetMapping("/bible/{bibleId}/passage/{passageId}")

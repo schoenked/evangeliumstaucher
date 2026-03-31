@@ -190,7 +190,7 @@ public class QuizService {
                 .stream().map(BookWrap::getBook)
                 .toList();
         q.setBooks(BookModel.from(books, q.getIndexQuestion() + "/select", library));
-        q.setUrl(quizModel.getUrl() + "next");
+        q.setUrl(quizModel.getUrl() + "/next");
         q.setVerse(verse);
         q.setContextStartVerse(verse);
         q.setContextEndVerse(verse);

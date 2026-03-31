@@ -81,7 +81,7 @@ public class AccountController extends BaseController {
     public RedirectView changename(@AuthenticationPrincipal OAuth2User oidcUser, @RequestParam @Nonnull String username, @RequestParam(required = false, name = "forwardTo") String forwardTo, Model m) {
         RedirectView out = new RedirectView();
         if (oidcUser == null) {
-            out = new RedirectView("/?warning=" + URLEncoder.encode("Ein Gastbenutzer kann seinen Namen nicht ändern.", StandardCharsets.UTF_8));
+            out = new RedirectView("?warning=" + URLEncoder.encode("Ein Gastbenutzer kann seinen Namen nicht ändern.", StandardCharsets.UTF_8));
             return out;
         }
         PlayerEntity player = (userService.getByGlobalId(userService.getGlobalId(oidcUser)).get());

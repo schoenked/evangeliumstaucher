@@ -78,11 +78,11 @@ public class QuizModel {
     }
 
     public String getUrl() {
-        return "/quiz/" + getId() + "/";
+        return "/quiz/" + getId();
     }
 
     public String getStartUrl() {
-        return getUrl() + "next";
+        return getUrl() + "/next";
     }
 
     public GameEntity getEntity() {

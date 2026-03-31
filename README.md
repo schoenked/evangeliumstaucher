@@ -74,7 +74,6 @@ https://docs.docker.com/engine/install/ubuntu/
 
 
 # TODO
-- [ ] validate warning:  Die Ganze Bibel + others
 
 ---
 ## God bless!

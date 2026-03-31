@@ -56,9 +56,9 @@ public class QuizEditorController extends BaseController {
         return userService.getPlayerModel(principal, userService);
     }
 
-    @GetMapping("/quiz/create/")
+    @GetMapping("/quiz/create")
     public String getQuizCreate(Model m) {
-        return super.getBible(m);
+        return super.getBible(m, "/quiz/create/", "/");
     }
 
     /**
