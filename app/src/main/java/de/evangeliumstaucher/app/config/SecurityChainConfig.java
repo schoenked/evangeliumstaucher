@@ -16,6 +16,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
+import org.springframework.security.web.csrf.XorCsrfTokenRequestAttributeHandler;
 
 import java.io.IOException;
 
@@ -59,7 +60,13 @@ public class SecurityChainConfig {
                         .anyRequest()
                         .permitAll());
 
+        XorCsrfTokenRequestAttributeHandler requestHandler = new XorCsrfTokenRequestAttributeHandler();
+// WICHTIG: null zwingt Spring dazu, das Token sofort (eager) zu laden, (needed for AJAX)
+// behält aber die XOR-Verschlüsselung bei.
+        requestHandler.setCsrfRequestAttributeName(null);
         http.csrf(c -> {
+            //
+            c.csrfTokenRequestHandler(requestHandler);
             c.csrfTokenRepository(csrfTokenRepository());
         });
         http.oauth2Login(oauth2Login -> oauth2Login.successHandler(new SavedRequestAwareAuthenticationSuccessHandler() {
