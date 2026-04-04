@@ -37,7 +37,11 @@ public class MainController {
             produces = {MediaType.TEXT_PLAIN_VALUE})
     @ResponseBody
     public String getRobotsTxt() {
-        return "User-agent: *\n";
+        return String.join("\n",
+                "User-agent: *",
+                "Disallow: /privacy",
+                "Disallow: /terms-of-use"
+        );
     }
 
     @RequestMapping(value = {"/about"})
