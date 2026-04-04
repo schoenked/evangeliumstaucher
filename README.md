@@ -72,6 +72,18 @@ insert
 see instruction
 https://docs.docker.com/engine/install/ubuntu/
 
+### Install http redirect https
+
+1. Install haproxy
+
+2. insert to  file: `/etc/haproxy/haproxy.cfg`
+```
+frontend http_front
+bind *:80
+mode http
+http-request redirect scheme https code 307
+```
+3. restart haproxy
 
 # TODO
 
