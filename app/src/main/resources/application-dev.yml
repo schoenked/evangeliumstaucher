@@ -12,3 +12,12 @@ logging:
     web: info
   file:
     name: .logs/app.log
+
+spring.ssl.bundle.jks:
+  server:
+    reload-on-update: true
+    key.alias: gd
+    keystore:
+      location: gd.p12
+      type: PKCS12
+      password: changeit

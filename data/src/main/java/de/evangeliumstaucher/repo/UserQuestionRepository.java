@@ -6,10 +6,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Repository
-public interface UserQuestionRepository extends JpaRepository<UserQuestionEntity, UUID> {
+public interface UserQuestionRepository extends JpaRepository<UserQuestionEntity, Long> {
     Optional<UserQuestionEntity> findByGameSessionIdAndQuestionId(Long gameSession, Long questionId);
 
     List<UserQuestionEntity> findByGameSessionId(Long gameSession);
