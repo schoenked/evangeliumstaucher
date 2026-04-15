@@ -94,7 +94,7 @@ public class QuizController extends BaseController {
                 runningQuestion = quizService.getQuestion(playerModel.getId(), quizId, null);
             }
             if (runningQuestion == null) {
-                return "redirect:.";
+                return "redirect:/quiz/" + quizId;
             }
             m.addAttribute("question", runningQuestion);
             return "quiz.html";
