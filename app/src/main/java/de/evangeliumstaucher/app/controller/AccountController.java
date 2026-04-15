@@ -63,7 +63,7 @@ public class AccountController extends BaseController {
     }
 
     @PostMapping("/createuser")
-    public RedirectView createuser(@AuthenticationPrincipal AuthenticatedPrincipal principal, @RequestParam @Nonnull String username, @RequestParam(required = false, name = "forwardTo") String forwardTo, Model m) {
+    public RedirectView createuser(@AuthenticationPrincipal AuthenticatedPrincipal principal, @RequestParam @Nonnull String username, @RequestParam(required = false, name = "forwardTo", defaultValue = "/quiz/pier") String forwardTo, Model m) {
         RedirectView out = new RedirectView();
         Player player = new Player(null, username, userService.getGlobalId(principal));
         if (!userService.valid(username)) {
@@ -78,7 +78,7 @@ public class AccountController extends BaseController {
     }
 
     @PostMapping("/changename")
-    public RedirectView changename(@AuthenticationPrincipal OAuth2User oidcUser, @RequestParam @Nonnull String username, @RequestParam(required = false, name = "forwardTo") String forwardTo, Model m) {
+    public RedirectView changename(@AuthenticationPrincipal OAuth2User oidcUser, @RequestParam @Nonnull String username, @RequestParam(required = false, name = "forwardTo", defaultValue = "/quiz/pier") String forwardTo, Model m) {
         RedirectView out = new RedirectView();
         if (oidcUser == null) {
             out = new RedirectView("?warning=" + URLEncoder.encode("Ein Gastbenutzer kann seinen Namen nicht ändern.", StandardCharsets.UTF_8));
