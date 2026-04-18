@@ -12,64 +12,48 @@ import org.springframework.web.bind.annotation.RestController;
 public class SitemapController {
 
     @Autowired
-    GameRepository gameRepository;
+    private GameRepository gameRepository;
+
     @Value("${myHostname}")
     private String hostname;
 
     @GetMapping(value = "/sitemap.xml", produces = MediaType.APPLICATION_XML_VALUE)
     public String createSitemap() {
-        String baseUrl = hostname;
+        StringBuilder out = new StringBuilder();
 
-        // Hier würdest du idealerweise deine öffentlichen URLs aus der Datenbank laden
-        // und per StringBuilder oder Schleife zusammenbauen.
+        out.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+        out.append("<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">");
 
-        StringBuilder out = new StringBuilder()
-                .append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n")
-                .append("<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n");
+        // 1. Statische Routen
+        appendUrl(out, hostname + "/", "weekly", "1.0", null);
+        appendUrl(out, hostname + "/quiz/create", "monthly", "0.8", null);
+        appendUrl(out, hostname + "/about", "monthly", "0.8", null);
+
+        // 2. Dynamische Routen (Datenbank)
         gameRepository.findAll().forEach(gameEntity -> {
+            String url = hostname + QuizModel.getUrl(gameEntity.getId());
+            String lastMod = gameEntity.getCreatedAt() != null ? gameEntity.getCreatedAt().toString() : null;
 
-            out.append("   <url>\n")
-                    .append("      <loc>")
-                    .append(baseUrl)
-                    .append(QuizModel.getUrl(gameEntity.getId()))
-                    .append("</loc>\n")
-                    .append("      <changefreq>monthly</changefreq>\n")
-                    .append("      <priority>0.1</priority>\n")
-                    .append("      <lastmod>")
-                    .append(gameEntity.getCreatedAt().toString())
-                    .append("</lastmod>\n")
-                    .append("   </url>\n");
+            appendUrl(out, url, "monthly", "0.1", lastMod);
         });
-        out.append("   <url>\n")
-                .append("      <loc>")
-                .append(baseUrl)
-                .append("/</loc>\n")
-                .append("      <changefreq>weekly</changefreq>\n")
-                .append("      <priority>1.0</priority>\n")
-                .append("   </url>\n")
-                .append("   <url>\n")
-                .append("      <loc>")
-                .append(baseUrl)
-                .append("/quiz/create</loc>\n")
-                .append("      <changefreq>monthly</changefreq>\n")
-                .append("      <priority>0.8</priority>\n")
-                .append("   </url>\n")
 
-                .append("   <url>\n")
-                .append("      <loc>")
-                .append(baseUrl)
-                .append("/about</loc>\n")
-                .append("      <changefreq>monthly</changefreq>\n")
-                .append("      <priority>0.8</priority>\n")
-                .append("   </url>\n")
-                .append("   <url>\n")
-                .append("      <loc>")
-                .append(baseUrl)
-                .append("/about</loc>\n")
-                .append("      <changefreq>monthly</changefreq>\n")
-                .append("      <priority>0.8</priority>\n")
-                .append("   </url>\n")
-                .append("</urlset>");
+        out.append("</urlset>");
         return out.toString();
+    }
+
+    /**
+     * Kompakte Hilfsmethode ohne Leerzeichen und Zeilenumbrüche.
+     */
+    private void appendUrl(StringBuilder sb, String loc, String changefreq, String priority, String lastmod) {
+        sb.append("<url>");
+        sb.append("<loc>").append(loc).append("</loc>");
+        sb.append("<changefreq>").append(changefreq).append("</changefreq>");
+        sb.append("<priority>").append(priority).append("</priority>");
+
+        if (lastmod != null && !lastmod.isBlank()) {
+            sb.append("<lastmod>").append(lastmod).append("</lastmod>");
+        }
+
+        sb.append("</url>");
     }
 }
