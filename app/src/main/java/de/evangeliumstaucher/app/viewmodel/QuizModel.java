@@ -78,7 +78,11 @@ public class QuizModel {
     }
 
     public String getUrl() {
-        return "/quiz/" + getId();
+        return getUrl(getId());
+    }
+
+    public  static String getUrl(UUID quizId) {
+        return "/quiz/" + quizId;
     }
 
     public String getStartUrl() {
