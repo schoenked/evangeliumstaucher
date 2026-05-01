@@ -88,6 +88,10 @@ public class QuizModel {
         return getUrl(getId());
     }
 
+    public String getShareUrl(String hostname) {
+        return hostname + getUrl();
+    }
+
     public String getStartUrl() {
         return getUrl() + "/next";
     }

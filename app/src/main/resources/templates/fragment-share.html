@@ -8,13 +8,13 @@
 <div th:fragment="share (quiz)">
     <div th:if="${quiz}">
         <a class="btn m-2  btn-outline-dark" role="button" target="_blank"
-           th:href="|https://wa.me/?text=Hi, lass uns in die Bibel eintauchen. Ich lade dich zum Spiel ${quiz.name} ein. ${@quizService.getShareUrl(quiz)}|"
+           th:href="|https://wa.me/?text=Hi, lass uns in die Bibel eintauchen. Ich lade dich zum Spiel ${quiz.name} ein. ${quiz.getShareUrl(hostname)}|"
            type="button">
             <i class="fab fa-whatsapp"></i>&nbsp;
             Whatsapp</a>
-        <th:block th:with="randomId=quiz.randomId}">
+        <th:block th:with="randomId=${quiz.randomId}">
 
-            <button class="btn m-2 btn-outline-dark" th:data-clipboard-text="${quizService.getShareUrl(quiz)}"
+            <button class="btn m-2 btn-outline-dark" th:data-clipboard-text="${quiz.getShareUrl(hostname)}"
                     th:id="|copy-btn-${randomId}|">
                 <i class="fas fa-copy"></i>&nbsp;
                 Link kopieren

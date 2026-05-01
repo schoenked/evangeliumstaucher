@@ -33,7 +33,7 @@
                 if (!qrCodeGenerated) {
                     // Generate QR code
                     $('.qrCode').qrcode({
-                        text: '[[${quizService.getShareUrl(quiz)}]]',
+                        text: '[[${quiz.getShareUrl(hostname)}]]',
                         width: 200,
                         height: 200
                     });

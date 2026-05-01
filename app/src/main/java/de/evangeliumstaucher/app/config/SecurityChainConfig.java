@@ -27,18 +27,19 @@ public class SecurityChainConfig {
 
     public static final String USERNAME = "username";
     private static final String DEFAULT_SUCCESS_URL = "/";
+    public static final String XSRF_TOKEN = "X-XSRF-TOKEN";
     private final UserService sessionService;
     private final AccountConfig accountConfig;
 
     @Bean
     public CsrfTokenRepository csrfTokenRepository() {
         HttpSessionCsrfTokenRepository repository = new HttpSessionCsrfTokenRepository();
-        repository.setHeaderName("X-XSRF-TOKEN");
+        repository.setHeaderName(XSRF_TOKEN);
         return repository;
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http) {
 
         http.authorizeHttpRequests(r ->
                 r
@@ -61,9 +62,7 @@ public class SecurityChainConfig {
                         .permitAll());
 
         XorCsrfTokenRequestAttributeHandler requestHandler = new XorCsrfTokenRequestAttributeHandler();
-// WICHTIG: null zwingt Spring dazu, das Token sofort (eager) zu laden, (needed for AJAX)
-// behält aber die XOR-Verschlüsselung bei.
-        requestHandler.setCsrfRequestAttributeName(null);
+
         http.csrf(c -> {
             //
             c.csrfTokenRequestHandler(requestHandler);

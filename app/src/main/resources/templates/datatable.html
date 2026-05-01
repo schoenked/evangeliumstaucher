@@ -36,7 +36,7 @@
             url: '[(${model.Url})]',
             type: 'POST',
             headers: {
-                'X-XSRF-TOKEN': '[[${_csrf.token}]]'
+                '[[${_csrf.headerName}]]': '[[${_csrf.token}]]'
             },
             data: function (d) {
                 return JSON.stringify(d);

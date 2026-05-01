@@ -45,6 +45,7 @@ public class QuizService {
     private final GameSessionRepository gameSessionRepository;
     // TODO get it cluster reaey (stateless)
     private final HashMap<String, RunningQuestion> runningQuestionHashMap = new HashMap<>();
+    @Getter
     @Value("${myHostname}")
     private String hostname;
 
@@ -68,10 +69,6 @@ public class QuizService {
                 .results()
                 .map(matchResult -> matchResult.group()).
                 toList();
-    }
-
-    public String getShareUrl(QuizModel quizModel) {
-        return hostname + quizModel.getUrl();
     }
 
     public @Nullable QuizModel createQuiz(BibleWrap bible, QuizSetupModel quizSetupModel, PlayerModel creator, String whitelist, String blacklist) {
@@ -264,4 +261,5 @@ public class QuizService {
                 .sum();
         return sum;
     }
+
 }

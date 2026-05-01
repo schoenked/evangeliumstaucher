@@ -154,7 +154,7 @@
                                             method: 'POST',
                                             contentType: 'application/json',
                                             headers: {
-                                                'X-XSRF-TOKEN': '[[${_csrf.token}]]'
+                                                '[[${_csrf.headerName}]]': '[[${_csrf.token}]]'
                                             },
                                             data: data,
                                             success: function (html) {
