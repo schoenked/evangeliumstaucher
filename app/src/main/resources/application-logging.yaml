@@ -24,3 +24,15 @@ logging:
         totalSizeCap: 10GB
   file:
     name: logs/app.log
+
+server:
+  tomcat:
+    accesslog:
+      enabled: true
+      directory: .logs
+      prefix: access_log
+      suffix: .log
+      # Optional: Customize the log pattern
+      #pattern: '%h %l %u %t "%r" %s %b %D'
+      max-days: 30
+    basedir: .

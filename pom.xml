@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>4.0.5</version>
+        <version>4.0.6</version>
     </parent>
     <groupId>de.evangeliumstaucher</groupId>
     <artifactId>parent</artifactId>
@@ -16,8 +16,8 @@
         <java.version>25</java.version>
         <!--do annotation processing (needed since Java 23-->
         <maven.compiler.proc>full</maven.compiler.proc>
-        <guava.version>33.5.0-jre</guava.version>
-        <truth.version>1.4.4</truth.version>
+        <guava.version>33.6.0-jre</guava.version>
+        <truth.version>1.4.5</truth.version>
     </properties>
     <modules>
         <module>data</module>
@@ -127,12 +127,12 @@
                 <plugin>
                     <groupId>io.github.cleydyr</groupId>
                     <artifactId>dart-sass-maven-plugin</artifactId>
-                    <version>1.3.1</version>
+                    <version>1.5.0</version>
                 </plugin>
                 <plugin>
                     <groupId>com.google.cloud.tools</groupId>
                     <artifactId>jib-maven-plugin</artifactId>
-                    <version>3.4.3</version>
+                    <version>3.5.1</version>
                 </plugin>
             </plugins>
         </pluginManagement>
