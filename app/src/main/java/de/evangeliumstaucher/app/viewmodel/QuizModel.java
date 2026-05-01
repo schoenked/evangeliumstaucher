@@ -22,19 +22,22 @@ import java.util.UUID;
 public class QuizModel {
     private final String bibleId;
     private final PlayerModel creator;
+    private final List<Verse> verses = new ArrayList<>();
     private UUID id;
     private String name;
     private String description;
     private Date createdAt;
     @Getter(AccessLevel.PRIVATE)
     private BibleWrap bible;
-    private final List<Verse> verses = new ArrayList<>();
     private List<String> tags;
     private int distanceRatingFactor;
     private int timeRatingFactor;
     private String whitelist;
     private String blacklist;
 
+    public static long getRandomId() {
+        return Math.round(Math.random() * 89999 + 10000);
+    }
 
     public static QuizModel from(GameEntity gameEntity, Library library) {
         return QuizModel.builder()
@@ -46,6 +49,10 @@ public class QuizModel {
                 .distanceRatingFactor(gameEntity.getDistanceRatingFactor())
                 .timeRatingFactor(gameEntity.getTimeRatingFactor())
                 .build();
+    }
+
+    public static String getUrl(UUID quizId) {
+        return "/quiz/" + quizId;
     }
 
     public BibleWrap getBible(Library library) {
@@ -81,10 +88,6 @@ public class QuizModel {
         return getUrl(getId());
     }
 
-    public  static String getUrl(UUID quizId) {
-        return "/quiz/" + quizId;
-    }
-
     public String getStartUrl() {
         return getUrl() + "/next";
     }
@@ -103,5 +106,4 @@ public class QuizModel {
                 blacklist
         );
     }
-
 }
