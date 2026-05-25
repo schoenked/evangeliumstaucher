@@ -26,8 +26,8 @@ import java.io.IOException;
 public class SecurityChainConfig {
 
     public static final String USERNAME = "username";
-    private static final String DEFAULT_SUCCESS_URL = "/";
     public static final String XSRF_TOKEN = "X-XSRF-TOKEN";
+    private static final String DEFAULT_SUCCESS_URL = "/";
     private final UserService sessionService;
     private final AccountConfig accountConfig;
 
@@ -62,6 +62,7 @@ public class SecurityChainConfig {
                         .permitAll());
 
         XorCsrfTokenRequestAttributeHandler requestHandler = new XorCsrfTokenRequestAttributeHandler();
+        requestHandler.setCsrfRequestAttributeName(null);
 
         http.csrf(c -> {
             //
