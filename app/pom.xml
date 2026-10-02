@@ -147,7 +147,7 @@
                         <configuration>
                             <from>
                                 <image>
-                                    eclipse-temurin:25-jre-alpine
+                                    gcr.io/distroless/java25
                                 </image>
                             </from>
                             <to>
